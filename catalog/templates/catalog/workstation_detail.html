@@ -1,0 +1,349 @@
+{% extends "list_workstation_menu.html" %}
+
+{% block content %}
+{% load static %}
+<div class="col-sm-12">
+  <div class="card-header text-center">
+    <a name="systemInfo" class="btn" data-bs-toggle="collapse" href="#systemInfoContent" role="button"
+      aria-expanded="false" aria-controls="systemInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/pc-display-horizontal.svg' %}" class="iconHeader">
+        Информация о системе
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="systemInfoContent">
+    <div class="row row-cols-3 row-cols-md-3 mt-3">
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Рабочая станция
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{ workstation.name }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Серийный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.serialImg %}
+              <a href="{{ workstation.serialImg.url }}" >
+                <img src="{{ workstation.serialImg.url }}">
+              </a>
+              {% elif workstation.serial %}
+                {{ workstation.serial }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Инвентарный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.inventImg %}
+              <a href="{{ workstation.inventImg.url }}" >
+                <img src="{{ workstation.inventImg.url }}">
+              </a>
+              {% elif workstation.invent %}
+                {{ workstation.invent }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      {% for f in workstation.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="OSInfo" class="btn" data-bs-toggle="collapse" href="#OSInfoContent" role="button"
+      aria-expanded="false" aria-controls="OSInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/disc.svg' %}" class="iconHeader">
+        Информация об ОС
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="OSInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in workstation.OS.get_all_fields %}
+        <div class="col mt-3">
+          <div class="card border-dark  h-100">
+            <div class="card-header">
+              <h5 class="card-title">
+                {{f.label|capfirst}}
+              </h5>
+            </div>
+            <div class="card-body text-dark">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </div>  
+          </div>
+        </div>
+      {% endfor %}  
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Лицензионный ключ
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+          {% if workstation.OS.licenseKeyFile %}
+            <a class="noDecoration" href="{{ software.licenseKeyFile.url }}">
+              <img src="{% static 'images/filetype-key.svg' %}" class="iconTable">
+            </a>
+          {% elif workstation.OS.licenseKeyImg %}
+            <a href="{{ workstation.OS.licenseKeyImg.url }}" >
+              <img src="{{ workstation.OS.licenseKeyImg.url }}">
+            </a>
+          {% else %}
+            {{workstation.OS.licenseKeyText}}
+          {% endif %}
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="infoEmployee" class="btn" data-bs-toggle="collapse" href="#infoEmployeeContent" role="button"
+      aria-expanded="false" aria-controls="infoEmployeeContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/person.svg' %}" class="iconHeader">
+        Информация о сотруднике
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="infoEmployeeContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in workstation.Employee.get_all_fields %}
+        <div class="col mt-3">
+          <div class="card border-dark  h-100">
+            <div class="card-header">
+              <h5 class="card-title">
+                {{f.label|capfirst}}
+              </h5>
+            </div>
+            <div class="card-body text-dark">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </div>  
+          </div>
+        </div>
+      {% endfor %}
+      {% for f in workstation.Workplace.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+    {% endfor %}    
+      </div>
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="monitor" class="btn" data-bs-toggle="collapse" href="#monitorContent" role="button"
+      aria-expanded="false" aria-controls="monitorContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/display.svg' %}" class="iconHeader">
+        Информация о мониторе
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="monitorContent">
+    <div class="row row-cols-3 row-cols-md-3 mt-3">
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Модель
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{ workstation.monitor.name }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Серийный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.monitor.serialImg %}
+              <a href="{{ workstation.monitor.serialImg.url }}" >
+                <img src="{{ workstation.monitor.serialImg.url }}">
+              </a>
+              {% elif workstation.monitor.serial %}
+                {{ workstation.monitor.serial }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Инвентарный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.monitor.inventImg %}
+              <a href="{{ workstation.monitor.inventImg.url }}" >
+                <img src="{{ workstation.monitor.inventImg.url }}">
+              </a>
+              {% elif workstation.monitor.invent %}
+                {{ workstation.monitor.invent }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      {% for f in workstation.monitor.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="motherboard" class="btn" data-bs-toggle="collapse" href="#motherboardContent" role="button"
+      aria-expanded="false" aria-controls="motherboardContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/motherboard.svg' %}" class="iconHeader">
+        Информация о материнской плате
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="motherboardContent">
+    <div class="row row-cols-3 row-cols-md-3 mt-3">
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Модель
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{ workstation.motherboard.name }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Серийный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.motherboard.serialImg %}
+              <a href="{{ workstation.motherboard.serialImg.url }}" >
+                <img src="{{ workstation.motherboard.serialImg.url }}">
+              </a>
+              {% elif workstation.motherboard.serial %}
+                {{ workstation.motherboard.serial }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Инвентарный номер
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">
+              {% if workstation.motherboard.inventImg %}
+              <a href="{{ workstation.motherboard.inventImg.url }}" >
+                <img src="{{ workstation.motherboard.inventImg.url }}">
+              </a>
+              {% elif workstation.motherboard.invent %}
+                {{ workstation.motherboard.invent }}
+              {% else %}
+                <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable"></a>
+              {% endif %}
+            </h5>
+          </div>
+        </div>
+      </div>
+      {% for f in workstation.motherboard.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

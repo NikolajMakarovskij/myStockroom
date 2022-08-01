@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>{{title}}</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <script defer src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body class="bodybackground">
+  <!--top navigation-->
+    {% if user.is_authenticated %}
+    <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark">
+      <div class="container-fluid  bg-dark">
+        <div class="col-9">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        {% if user.is_authenticated %}  
+          <div class="nav-item  col-1 text-secondary">
+            <a class="noDecoration" href="/admin/">
+              <h5>админка</h5>
+            </a>
+          </div> 
+          <div class="nav-item col-1 text-secondary">        
+            <h5 class="">
+              {{ user.get_username }}
+            </h5>
+          </div>  
+          <div class="nav-item">
+            <a href="{% url 'login' %}" class="btn btn-primary bg-secondary">
+              Выход
+            </a>
+          </div>
+        {% endif %} 
+      </div> 
+    </nav>
+  <!-- side navigation -->
+    <div class="row" >
+      <div class="col-sm-2 min-vh-100 collapse show  collapse-horizontal" id="navbarMenu">
+        <nav class="navbar fix-top navmenu h-100  flex-column navbar-dark bg-dark justify-content-start">
+          {% block mainmenu %}
+            <ul class="nav-pills w-100">
+              {% for m in menu %}
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.view_name == m.url_name %}active{% endif %}"
+                    href="{% url m.url_name %}">{{m.title}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endblock mainmenu %}
+          
+          <ul class="nav-pills bg-dark  w-100"  >
+            {% for m in workstationMenu %}
+            <li class="nav-item">
+              <a  class="nav-link {% if request.resolver_match.view_name == m.anchor %}active{% endif %}"
+              href="{{ m.anchor }}">{{m.title}}</a>
+            </li> 
+            {% endfor %} 
+          </ul>
+          
+          <ul class="nav-pills  position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+            <li class="nav-item">
+              <a  class="nav-link {% if request.resolver_match.view_name == '#' %}active{% endif %}" href="#">
+                <div>
+                  Назад
+                </div>  
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    <div class="col ">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+  {% else %}
+      <meta http-equiv="refresh" content="0; URL={% url 'login' %}">
+  {% endif %} 
+</body>
+</html>

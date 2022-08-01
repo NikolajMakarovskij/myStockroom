@@ -1,0 +1,43 @@
+{% extends "login_generic.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+  <p>Имя пользователя и пароль не совпадают. Попробуйте еще раз.</p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>У вас нет доступа к данному контенты. Чтобы продолжить,
+    авторизуйтесь.</p>
+  {% else %}
+    <p>Авторизуйтесь, чтобы увидеть.</p>
+  {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table class="table_login">
+
+<tr>
+  <td class="td_login">{{ form.username.label_tag }}</td>
+  <td class="td_login"><div class="form_login">{{ form.username }}</div></td>
+</tr>
+
+<tr>
+  <td class="td_login">{{ form.password.label_tag }}</td>
+  <td class="td_login"><div class="form_login">{{ form.password }}</div></td>
+</tr>
+</table>
+
+<input type="submit" class="button_login" value="Войти"/>
+<input type="hidden" name="Далее" value="{{ next }}" />
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<div class="text_login">
+  <p ><a href="{% url 'password_reset' %}">Сбросить пароль?</a></p>
+</div>
+
+
+{% endblock %}

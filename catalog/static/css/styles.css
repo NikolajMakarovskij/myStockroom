@@ -1,0 +1,189 @@
+.noMargin{
+    margin: 0 0 0 0;
+}
+.vert{
+    height: 100vh;
+}
+.navmenu{
+    color: #ffffff;   
+}
+.navmenu>ul{
+    list-style-type: none
+}
+.navmenu ul li a,
+.navmenu ul li a:hover{
+    color: #aaaaaa;
+    list-style-type: none;
+    text-decoration: none;
+}
+.nav-pills .active,
+.nav-pills .nav-item:hover {
+    background-color: rgba(128, 128, 128, 0.850) !important;
+    border-color: rgba(128, 128, 128, 0.850) !important;
+    color: #ffffff;
+}
+.btn-primary,
+.btn-primary:visited{
+    background-color: rgba(128, 128, 128, 0.850) !important;
+    border-color: rgba(128, 128, 128, 0.850) !important
+}     
+.btn-primary:hover,
+.btn-primary:focus{
+    background-color: rgba(128, 128, 128, 0.750) !important;
+    border-color: rgba(128, 128, 128, 0.750) !important
+}
+.bodybackground {
+    background-color: rgba(228, 224, 224, 0.278);
+    text-decoration-color: hsl(207, 7%, 30%); 
+}
+.login{
+    display: flex;
+    height: 100vh; /* For 100% screen height */
+    width:  100vw; /* For 100% screen width */
+    padding: 20px;
+}
+.login_content{
+    margin: auto;
+    
+}
+.table_login{
+    border: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-decoration-color: hsl(207, 7%, 30%);    
+}
+.td_login{
+    padding: 0px 20px 20px 20px;
+}
+.form_login{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-decoration-color: hsl(207, 7%, 30%); 
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);    
+}
+.button_login{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-decoration-color: hsl(207, 7%, 30%); 
+    margin: 0px 20px 20px 20px;
+    border-radius: 5px;
+    border-style: none;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);    
+}
+.button_login:hover {
+    transform: scale(1.25,1.25);
+}
+.button_login:active{
+    transform: scale(1.2,1.2);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+}
+.text_login{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    margin: 0px 20px 20px 20px;
+}
+.square {
+    display: flex;
+    position: relative;
+    margin: 50px 20px 20px 20px;
+    width: 200px;
+    height: 200px;
+    border: solid;
+    border-radius: 5px;
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.3), -5px -10px 20px rgba(255,255,255,0.5);   
+}
+.square:hover {
+    transform: scale(1.25,1.25);   
+}
+.square:active{
+    transform: scale(1.2,1.2);
+}
+.iconIndex{
+    height: 60%;
+    filter: invert(30%);
+}
+.iconTable{
+    height: 30px;
+}
+.iconHeader{
+    height: 40px;
+}
+.iconTitle{
+    height: 20px;
+}
+.maxheight{
+    height: 100%;
+}
+.nodecorationIndex a,
+.nodecorationIndex a:hover,
+.nodecorationIndex a:active,
+.nodecorationIndex a:visited{
+    text-decoration: none;
+    background-color: none;
+}
+a.button_link,
+a.button_link:active,
+a.button_link:hover {
+    text-decoration: none;
+    color: hsl(207, 7%, 30%);
+}
+.mtop{
+    margin-top: 20px;
+    
+}
+
+.pagination {
+    color: #ffffff;
+}
+
+.pagination ul {
+    color: #ffffff;
+}
+
+.pagination li {
+    color: rgba(128, 128, 128, 0.750);
+}
+
+.pagination a {
+    color: hsl(207, 7%, 30%);
+    text-decoration: none;
+}
+
+.pagination a:hover,
+.pagination .active a {
+    background-color: rgba(128, 128, 128, 0.750) !important;
+    border-color: rgba(128, 128, 128, 0.750) !important;
+    color: #ffffff;
+}
+
+.pagination a:focus {
+    background-color: rgba(128, 128, 128, 0.750);
+    color: #ffffff;
+}
+
+
+.pagination .active a {
+    color: #ffffff;
+    cursor: default;
+}
+
+.pagination .disabled span,
+.pagination .disabled a,
+.pagination .disabled a:hover {
+    color: #999999;
+    background-color: transparent;
+    cursor: default;
+}
+
+.noDecoration,
+.noDecoration:active, 
+.noDecoration:hover {
+    text-decoration: none;
+    color: hsl(207, 7%, 30%);
+}
+.sizes{
+    height: 100vh; /* For 100% screen height */
+    width:  100vw; /* For 100% screen width */
+}
+

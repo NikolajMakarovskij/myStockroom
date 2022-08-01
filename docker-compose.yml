@@ -1,0 +1,38 @@
+# Файл docker-compose должен начинаться с тега версии.
+# Мы используем "3" так как это - самая свежая версия на момент написания этого кода.
+
+version: "3.9"
+
+# Следует учитывать, что docker-composes работает с сервисами.
+# 1 сервис = 1 контейнер.
+# Сервисом может быть клиент, сервер, сервер баз данных...
+# Раздел, в котором будут описаны сервисы, начинается с 'services'.
+
+services:
+  web:
+    build: ./
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - ./:/myBase
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=adminDevelop
+      - POSTGRES_PASSWORD=zx23SA21
+      - POSTGRES_DB=buildAndTech
+      
+volumes:
+  postgres_data:
+  myBase:
+    
+
+  
+   
