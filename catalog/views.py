@@ -1,162 +1,178 @@
-from unicodedata import name
 from django.shortcuts import render
 from .models import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
-from django.contrib import messages
+from django.db.models import Q
+from .utils import *
 
-n = [digitalSignature.validateP]
-m = [digitalSignature.validateP]
+#Главная
+class indexView(generic.ListView):
+    model = digitalSignature
+    template_name = 'index.html'
 
-def index(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
-    if n == m:
-            messages.add_message(request, messages.INFO,  'Проверка' )
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Главная страница'
+        context['menu'] = menu
+        return context
 
-    return render(
-        request,
-        'index.html',
-        context={
-            'title': 'Главная страница',
-            'menu': menu,
-
-        }, 
-    )
-
-menu = [
-    {'title':  "Главная страница", 'url_name': 'index'},
-    {'title':  "Раб. места", 'url_name': 'workplace'},
-    {'title':  "Сотрудники", 'url_name': 'employee'},
-    {'title':  "Софт", 'url_name': 'software'},
-    {'title':  "Раб. станции", 'url_name': 'workstation'},
-    {'title':  "Принтеры", 'url_name': 'printer'},
-    {'title':  "ЭЦП", 'url_name': 'digital-signature'},
-    ]
-
-class EmployeeListView(generic.ListView):
+#Сотрудники 
+class EmployeeListView(DataMixin, generic.ListView):
     model = Employee
-    paginate_by =  10
+    template_name = 'employee_list.html' 
     
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Сотрудники'
-        context['menu'] = menu
+        c_def = self.get_user_context(title="Список сотрудников", searchlink='employee')
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = Employee.objects.filter(
+                Q(name__icontains=query) | 
+                Q(sername__icontains=query) | 
+                Q(family__icontains=query) | 
+                Q(departament__name__icontains=query) |
+                Q(post__name__icontains=query) |  
+                Q(Workplace__name__icontains=query) |
+                Q(Workplace__Room__name__icontains=query) |
+                Q(Workplace__Floor__name__icontains=query) |
+                Q(Workplace__Building__name__icontains=query) 
+        )
+        return object_list
 
-def employee_list(request): 
-    return render(
-        request,
-        'employee_list.html',
-        context={
-
-        }
-    )
-
-class WorkplaceListView(generic.ListView):
+#Рабочие места
+class WorkplaceListView(DataMixin, generic.ListView):
     model = Workplace
-    paginate_by =  10
-
+    template_name = 'workplace_list.html'
+  
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Рабочие места'
-        context['menu'] = menu
+        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace')
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-def workplace_list(request): 
-    return render(
-        request,
-        'workplace_list.html',
-        context={
-            
-        }
-    )
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = Workplace.objects.filter(
+                Q(name__icontains=query) |
+                Q(Room__name__icontains=query) |
+                Q(Floor__name__icontains=query) |
+                Q(Building__name__icontains=query) 
+        )
+        return object_list
 
-class workstationListView(generic.ListView):
+#Рабочие станции
+class workstationListView(DataMixin, generic.ListView):
     model = workstation
-    paginate_by =  10
-
+    template_name = 'workstation_list.html'
+    
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Рабочие станции'
-        context['menu'] = menu
+        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation',)
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-def workstation_list(request): 
-    return render(
-        request,
-        'workstation_list.html',
-        context={
-            'workstation_list.html':workstation_list,
-        }
-    )
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = workstation.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__icontains=query) | 
+                Q(Employee__name__icontains=query) |
+                Q(Employee__sername__icontains=query) | 
+                Q(Employee__family__icontains=query) |
+                Q(Employee__post__name__icontains=query) |  
+                Q(Employee__departament__name__icontains=query) | 
+                Q(OS__name__icontains=query) |   
+                Q(Workplace__name__icontains=query) |
+                Q(Workplace__Room__name__icontains=query) |
+                Q(Workplace__Floor__name__icontains=query) |
+                Q(Workplace__Building__name__icontains=query) 
+        )
+        return object_list
 
-workstationMenu = [
-    {'title':  "Информация о системе", 'anchor': '#systemInfo'},
-    {'title':  "Информация об ОС", 'anchor': '#OSInfo'},
-    {'title':  "Информация о сотруднике", 'anchor': '#infoEmployee'},
-    {'title':  "Монитор", 'anchor': '#monitor'},
-    {'title':  "Материнская плата", 'anchor': '#motherboard'},
-    ]
-
-class workstationDetailView(generic.DetailView):
+class workstationDetailView(DataMixin, generic.DetailView):
     model = workstation
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Рабочая станция №'
-        context['menu'] = menu
-        context['workstationMenu'] = workstationMenu
+        c_def = self.get_user_context(title="Рабочая станция",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        context['detailMenu'] = workstationMenu
         return context
 
-def workstation_detail_view(request,pk):
-    try:
-        workstation_id=workstation.objects.get(pk=pk)
-    except workstation.DoesNotExist:
-        raise Http404("Не удалось найти детальную информацию")
-
-    return render(
-        request,
-        'catalog/workstation_detail.html',
-        context={
-            'workstation': workstation_id,
-            }
-
-    )
-
-class softwareListView(generic.ListView):
+#СОФТ
+class softwareListView(DataMixin, generic.ListView):
     model = software
-    paginate_by =  10
-
+    template_name = 'software_list.html'
+    
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Програмное обеспечение'
-        context['menu'] = menu
+        c_def = self.get_user_context(title="Список ПО", searchlink='software')
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-def software_list(request):
-    return render(
-        request,
-        'software_list.html',
-        context={
-            'software_list.html':software_list,
-        }
-    )
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = software.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__icontains=query) | 
+                Q(Employee__name__icontains=query) |
+                Q(Employee__sername__icontains=query) | 
+                Q(Employee__family__icontains=query) |
+                Q(Employee__post__name__icontains=query) |  
+                Q(Employee__departament__name__icontains=query) | 
+                Q(workstation__name__icontains=query) |
+                Q(workstation__OS__name__icontains=query) |   
+                Q(workstation__Workplace__name__icontains=query) |
+                Q(workstation__Workplace__Room__name__icontains=query) |
+                Q(workstation__Workplace__Floor__name__icontains=query) |
+                Q(workstation__Workplace__Building__name__icontains=query) 
+        )
+        return object_list
 
-class printerListView(generic.ListView):
+#Принтеры
+class printerListView(DataMixin, generic.ListView):
     model = printer
-    paginate_by =  10
-
+    template_name = 'printer_list.html'
+    
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Принтеры'
-        context['menu'] = menu
+        c_def = self.get_user_context(title="Принтеры", searchlink='printer')
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = printer.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufactured__icontains=query) |
+                Q(cartridge__name__icontains=query) |
+                Q(paper__name__icontains=query) | 
+                Q(Employee__name__icontains=query) |
+                Q(Employee__sername__icontains=query) | 
+                Q(Employee__family__icontains=query) |
+                Q(Employee__post__name__icontains=query) |  
+                Q(Employee__departament__name__icontains=query) | 
+                Q(workstation__name__icontains=query) |
+                Q(workstation__OS__name__icontains=query) |   
+                Q(Workplace__name__icontains=query) |
+                Q(Workplace__Room__name__icontains=query) |
+                Q(Workplace__Floor__name__icontains=query) |
+                Q(Workplace__Building__name__icontains=query) 
+        )
+        return object_list
 
 def printer_list(request):
     return render(
@@ -167,57 +183,48 @@ def printer_list(request):
         }
     )
 
-printerMenu = [
-    {'title':  "Информация о принтере", 'anchor': '#printerInfo'},
-    {'title':  "Информация о картридже", 'anchor': '#cartridgeInfo'},
-    {'title':  "Информация о бумаге", 'anchor': '#paperInfo'},
-    {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
-    ]
-
-class printerDetailView(generic.DetailView):
+class printerDetailView(DataMixin, generic.DetailView):
     model = printer
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Принтер №'
-        context['menu'] = menu
-        context['printerMenu'] = printerMenu
+        c_def = self.get_user_context(title="Принтер",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        context['detailMenu'] = printerMenu
         return context
 
-def printer_detail_view(request,pk):
-    try:
-        printer_id=printer.objects.get(pk=pk)
-    except printer.DoesNotExist:
-        raise Http404("Не удалось найти детальную информацию")
 
-    return render(
-        request,
-        'catalog/printer_detail.html',
-        context={
-
-            }
-    )
-
-class digitalSignatureListView(generic.ListView):
+class digitalSignatureListView(DataMixin, generic.ListView):
     model = digitalSignature
-    paginate_by =  10
-
+    template_name = 'digital_signature_list.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Цифровые подписи'
-        context['menu'] = menu
-        context['index.html']:digital_signature_list
+        c_def = self.get_user_context(title="ЭЦП", searchlink='digital-signature')
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = digitalSignature.objects.filter(
+                Q(name__icontains=query) | 
+                Q(validityPeriod__icontains=query) | 
+                Q(Employee__name__icontains=query) |
+                Q(Employee__sername__icontains=query) | 
+                Q(Employee__family__icontains=query) |
+                Q(Employee__post__name__icontains=query) |  
+                Q(Employee__departament__name__icontains=query) | 
+                Q(workstation__name__icontains=query) |
+                Q(workstation__OS__name__icontains=query) |   
+                Q(Workplace__name__icontains=query) |
+                Q(Workplace__Room__name__icontains=query) |
+                Q(Workplace__Floor__name__icontains=query) |
+                Q(Workplace__Building__name__icontains=query) 
+        )
+        return object_list
 
-def digital_signature_list(request):
-    return render(
-        request,
-        'digital_signature_list.html',
-        context={
-            'digital_signature_list.html':digital_signature_list,
-            'index.html':digital_signature_list,
-        }
-    )
+
 
 
 

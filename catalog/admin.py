@@ -26,8 +26,9 @@ class Room(admin.ModelAdmin):
 class Employee(admin.ModelAdmin):
     model = Employee
     fields = [        
-        ('name', 'Workplace'),
-        ('post', 'departament')
+        ('name', 'sername', 'family'),
+        ('post', 'departament'),
+        ('Workplace', 'employeeEmail')
     ]
 
 @admin.register(Workplace)
@@ -143,8 +144,7 @@ class digitalSignature(admin.ModelAdmin):
     fields = [
         ('name','validityPeriod'),
         ('licenseKeyText','licenseKeyImg', 'licenseKeyFile'),
-        ('Employee','employeeEmail'), 
-        ('Workplace', 'workstation'),
+        ('Employee', 'Workplace', 'workstation'),
     ]
 
 

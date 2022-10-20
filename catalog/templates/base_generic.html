@@ -15,19 +15,21 @@
 <body class="bodybackground">
   <!--top navigation-->
   {% if user.is_authenticated %}
-  <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark">
-    <div class="container-fluid  bg-dark">
+  <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark bg-gradient">
+    <div class="container-fluid">
       <div class="col-9">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="true" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      {% if user.is_authenticated %}  
+      {% if user.is_authenticated %}
+        {% if user.is_superuser %}  
         <div class="nav-item  col-1 text-secondary">
           <a class="noDecoration" href="/admin/">
             <h5>админка</h5>
           </a>
-        </div> 
+        </div>
+        {% endif %} 
         <div class="nav-item col-1 text-secondary">        
           <h5 class="">
             {{ user.get_username }}
@@ -56,38 +58,20 @@
             {% endfor %}
           </ul>
         {% endblock mainmenu %}
+        <ul class="nav-pills bg-dark  w-100"  >
+          {% for m in detailMenu %}
+          <li class="nav-item">
+            <a  class="nav-link {% if request.resolver_match.view_name == m.anchor %}active{% endif %}"
+            href="{{ m.anchor }}">{{m.title}}</a>
+          </li> 
+          {% endfor %} 
+        </ul>
       </nav>
     </div>
     <div class="col ">
       {% block content %}{% endblock %}
     </div>
   </div>
-  <!--toast messages-->
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-  {% if messages %}
-    {% for message in messages %}
-      <div id="toast" class="toast messages show bg-danger text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header text-dark bg-danger bg-opacity-100">
-          <strong class="me-auto">Истекает срок действия ЭЦП!</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-        </div>
-        <div {% if message.tags %}  id="toast-body" class="toast-body {{ message.tags }}" {% endif %}>
-          {{ message }}
-        </div>  
-      </div>
-    {% endfor %}
-  {% else %}
-  <div id="toast" class="toast show bg-danger text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header text-dark bg-danger bg-opacity-100">
-      <strong class="me-auto">Истекает срок действия ЭЦП!</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-    </div>
-    <div  id="toast-body" class="toast-body">
-      Нет сообщений
-    </div>  
-  </div>
-
-  {% endif %}
 </div>
   {% else %}
       <meta http-equiv="refresh" content="0; URL={% url 'login' %}">

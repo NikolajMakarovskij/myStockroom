@@ -1,31 +1,36 @@
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  {% if digitalsignature_list %}
     {% for digitalsignature in digitalsignature_list %}
-    {% if digitalsignature.warningTwoMounth >= digitalsignature.validityPeriod %}
-    {% if digitalsignature.danger_date >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-danger text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header text-dark bg-danger bg-opacity-100">
-    {% elif digitalsignature.warningOneWeek >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-danger text-dark bg-opacity-75" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger text-dark bg-opacity-75">
-    {% elif digitalsignature.warningTwoWeeks >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-danger text-dark bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger text-dark bg-opacity-50">
-    {% elif digitalsignature.warningThreeWeeks >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-warning text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-warning text-dark bg-opacity-100">
-    {% elif digitalsignature.warningOneMounth >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-warning text-dark bg-opacity-75" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-warning text-dark bg-opacity-75">
-    {% elif digitalsignature.warningTwoMounth >= digitalsignature.validityPeriod %}
-      <div class="toast show bg-warning text-dark bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-warning text-dark bg-opacity-50">
-    {% endif %}
-        <strong class="me-auto">Истекает срок действия ЭЦП!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-      </div>
-      <div class="toast-body">
-        {{ digitalsignature.Employee.name }} {{ digitalsignature.validityPeriod }}
-      </div>
-    {% endif %}
+      {% if digitalsignature.dangerDay >= digitalsignature.validityPeriod %}  
+        <div id="toast" class="toast show bg-danger text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-danger bg-opacity-100">
+      {% elif digitalsignature.warningOneWeek >= digitalsignature.validityPeriod %}
+        <div id="toast" class="toast show bg-danger text-dark bg-opacity-75" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-danger bg-opacity-75">    
+      {% elif digitalsignature.warningTwoWeeks == digitalsignature.validityPeriod %}
+        <div id="toast" class="toast show bg-danger text-dark bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-danger bg-opacity-50"> 
+      {% elif digitalsignature.warningThreeWeeks == digitalsignature.validityPeriod %}
+        <div id="toast" class="toast show bg-warning text-dark bg-opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-warning bg-opacity-100">
+      {% elif digitalsignature.warningOneMounth == digitalsignature.validityPeriod %}
+        <div id="toast" class="toast show bg-warning text-dark bg-opacity-75" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-warning bg-opacity-75">
+      {% elif digitalsignature.warningTwoMounth == digitalsignature.validityPeriod %}
+        <div id="toast" class="toast show bg-warning text-dark bg-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header text-dark bg-warning bg-opacity-50">
+      {% else %}
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">   
+          <div class="toast-header">
+      {% endif %}
+            <strong class="me-auto">Истекает срок действия ЭЦП!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+          </div>
+          <div  id="toast-body" class="toast-body shadow-lg" >
+            Сотрудник: {{ digitalsignature.Employee.name }} <br>
+              Дата: {{ digitalsignature.validityPeriod }}
+          </div>  
+        </div> 
     {% endfor %}
-</div>  
+  {% endif %}  
+</div>

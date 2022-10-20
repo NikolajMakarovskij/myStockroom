@@ -16,27 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
 ]
 
 urlpatterns += [
      path('catalog/', include('catalog.urls')),
-]
+     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
+     path('accounts/', include('django.contrib.auth.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-from django.views.generic import RedirectView
-urlpatterns += [
-    path('', RedirectView.as_view(url='/catalog/', permanent=True)),
-]
 
-from django.conf import settings
-from django.conf.urls.static import static
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-urlpatterns += [
-    path('accounts/', include('django.contrib.auth.urls')),
-]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

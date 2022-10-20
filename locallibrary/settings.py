@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = int(os.environ.get("DEBUG", default=1))
 
 ALLOWED_HOSTS = ['*']
 
@@ -31,10 +31,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog.apps.CatalogConfig', 
+    'catalog.apps.CatalogConfig',
+    'django.contrib.postgres',
+    'django_bootstrap5',
+    'django_crontab',
+    'sass_processor',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'import_export',
+    'ajax_select',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware', 
     'django.middleware.common.CommonMiddleware',
@@ -43,6 +53,40 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.history.HistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+]
+
+import socket
+
+def show_toolbar(request):
+    if DEBUG:
+        return True
+    return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+}
+
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'x.x.x.x','x.x.x.x']
+
+
+
 
 ROOT_URLCONF = 'locallibrary.urls'
 
@@ -63,15 +107,19 @@ TEMPLATES = [
     },
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "buildAndTech")),
+        "USER": os.environ.get("SQL_USER", "adminDevelop"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "zx23SA21"),
+        "HOST": os.environ.get("SQL_HOST", "db"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
@@ -95,14 +143,33 @@ LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
+USE_L10N = False
+
 USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'data/') 
-MEDIA_URL = '/image/'
+DATE_FORMAT = 'd.m.Y'
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
+
+STATIC_URL = 'static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+STATIC_ROOT = '/home/mybase/web/static/'
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+MEDIA_ROOT = '/home/mybase/web/mediafiles/'
+
+MEDIA_URL = 'mediafiles/'
+
+MAX_UPLOAD_SIZE = "104857600"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -111,3 +178,10 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 BOOTSTRAP4 = {'include_jquery': True}
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000 
+
+CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
+
+

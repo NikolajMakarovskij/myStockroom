@@ -4,7 +4,9 @@ from django.db import models
 from .models import *
 from django.urls import reverse
 import uuid 
-from django.forms.models import model_to_dict
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 class Building(models.Model):
     id = models.UUIDField(
@@ -112,8 +114,22 @@ class Employee(models.Model):
         )
     name = models.CharField(
         max_length=50,
-        help_text="Введите ФИО сотрудника",
-        verbose_name="ФИО сотрудника")
+        blank=True, null=True,
+        help_text="Введите имя сотрудника",
+        verbose_name="Имя сотрудника"
+        )
+    sername = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите отчество сотрудника",
+        verbose_name="Отчество сотрудника"
+        )
+    family = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите фамилию сотрудника",
+        verbose_name="Фамилию сотрудника"
+        )
     Workplace = models.ForeignKey(
         'Workplace',
         on_delete=models.SET_NULL,
@@ -130,6 +146,9 @@ class Employee(models.Model):
         on_delete=models.SET_NULL,
         blank=True, null=True,
         verbose_name="Отдел"
+        )
+    employeeEmail = models.EmailField(
+        null=True, blank=True
         )
 
     def __str__(self):
@@ -438,7 +457,8 @@ class workstation(models.Model):
     inventImg = models.ImageField(
         upload_to='workstation/invent/',
         blank=True, null=True,
-        help_text="прикрепите файл")
+        help_text="прикрепите файл"
+        )
     OS = models.ForeignKey(
         'OS',
         on_delete=models.SET_NULL,
@@ -1056,24 +1076,32 @@ class digitalSignature (models.Model): #electronic digital signature
     validityPeriod = models.DateField(
         null=True, blank=True
         )
-    employeeEmail = models.EmailField(
-        null=True, blank=True
-        )
 
 
     def __str__(self):
-        return self.name
-    
-    def validateP(self):
-        return self.validateP
+        return self.name  
 
     def get_absolute_url(self):
         return reverse('digitalsignature-detail', args=[str(self.id)])
     
-    def danger_date(self):
-        return self.danger_date and  (date.today())
+    #@property
+    #def dangerDay(self, request):
+    #    from django.contrib import messages
+    #    if self.validityPeriod <= date.today:
+    #        messages.add_message(request, messages.INFO, 'weagEG' , extra_tags='danger_date' )
+    #    return self.dangerDay 
     
+    #def get_validityPeriod(request, self):
+    #    from django.contrib import messages
+    #    if self.validityPeriod == date.today():
+    #        return messages.add_message(request, messages.INFO, 'сегодня' , extra_tags='danger_date' )
+        
+    def dangerDay(self):
+
+        return self.dangerDay and datetime.date.today() 
+
     def warningOneWeek(self):
+
         return self.warningOneWeek and (datetime.date.today() + datetime.timedelta(weeks=1))
 
     def warningTwoWeeks(self):
@@ -1115,6 +1143,7 @@ class digitalSignature (models.Model): #electronic digital signature
                     }
                 )
         return fields
+
 
     class Meta:
         verbose_name_plural = 'ЭЦП'

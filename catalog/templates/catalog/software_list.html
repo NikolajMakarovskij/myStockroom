@@ -2,12 +2,14 @@
 
 {% block content %}
 {% load static %}
-<div class="col-sm-12 table-responsive-xxl"> 
-  <caption>
-    <h1 style="text-align:center" >Список ПО</h1>
-  </caption>
-  
   {% if software_list %}
+  <div class="table-responsive"> 
+    <caption>
+      <h1 style="text-align:center">{{title}}</h1>
+    </caption> 
+<!--search block-->
+    {%include 'search/search.html' %}
+<!--block content-->
   <table class="table align-middle table-hover" style="text-align:center">
     <thead>
       <tr>
@@ -23,7 +25,7 @@
   <tbody style="text-align:center">
     {% for software in software_list %}
     <tr>
-      <td>{{ software.Employee.name }}</td>
+      <td>{{ software.Employee.name }} {{ software.Employee.sername }} {{ software.Employee.family }}</td>
       <td>{{ software.workstation.Workplace.name }}</td>
       <td>
         <a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">
@@ -66,34 +68,6 @@
     </table>
     {% endif %}
 </div>
-  <div class="mtop">
-    {% block pagination %}
-    {% if is_paginated %}
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    {% if page_obj.has_previous %}
-                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-                    {% endif %}
-                </li>
-                {% for p in page_obj.paginator.page_range %}
-                {% if p == page_obj.number %}
-                <li class="page-item active" aria-current="page" style="background-color: black;">
-                    <a class="page-link" href="{{ request.path }}?page={{ p }}">{{ p }}</a>
-                </li>
-                {% else %}
-                  <li class="page-item" >
-                    <a class="page-link" href="{{ request.path }}?page={{ p }}">{{ p }}</a>
-                  </li>
-                {% endif %}
-                {% endfor %}
-                <li class="page-item">
-                    {% if page_obj.has_next %}
-                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Следующая</a>
-                    {% endif %}
-                </li>
-            </ul>
-    {% endif %}
-  {% endblock %}  
-  </div>
+<!--block pagination-->  
+{%include 'pagination/pagination.html' %}
 {% endblock %}

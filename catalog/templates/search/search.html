@@ -1,0 +1,11 @@
+{%load static%}
+<form class="row row-cols-lg-auto g-1 align-items-center" action="{% url searchlink %}" method="get">
+    <div class="col-lg-auto w-100">
+      <div class="input-group">
+        <input class="form-control form-control-lg bg-light bg-opacity-25"  type="text" placeholder="Поиск..." aria-label="Search" name="q">
+            <button class="btn btn-outline-secondary input-group-text" type="submit">
+                <img src="{% static 'images/search.svg' %}" class="iconTable"></a>
+            </button>
+        </div>
+    </div>
+</form>

@@ -4,6 +4,16 @@
 .vert{
     height: 100vh;
 }
+.form-control:focus{
+    border-color: #adb5bd !important;
+    box-shadow: 0 0 0 0.2rem #adb5bd !important;
+    outline: #adb5bd  !important;
+}
+.input:focus{
+    box-shadow: none;
+    border-color: none;
+    outline: lightgreen auto 5px ;
+}
 .navmenu{
     color: #ffffff;   
 }
@@ -12,7 +22,7 @@
 }
 .navmenu ul li a,
 .navmenu ul li a:hover{
-    color: #aaaaaa;
+    color:#adb5bd;
     list-style-type: none;
     text-decoration: none;
 }
@@ -20,7 +30,7 @@
 .nav-pills .nav-item:hover {
     background-color: rgba(128, 128, 128, 0.850) !important;
     border-color: rgba(128, 128, 128, 0.850) !important;
-    color: #ffffff;
+    color:#adb5bd;
 }
 .btn-primary,
 .btn-primary:visited{
