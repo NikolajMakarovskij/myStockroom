@@ -1,19 +1,5 @@
 from django.contrib import admin
-from .models import  *
-
-@admin.register(Building)
-class Building(admin.ModelAdmin):
-    model = Building
-    fields = [
-        'name'
-    ]
-
-@admin.register(Floor)
-class Floor(admin.ModelAdmin):
-    model = Floor
-    fields = [
-        ('name', 'Building')
-    ]
+from .models.models import  *
 
 @admin.register(Room)
 class Room(admin.ModelAdmin):
@@ -27,8 +13,7 @@ class Employee(admin.ModelAdmin):
     model = Employee
     fields = [        
         ('name', 'sername', 'family'),
-        ('post', 'departament'),
-        ('Workplace', 'employeeEmail')
+        ('post','Workplace','employeeEmail')
     ]
 
 @admin.register(Workplace)
@@ -36,7 +21,7 @@ class Workplace(admin.ModelAdmin):
     model = Workplace
     fields = [
         'name',
-        ('Room', 'Floor', 'Building')
+        ('Room', )
     ]
 
 @admin.register(departament)
@@ -58,26 +43,17 @@ class post(admin.ModelAdmin):
 @admin.register(workstation)
 class workstation(admin.ModelAdmin):
     model = workstation
-    fields = [
-        ('name', 'manufacturer'), 
-        ('Workplace', 'Employee'),
-        ('serial', 'serialImg'),
-        ('invent','inventImg'),
-        ('motherboard','monitor', 'OS'),
-        'CPU','GPU', 'RAM', 'SSD', 'HDD',
-        'DCPower', 'keyBoard', 'mouse',
-        ]
+    exclude = ['id']
 
 @admin.register(software)
 class software(admin.ModelAdmin):
     model = software
-    fields = [
-        ('name', 'manufacturer'),
-        'licenseKeyText',
-        'licenseKeyImg',
-        'licenseKeyFile', 
-        ('Employee', 'workstation'),
-    ]
+    exclude = ['id']
+
+@admin.register(manufacturer)
+class manufacturer(admin.ModelAdmin):
+    model = manufacturer
+    exclude = ['id']
 
 @admin.register(OS)
 class OS(admin.ModelAdmin):

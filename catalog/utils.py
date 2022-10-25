@@ -1,3 +1,8 @@
+from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
+from django.forms import widgets
+from django.conf import settings
+
 menu = [
     {'title':  "Главная страница", 'url_name': 'index'},
     {'title':  "Раб. места", 'url_name': 'workplace'},
@@ -6,6 +11,7 @@ menu = [
     {'title':  "Раб. станции", 'url_name': 'workstation'},
     {'title':  "Принтеры", 'url_name': 'printer'},
     {'title':  "ЭЦП", 'url_name': 'digital-signature'},
+    {'title':  "Кабинеты", 'url_name': 'room'},
     #{'title':  "Склад", 'url_name': '#'},
     #{'title':  "Контрагенты", 'url_name': '#'},
     #{'title':  "#", 'url_name': '#'},
@@ -23,7 +29,6 @@ printerMenu = [
     {'title':  "Информация о бумаге", 'anchor': '#paperInfo'},
     {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
     ]
-
 class DataMixin:
     paginate_by =  10
     def get_user_context(self, **kwargs):
@@ -32,3 +37,25 @@ class DataMixin:
         context['query'] = self.request.GET.get('q')
         
         return context
+# button add in form
+class WidgetCanAdd(widgets.Select):
+
+    def __init__(self, related_model, related_url=None, *args, **kw):
+
+        super(WidgetCanAdd, self).__init__(*args, **kw)
+
+        if not related_url:
+            rel_to = related_model
+            info = (rel_to._meta.app_label, rel_to._meta.object_name.lower())
+            related_url = 'admin:%s_%s_add' % info
+
+        # Be careful that here "reverse" is not allowed
+        self.related_url = related_url
+
+    def render(self, name, value, *args, **kwargs):
+        self.related_url = reverse_lazy(self.related_url)
+        output = [super(WidgetCanAdd, self).render(name, value, *args, **kwargs)]
+        output.append('<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> ' % \
+            (self.related_url, name))
+        output.append('<img src="%simages/plus-square-dotted.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
+        return mark_safe(''.join(output))

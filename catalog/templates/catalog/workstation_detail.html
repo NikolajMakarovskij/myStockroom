@@ -160,6 +160,20 @@
           </div>
         </div>
       {% endfor %}
+      {% for f in workstation.Employee.post.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
       {% for f in workstation.Workplace.get_all_fields %}
       <div class="col mt-3">
         <div class="card border-dark  h-100">
@@ -173,7 +187,21 @@
           </div>  
         </div>
       </div>
-    {% endfor %}    
+      {% endfor %}
+      {% for f in workstation.Workplace.Room.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+          </div>  
+        </div>
+      </div>
+      {% endfor %}    
       </div>
     </div>
   </div>

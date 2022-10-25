@@ -1,9 +1,11 @@
-from django.shortcuts import render
-from .models import *
+from ..forms import *
+from ..models.models import *
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from .utils import *
+from ..utils import *
+from .workplace_view import *
+from .employee_view import *
+from .software_view import *
 
 #Главная
 class indexView(generic.ListView):
@@ -16,42 +18,14 @@ class indexView(generic.ListView):
         context['menu'] = menu
         return context
 
-#Сотрудники 
-class EmployeeListView(DataMixin, generic.ListView):
-    model = Employee
-    template_name = 'employee_list.html' 
+#Производитель
+class manufacturerListView(DataMixin, generic.ListView):
+    model = manufacturer
+    template_name = 'catalog/manufacturer_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Список сотрудников", searchlink='employee')
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-    
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if not query :
-            query = '' 
-        object_list = Employee.objects.filter(
-                Q(name__icontains=query) | 
-                Q(sername__icontains=query) | 
-                Q(family__icontains=query) | 
-                Q(departament__name__icontains=query) |
-                Q(post__name__icontains=query) |  
-                Q(Workplace__name__icontains=query) |
-                Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Floor__name__icontains=query) |
-                Q(Workplace__Building__name__icontains=query) 
-        )
-        return object_list
-
-#Рабочие места
-class WorkplaceListView(DataMixin, generic.ListView):
-    model = Workplace
-    template_name = 'workplace_list.html'
-  
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace')
+        c_def = self.get_user_context(title="Список производителей", searchlink='manufacturer',add='new-manufacturer',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -59,13 +33,51 @@ class WorkplaceListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = Workplace.objects.filter(
+        object_list = manufacturer.objects.filter(
                 Q(name__icontains=query) |
-                Q(Room__name__icontains=query) |
-                Q(Floor__name__icontains=query) |
-                Q(Building__name__icontains=query) 
+                Q(country__icontains=query) |
+                Q(production__icontains=query) 
         )
         return object_list
+
+class manufacturerDetailView(DataMixin, generic.DetailView):
+    model = manufacturer
+    template_name = 'catalog/manufacturer_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Производитель",add='new-manufacturer',update='manufacturer-update',delete='manufacturer-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class manufacturerCreate(DataMixin, CreateView):
+    model = manufacturer
+    form_class = manufacturerForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить производителя",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class manufacturerUpdate(DataMixin, UpdateView):
+    model = manufacturer
+    template_name = 'Forms/add.html'
+    form_class = manufacturerForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать производителя",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class manufacturerDelete(DataMixin, DeleteView):
+    model = manufacturer
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('manufacturer')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить производителя",selflink='manufacturer')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
 
 #Рабочие станции
 class workstationListView(DataMixin, generic.ListView):
@@ -89,12 +101,12 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(Employee__sername__icontains=query) | 
                 Q(Employee__family__icontains=query) |
                 Q(Employee__post__name__icontains=query) |  
-                Q(Employee__departament__name__icontains=query) | 
+                Q(Employee__post__departament__name__icontains=query) | 
                 Q(OS__name__icontains=query) |   
                 Q(Workplace__name__icontains=query) |
                 Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Floor__name__icontains=query) |
-                Q(Workplace__Building__name__icontains=query) 
+                Q(Workplace__Room__Floor__icontains=query) |
+                Q(Workplace__Room__Building__icontains=query) 
         )
         return object_list
 
@@ -107,38 +119,6 @@ class workstationDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = workstationMenu
         return context
-
-#СОФТ
-class softwareListView(DataMixin, generic.ListView):
-    model = software
-    template_name = 'software_list.html'
-    
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Список ПО", searchlink='software')
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if not query :
-            query = '' 
-        object_list = software.objects.filter(
-                Q(name__icontains=query) | 
-                Q(manufacturer__icontains=query) | 
-                Q(Employee__name__icontains=query) |
-                Q(Employee__sername__icontains=query) | 
-                Q(Employee__family__icontains=query) |
-                Q(Employee__post__name__icontains=query) |  
-                Q(Employee__departament__name__icontains=query) | 
-                Q(workstation__name__icontains=query) |
-                Q(workstation__OS__name__icontains=query) |   
-                Q(workstation__Workplace__name__icontains=query) |
-                Q(workstation__Workplace__Room__name__icontains=query) |
-                Q(workstation__Workplace__Floor__name__icontains=query) |
-                Q(workstation__Workplace__Building__name__icontains=query) 
-        )
-        return object_list
 
 #Принтеры
 class printerListView(DataMixin, generic.ListView):
@@ -159,29 +139,15 @@ class printerListView(DataMixin, generic.ListView):
                 Q(name__icontains=query) | 
                 Q(manufactured__icontains=query) |
                 Q(cartridge__name__icontains=query) |
-                Q(paper__name__icontains=query) | 
-                Q(Employee__name__icontains=query) |
-                Q(Employee__sername__icontains=query) | 
-                Q(Employee__family__icontains=query) |
-                Q(Employee__post__name__icontains=query) |  
-                Q(Employee__departament__name__icontains=query) | 
                 Q(workstation__name__icontains=query) |
                 Q(workstation__OS__name__icontains=query) |   
                 Q(Workplace__name__icontains=query) |
                 Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Floor__name__icontains=query) |
-                Q(Workplace__Building__name__icontains=query) 
+                Q(Workplace__Room__Floor__icontains=query) |
+                Q(Workplace__Room__Building__icontains=query) 
         )
         return object_list
 
-def printer_list(request):
-    return render(
-        request,
-        'printer_list.html',
-        context={
-            'printer_list.html':printer_list,
-        }
-    )
 
 class printerDetailView(DataMixin, generic.DetailView):
     model = printer
@@ -214,13 +180,13 @@ class digitalSignatureListView(DataMixin, generic.ListView):
                 Q(Employee__sername__icontains=query) | 
                 Q(Employee__family__icontains=query) |
                 Q(Employee__post__name__icontains=query) |  
-                Q(Employee__departament__name__icontains=query) | 
+                Q(Employee__post__departament__name__icontains=query) | 
                 Q(workstation__name__icontains=query) |
                 Q(workstation__OS__name__icontains=query) |   
                 Q(Workplace__name__icontains=query) |
                 Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Floor__name__icontains=query) |
-                Q(Workplace__Building__name__icontains=query) 
+                Q(Workplace__Room__Floor__icontains=query) |
+                Q(Workplace__Room__Building__icontains=query) 
         )
         return object_list
 

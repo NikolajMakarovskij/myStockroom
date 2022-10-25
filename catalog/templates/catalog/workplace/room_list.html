@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<div class="table-responsive"> 
+    <caption>
+      <h1 style="text-align:center" >{{title}}</h1>
+    </caption> 
+    {% if room_list %}
+<!--search block-->
+    {%include 'search/search.html' %}
+<!--block content-->
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Кабинет</th>
+          <th scope="col">Этаж</th>
+          <th scope="col">Здание</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for Room in room_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ Room.get_absolute_url }}">{{ Room.name }}</a></td>
+        <td>{{ Room.Floor }}</td>
+        <td>{{ Room.Building }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Сотрудники не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}
+ 

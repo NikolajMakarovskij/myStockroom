@@ -1,391 +1,39 @@
-from datetime import date
 import datetime
+from tabnanny import verbose
 from django.db import models
 from .models import *
+from .employee_model import *
+from .workplace_model import *
+from .software_model import *
 from django.urls import reverse
 import uuid 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
-class Building(models.Model):
+class manufacturer (models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         help_text="ID"
         )
     name = models.CharField(
-        'Building',
-        max_length=200
-        )
-
-    def __str__(self):
-        """
-        String for representing the Model object (in Admin site etc.)
-        """
-        return self.name
-    class Meta:
-        verbose_name_plural = 'Здание'
-
-class Floor(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=15,
-        help_text="Введите номер этажа"
-        )
-    Building = models.ForeignKey(
-        'Building',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name_plural = 'Этаж'
-
-
-class Room(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=15,
-        help_text="Введите номер кабинета"
-        )
-    Building = models.ForeignKey(
-        'Building',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-    Floor = models.ForeignKey(
-        'Floor',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-
-    def __str__(self):
-        return self.name
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'status', 'workshop', 'user', 'complete') :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Рабочее место'
-        ordering = ["name","Room"]
-    class Meta:
-        verbose_name_plural = 'Кабинет'
-        ordering = ["Building", "Floor", "name"]
-
-class Employee(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите имя сотрудника",
-        verbose_name="Имя сотрудника"
-        )
-    sername = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите отчество сотрудника",
-        verbose_name="Отчество сотрудника"
-        )
-    family = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите фамилию сотрудника",
-        verbose_name="Фамилию сотрудника"
-        )
-    Workplace = models.ForeignKey(
-        'Workplace',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-    post = models.ForeignKey(
-        'Post',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name="Должность"
-        )
-    departament= models.ForeignKey(
-        'Departament',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name="Отдел"
-        )
-    employeeEmail = models.EmailField(
-        null=True, blank=True
-        )
-
-    def __str__(self):
-        return self.name
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'Workplace') :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Сотрудник'
-        ordering = ["name", "-Workplace"]
-
-class Workplace(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите номер рабочего места",
-        verbose_name="Рабочее место"
-        )
-    Room = models.ForeignKey(
-        'Room',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name="Номер кабинета"
-        )
-    Floor = models.ForeignKey(
-        'Floor',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name="Этаж"
-        )
-    Building = models.ForeignKey(
-        'Building',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name="Здание"    
-    )
-    
-
-    def __str__(self):
-        return self.name
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id') :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Рабочее место'
-        ordering = ["-Building", "-Floor", "Room", ]
-
-class departament(models.Model):
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название отдела"
-        )
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name_plural = 'Отдел'
-
-class post(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите должность"
-        )
-    departament = models.ForeignKey(
-        'departament',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name_plural = 'Должность'
-
-class software (models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="ВВедите название ПО"
-        )
-    Employee = models.ForeignKey(
-        'Employee',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-    manufacturer = models.CharField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Описание производителя")
-    licenseKeyText = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите лицензтонный ключ")
-    licenseKeyImg = models.ImageField(
-        upload_to='soft/',
-        blank=True, null=True,
-        help_text="прикрепите файл")
-    licenseKeyFile = models.FileField(
-        upload_to='soft/',
-        blank=True, null=True,
-        help_text="прикрепите файл")
-    workstation = models.ForeignKey(
-        'workstation',
-        on_delete=models.SET_NULL,
-        blank=True, null=True
-        )
-
-
-    def __str__(self):
-        return self.name
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'licenseKeyImg', 'licenseKeyFile', 'licenseKeyText') :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'ПО'
-        ordering = [ "Employee", "name"]
-
-class OS (models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите Название ОС",
-        verbose_name="Название"
-        )
-    manufacturer = models.CharField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Описание производителя",
+        max_length=150,
+        help_text="Введите наименование производителя",
         verbose_name="Производитель"
-        )    
-    licenseKeyText = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите лицензтонный ключ",
         )
-    licenseKeyImg = models.ImageField(
-        upload_to='OS/',
-        blank=True, null=True,
-        help_text="прикрепите файл"
+    country = models.CharField(
+        max_length=150,
+        help_text="Введите название страны",
+        verbose_name="Страна"
         )
-    licenseKeyFile = models.FileField(
-        upload_to='soft/',
-        blank=True, null=True,
-        help_text="прикрепите файл"
+    production = models.CharField(
+        max_length=150,
+        help_text="Введите страну производства",
+        verbose_name="Страна производства"
         )
-
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('manufacturer-detail', args=[str(self.id)])
     def get_all_fields(self):
         """Returns a list of all field names on the instance."""
         fields = []
@@ -403,7 +51,7 @@ class OS (models.Model):
                     value = None
 
             # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'licenseKeyImg', 'licenseKeyFile', 'licenseKeyText') :
+            if f.editable and value and f.name not in ('id', ) :
 
                 fields.append(
                     {
@@ -414,7 +62,10 @@ class OS (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'ОС'
+        verbose_name_plural = 'Производитель'
+        ordering = [ "name", ]
+
+
 
 class workstation(models.Model):
     id = models.UUIDField(

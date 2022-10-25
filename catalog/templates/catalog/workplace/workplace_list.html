@@ -10,6 +10,7 @@
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
+
       <table class="table align-middle table-hover" style="text-align:center">
         <thead>
           <tr>
@@ -22,10 +23,10 @@
       <tbody style="text-align:center">
         {% for Workplace in workplace_list %}
         <tr>
-          <td>{{ Workplace.name }}</td>
-          <td>{{ Workplace.Room.name }}</td>
-          <td>{{ Workplace.Room.Floor.name }}</td>
-          <td>{{ Workplace.Room.Floor.Building.name }}</td>
+          <td><a class="noDecoration" href="{{ Workplace.get_absolute_url }}">{{ Workplace.name }}</a></td>
+          <td><a class="noDecoration" href="{{ Workplace.Room.get_absolute_url }}">{{ Workplace.Room.name }}</a></td>
+          <td>{{ Workplace.Room.Floor }}</td>
+          <td>{{ Workplace.Room.Building }}</td>
         </tr>
         {% endfor %}
       </tbody>

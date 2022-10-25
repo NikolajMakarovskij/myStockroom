@@ -97,8 +97,8 @@
     display: flex;
     position: relative;
     margin: 50px 20px 20px 20px;
-    width: 200px !important;
-    height: 200px !important;
+    width: 200px;
+    height: 200px;
     border: solid;
     border-radius: 5px;
     box-shadow: 5px 10px 20px rgba(0,0,0,0.3), -5px -10px 20px rgba(255,255,255,0.5);   

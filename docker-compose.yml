@@ -12,6 +12,7 @@ services:
   web:
     build: ./
     command: gunicorn locallibrary.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
+    restart: always
     volumes:
       - ./:/myBase
       - ./static:/home/mybase/web/static
@@ -26,6 +27,7 @@ services:
       - POSTGRES_PASSWORD=zx23SA21 
   db:
     image: postgres:14
+    restart: always
     volumes:
       - ./database:/var/lib/postgresql/data
     environment:
@@ -34,6 +36,7 @@ services:
       - POSTGRES_DB=buildAndTech
   nginx:
     build: ./nginx
+    restart: always
     volumes:
       #- ./:/home/mybase
       - ./static:/home/mybase/web/static

@@ -25,13 +25,13 @@
     <tbody style="text-align:center">
       {% for Employee in employee_list %}
       <tr>
-        <td>{{ Employee.name }} {{ Employee.sername }} {{ Employee.family }}</td>
-        <td>{{ Employee.Workplace.name }}</td>
-        <td>{{ Employee.post.name }}</td>
-        <td>{{ Employee.departament.name }}</td>
-        <td>{{ Employee.Workplace.Room.name }}</td>
-        <td>{{ Employee.Workplace.Room.Floor.name }}</td>
-        <td>{{ Employee.Workplace.Room.Floor.Building.name }}</td>
+        <td><a class="noDecoration" href="{{ Employee.get_absolute_url }}">{{ Employee.name }} {{ Employee.sername }} {{ Employee.family }}</a></td>
+        <td><a class="noDecoration" href="{{ Employee.Workplace.get_absolute_url }}">{{ Employee.Workplace.name }}</a></td>
+        <td><a class="noDecoration" href="{{ Employee.post.get_absolute_url }}">{{ Employee.post.name }}</a></td>
+        <td><a class="noDecoration" href="{{ Employee.post.departament.get_absolute_url }}">{{ Employee.post.departament.name }}</a></td>
+        <td><a class="noDecoration" href="{{ Employee.Workplace.Room.get_absolute_url }}">{{ Employee.Workplace.Room.name }}</a></td>
+        <td>{{ Employee.Workplace.Room.Floor }}</td>
+        <td>{{ Employee.Workplace.Room.Building }}</td>
       </tr>
       {% endfor %}
     </tbody>

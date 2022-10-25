@@ -13,34 +13,36 @@
   <table class="table align-middle table-hover" style="text-align:center">
     <thead>
       <tr>
-        <th scope="col">Сотрудник</th>
-        <th scope="col">Раб. место</th>
+        <th scope="col">ПО</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Версия</th>
+        <th scope="col">Разрядность</th>
         <th scope="col">Раб. станция</th>
         <th scope="col">ОС</th>
-        <th scope="col">ПО</th>
+        <th scope="col">Раб. место</th>
+        <th scope="col">Кабинет</th> 
         <th scope="col">Лицензионный ключ</th>
-        <th scope="col">фото</th>
+        <th scope="col">Лицензионный ключ</th>
+        <th scope="col">Лицензионный ключ</th>
       </tr>
     </thead>
   <tbody style="text-align:center">
     {% for software in software_list %}
     <tr>
-      <td>{{ software.Employee.name }} {{ software.Employee.sername }} {{ software.Employee.family }}</td>
-      <td>{{ software.workstation.Workplace.name }}</td>
-      <td>
-        <a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">
-          {{ software.workstation.name }}
-        </a>
-      </td>
-      <td>{{ software.workstation.OS.name }}</td>
-      <td>{{ software.name }}</td>
+      <td><a class="noDecoration" href="{{ software.get_absolute_url }}">{{ software.name }}</a></td>
+      <td><a class="noDecoration" href="{{ software.manufacturer.get_absolute_url }}">{{ software.manufacturer.name }}</a></td>
+      <td>{{ software.version }}</td>
+      <td>{{ software.bitDepth }}</td>
+      <td><a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">{{ software.workstation.name }}</a></td>
+      <td><a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">{{ software.workstation.OS.name }}</a></td>
+      <td><a class="noDecoration" href="{{ software.workstation.Workplace.get_absolute_url }}">{{ software.workstation.Workplace.name }}</a></td>
+      <td><a class="noDecoration" href="{{ software.workstation.Workplace.Room.get_absolute_url }}">{{ software.workstation.Workplace.Room.name }}</a></td>
+      <td>{{software.licenseKeyText}}</td>
       <td>
         {% if software.licenseKeyFile %}
           <a class="noDecoration" href="{{ software.licenseKeyFile.url }}">
             <img src="{% static 'images/filetype-key.svg' %}" class="iconTable">
           </a>
-        {% elif software.licenseKeyText%}
-          {{software.licenseKeyText}}
         {% else %}
           <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
         {% endif %}
