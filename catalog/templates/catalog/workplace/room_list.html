@@ -6,10 +6,10 @@
     <caption>
       <h1 style="text-align:center" >{{title}}</h1>
     </caption> 
-    {% if room_list %}
 <!--search block-->
     {%include 'search/search.html' %}
 <!--block content-->
+{% if room_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
@@ -19,11 +19,11 @@
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for Room in room_list %}
+      {% for room in room_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ Room.get_absolute_url }}">{{ Room.name }}</a></td>
-        <td>{{ Room.Floor }}</td>
-        <td>{{ Room.Building }}</td>
+        <td><a class="noDecoration" href="{{ room.get_absolute_url }}">{{ room.name }}</a></td>
+        <td>{{ room.floor }}</td>
+        <td>{{ room.building }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -32,7 +32,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Сотрудники не обнаружены</th>
+          <th scope="col" style="font-size: 32px;">Кабинеты не обнаружены</th>
         </tr>
       </thead>
     </table>

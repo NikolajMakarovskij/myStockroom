@@ -4,7 +4,7 @@ from .models import *
 from django.urls import reverse
 import uuid 
 
-class Room(models.Model):
+class room(models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -16,13 +16,13 @@ class Room(models.Model):
         help_text="Введите номер кабинета",
         verbose_name="Кабинет",
         )
-    Building = models.CharField(
+    building = models.CharField(
         max_length=25,
         blank=True,
         help_text="Введите название здания",
         verbose_name="Здание",
         )
-    Floor = models.CharField(
+    floor = models.CharField(
         max_length=25,
         blank=True,
         help_text="Введите номер этажа",
@@ -62,9 +62,9 @@ class Room(models.Model):
         return fields
     class Meta:
         verbose_name_plural = 'Кабинет'
-        ordering = ["Building", "Floor", "name"]
+        ordering = ["name"]
 
-class Workplace(models.Model):
+class workplace(models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -76,7 +76,7 @@ class Workplace(models.Model):
         help_text="Введите номер рабочего места",
         verbose_name="Рабочее место"
         )
-    Room = models.ForeignKey(
+    room = models.ForeignKey(
         'Room',
         on_delete=models.SET_NULL,
         blank=True, null=True,
@@ -105,7 +105,7 @@ class Workplace(models.Model):
                     value = None
 
             # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'Room') :
+            if f.editable and value and f.name not in ('id', 'room') :
 
                 fields.append(
                     {
@@ -117,4 +117,4 @@ class Workplace(models.Model):
         return fields
     class Meta:
         verbose_name_plural = 'Рабочее место'
-        ordering = ["Room", ]
+        ordering = ["room", ]

@@ -8,7 +8,7 @@ class RoomListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_rooms = 149
         for room_num in range(number_of_rooms):
-            Room.objects.create(name='Christian %s' % room_num,)
+            room.objects.create(name='Christian %s' % room_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/catalog/room/')
@@ -44,7 +44,7 @@ class WorkplaceListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_workplaces = 149
         for Workplace_num in range(number_of_workplaces):
-            Workplace.objects.create(name='Christian %s' % Workplace_num,)
+            workplace.objects.create(name='Christian %s' % Workplace_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/catalog/workplace/')
@@ -80,7 +80,7 @@ class EmployeeListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_employees = 149
         for employee_num in range(number_of_employees):
-            Employee.objects.create(name='Christian %s' % employee_num,)
+            employee.objects.create(name='Christian %s' % employee_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/catalog/employee/')
@@ -109,42 +109,6 @@ class EmployeeListViewTest(TestCase):
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['employee_list']) == 9)
-
-class workstationViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        number_of_workstation = 149
-        for workstation_num in range(number_of_workstation):
-            workstation.objects.create(name='Christian %s' % workstation_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        resp = self.client.get('/catalog/workstation/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('workstation'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('workstation'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'catalog/workstation_list.html')
-
-    def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('workstation'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['workstation_list']) == 10)
-
-    def test_lists_all_workstation(self):
-        resp = self.client.get(reverse('workstation')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['workstation_list']) == 9)
 
 class printerViewTest(TestCase):
 
@@ -309,8 +273,7 @@ class softwareViewTest(TestCase):
     def test_view_uses_correct_template(self):
         resp = self.client.get(reverse('software'))
         self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'catalog/software_list.html')
+        self.assertTemplateUsed(resp, 'catalog/software/software_list.html')
 
     def test_pagination_is_ten(self):
         resp = self.client.get(reverse('software'))
@@ -361,3 +324,147 @@ class manufacturerViewTest(TestCase):
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['manufacturer_list']) == 9)
+
+class OSViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_OS = 149
+        for OS_num in range(number_of_OS):
+            os.objects.create(name='Christian %s' % OS_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/OS/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('OS'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('OS'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/software/OS_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('OS'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['os_list']) == 10)
+
+    def test_lists_all_OS(self):
+        resp = self.client.get(reverse('OS')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['os_list']) == 9)
+
+class workstationViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_workstation = 149
+        for workstation_num in range(number_of_workstation):
+            workstation.objects.create(name='Christian %s' % workstation_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/workstation/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('workstation'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('workstation'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/workstation_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('workstation'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['workstation_list']) == 10)
+
+    def test_lists_all_workstation(self):
+        resp = self.client.get(reverse('workstation')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['workstation_list']) == 9)
+
+class monitorViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_monitor = 149
+        for monitor_num in range(number_of_monitor):
+            monitor.objects.create(name='Christian %s' % monitor_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/monitor/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('monitor'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('monitor'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/monitor_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('monitor'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['monitor_list']) == 10)
+
+    def test_lists_all_workstation(self):
+        resp = self.client.get(reverse('monitor')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['monitor_list']) == 9)
+
+class motherboardViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_motherboard = 149
+        for motherboard_num in range(number_of_motherboard):
+            motherboard.objects.create(name='Christian %s' % motherboard_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/motherboard/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('motherboard'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('motherboard'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/motherboard_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('motherboard'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['motherboard_list']) == 10)
+
+    def test_lists_all_workstation(self):
+        resp = self.client.get(reverse('motherboard')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['motherboard_list']) == 9)

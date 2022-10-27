@@ -6,10 +6,10 @@
     <caption>
       <h1 style="text-align:center" >{{title}}</h1>
     </caption> 
-    {% if manufacturer_list %}
 <!--search block-->
     {%include 'search/search.html' %}
 <!--block content-->
+{% if manufacturer_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>

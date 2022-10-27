@@ -111,7 +111,7 @@
   </div>
   <div class="collapse" id="workplaceInfoContent">
     <div class="row row-cols-3 row-cols-md-3 mt-3">
-      {% for f in software.workstation.Workplace.get_all_fields %}
+      {% for f in software.workstation.workplace.get_all_fields %}
         <div class="col mt-3 ">
           <div class="card border-dark  h-100">
             <div class="card-header">
@@ -127,7 +127,7 @@
           </div>
         </div>
       {% endfor %}
-      {% for f in software.workstation.Workplace.Room.get_all_fields %}
+      {% for f in software.workstation.workplace.room.get_all_fields %}
       <div class="col mt-3 ">
         <div class="card border-dark  h-100">
           <div class="card-header">

@@ -3,13 +3,13 @@
 {% block content %}
 {% load static %}
 <div class="table-responsive"> 
-    <caption>
-      <h1 style="text-align:center" >{{title}}</h1>
-    </caption> 
-    {% if employee_list %}
+  <caption>
+    <h1 style="text-align:center" >{{title}}</h1>
+  </caption> 
 <!--search block-->
     {%include 'search/search.html' %}
 <!--block content-->
+  {% if employee_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
@@ -22,20 +22,20 @@
           <th scope="col">Здание</th>
         </tr>
       </thead>
-    <tbody style="text-align:center">
-      {% for Employee in employee_list %}
-      <tr>
-        <td><a class="noDecoration" href="{{ Employee.get_absolute_url }}">{{ Employee.name }} {{ Employee.sername }} {{ Employee.family }}</a></td>
-        <td><a class="noDecoration" href="{{ Employee.Workplace.get_absolute_url }}">{{ Employee.Workplace.name }}</a></td>
-        <td><a class="noDecoration" href="{{ Employee.post.get_absolute_url }}">{{ Employee.post.name }}</a></td>
-        <td><a class="noDecoration" href="{{ Employee.post.departament.get_absolute_url }}">{{ Employee.post.departament.name }}</a></td>
-        <td><a class="noDecoration" href="{{ Employee.Workplace.Room.get_absolute_url }}">{{ Employee.Workplace.Room.name }}</a></td>
-        <td>{{ Employee.Workplace.Room.Floor }}</td>
-        <td>{{ Employee.Workplace.Room.Building }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <tbody style="text-align:center">
+        {% for employee in employee_list %}
+        <tr>
+          <td><a class="noDecoration" href="{{ employee.get_absolute_url }}">{{ employee.name }} {{ employee.sername }} {{ employee.family }}</a></td>
+          <td><a class="noDecoration" href="{{ employee.workplace.get_absolute_url }}">{{ employee.workplace.name }}</a></td>
+          <td><a class="noDecoration" href="{{ employee.post.get_absolute_url }}">{{ employee.post.name }}</a></td>
+          <td><a class="noDecoration" href="{{ employee.post.departament.get_absolute_url }}">{{ employee.post.departament.name }}</a></td>
+          <td><a class="noDecoration" href="{{ employee.workplace.room.get_absolute_url }}">{{ employee.workplace.room.name }}</a></td>
+          <td>{{ employee.workplace.room.floor }}</td>
+          <td>{{ employee.workplace.room.building }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% else %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 

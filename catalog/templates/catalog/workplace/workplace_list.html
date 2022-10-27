@@ -2,7 +2,6 @@
 
 {% block content %}
   {% load static %}
-    {% if workplace_list %}
     <div class="table-responsive"> 
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
@@ -10,7 +9,7 @@
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
-
+{% if workplace_list %}
       <table class="table align-middle table-hover" style="text-align:center">
         <thead>
           <tr>
@@ -21,12 +20,12 @@
           </tr>
         </thead>
       <tbody style="text-align:center">
-        {% for Workplace in workplace_list %}
+        {% for workplace in workplace_list %}
         <tr>
-          <td><a class="noDecoration" href="{{ Workplace.get_absolute_url }}">{{ Workplace.name }}</a></td>
-          <td><a class="noDecoration" href="{{ Workplace.Room.get_absolute_url }}">{{ Workplace.Room.name }}</a></td>
-          <td>{{ Workplace.Room.Floor }}</td>
-          <td>{{ Workplace.Room.Building }}</td>
+          <td><a class="noDecoration" href="{{ workplace.get_absolute_url }}">{{ workplace.name }}</a></td>
+          <td><a class="noDecoration" href="{{ workplace.room.get_absolute_url }}">{{ workplace.room.name }}</a></td>
+          <td>{{ workplace.room.floor }}</td>
+          <td>{{ workplace.room.building }}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from ..forms import employeeForm, postForm, departamentForm
-from ..models.models import Employee, post, departament
+from ..models.models import employee, post, departament
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
@@ -8,7 +8,7 @@ from ..utils import DataMixin
 
 #Сотрудники 
 class EmployeeListView(DataMixin, generic.ListView):
-    model = Employee
+    model = employee
     template_name = 'catalog/employee/employee_list.html' 
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -21,21 +21,21 @@ class EmployeeListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = Employee.objects.filter(
+        object_list = employee.objects.filter(
                 Q(name__icontains=query) | 
                 Q(sername__icontains=query) | 
                 Q(family__icontains=query) | 
                 Q(post__departament__name__icontains=query) |
                 Q(post__name__icontains=query) |  
-                Q(Workplace__name__icontains=query) |
-                Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Room__Floor__icontains=query) |
-                Q(Workplace__Room__Building__icontains=query) 
+                Q(workplace__name__icontains=query) |
+                Q(workplace__room__name__icontains=query) |
+                Q(workplace__room__floor__icontains=query) |
+                Q(workplace__room__building__icontains=query) 
         )
         return object_list
 
 class EmployeeDetailView(DataMixin, generic.DetailView):
-    model = Employee
+    model = employee
     template_name = 'catalog/employee/employee_detail.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,7 +44,7 @@ class EmployeeDetailView(DataMixin, generic.DetailView):
         return context
 
 class EmployeeCreate(DataMixin, CreateView):
-    model = Employee
+    model = employee
     form_class = employeeForm
     template_name = 'Forms/add.html'
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -54,7 +54,7 @@ class EmployeeCreate(DataMixin, CreateView):
         return context
 
 class EmployeeUpdate(DataMixin, UpdateView):
-    model = Employee
+    model = employee
     template_name = 'Forms/add.html'
     form_class = employeeForm
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -64,7 +64,7 @@ class EmployeeUpdate(DataMixin, UpdateView):
         return context
 
 class EmployeeDelete(DataMixin, DeleteView):
-    model = Employee
+    model = employee
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee')
     def get_context_data(self, *, object_list=None, **kwargs):

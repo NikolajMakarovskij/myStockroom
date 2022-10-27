@@ -1,44 +1,30 @@
 from django.contrib import admin
 from .models.models import  *
 
-@admin.register(Room)
+@admin.register(room)
 class Room(admin.ModelAdmin):
-    model = Room
-    fields = [
-        ('name', 'Floor', 'Building')
-    ]
+    model = room
+    exclude = ['id']
 
-@admin.register(Employee)
+@admin.register(employee)
 class Employee(admin.ModelAdmin):
-    model = Employee
-    fields = [        
-        ('name', 'sername', 'family'),
-        ('post','Workplace','employeeEmail')
-    ]
+    model = employee
+    exclude = ['id']
 
-@admin.register(Workplace)
+@admin.register(workplace)
 class Workplace(admin.ModelAdmin):
-    model = Workplace
-    fields = [
-        'name',
-        ('Room', )
-    ]
+    model = workplace
+    exclude = ['id']
 
 @admin.register(departament)
 class departament(admin.ModelAdmin):
     model = departament
-    fields = [
-        ('name')
-    ]
+    exclude = ['id']
 
 @admin.register(post)
 class post(admin.ModelAdmin):
     model = post
-    fields = [
-        ('name', 'departament')
-    ]
-
-
+    exclude = ['id']
 
 @admin.register(workstation)
 class workstation(admin.ModelAdmin):
@@ -55,72 +41,39 @@ class manufacturer(admin.ModelAdmin):
     model = manufacturer
     exclude = ['id']
 
-@admin.register(OS)
+@admin.register(os)
 class OS(admin.ModelAdmin):
-    model = OS
-    fields = [
-        ('name', 'manufacturer'),
-        ('licenseKeyText', 'licenseKeyImg', 'licenseKeyFile' )
-    ]
+    model = os
+    exclude = ['id']
 
 @admin.register(monitor)
 class monitor(admin.ModelAdmin):
     model = monitor
-    fields = [
-        ('name','manufacturer'),
-        ('serial','serialImg'),
-        ('invent','inventImg'),
-
-    ]
+    exclude = ['id']
 
 @admin.register(motherboard)
 class motherboard(admin.ModelAdmin):
     model = motherboard
-    fields = [
-        ('name','manufacturer'),
-        ('serial','serialImg'),
-        'CPUSoket', 'RAMSlot', 'USBPort',
-        'COMPort', 'PCI_E', 'PCI', 'VGA',
-        'SATA', 'HDMI', 'DispayPort',
-        'powerSupply', 'powerSupplyCPU',
-    ]
+    exclude = ['id']
 
 @admin.register(printer)
 class printer(admin.ModelAdmin):
     model = printer
-    fields = [
-        ('name','manufactured'),
-        ('serial','serialImg'),
-        ('invent', 'inventImg'),
-        ('cartridge', 'paper'),
-        'USBPort', 'LANPort',
-        'Employee', 'Workplace', 'workstation',
-    ]
+    exclude = ['id']
 
 @admin.register(cartridge)
 class cartridge(admin.ModelAdmin):
     model = cartridge
-    fields = [
-        ('name','manufactured'),
-        ('serial','serialImg'),
-        ('buhCode', 'score'),
-    ]
+    exclude = ['id']
 
 @admin.register(paper)
 class paper(admin.ModelAdmin):
     model = paper
-    fields = [
-        ('name','manufactured'),
-        ('paperFormat','score'),
-    ]
+    exclude = ['id']
 
 @admin.register(digitalSignature)
 class digitalSignature(admin.ModelAdmin):
     model = digitalSignature
-    fields = [
-        ('name','validityPeriod'),
-        ('licenseKeyText','licenseKeyImg', 'licenseKeyFile'),
-        ('Employee', 'Workplace', 'workstation'),
-    ]
+    exclude = ['id']
 
 

@@ -1,0 +1,83 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if workstation_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Сотрудник</th>
+          <th scope="col">Раб. станция</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Модель</th>
+          <th scope="col">Серийный номер</th>
+          <th scope="col">Фото серийного номера</th>
+          <th scope="col">Инвентарный номер</th>
+          <th scope="col">Фото инвентарного номера</th>
+          <th scope="col">Блок бесперебойного питания</th>
+          <th scope="col">ОС</th>
+          <th scope="col">Раб. место</th>
+          <th scope="col">Кабинет</th>
+          <th scope="col">Этаж</th>
+          <th scope="col">Здание</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for workstation in workstation_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ workstation.employee.get_absolute_url }}">{{ workstation.employee.name }} {{ workstation.employee.sername }} {{ workstation.employee.family }}</a></td>
+        <td><a class="noDecoration" href="{{ workstation.get_absolute_url }}">{{ workstation.name }}</a></td>
+        <td><a class="noDecoration" href="{{ workstation.manufacturer.get_absolute_url }}">{{ workstation.manufacturer.name }}</a></td>
+        <td>{{ workstation.modelComputer }}</td>
+        <td>{{ workstation.serial }}</td>
+        <td>
+          {% if workstation.serialImg %}
+            <a href="{{ workstation.serialImg.url }}">
+              <img src="{{ workstation.serialImg.url }}">
+            </a>
+          {% else %}
+            <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ workstation.invent }}</td>
+        <td>
+          {% if workstation.inventImg %}
+            <a href="{{ workstation.inventImg.url }}">
+              <img src="{{ workstation.inventImg.url }}">
+            </a>
+          {% else %}
+            <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ workstation.ups }}</td>
+        <td><a class="noDecoration" href="{{ workstation.os.get_absolute_url }}">{{ workstation.os.name }}</a></td>
+        <td><a class="noDecoration" href="{{ workstation.workplace.get_absolute_url }}">{{ workstation.workplace.name }}</a></td>
+        <td><a class="noDecoration" href="{{ workstation.workplace.room.get_absolute_url }}">{{ workstation.workplace.room.name }}</a></td>
+        <td>{{ workstation.workplace.room.floor }}</td>
+        <td>{{ workstation.workplace.room.building }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Рабочие станции не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

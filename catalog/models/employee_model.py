@@ -1,9 +1,8 @@
 from django.db import models
-from .models import *
 from django.urls import reverse
 import uuid 
 
-class Employee(models.Model):
+class employee(models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -27,7 +26,7 @@ class Employee(models.Model):
         help_text="Введите фамилию сотрудника",
         verbose_name="Фамилия сотрудника"
         )
-    Workplace = models.ForeignKey(
+    workplace = models.ForeignKey(
         'Workplace',
         on_delete=models.SET_NULL,
         blank=True, null=True,
@@ -80,9 +79,14 @@ class Employee(models.Model):
         return fields
     class Meta:
         verbose_name_plural = 'Сотрудник'
-        ordering = ["name", "-Workplace"]
+        ordering = ["name", "-workplace"]
 
 class departament(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
     name = models.CharField(
         max_length=50,
         help_text="Введите название отдела",

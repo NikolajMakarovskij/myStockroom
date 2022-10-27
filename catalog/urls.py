@@ -44,16 +44,36 @@ urlpatterns = [
     re_path(r'^software/(?P<pk>[-\w]+)/update$', views.softwareUpdate.as_view(), name='software-update'),
     re_path(r'^software/(?P<pk>[-\w]+)/delete$', views.softwareDelete.as_view(), name='software-delete'),
     #ОС
+    re_path(r'^OS/$', views.OSListView.as_view(), name='OS'),
+    re_path(r'^OS/(?P<pk>[-\w]+)$', views.OSDetailView.as_view(), name='OS-detail'),
+    path(r'^OS/create$', views.OSCreate.as_view(), name='new-OS'),
+    re_path(r'^OS/(?P<pk>[-\w]+)/update$', views.OSUpdate.as_view(), name='OS-update'),
+    re_path(r'^OS/(?P<pk>[-\w]+)/delete$', views.OSDelete.as_view(), name='OS-delete'),
     #рабочие станции
     re_path(r'^workstation/$', views.workstationListView.as_view(), name='workstation'), 
     re_path(r'^workstation/(?P<pk>[-\w]+)$', views.workstationDetailView.as_view(), name='workstation-detail'),
+    path(r'^workstation/create$', views.workstationCreate.as_view(), name='new-workstation'),
+    re_path(r'^workstation/(?P<pk>[-\w]+)/update$', views.workstationUpdate.as_view(), name='workstation-update'),
+    re_path(r'^workstation/(?P<pk>[-\w]+)/delete$', views.workstationDelete.as_view(), name='workstation-delete'),
+    #Монитор
+    re_path(r'^monitor/$', views.monitorListView.as_view(), name='monitor'), 
+    re_path(r'^monitor/(?P<pk>[-\w]+)$', views.monitorDetailView.as_view(), name='monitor-detail'),
+    path(r'^monitor/create$', views.monitorCreate.as_view(), name='new-monitor'),
+    re_path(r'^monitor/(?P<pk>[-\w]+)/update$', views.monitorUpdate.as_view(), name='monitor-update'),
+    re_path(r'^monitor/(?P<pk>[-\w]+)/delete$', views.monitorDelete.as_view(), name='monitor-delete'),
+    #Материнская плата
+    re_path(r'^motherboard/$', views.motherboardListView.as_view(), name='motherboard'), 
+    re_path(r'^motherboard/(?P<pk>[-\w]+)$', views.motherboardDetailView.as_view(), name='motherboard-detail'),
+    path(r'^motherboard/create$', views.motherboardCreate.as_view(), name='new-motherboard'),
+    re_path(r'^motherboard/(?P<pk>[-\w]+)/update$', views.motherboardUpdate.as_view(), name='motherboard-update'),
+    re_path(r'^motherboard/(?P<pk>[-\w]+)/delete$', views.motherboardDelete.as_view(), name='motherboard-delete'),
+
     #принтеры
     re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),
     re_path(r'^printer/(?P<pk>[-\w]+)$', views.printerDetailView.as_view(), name='printer-detail'),
     #ЭЦП
     re_path(r'^digital_signature/$', views.digitalSignatureListView.as_view(), name='digital-signature'),
     #Производитель
-    
     re_path(r'^manufacturer/$', views.manufacturerListView.as_view(), name='manufacturer'),
     re_path(r'^manufacturer/(?P<pk>[-\w]+)$', views.manufacturerDetailView.as_view(), name='manufacturer-detail'),
     path(r'^manufacturer/create$', views.manufacturerCreate.as_view(), name='new-manufacturer'),

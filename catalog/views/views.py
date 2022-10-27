@@ -6,6 +6,7 @@ from ..utils import *
 from .workplace_view import *
 from .employee_view import *
 from .software_view import *
+from .workstation_view import *
 
 #Главная
 class indexView(generic.ListView):
@@ -79,46 +80,6 @@ class manufacturerDelete(DataMixin, DeleteView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-#Рабочие станции
-class workstationListView(DataMixin, generic.ListView):
-    model = workstation
-    template_name = 'workstation_list.html'
-    
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation',)
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if not query :
-            query = '' 
-        object_list = workstation.objects.filter(
-                Q(name__icontains=query) | 
-                Q(manufacturer__icontains=query) | 
-                Q(Employee__name__icontains=query) |
-                Q(Employee__sername__icontains=query) | 
-                Q(Employee__family__icontains=query) |
-                Q(Employee__post__name__icontains=query) |  
-                Q(Employee__post__departament__name__icontains=query) | 
-                Q(OS__name__icontains=query) |   
-                Q(Workplace__name__icontains=query) |
-                Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Room__Floor__icontains=query) |
-                Q(Workplace__Room__Building__icontains=query) 
-        )
-        return object_list
-
-class workstationDetailView(DataMixin, generic.DetailView):
-    model = workstation
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочая станция",)
-        context = dict(list(context.items()) + list(c_def.items()))
-        context['detailMenu'] = workstationMenu
-        return context
 
 #Принтеры
 class printerListView(DataMixin, generic.ListView):
@@ -140,11 +101,11 @@ class printerListView(DataMixin, generic.ListView):
                 Q(manufactured__icontains=query) |
                 Q(cartridge__name__icontains=query) |
                 Q(workstation__name__icontains=query) |
-                Q(workstation__OS__name__icontains=query) |   
-                Q(Workplace__name__icontains=query) |
-                Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Room__Floor__icontains=query) |
-                Q(Workplace__Room__Building__icontains=query) 
+                Q(workstation__os__name__icontains=query) |   
+                Q(workplace__name__icontains=query) |
+                Q(workplace__room__name__icontains=query) |
+                Q(workplace__room__floor__icontains=query) |
+                Q(workplace__room__building__icontains=query) 
         )
         return object_list
 
@@ -176,17 +137,17 @@ class digitalSignatureListView(DataMixin, generic.ListView):
         object_list = digitalSignature.objects.filter(
                 Q(name__icontains=query) | 
                 Q(validityPeriod__icontains=query) | 
-                Q(Employee__name__icontains=query) |
-                Q(Employee__sername__icontains=query) | 
-                Q(Employee__family__icontains=query) |
-                Q(Employee__post__name__icontains=query) |  
-                Q(Employee__post__departament__name__icontains=query) | 
+                Q(employee__name__icontains=query) |
+                Q(employee__sername__icontains=query) | 
+                Q(employee__family__icontains=query) |
+                Q(employee__post__name__icontains=query) |  
+                Q(employee__post__departament__name__icontains=query) | 
                 Q(workstation__name__icontains=query) |
-                Q(workstation__OS__name__icontains=query) |   
-                Q(Workplace__name__icontains=query) |
-                Q(Workplace__Room__name__icontains=query) |
-                Q(Workplace__Room__Floor__icontains=query) |
-                Q(Workplace__Room__Building__icontains=query) 
+                Q(workstation__os__name__icontains=query) |   
+                Q(workplace__name__icontains=query) |
+                Q(workplace__room__name__icontains=query) |
+                Q(workplace__room__floor__icontains=query) |
+                Q(workplace__room__building__icontains=query) 
         )
         return object_list
 

@@ -2,7 +2,6 @@
 
 {% block content %}
   {% load static %}
-  {% if printer_list %}
     <div class="table-responsive"> 
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
@@ -10,6 +9,7 @@
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
+{% if printer_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>

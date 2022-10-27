@@ -9,38 +9,30 @@
 <!--search block-->
     {%include 'search/search.html' %}
 <!--block content-->
-{% if software_list %}
+{% if os_list %}
   <table class="table align-middle table-hover" style="text-align:center">
     <thead>
       <tr>
-        <th scope="col">ПО</th>
+        <th scope="col">ОС</th>
         <th scope="col">Производитель</th>
         <th scope="col">Версия</th>
         <th scope="col">Разрядность</th>
-        <th scope="col">Раб. станция</th>
-        <th scope="col">ОС</th>
-        <th scope="col">Раб. место</th>
-        <th scope="col">Кабинет</th> 
         <th scope="col">Лицензионный ключ</th>
         <th scope="col">Лицензионный ключ</th>
         <th scope="col">Лицензионный ключ</th>
       </tr>
     </thead>
   <tbody style="text-align:center">
-    {% for software in software_list %}
+    {% for os in os_list %}
     <tr>
-      <td><a class="noDecoration" href="{{ software.get_absolute_url }}">{{ software.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.manufacturer.get_absolute_url }}">{{ software.manufacturer.name }}</a></td>
-      <td>{{ software.version }}</td>
-      <td>{{ software.bitDepth }}</td>
-      <td><a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">{{ software.workstation.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.os.get_absolute_url }}">{{ software.workstation.os.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.workplace.get_absolute_url }}">{{ software.workstation.workplace.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.workplace.room.get_absolute_url }}">{{ software.workstation.workplace.room.name }}</a></td>
-      <td>{{software.licenseKeyText}}</td>
+      <td><a class="noDecoration" href="{{ os.get_absolute_url }}">{{ os.name }}</a></td>
+      <td><a class="noDecoration" href="{{ os.manufacturer.get_absolute_url }}">{{ os.manufacturer.name }}</a></td>
+      <td>{{ os.version }}</td>
+      <td>{{ os.bitDepth }}</td>
+      <td>{{ os.licenseKeyText }}</td>
       <td>
-        {% if software.licenseKeyFile %}
-          <a class="noDecoration" href="{{ software.licenseKeyFile.url }}">
+        {% if os.licenseKeyFile %}
+          <a class="noDecoration" href="{{ os.licenseKeyFile.url }}">
             <img src="{% static 'images/filetype-key.svg' %}" class="iconTable">
           </a>
         {% else %}
@@ -48,9 +40,9 @@
         {% endif %}
       </td>
       <td>
-        {% if software.licenseKeyImg %}
-          <a href="{{ software.licenseKeyImg.url }}">
-            <img src="{{ software.licenseKeyImg.url }}">
+        {% if os.licenseKeyImg %}
+          <a href="{{ os.licenseKeyImg.url }}">
+            <img src="{{ os.licenseKeyImg.url }}">
           </a>
         {% else %}
           <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
