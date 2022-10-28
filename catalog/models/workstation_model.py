@@ -1,5 +1,3 @@
-import datetime
-from tabnanny import verbose
 from django.db import models
 from .models import *
 from .employee_model import *

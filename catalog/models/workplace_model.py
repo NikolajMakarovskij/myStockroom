@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 from .models import *
 from django.urls import reverse
@@ -105,7 +104,7 @@ class workplace(models.Model):
                     value = None
 
             # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'room') :
+            if f.editable and value and f.name not in ('id',) :
 
                 fields.append(
                     {

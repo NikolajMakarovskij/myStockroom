@@ -2,11 +2,14 @@ from ..forms import *
 from ..models.models import *
 from django.views import generic
 from django.db.models import Q
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..utils import *
 from .workplace_view import *
 from .employee_view import *
 from .software_view import *
 from .workstation_view import *
+from .printer_view import *
+from .signature import *
 
 #Главная
 class indexView(generic.ListView):
@@ -81,44 +84,6 @@ class manufacturerDelete(DataMixin, DeleteView):
         return context
 
 
-#Принтеры
-class printerListView(DataMixin, generic.ListView):
-    model = printer
-    template_name = 'printer_list.html'
-    
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Принтеры", searchlink='printer')
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if not query :
-            query = '' 
-        object_list = printer.objects.filter(
-                Q(name__icontains=query) | 
-                Q(manufactured__icontains=query) |
-                Q(cartridge__name__icontains=query) |
-                Q(workstation__name__icontains=query) |
-                Q(workstation__os__name__icontains=query) |   
-                Q(workplace__name__icontains=query) |
-                Q(workplace__room__name__icontains=query) |
-                Q(workplace__room__floor__icontains=query) |
-                Q(workplace__room__building__icontains=query) 
-        )
-        return object_list
-
-
-class printerDetailView(DataMixin, generic.DetailView):
-    model = printer
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Принтер",)
-        context = dict(list(context.items()) + list(c_def.items()))
-        context['detailMenu'] = printerMenu
-        return context
 
 
 class digitalSignatureListView(DataMixin, generic.ListView):
