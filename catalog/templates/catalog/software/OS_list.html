@@ -33,10 +33,10 @@
       <td>
         {% if os.licenseKeyFile %}
           <a class="noDecoration" href="{{ os.licenseKeyFile.url }}">
-            <img src="{% static 'images/filetype-key.svg' %}" class="iconTable">
+            <img src="{% static 'images/download.svg' %}" class="iconTable">
           </a>
         {% else %}
-          <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+          <img src="{% static 'images/no_file.svg' %}" class="iconTable">
         {% endif %}
       </td>
       <td>
@@ -45,7 +45,7 @@
             <img src="{{ os.licenseKeyImg.url }}">
           </a>
         {% else %}
-          <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+          <img src="{% static 'images/no_file.svg' %}" class="iconTable">
         {% endif %}
       </td>
     </tr>

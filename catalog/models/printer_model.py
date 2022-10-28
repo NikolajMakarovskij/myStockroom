@@ -1,6 +1,5 @@
 from django.db import models
-from .workplace_model import *
-from .workstation_model import *
+from .models import *
 from django.urls import reverse
 import uuid 
 

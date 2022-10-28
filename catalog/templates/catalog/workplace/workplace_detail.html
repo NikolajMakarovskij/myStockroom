@@ -27,9 +27,13 @@
               </h5>
             </div>
             <div class="card-body text-dark">
-              <h5 class="card-title">
-                {{f.value|escape|urlize|linebreaks}}
-              </h5>
+              {% if f.value.get_absolute_url %}
+              <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+                <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+              </a>
+              {% else %}
+                <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+              {% endif %}
             </div>  
           </div>
         </div>
@@ -43,9 +47,13 @@
             </h5>
           </div>
           <div class="card-body text-dark">
-            <h5 class="card-title">
-              {{f.value|escape|urlize|linebreaks}}
-            </h5>
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
           </div>  
         </div>
       </div>

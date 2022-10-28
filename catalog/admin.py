@@ -76,9 +76,14 @@ class toner(admin.ModelAdmin):
     model = toner
     exclude = ['id']
 
-@admin.register(digitalSignature)
-class digitalSignature(admin.ModelAdmin):
-    model = digitalSignature
+@admin.register(signature)
+class signature(admin.ModelAdmin):
+    model = signature
+    exclude = ['id']
+
+@admin.register(storage)
+class storage(admin.ModelAdmin):
+    model = storage
     exclude = ['id']
 
 

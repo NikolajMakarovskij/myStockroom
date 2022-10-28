@@ -1,15 +1,10 @@
 import datetime
 from django.db import models
-from .employee_model import *
-from .workplace_model import *
-from .software_model import *
-from .workstation_model import *
-from .printer_model import *
-from .signature import *
+from .models import *
 from django.urls import reverse
 import uuid 
 
-class digitalSignature (models.Model): #electronic digital signature
+class signature (models.Model): #electronic digital signature
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,
@@ -21,49 +16,62 @@ class digitalSignature (models.Model): #electronic digital signature
         help_text="Введите номер ключа",
         verbose_name="Ключ"
         )
-    licenseKeyText = models.CharField(
+    licenseKeyFileOpen = models.FileField(
+        upload_to='signature/Open/',
         blank=True, null=True,
-        max_length=50,
-        help_text="Введите лицензионный ключ",
+        help_text="Прикрепите файл",
+        verbose_name="Открытая часть лицензии"
         )
-    licenseKeyImg = models.ImageField(
-        upload_to='OS/',
+    licenseKeyFileClose = models.FileField(
+        upload_to='signature/Close/',
         blank=True, null=True,
-        help_text="прикрепите файл"
+        help_text="Прикрепите файл",
+        verbose_name="Закрытая часть лицензии"
         )
-    licenseKeyFile = models.FileField(
-        upload_to='soft/',
-        blank=True, null=True,
-        help_text="прикрепите файл"
+    periodOpen = models.DateField(
+        null=True, blank=True,
+        help_text="Укажите дату",
+        verbose_name="Срок действия открытой части"
         )
-    workplace = models.ForeignKey(
-        'Workplace',
+    periodClose = models.DateField(
+        null=True, blank=True,
+        help_text="Укажите дату",
+        verbose_name="Срок действия закрытой части"
+        )
+    employeeRegister = models.ForeignKey(
+        'employee',
         on_delete=models.SET_NULL,
         blank=True, null=True,
-        verbose_name="Рабочее место"
+        help_text="Укажите сотрудника",
+        verbose_name="Сотрудник на которого оформлена ЭЦП"
         )
-    employee = models.ForeignKey(
-        'Employee',
+    employeeStorage = models.ForeignKey(
+        'employee',
         on_delete=models.SET_NULL,
         blank=True, null=True,
-        verbose_name="Сотрудник"
+        related_name='+',
+        help_text="Укажите сотрудника",
+        verbose_name="Сотрудник у которого хранится ЭЦП"
         )
     workstation = models.ForeignKey(
         'workstation',
         on_delete=models.SET_NULL,
         blank=True, null=True,
+        help_text="Укажите рабочую станцию",
         verbose_name="Рабочая станция"
         )
-    validityPeriod = models.DateField(
-        null=True, blank=True
+    storage = models.ForeignKey(
+        'storage',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите накопитель",
+        verbose_name="накопитель"
         )
-
 
     def __str__(self):
         return self.name  
-
     def get_absolute_url(self):
-        return reverse('digitalsignature-detail', args=[str(self.id)])
+        return reverse('signature-detail', args=[str(self.id)])
     
     #@property
     #def dangerDay(self, request):
@@ -128,4 +136,4 @@ class digitalSignature (models.Model): #electronic digital signature
 
     class Meta:
         verbose_name_plural = 'ЭЦП'
-        ordering = [ "validityPeriod",]
+        ordering = [ "periodOpen","periodClose",]

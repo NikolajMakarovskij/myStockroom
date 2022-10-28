@@ -10,7 +10,7 @@ menu = [
     {'title':  "Софт", 'url_name': 'software'},
     {'title':  "Раб. станции", 'url_name': 'workstation'},
     {'title':  "Принтеры", 'url_name': 'printer'},
-    {'title':  "ЭЦП", 'url_name': 'digital-signature'},
+    {'title':  "ЭЦП", 'url_name': 'signature'},
     {'title':  "Кабинеты", 'url_name': 'room'},
     #{'title':  "Склад", 'url_name': '#'},
     #{'title':  "Контрагенты", 'url_name': '#'},
@@ -58,5 +58,5 @@ class WidgetCanAdd(widgets.Select):
         output = [super(WidgetCanAdd, self).render(name, value, *args, **kwargs)]
         output.append('<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> ' % \
             (self.related_url, name))
-        output.append('<img src="%simages/plus-square-dotted.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
+        output.append('<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
         return mark_safe(''.join(output))

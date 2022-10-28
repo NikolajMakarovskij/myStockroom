@@ -1,8 +1,5 @@
 from django.db import models
 from .models import *
-from .employee_model import *
-from .workplace_model import *
-from .software_model import *
 from django.urls import reverse
 import uuid 
 

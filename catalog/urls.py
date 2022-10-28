@@ -93,11 +93,21 @@ urlpatterns = [
     re_path(r'^toner/(?P<pk>[-\w]+)/update$', views.tonerUpdate.as_view(), name='toner-update'),
     re_path(r'^toner/(?P<pk>[-\w]+)/delete$', views.tonerDelete.as_view(), name='toner-delete'),
     #ЭЦП
-    re_path(r'^digital_signature/$', views.digitalSignatureListView.as_view(), name='digital-signature'),
+    re_path(r'^signature/$', views.signatureListView.as_view(), name='signature'),
+    re_path(r'^signature/(?P<pk>[-\w]+)$', views.signatureDetailView.as_view(), name='signature-detail'),
+    path(r'^signature/create$', views.signatureCreate.as_view(), name='new-signature'),
+    re_path(r'^signature/(?P<pk>[-\w]+)/update$', views.signatureUpdate.as_view(), name='signature-update'),
+    re_path(r'^signature/(?P<pk>[-\w]+)/delete$', views.signatureDelete.as_view(), name='signature-delete'),
     #Производитель
     re_path(r'^manufacturer/$', views.manufacturerListView.as_view(), name='manufacturer'),
     re_path(r'^manufacturer/(?P<pk>[-\w]+)$', views.manufacturerDetailView.as_view(), name='manufacturer-detail'),
     path(r'^manufacturer/create$', views.manufacturerCreate.as_view(), name='new-manufacturer'),
     re_path(r'^manufacturer/(?P<pk>[-\w]+)/update$', views.manufacturerUpdate.as_view(), name='manufacturer-update'),
     re_path(r'^manufacturer/(?P<pk>[-\w]+)/delete$', views.manufacturerDelete.as_view(), name='manufacturer-delete'),
+    #Накопитель
+    re_path(r'^storage/$', views.storageListView.as_view(), name='storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)$', views.storageDetailView.as_view(), name='storage-detail'),
+    path(r'^storage/create$', views.storageCreate.as_view(), name='new-storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/update$', views.storageUpdate.as_view(), name='storage-update'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/delete$', views.storageDelete.as_view(), name='storage-delete'),
 ]

@@ -9,11 +9,11 @@ from .employee_view import *
 from .software_view import *
 from .workstation_view import *
 from .printer_view import *
-from .signature import *
+from .signature_view import *
 
 #Главная
 class indexView(generic.ListView):
-    model = digitalSignature
+    model = signature
     template_name = 'index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -83,38 +83,75 @@ class manufacturerDelete(DataMixin, DeleteView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-
-
-
-class digitalSignatureListView(DataMixin, generic.ListView):
-    model = digitalSignature
-    template_name = 'digital_signature_list.html'
+#Накопитель
+class storageListView(DataMixin, generic.ListView):
+    model = storage
+    template_name = 'catalog/storage_list.html'
+    
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="ЭЦП", searchlink='digital-signature')
+        c_def = self.get_user_context(title="Список накопителей", searchlink='storage',add='new-storage',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
-    
+
     def get_queryset(self):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = digitalSignature.objects.filter(
-                Q(name__icontains=query) | 
-                Q(validityPeriod__icontains=query) | 
+        object_list = storage.objects.filter(
+                Q(name__icontains=query) |
+                Q(manufacturer__name__icontains=query) |
+                Q(plug__icontains=query) |
+                Q(typeMemory__icontains=query) |
+                Q(volumeMemory__icontains=query) |
                 Q(employee__name__icontains=query) |
-                Q(employee__sername__icontains=query) | 
-                Q(employee__family__icontains=query) |
-                Q(employee__post__name__icontains=query) |  
-                Q(employee__post__departament__name__icontains=query) | 
-                Q(workstation__name__icontains=query) |
-                Q(workstation__os__name__icontains=query) |   
-                Q(workplace__name__icontains=query) |
-                Q(workplace__room__name__icontains=query) |
-                Q(workplace__room__floor__icontains=query) |
-                Q(workplace__room__building__icontains=query) 
+                Q(plug__icontains=query) |
+                Q(plug__icontains=query) |
+                Q(modelStorage__icontains=query) 
         )
         return object_list
+
+class storageDetailView(DataMixin, generic.DetailView):
+    model = storage
+    template_name = 'catalog/storage_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Накопитель",add='new-storage',update='storage-update',delete='storage-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class storageCreate(DataMixin, CreateView):
+    model = storage
+    form_class = storageForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить накопитель",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class storageUpdate(DataMixin, UpdateView):
+    model = storage
+    template_name = 'Forms/add.html'
+    form_class = storageForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать накопитель",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class storageDelete(DataMixin, DeleteView):
+    model = storage
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('storage')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить накопитель",selflink='storage')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+
+
 
 
 
