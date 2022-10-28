@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from ..forms import roomForm, workplaceForm
-from ..models.models import workplace, room
+from ..models.workplace_model import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q

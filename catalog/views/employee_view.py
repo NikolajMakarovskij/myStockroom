@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from ..forms import employeeForm, postForm, departamentForm
-from ..models.models import employee, post, departament
+from ..models.employee_model import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q

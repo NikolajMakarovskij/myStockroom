@@ -1,0 +1,212 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<div class="mt-3">
+  <h1 style="text-align:center" >{{title}}</h1>
+</div>
+<div class="col-sm-12">
+  <div class="card-header text-center">
+    <a name="printerInfo" class="btn" data-bs-toggle="collapse" href="#printerInfoContent" role="button"
+      aria-expanded="false" aria-controls="printerInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/printer.svg' %}" class="iconHeader">
+        Информация о принтере
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="printerInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in printer.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="cartridgeInfo" class="btn" data-bs-toggle="collapse" href="#cartridgeInfoContent" role="button"
+      aria-expanded="false" aria-controls="cartridgeInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/cartridge.svg' %}" class="iconHeader">
+        Информация о картридже
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="cartridgeInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in printer.cartridge.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="fotovalInfo" class="btn" data-bs-toggle="collapse" href="#fotovalInfoContent" role="button"
+      aria-expanded="false" aria-controls="fotovalInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/fotoval.svg' %}" class="iconHeader">
+        Информация о фотовале
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="fotovalInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in printer.fotoval.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="tonerInfo" class="btn" data-bs-toggle="collapse" href="#tonerInfoContent" role="button"
+      aria-expanded="false" aria-controls="tonerInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/toner.svg' %}" class="iconHeader">
+        Информация о тонере
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="tonerInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in printer.toner.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-header text-center mt-3">
+    <a name="workplaceInfo" class="btn" data-bs-toggle="collapse" href="#workplaceInfoContent" role="button"
+      aria-expanded="false" aria-controls="workplaceInfoContent">
+      <h1 class="card-title">
+        <img src="{% static 'images/workplace.svg' %}" class="iconHeader">
+        Информация о местоположении
+      </h1>
+    </a>
+  </div>
+  <div class="collapse" id="workplaceInfoContent">
+    <div class="row row-cols-3 row-cols-md-3">
+      {% for f in printer.workplace.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+      {% for f in printer.workplace.room.get_all_fields %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{f.label|capfirst}}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            {% if f.value.get_absolute_url %}
+            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            </a>
+            {% else %}
+              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+            {% endif %}
+          </div>  
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-center input-group mt-3 ">
+  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+    href="{% url add %}">
+      Добавить
+  </a>
+
+  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+    href="{% url update printer.id%}">
+      Редактировать
+  </a>
+
+  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+    href="{% url delete printer.id%}">
+      Удалить
+  </a>
+</div>
+{% endblock %}
+

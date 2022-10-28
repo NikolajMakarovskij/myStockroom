@@ -26,7 +26,8 @@ workstationMenu = [
 printerMenu = [
     {'title':  "Информация о принтере", 'anchor': '#printerInfo'},
     {'title':  "Информация о картридже", 'anchor': '#cartridgeInfo'},
-    {'title':  "Информация о бумаге", 'anchor': '#paperInfo'},
+    {'title':  "Информация о фотовале", 'anchor': '#fotovalInfo'},
+    {'title':  "Информация о тонере", 'anchor': '#tonerInfo'},
     {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
     ]
 class DataMixin:

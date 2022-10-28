@@ -1,12 +1,10 @@
 from catalog.models.workstation_model import monitor
-from ..forms import *
-from ..models.models import *
+from ..forms import workstationForm, monitorForm, motherboardForm
+from ..models.workstation_model import *
 from django.views import generic
 from django.db.models import Q
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..utils import *
-from .workplace_view import *
-from .employee_view import *
-from .software_view import *
 
 #Рабочие станции
 class workstationListView(DataMixin, generic.ListView):

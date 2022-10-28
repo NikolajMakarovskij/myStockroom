@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from ..forms import softwareForm, OSForm
-from ..models.models import software, os
+from ..models.software_model import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q

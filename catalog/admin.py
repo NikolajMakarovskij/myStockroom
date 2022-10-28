@@ -66,9 +66,14 @@ class cartridge(admin.ModelAdmin):
     model = cartridge
     exclude = ['id']
 
-@admin.register(paper)
-class paper(admin.ModelAdmin):
-    model = paper
+@admin.register(fotoval)
+class fotoval(admin.ModelAdmin):
+    model = fotoval
+    exclude = ['id']
+
+@admin.register(toner)
+class toner(admin.ModelAdmin):
+    model = toner
     exclude = ['id']
 
 @admin.register(digitalSignature)
