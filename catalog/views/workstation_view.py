@@ -1,5 +1,4 @@
-from catalog.models.workstation_model import monitor
-from ..forms import workstationForm, monitorForm, motherboardForm
+from ..forms import *
 from ..models.workstation_model import *
 from django.views import generic
 from django.db.models import Q
@@ -29,8 +28,8 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(invent__icontains=query) | 
                 Q(motherboard__name__icontains=query) | 
                 Q(monitor__name__icontains=query) | 
-                Q(cpu__icontains=query) | 
-                Q(gpu__icontains=query) | 
+                Q(cpu__name__icontains=query) | 
+                Q(gpu__name__icontains=query) | 
                 Q(ram__icontains=query) | 
                 Q(ssd__icontains=query) | 
                 Q(hdd__icontains=query) | 
@@ -240,5 +239,148 @@ class motherboardDelete(DataMixin, DeleteView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Удалить маткринскую плату",selflink='motherboard')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#Процессор
+class cpuListView(DataMixin, generic.ListView):
+    model = cpu
+    template_name = 'catalog/workstation/cpu_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="CPU", searchlink='cpu',add='new-cpu')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = cpu.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(socket__icontains=query) | 
+                Q(frequency__icontains=query) | 
+                Q(l1__icontains=query) | 
+                Q(l2__icontains=query) | 
+                Q(l3__icontains=query) | 
+                Q(core__icontains=query) | 
+                Q(thread__icontains=query) | 
+                Q(memory__icontains=query) | 
+                Q(memoryCapacity__icontains=query) | 
+                Q(channelsCapacity__icontains=query) | 
+                Q(tdp__icontains=query) | 
+                Q(supply__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class cpuDetailView(DataMixin, generic.DetailView):
+    model = cpu
+    template_name = 'catalog/workstation/cpu_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="CPU",add='new-cpu',update='cpu-update',delete='cpu-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class cpuCreate(DataMixin, CreateView):
+    model = cpu
+    form_class = cpuForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить CPU",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class cpuUpdate(DataMixin, UpdateView):
+    model = cpu
+    template_name = 'Forms/add.html'
+    form_class = cpuForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать CPU",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class cpuDelete(DataMixin, DeleteView):
+    model = cpu
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('cpu')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить CPU",selflink='cpu')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#Видеокарта
+class gpuListView(DataMixin, generic.ListView):
+    model = gpu
+    template_name = 'catalog/workstation/gpu_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="GPU", searchlink='gpu',add='new-gpu')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = gpu.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(type__icontains=query) | 
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(gram__icontains=query) | 
+                Q(gramType__icontains=query) | 
+                Q(pcie__icontains=query) | 
+                Q(supply__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class gpuDetailView(DataMixin, generic.DetailView):
+    model = gpu
+    template_name = 'catalog/workstation/gpu_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="GPU",add='new-gpu',update='gpu-update',delete='gpu-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class gpuCreate(DataMixin, CreateView):
+    model = gpu
+    form_class = gpuForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить GPU",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class gpuUpdate(DataMixin, UpdateView):
+    model = gpu
+    template_name = 'Forms/add.html'
+    form_class = gpuForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать GPU",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class gpuDelete(DataMixin, DeleteView):
+    model = gpu
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('gpu')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить GPU",selflink='gpu')
         context = dict(list(context.items()) + list(c_def.items()))
         return context

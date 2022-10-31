@@ -2,7 +2,7 @@ from django import forms
 from .utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
 from .models.models import *
-
+from .models.workstation_model import *
 #Рабочее место
 class workplaceForm(forms.ModelForm):  
     class Meta:
@@ -114,8 +114,8 @@ class workstationForm(forms.ModelForm):
             'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'motherboard': WidgetCanAdd(motherboard, related_url="new-motherboard", attrs={'class': 'input-group form-select form-select-lg'}),
             'monitor': WidgetCanAdd(monitor, related_url="new-monitor", attrs={'class': 'input-group form-select form-select-lg'}),
-            'cpu': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'gpu': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'cpu': WidgetCanAdd(cpu, related_url="new-cpu", attrs={'class': 'input-group form-select form-select-lg'}),
+            'gpu': WidgetCanAdd(gpu, related_url="new-gpu", attrs={'class': 'input-group form-select form-select-lg'}),
             'ram': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'ssd': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'hdd': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -185,6 +185,57 @@ class motherboardForm(forms.ModelForm):
             'dispayPort': forms.TextInput(attrs={'class': 'form-control form-control-lg'}), 
             'powerSupply': forms.TextInput(attrs={'class': 'form-control form-control-lg'}), 
             'powerSupplyCPU': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),           
+        } 
+
+class cpuForm(forms.ModelForm):  
+    class Meta:
+        model = cpu
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','socket','frequency',
+                    'l1','l2','l3','core','thread','memory','memoryCapacity','channelsCapacity','tdp','supply','score'
+            ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'socket': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'frequency': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'l1': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'l2': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'l3': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'core': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'thread': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'memory': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'memoryCapacity': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'channelsCapacity': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'tdp': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'supply': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        } 
+
+class gpuForm(forms.ModelForm):  
+    class Meta:
+        model = gpu
+        fields = ['name','manufacturer','type','serial','serialImg','inventImg','invent','gram','gramType','pcie','supply','score']
+        plug = (
+            ('Интегрированная','Интегрированная'),
+            ('Дискретная','Дискретная')
+            )
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'type': forms.Select(choices=plug, attrs={'class': 'form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'gram': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'gramType': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'pcie': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'supply': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
 
 class printerForm(forms.ModelForm):  

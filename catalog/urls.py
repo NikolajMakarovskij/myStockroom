@@ -67,6 +67,18 @@ urlpatterns = [
     path(r'^motherboard/create$', views.motherboardCreate.as_view(), name='new-motherboard'),
     re_path(r'^motherboard/(?P<pk>[-\w]+)/update$', views.motherboardUpdate.as_view(), name='motherboard-update'),
     re_path(r'^motherboard/(?P<pk>[-\w]+)/delete$', views.motherboardDelete.as_view(), name='motherboard-delete'),
+    #Процессор
+    re_path(r'^cpu/$', views.cpuListView.as_view(), name='cpu'), 
+    re_path(r'^cpu/(?P<pk>[-\w]+)$', views.cpuDetailView.as_view(), name='cpu-detail'),
+    path(r'^cpu/create$', views.cpuCreate.as_view(), name='new-cpu'),
+    re_path(r'^cpu/(?P<pk>[-\w]+)/update$', views.cpuUpdate.as_view(), name='cpu-update'),
+    re_path(r'^cpu/(?P<pk>[-\w]+)/delete$', views.cpuDelete.as_view(), name='cpu-delete'),
+    #Видеокарта
+    re_path(r'^gpu/$', views.gpuListView.as_view(), name='gpu'), 
+    re_path(r'^gpu/(?P<pk>[-\w]+)$', views.gpuDetailView.as_view(), name='gpu-detail'),
+    path(r'^gpu/create$', views.gpuCreate.as_view(), name='new-gpu'),
+    re_path(r'^gpu/(?P<pk>[-\w]+)/update$', views.gpuUpdate.as_view(), name='gpu-update'),
+    re_path(r'^gpu/(?P<pk>[-\w]+)/delete$', views.gpuDelete.as_view(), name='gpu-delete'),
 
     #принтеры
     re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),

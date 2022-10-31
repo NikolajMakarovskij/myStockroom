@@ -45,7 +45,7 @@
               <img src="{{ workstation.serialImg.url }}">
             </a>
           {% else %}
-            <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
           {% endif %}
         </td>
         <td>{{ workstation.invent }}</td>
@@ -55,7 +55,7 @@
               <img src="{{ workstation.inventImg.url }}">
             </a>
           {% else %}
-            <img src="{% static 'images/file-earmark-x.svg' %}" class="iconTable">
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
           {% endif %}
         </td>
         <td>{{ workstation.ups }}</td>
@@ -78,6 +78,7 @@
     </table>
     {% endif %}
   </div>
+</div>
 <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
 {% endblock %}

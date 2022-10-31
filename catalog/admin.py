@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models.workstation_model import *
 from .models.models import  *
 
 @admin.register(room)
@@ -54,6 +55,16 @@ class monitor(admin.ModelAdmin):
 @admin.register(motherboard)
 class motherboard(admin.ModelAdmin):
     model = motherboard
+    exclude = ['id']
+
+@admin.register(cpu)
+class cpu(admin.ModelAdmin):
+    model = cpu
+    exclude = ['id']
+
+@admin.register(gpu)
+class gpu(admin.ModelAdmin):
+    model = gpu
     exclude = ['id']
 
 @admin.register(printer)

@@ -72,18 +72,6 @@ class signature (models.Model): #electronic digital signature
         return self.name  
     def get_absolute_url(self):
         return reverse('signature-detail', args=[str(self.id)])
-    
-    #@property
-    #def dangerDay(self, request):
-    #    from django.contrib import messages
-    #    if self.validityPeriod <= date.today:
-    #        messages.add_message(request, messages.INFO, 'weagEG' , extra_tags='danger_date' )
-    #    return self.dangerDay 
-    
-    #def get_validityPeriod(request, self):
-    #    from django.contrib import messages
-    #    if self.validityPeriod == date.today():
-    #        return messages.add_message(request, messages.INFO, 'сегодня' , extra_tags='danger_date' )
         
     def dangerDay(self):
 
