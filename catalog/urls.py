@@ -6,6 +6,10 @@ urlpatterns = [
     re_path(r'^$', views.indexView.as_view(), name='index'),
     #справочники
     re_path(r'^references/$', views.referencesView.as_view(), name='references'),
+    #расходники
+    re_path(r'^consumables/$', views.consumablesView.as_view(), name='consumables'),
+    #склад
+    re_path(r'^warehouse/$', views.warehouseView.as_view(), name='warehouse'),
     #кабинеты
     re_path(r'^room/$', views.RoomListView.as_view(), name='room'),
     re_path(r'^room/(?P<pk>[-\w]+)$', views.RoomDetailView.as_view(), name='room-detail'),
