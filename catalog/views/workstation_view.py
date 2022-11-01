@@ -1,4 +1,5 @@
 from ..forms import *
+from ..models.ups_model import *
 from ..models.workstation_model import *
 from django.views import generic
 from django.db.models import Q
@@ -37,7 +38,7 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(dcpower__name__icontains=query) | 
                 Q(keyBoard__name__icontains=query) | 
                 Q(mouse__name__icontains=query) | 
-                Q(ups__icontains=query) | 
+                Q(ups__name__icontains=query) | 
                 Q(employee__name__icontains=query) |
                 Q(employee__sername__icontains=query) | 
                 Q(employee__family__icontains=query) |

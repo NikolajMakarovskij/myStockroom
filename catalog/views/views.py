@@ -10,6 +10,7 @@ from .software_view import *
 from .workstation_view import *
 from .printer_view import *
 from .signature_view import *
+from .ups_view import *
 
 #Главная
 class indexView(generic.ListView):

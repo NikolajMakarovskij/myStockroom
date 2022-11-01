@@ -123,7 +123,7 @@ class workstationForm(forms.ModelForm):
             'dcpower': WidgetCanAdd(dcpower, related_url="new-dcpower", attrs={'class': 'input-group form-select form-select-lg'}),
             'keyBoard': WidgetCanAdd(keyBoard, related_url="new-keyBoard", attrs={'class': 'input-group form-select form-select-lg'}),
             'mouse': WidgetCanAdd(mouse, related_url="new-mouse", attrs={'class': 'input-group form-select form-select-lg'}),
-            'ups': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'ups': WidgetCanAdd(ups, related_url="new-ups", attrs={'class': 'input-group form-select form-select-lg'}),
             'workplace': WidgetCanAdd(workplace, related_url="new-workplace", attrs={'class': 'input-group form-select form-select-lg'}),
             'employee': WidgetCanAdd(employee, related_url="new-employee", attrs={'class': 'input-group form-select form-select-lg'}),
         } 
@@ -340,7 +340,77 @@ class mouseForm(forms.ModelForm):
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-        }   
+        } 
+class upsForm(forms.ModelForm):   
+    class Meta:
+        model = ups
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','voltage','current',
+                    'accumulator1','accumulator2','accumulator3','accumulator4','cassette1','cassette2','cassette3','cassette4','score']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'accumulator1': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'cassette1': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
+            'cassette2': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
+            'cassette3': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
+            'cassette4': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        }  
+
+class cassetteForm(forms.ModelForm):   
+    class Meta:
+        model = cassette
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','voltage','current',
+                    'accumulator1','accumulator2','accumulator3','accumulator4','accumulator5','accumulator6','accumulator7','accumulator8','accumulator9','accumulator10','score']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'accumulator1': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator5': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator6': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator7': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator8': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator9': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator10': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        } 
+
+class accumulatorForm(forms.ModelForm):   
+    class Meta:
+        model = accumulator
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','voltage','current','score']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        } 
 
 class printerForm(forms.ModelForm):  
     class Meta:

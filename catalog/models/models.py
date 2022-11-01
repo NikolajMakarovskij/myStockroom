@@ -5,6 +5,7 @@ from .software_model import *
 from .workstation_model import *
 from .printer_model import *
 from .signature_model import *
+from .ups_model import *
 from django.urls import reverse
 import uuid 
 

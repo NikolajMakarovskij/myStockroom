@@ -127,4 +127,17 @@ class storage(admin.ModelAdmin):
     model = storage
     exclude = ['id']
 
+@admin.register(ups)
+class ups(admin.ModelAdmin):
+    model = ups
+    exclude = ['id']
 
+@admin.register(cassette)
+class cassette(admin.ModelAdmin):
+    model = cassette
+    exclude = ['id']
+
+@admin.register(accumulator)
+class accumulator(admin.ModelAdmin):
+    model = accumulator
+    exclude = ['id']    

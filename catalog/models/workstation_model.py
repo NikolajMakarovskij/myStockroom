@@ -1,4 +1,5 @@
 from django.db import models
+from .ups_model import *
 from .models import *
 from django.urls import reverse
 import uuid 
@@ -128,8 +129,9 @@ class workstation(models.Model):
         help_text="Укажите мышь",
         verbose_name="Мышь"
         )
-    ups = models.TextField(
-        max_length=200,
+    ups = models.ForeignKey(
+        'ups',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите блок бесперебойного питания",
         verbose_name="Блок бесперебойного питания"
