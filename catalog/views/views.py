@@ -23,6 +23,18 @@ class indexView(generic.ListView):
         context['menu'] = menu
         return context
 
+#Расходники
+class referencesView(generic.ListView):
+    model = references
+    template_name = 'references.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Справочники'
+        context['searchlink'] = 'references'
+        context['menu'] = menu
+        return context
+
 #Производитель
 class manufacturerListView(DataMixin, generic.ListView):
     model = manufacturer

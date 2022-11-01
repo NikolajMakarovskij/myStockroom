@@ -141,3 +141,8 @@ class cassette(admin.ModelAdmin):
 class accumulator(admin.ModelAdmin):
     model = accumulator
     exclude = ['id']    
+
+@admin.register(references)
+class references(admin.ModelAdmin):
+    model = references
+    exclude = ['id']    

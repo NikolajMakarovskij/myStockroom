@@ -11,7 +11,7 @@ menu = [
     {'title':  "Раб. станции", 'url_name': 'workstation'},
     {'title':  "Принтеры", 'url_name': 'printer'},
     {'title':  "ЭЦП", 'url_name': 'signature'},
-    {'title':  "Кабинеты", 'url_name': 'room'},
+    {'title':  "Справочники", 'url_name': 'references'},
     #{'title':  "Склад", 'url_name': '#'},
     #{'title':  "Контрагенты", 'url_name': '#'},
     #{'title':  "#", 'url_name': '#'},

@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% load static %}
+    
+  <div class="table-responsive mt-3"> 
+
+<!--searh block-->
+  {%include 'search/search.html' %}
+
+<!--data block-->  
+    <div class="mt-3">
+      <table class="table table-bordered align-middle table-hover mt-3" style="text-align:center">
+        <thead >
+          <h2 style="text-align:center">
+            {{title}}
+          </h2>
+        </thead>
+        <tbody style="text-align:left">
+          {% for references in references_list %}
+            <tr>
+              <td class="">
+                <a href="{{hrbase.nameURL}}" class="link-dark">
+                  <div class="w-100 mt-2">
+                    <h4>
+                      {{references.name}}
+                    </h4>
+                  </div>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+<!-- pagination -->  
+{% include "pagination/pagination.html" %}
+{% endblock %}

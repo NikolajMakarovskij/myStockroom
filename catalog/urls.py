@@ -1,12 +1,11 @@
-from operator import index
-from django.urls import path
+from django.urls import path, re_path
 from .views import views
-from django.urls import include, re_path
-
 
 urlpatterns = [
     #главная
     re_path(r'^$', views.indexView.as_view(), name='index'),
+    #справочники
+    re_path(r'^references/$', views.referencesView.as_view(), name='references'),
     #кабинеты
     re_path(r'^room/$', views.RoomListView.as_view(), name='room'),
     re_path(r'^room/(?P<pk>[-\w]+)$', views.RoomDetailView.as_view(), name='room-detail'),

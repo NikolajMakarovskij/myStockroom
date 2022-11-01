@@ -163,7 +163,7 @@ class ups (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'ups'
+        verbose_name_plural = 'ИБП'
 
 class cassette (models.Model):
     id = models.UUIDField(
@@ -341,7 +341,7 @@ class cassette (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'cassette'
+        verbose_name_plural = 'Кассета'
 
 class accumulator (models.Model):
     id = models.UUIDField(
@@ -440,4 +440,4 @@ class accumulator (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'accumulator'
+        verbose_name_plural = 'Аккумулятор'

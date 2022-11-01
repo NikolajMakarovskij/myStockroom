@@ -987,7 +987,7 @@ class ssd (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'ssd'
+        verbose_name_plural = 'SSD'
 
 class hdd (models.Model):
     id = models.UUIDField(
@@ -1098,7 +1098,7 @@ class hdd (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'hdd'
+        verbose_name_plural = 'HDD'
 
 class dcpower (models.Model):
     id = models.UUIDField(
@@ -1215,7 +1215,7 @@ class dcpower (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'dcpower'
+        verbose_name_plural = 'Блок питания'
 
 class keyBoard (models.Model):
     id = models.UUIDField(
@@ -1296,7 +1296,7 @@ class keyBoard (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'keyBoard'
+        verbose_name_plural = 'Клавиатура'
 
 class mouse (models.Model):
     id = models.UUIDField(
@@ -1377,4 +1377,4 @@ class mouse (models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'mouse'
+        verbose_name_plural = 'Мышь'
