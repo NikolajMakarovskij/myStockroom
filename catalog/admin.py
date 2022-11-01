@@ -67,6 +67,26 @@ class gpu(admin.ModelAdmin):
     model = gpu
     exclude = ['id']
 
+@admin.register(ram)
+class ram(admin.ModelAdmin):
+    model = ram
+    exclude = ['id']
+
+@admin.register(ssd)
+class ssd(admin.ModelAdmin):
+    model = ssd
+    exclude = ['id']
+
+@admin.register(hdd)
+class hdd(admin.ModelAdmin):
+    model = hdd
+    exclude = ['id']
+
+@admin.register(dcpower)
+class dcpower(admin.ModelAdmin):
+    model = dcpower
+    exclude = ['id']
+
 @admin.register(printer)
 class printer(admin.ModelAdmin):
     model = printer

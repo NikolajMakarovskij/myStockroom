@@ -79,7 +79,30 @@ urlpatterns = [
     path(r'^gpu/create$', views.gpuCreate.as_view(), name='new-gpu'),
     re_path(r'^gpu/(?P<pk>[-\w]+)/update$', views.gpuUpdate.as_view(), name='gpu-update'),
     re_path(r'^gpu/(?P<pk>[-\w]+)/delete$', views.gpuDelete.as_view(), name='gpu-delete'),
-
+    #оперативная память
+    re_path(r'^ram/$', views.ramListView.as_view(), name='ram'), 
+    re_path(r'^ram/(?P<pk>[-\w]+)$', views.ramDetailView.as_view(), name='ram-detail'),
+    path(r'^ram/create$', views.ramCreate.as_view(), name='new-ram'),
+    re_path(r'^ram/(?P<pk>[-\w]+)/update$', views.ramUpdate.as_view(), name='ram-update'),
+    re_path(r'^ram/(?P<pk>[-\w]+)/delete$', views.ramDelete.as_view(), name='ram-delete'),
+    #SSD
+    re_path(r'^ssd/$', views.ssdListView.as_view(), name='ssd'), 
+    re_path(r'^ssd/(?P<pk>[-\w]+)$', views.ssdDetailView.as_view(), name='ssd-detail'),
+    path(r'^ssd/create$', views.ssdCreate.as_view(), name='new-ssd'),
+    re_path(r'^ssd/(?P<pk>[-\w]+)/update$', views.ssdUpdate.as_view(), name='ssd-update'),
+    re_path(r'^ssd/(?P<pk>[-\w]+)/delete$', views.ssdDelete.as_view(), name='ssd-delete'),
+    #HDD
+    re_path(r'^hdd/$', views.hddListView.as_view(), name='hdd'), 
+    re_path(r'^hdd/(?P<pk>[-\w]+)$', views.hddDetailView.as_view(), name='hdd-detail'),
+    path(r'^hdd/create$', views.hddCreate.as_view(), name='new-hdd'),
+    re_path(r'^hdd/(?P<pk>[-\w]+)/update$', views.hddUpdate.as_view(), name='hdd-update'),
+    re_path(r'^hdd/(?P<pk>[-\w]+)/delete$', views.hddDelete.as_view(), name='hdd-delete'),
+    #dcpower
+    re_path(r'^dcpower/$', views.dcpowerListView.as_view(), name='dcpower'), 
+    re_path(r'^dcpower/(?P<pk>[-\w]+)$', views.dcpowerDetailView.as_view(), name='dcpower-detail'),
+    path(r'^dcpower/create$', views.dcpowerCreate.as_view(), name='new-dcpower'),
+    re_path(r'^dcpower/(?P<pk>[-\w]+)/update$', views.dcpowerUpdate.as_view(), name='dcpower-update'),
+    re_path(r'^dcpower/(?P<pk>[-\w]+)/delete$', views.dcpowerDelete.as_view(), name='dcpower-delete'),
     #принтеры
     re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),
     re_path(r'^printer/(?P<pk>[-\w]+)$', views.printerDetailView.as_view(), name='printer-detail'),

@@ -463,12 +463,156 @@ class gpuViewTest(TestCase):
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['gpu_list']) == 10)
 
-    def test_lists_all_cpu(self):
+    def test_lists_all_gpu(self):
         resp = self.client.get(reverse('gpu')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['gpu_list']) == 9)
+    
+class ramViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_ram = 149
+        for ram_num in range(number_of_ram):
+            ram.objects.create(name='Christian %s' % ram_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/ram/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('ram'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('ram'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/ram_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('ram'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['ram_list']) == 10)
+
+    def test_lists_all_ram(self):
+        resp = self.client.get(reverse('ram')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['ram_list']) == 9)
+
+class ssdViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_ssd = 149
+        for ssd_num in range(number_of_ssd):
+            ssd.objects.create(name='Christian %s' % ssd_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/ssd/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('ssd'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('ssd'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/ssd_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('ssd'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['ssd_list']) == 10)
+
+    def test_lists_all_ssd(self):
+        resp = self.client.get(reverse('ssd')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['ssd_list']) == 9)
+
+class hddViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_hdd = 149
+        for hdd_num in range(number_of_hdd):
+            hdd.objects.create(name='Christian %s' % hdd_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/hdd/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('hdd'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('hdd'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/hdd_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('hdd'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['hdd_list']) == 10)
+
+    def test_lists_all_hdd(self):
+        resp = self.client.get(reverse('hdd')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['hdd_list']) == 9)
+
+class dcpowerViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_dcpower = 149
+        for dcpower_num in range(number_of_dcpower):
+            dcpower.objects.create(name='Christian %s' % dcpower_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/dcpower/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('dcpower'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('dcpower'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/dcpower_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('dcpower'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['dcpower_list']) == 10)
+
+    def test_lists_all_dcpower(self):
+        resp = self.client.get(reverse('dcpower')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['dcpower_list']) == 9)
 
 class printerViewTest(TestCase):
 

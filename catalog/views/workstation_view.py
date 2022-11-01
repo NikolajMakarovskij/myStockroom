@@ -30,11 +30,11 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(monitor__name__icontains=query) | 
                 Q(cpu__name__icontains=query) | 
                 Q(gpu__name__icontains=query) | 
-                Q(ram__icontains=query) | 
-                Q(ssd__icontains=query) | 
-                Q(hdd__icontains=query) | 
+                Q(ram__name__icontains=query) | 
+                Q(ssd__name__icontains=query) | 
+                Q(hdd__name__icontains=query) | 
                 Q(os__name__icontains=query) | 
-                Q(dcpower__icontains=query) | 
+                Q(dcpower__name__icontains=query) | 
                 Q(keyBoard__icontains=query) | 
                 Q(mouse__icontains=query) | 
                 Q(ups__icontains=query) | 
@@ -382,5 +382,277 @@ class gpuDelete(DataMixin, DeleteView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Удалить GPU",selflink='gpu')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#Оперативная память
+class ramListView(DataMixin, generic.ListView):
+    model = ram
+    template_name = 'catalog/workstation/ram_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="RAM", searchlink='ram',add='new-ram')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = ram.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(type__icontains=query) | 
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(ramCapacity__icontains=query) | 
+                Q(rang__icontains=query) |  
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class ramDetailView(DataMixin, generic.DetailView):
+    model = ram
+    template_name = 'catalog/workstation/ram_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="RAM",add='new-ram',update='ram-update',delete='ram-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ramCreate(DataMixin, CreateView):
+    model = ram
+    form_class = ramForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить RAM",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ramUpdate(DataMixin, UpdateView):
+    model = ram
+    template_name = 'Forms/add.html'
+    form_class = ramForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать RAM",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ramDelete(DataMixin, DeleteView):
+    model = ram
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('ram')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить RAM",selflink='ram')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#SSD
+class ssdListView(DataMixin, generic.ListView):
+    model = ssd
+    template_name = 'catalog/workstation/ssd_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="ssd", searchlink='ssd',add='new-ssd')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = ssd.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(type__icontains=query) | 
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(capacity__icontains=query) | 
+                Q(plug__icontains=query) |  
+                Q(speedRead__icontains=query) | 
+                Q(speadWrite__icontains=query) | 
+                Q(resourse__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class ssdDetailView(DataMixin, generic.DetailView):
+    model = ssd
+    template_name = 'catalog/workstation/ssd_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="SSD",add='new-ssd',update='ssd-update',delete='ssd-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ssdCreate(DataMixin, CreateView):
+    model = ssd
+    form_class = ssdForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить SSD",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ssdUpdate(DataMixin, UpdateView):
+    model = ssd
+    template_name = 'Forms/add.html'
+    form_class = ssdForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать SSD",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class ssdDelete(DataMixin, DeleteView):
+    model = ssd
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('ssd')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить SSD",selflink='ssd')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#HDD
+class hddListView(DataMixin, generic.ListView):
+    model = hdd
+    template_name = 'catalog/workstation/hdd_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="hdd", searchlink='hdd',add='new-hdd')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = hdd.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(capacity__icontains=query) | 
+                Q(plug__icontains=query) |  
+                Q(speedRead__icontains=query) | 
+                Q(speadWrite__icontains=query) | 
+                Q(rpm__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class hddDetailView(DataMixin, generic.DetailView):
+    model = hdd
+    template_name = 'catalog/workstation/hdd_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="HDD",add='new-hdd',update='hdd-update',delete='hdd-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class hddCreate(DataMixin, CreateView):
+    model = hdd
+    form_class = hddForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить HHD",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class hddUpdate(DataMixin, UpdateView):
+    model = hdd
+    template_name = 'Forms/add.html'
+    form_class = hddForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать HDD",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class hddDelete(DataMixin, DeleteView):
+    model = hdd
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('hdd')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить HDD",selflink='hdd')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#dcpower
+class dcpowerListView(DataMixin, generic.ListView):
+    model = dcpower
+    template_name = 'catalog/workstation/dcpower_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Блок питания", searchlink='dcpower',add='new-dcpower')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = dcpower.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(power__icontains=query) | 
+                Q(motherboard__icontains=query) |  
+                Q(cpu__icontains=query) | 
+                Q(gpu__icontains=query) | 
+                Q(sata__icontains=query) | 
+                Q(molex__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class dcpowerDetailView(DataMixin, generic.DetailView):
+    model = dcpower
+    template_name = 'catalog/workstation/dcpower_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Блок питания",add='new-dcpower',update='dcpower-update',delete='dcpower-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class dcpowerCreate(DataMixin, CreateView):
+    model = dcpower
+    form_class = dcpowerForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить блок питания",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class dcpowerUpdate(DataMixin, UpdateView):
+    model = dcpower
+    template_name = 'Forms/add.html'
+    form_class = dcpowerForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать блок питания",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class dcpowerDelete(DataMixin, DeleteView):
+    model = dcpower
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('dcpower')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить блок питания",selflink='dcpower')
         context = dict(list(context.items()) + list(c_def.items()))
         return context

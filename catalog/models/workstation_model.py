@@ -79,20 +79,23 @@ class workstation(models.Model):
         help_text="Укажите GPU",
         verbose_name="GPU"
         )
-    ram = models.TextField(
-        max_length=200,
+    ram = models.ForeignKey(
+        'ram',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите RAM",
         verbose_name="RAM"
         )
-    ssd = models.TextField(
-        max_length=200,
+    ssd = models.ForeignKey(
+        'ssd',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите SSD",
         verbose_name="SSD"
         )
-    hdd = models.TextField(
-        max_length=200,
+    hdd = models.ForeignKey(
+        'hdd',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите HDD",
         verbose_name="HDD"
@@ -104,8 +107,9 @@ class workstation(models.Model):
         help_text="Укажите ОС",
         verbose_name="Операционная система"
         )
-    dcpower = models.TextField(
-        max_length=200,
+    dcpower = models.ForeignKey(
+        'dcpower',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите блок питания",
         verbose_name="Блок питания"
@@ -670,8 +674,8 @@ class gpu (models.Model):
     type = models.CharField(
         max_length=50,
         choices=plug,
-        help_text="Введите название модели",
-        verbose_name="Модель"
+        help_text="Укажите тип подключения",
+        verbose_name="Тип подключения"
         )
     manufacturer = models.ForeignKey(
         'manufacturer',
@@ -766,3 +770,445 @@ class gpu (models.Model):
         return fields
     class Meta:
         verbose_name_plural = 'GPU'
+
+class ram (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    type = models.CharField(
+        max_length=50,
+        help_text="Введите тип памяти",
+        verbose_name="Тип памяти"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    ramCapacity = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите объем памяти",
+        verbose_name="Объем памяти"
+        )
+    rang = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите ранг памяти",
+        verbose_name="Ранг памяти"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('ram-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'RAM'
+
+class ssd (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    type = models.CharField(
+        max_length=50,
+        help_text="Введите тип памяти",
+        verbose_name="Тип памяти"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    capacity = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите объем памяти",
+        verbose_name="Объем памяти"
+        )
+    plug = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите тип подключения",
+        verbose_name="Тип подключения"
+        )
+    speedRead = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите скорость чтения",
+        verbose_name="Скорость чтения"
+        )
+    speadWrite = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите скорость записи",
+        verbose_name="Скорость записи"
+        )
+    resourse = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите ресурс",
+        verbose_name="Ресурс"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('ssd-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'ssd'
+
+class hdd (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    capacity = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите объем памяти",
+        verbose_name="Объем памяти"
+        )
+    plug = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите тип подключения",
+        verbose_name="Тип подключения"
+        )
+    speedRead = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите скорость чтения",
+        verbose_name="Скорость чтения"
+        )
+    speadWrite = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите скорость записи",
+        verbose_name="Скорость записи"
+        )
+    rpm = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите RPM",
+        verbose_name="RPM"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('hdd-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'hdd'
+
+class dcpower (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    power = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите мощность",
+        verbose_name="Мощность"
+        )
+    motherboard = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите питание материнской платы",
+        verbose_name="Питание материнской платы"
+        )
+    cpu = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите питание CPU",
+        verbose_name="Питание CPU"
+        )
+    gpu = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите питание GPU",
+        verbose_name="Питание GPU"
+        )
+    sata = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите питание SATA",
+        verbose_name="Питание SATA"
+        )
+    molex = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Укажите питание molex",
+        verbose_name="Питание molex"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('dcpower-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'dcpower'

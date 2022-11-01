@@ -10,32 +10,28 @@
       {%include 'search/search.html' %}
     </div>
 <!--block content-->
-{% if gpu_list %}
+{% if ram_list %}
   <div class="table-responsive">
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
-          <th scope="col">Видеокарта</th>
+          <th scope="col">RAM</th>
           <th scope="col">Производитель</th>
-          <th scope="col">Тип подключения</th>
-          <th scope="col">Объем памяти</th>
           <th scope="col">Тип памяти</th>
-          <th scope="col">Версия PCI Express</th>
-          <th scope="col">Питание</th>
+          <th scope="col">Объем памяти</th>
+          <th scope="col">Ранг</th>
           <th scope="col">Количество</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for gpu in gpu_list %}
+      {% for ram in ram_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ gpu.get_absolute_url }}">{{ gpu.name }}</a></td>
-        <td><a class="noDecoration" href="{{ gpu.manufacturer.get_absolute_url }}">{{ gpu.manufacturer.name }}</a></td>
-        <td>{{ gpu.type }}</td>
-        <td>{{ gpu.gram }}</td>
-        <td>{{ gpu.gramType }}</td>
-        <td>{{ gpu.pcie }}</td>
-        <td>{{ gpu.supply }}</td>
-        <td>{{ gpu.score }}</td>
+        <td><a class="noDecoration" href="{{ ram.get_absolute_url }}">{{ ram.name }}</a></td>
+        <td><a class="noDecoration" href="{{ ram.manufacturer.get_absolute_url }}">{{ ram.manufacturer.name }}</a></td>
+        <td>{{ ram.type }}</td>
+        <td>{{ ram.ramCapacity }}</td>
+        <td>{{ ram.rang }}</td>
+        <td>{{ ram.score }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -45,7 +41,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Видокарты не обнаружены</th>
+          <th scope="col" style="font-size: 32px;">Оперативная память не обнаружена</th>
         </tr>
       </thead>
     </table>
