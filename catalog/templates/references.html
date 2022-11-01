@@ -17,13 +17,13 @@
           </h2>
         </thead>
         <tbody style="text-align:left">
-          {% for references in references_list %}
+          {% for each in references_list %}
             <tr>
               <td class="">
-                <a href="{{hrbase.nameURL}}" class="link-dark">
+                <a href="../{{each.linkname}}" class="link-dark">
                   <div class="w-100 mt-2">
                     <h4>
-                      {{references.name}}
+                      {{each.name}}
                     </h4>
                   </div>
                 </a>

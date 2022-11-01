@@ -191,13 +191,7 @@ class references(models.Model):
         help_text="Введите ссылку",
         verbose_name="Ссылка"
         )
-    linkadd = models.CharField(
-        max_length=50,
-        help_text="Введите ссылку",
-        verbose_name="Ссылка"
-        )
 
-    
     def __str__(self):
         return self.name
     def get_all_fields(self):

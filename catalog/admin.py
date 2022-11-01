@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models.workstation_model import *
 from .models.models import  *
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+admin.site.site_title = 'Админка'
+admin.site.site_header = 'Админка'
 
 @admin.register(room)
 class Room(admin.ModelAdmin):
@@ -140,9 +145,13 @@ class cassette(admin.ModelAdmin):
 @admin.register(accumulator)
 class accumulator(admin.ModelAdmin):
     model = accumulator
-    exclude = ['id']    
+    exclude = ['id']       
 
-@admin.register(references)
-class references(admin.ModelAdmin):
-    model = references
-    exclude = ['id']    
+class referencesAdmin(ImportExportModelAdmin):   
+    list_display = ('name', 'linkname', 'id', )
+    fields = [
+        ('name', 'linkname',)
+    ]
+    search_fields = ['name','linkname',]
+    pass
+admin.site.register(references, referencesAdmin)
