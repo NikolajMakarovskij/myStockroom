@@ -614,6 +614,78 @@ class dcpowerViewTest(TestCase):
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['dcpower_list']) == 9)
 
+class keyBoardViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_keyBoard = 149
+        for keyBoard_num in range(number_of_keyBoard):
+            keyBoard.objects.create(name='Christian %s' % keyBoard_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/keyBoard/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('keyBoard'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('keyBoard'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/keyBoard_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('keyBoard'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['keyboard_list']) == 10)
+
+    def test_lists_all_keyBoard(self):
+        resp = self.client.get(reverse('keyBoard')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['keyboard_list']) == 9)
+
+class mouseViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_mouse = 149
+        for mouse_num in range(number_of_mouse):
+            mouse.objects.create(name='Christian %s' % mouse_num,)
+
+    def test_view_url_exists_at_desired_location(self):
+        resp = self.client.get('/catalog/mouse/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        resp = self.client.get(reverse('mouse'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        resp = self.client.get(reverse('mouse'))
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertTemplateUsed(resp, 'catalog/workstation/mouse_list.html')
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('mouse'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['mouse_list']) == 10)
+
+    def test_lists_all_mouse(self):
+        resp = self.client.get(reverse('mouse')+'?page=15')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] == True)
+        self.assertTrue( len(resp.context['mouse_list']) == 9)
+
 class printerViewTest(TestCase):
 
     @classmethod

@@ -121,8 +121,8 @@ class workstationForm(forms.ModelForm):
             'hdd':  WidgetCanAdd(hdd, related_url="new-hdd", attrs={'class': 'input-group form-select form-select-lg'}),
             'os': WidgetCanAdd(os, related_url="new-OS", attrs={'class': 'input-group form-select form-select-lg'}),
             'dcpower': WidgetCanAdd(dcpower, related_url="new-dcpower", attrs={'class': 'input-group form-select form-select-lg'}),
-            'keyBoard': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'mouse': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'keyBoard': WidgetCanAdd(keyBoard, related_url="new-keyBoard", attrs={'class': 'input-group form-select form-select-lg'}),
+            'mouse': WidgetCanAdd(mouse, related_url="new-mouse", attrs={'class': 'input-group form-select form-select-lg'}),
             'ups': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'workplace': WidgetCanAdd(workplace, related_url="new-workplace", attrs={'class': 'input-group form-select form-select-lg'}),
             'employee': WidgetCanAdd(employee, related_url="new-employee", attrs={'class': 'input-group form-select form-select-lg'}),
@@ -313,6 +313,34 @@ class dcpowerForm(forms.ModelForm):
             'molex': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         }      
+
+class keyBoardForm(forms.ModelForm):   
+    class Meta:
+        model = keyBoard
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','score']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        }   
+
+class mouseForm(forms.ModelForm):   
+    class Meta:
+        model = mouse
+        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','score']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
+            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+        }   
 
 class printerForm(forms.ModelForm):  
     class Meta:

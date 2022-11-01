@@ -87,6 +87,16 @@ class dcpower(admin.ModelAdmin):
     model = dcpower
     exclude = ['id']
 
+@admin.register(keyBoard)
+class keyBoard(admin.ModelAdmin):
+    model = keyBoard
+    exclude = ['id']
+
+@admin.register(mouse)
+class mouse(admin.ModelAdmin):
+    model = mouse
+    exclude = ['id']
+
 @admin.register(printer)
 class printer(admin.ModelAdmin):
     model = printer

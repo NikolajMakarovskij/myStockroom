@@ -97,12 +97,24 @@ urlpatterns = [
     path(r'^hdd/create$', views.hddCreate.as_view(), name='new-hdd'),
     re_path(r'^hdd/(?P<pk>[-\w]+)/update$', views.hddUpdate.as_view(), name='hdd-update'),
     re_path(r'^hdd/(?P<pk>[-\w]+)/delete$', views.hddDelete.as_view(), name='hdd-delete'),
-    #dcpower
+    #Блок питания
     re_path(r'^dcpower/$', views.dcpowerListView.as_view(), name='dcpower'), 
     re_path(r'^dcpower/(?P<pk>[-\w]+)$', views.dcpowerDetailView.as_view(), name='dcpower-detail'),
     path(r'^dcpower/create$', views.dcpowerCreate.as_view(), name='new-dcpower'),
     re_path(r'^dcpower/(?P<pk>[-\w]+)/update$', views.dcpowerUpdate.as_view(), name='dcpower-update'),
     re_path(r'^dcpower/(?P<pk>[-\w]+)/delete$', views.dcpowerDelete.as_view(), name='dcpower-delete'),
+    #Клавиатура
+    re_path(r'^keyBoard/$', views.keyBoardListView.as_view(), name='keyBoard'), 
+    re_path(r'^keyBoard/(?P<pk>[-\w]+)$', views.keyBoardDetailView.as_view(), name='keyBoard-detail'),
+    path(r'^keyBoard/create$', views.keyBoardCreate.as_view(), name='new-keyBoard'),
+    re_path(r'^keyBoard/(?P<pk>[-\w]+)/update$', views.keyBoardUpdate.as_view(), name='keyBoard-update'),
+    re_path(r'^keyBoard/(?P<pk>[-\w]+)/delete$', views.keyBoardDelete.as_view(), name='keyBoard-delete'),
+    #мышь
+    re_path(r'^mouse/$', views.mouseListView.as_view(), name='mouse'), 
+    re_path(r'^mouse/(?P<pk>[-\w]+)$', views.mouseDetailView.as_view(), name='mouse-detail'),
+    path(r'^mouse/create$', views.mouseCreate.as_view(), name='new-mouse'),
+    re_path(r'^mouse/(?P<pk>[-\w]+)/update$', views.mouseUpdate.as_view(), name='mouse-update'),
+    re_path(r'^mouse/(?P<pk>[-\w]+)/delete$', views.mouseDelete.as_view(), name='mouse-delete'),
     #принтеры
     re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),
     re_path(r'^printer/(?P<pk>[-\w]+)$', views.printerDetailView.as_view(), name='printer-detail'),

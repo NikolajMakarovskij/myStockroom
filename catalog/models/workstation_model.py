@@ -114,14 +114,16 @@ class workstation(models.Model):
         help_text="Укажите блок питания",
         verbose_name="Блок питания"
         )
-    keyBoard = models.TextField(
-        max_length=200,
+    keyBoard = models.ForeignKey(
+        'keyBoard',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите клавиатуру",
         verbose_name="Клавиатура"
         )
-    mouse = models.TextField(
-        max_length=200,
+    mouse = models.ForeignKey(
+        'mouse',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите мышь",
         verbose_name="Мышь"
@@ -1212,3 +1214,165 @@ class dcpower (models.Model):
         return fields
     class Meta:
         verbose_name_plural = 'dcpower'
+
+class keyBoard (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('keyBoard-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'keyBoard'
+
+class mouse (models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название модели",
+        verbose_name="Модель"
+        )
+    manufacturer = models.ForeignKey(
+        'manufacturer',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='gpu/serial/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентарный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='gpu/invent/',
+        blank=True, null=True,
+        help_text="прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    score = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('mouse-detail', args=[str(self.id)])
+    def get_all_fields(self):
+        """Returns a list of all field names on the instance."""
+        fields = []
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in ('id', ) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields
+    class Meta:
+        verbose_name_plural = 'mouse'

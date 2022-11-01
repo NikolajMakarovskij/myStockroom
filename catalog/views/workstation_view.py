@@ -35,8 +35,8 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(hdd__name__icontains=query) | 
                 Q(os__name__icontains=query) | 
                 Q(dcpower__name__icontains=query) | 
-                Q(keyBoard__icontains=query) | 
-                Q(mouse__icontains=query) | 
+                Q(keyBoard__name__icontains=query) | 
+                Q(mouse__name__icontains=query) | 
                 Q(ups__icontains=query) | 
                 Q(employee__name__icontains=query) |
                 Q(employee__sername__icontains=query) | 
@@ -588,14 +588,14 @@ class hddDelete(DataMixin, DeleteView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-#dcpower
+#Блок питания
 class dcpowerListView(DataMixin, generic.ListView):
     model = dcpower
     template_name = 'catalog/workstation/dcpower_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Блок питания", searchlink='dcpower',add='new-dcpower')
+        c_def = self.get_user_context(title="Блоки питания", searchlink='dcpower',add='new-dcpower')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -654,5 +654,131 @@ class dcpowerDelete(DataMixin, DeleteView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Удалить блок питания",selflink='dcpower')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#Клавиатура
+class keyBoardListView(DataMixin, generic.ListView):
+    model = keyBoard
+    template_name = 'catalog/workstation/keyBoard_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Клавиатуры", searchlink='keyBoard',add='new-keyBoard')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = keyBoard.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) | 
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class keyBoardDetailView(DataMixin, generic.DetailView):
+    model = keyBoard
+    template_name = 'catalog/workstation/keyBoard_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Клавиатура",add='new-keyBoard',update='keyBoard-update',delete='keyBoard-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class keyBoardCreate(DataMixin, CreateView):
+    model = keyBoard
+    form_class = keyBoardForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить клавиатуру",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class keyBoardUpdate(DataMixin, UpdateView):
+    model = keyBoard
+    template_name = 'Forms/add.html'
+    form_class = keyBoardForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать клавиатуру",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class keyBoardDelete(DataMixin, DeleteView):
+    model = keyBoard
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('keyBoard')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить клавиатуру",selflink='keyBoard')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+#Мышь
+class mouseListView(DataMixin, generic.ListView):
+    model = mouse
+    template_name = 'catalog/workstation/mouse_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Мыши", searchlink='mouse',add='new-mouse')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = mouse.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(serial__icontains=query) | 
+                Q(invent__icontains=query) |  
+                Q(score__icontains=query) 
+        )
+        return object_list
+
+class mouseDetailView(DataMixin, generic.DetailView):
+    model = mouse
+    template_name = 'catalog/workstation/mouse_detail.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Мышь",add='new-mouse',update='mouse-update',delete='mouse-delete')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class mouseCreate(DataMixin, CreateView):
+    model = mouse
+    form_class = mouseForm
+    template_name = 'Forms/add.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить мышь",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class mouseUpdate(DataMixin, UpdateView):
+    model = mouse
+    template_name = 'Forms/add.html'
+    form_class = mouseForm
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать мышь",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class mouseDelete(DataMixin, DeleteView):
+    model = mouse
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('mouse')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить мышь",selflink='mouse')
         context = dict(list(context.items()) + list(c_def.items()))
         return context

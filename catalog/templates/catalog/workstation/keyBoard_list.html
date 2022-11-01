@@ -1,0 +1,69 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if keyboard_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Клавиатура</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Серийный номер</th>
+          <th scope="col">Фото серийного номера</th>
+          <th scope="col">Инвентарный номер</th>
+          <th scope="col">Фото инвентарного номера</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for keyBoard in keyboard_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ keyBoard.get_absolute_url }}">{{ keyBoard.name }}</a></td>
+        <td><a class="noDecoration" href="{{ keyBoard.manufacturer.get_absolute_url }}">{{ keyBoard.manufacturer.name }}</a></td>
+        <td>{{ keyBoard.serial }}</td>
+        <td>
+          {% if keyBoard.serialImg %}
+            <a href="{{ keyBoard.serialImg.url }}">
+              <img src="{{ keyBoard.serialImg.url }}">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ keyBoard.invent }}</td>
+        <td>
+          {% if keyBoard.inventImg %}
+            <a href="{{ keyBoard.inventImg.url }}">
+              <img src="{{ keyBoard.inventImg.url }}">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ keyBoard.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Клавиатуры не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}
