@@ -32,14 +32,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
+    'shop.apps.ShopConfig',
+    'cart.apps.CartConfig',
+    'orders.apps.OrdersConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
-    'django_crontab',
-    'sass_processor',
     'crispy_forms',
     'crispy_bootstrap5',
-    'import_export',
-    'ajax_select',
     'debug_toolbar',
 ]
 
@@ -102,6 +101,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -151,21 +151,11 @@ USE_TZ = True
 
 DATE_FORMAT = 'd.m.Y'
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
-]
-
 STATIC_URL = 'static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
-STATIC_ROOT = '/home/mybase/web/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
 
-MEDIA_ROOT = '/home/mybase/web/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 MEDIA_URL = 'mediafiles/'
 
@@ -177,11 +167,8 @@ LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-BOOTSTRAP4 = {'include_jquery': True}
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000 
 
 CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
-
+CART_SESSION_ID = 'cart'

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include
-from django.urls import path
+from django.urls import path, re_path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -23,15 +23,15 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
+    re_path(r'^cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    re_path(r'^orders/',  include(('orders.urls', 'orders'), namespace='orders')),
+    re_path(r'^shop/',  include(('shop.urls', 'shop'), namespace='shop')),
+    
 ]
 
 urlpatterns += [
-     path('catalog/', include('catalog.urls')),
-     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
-     path('accounts/', include('django.contrib.auth.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', include('catalog.urls')),
 
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('accounts/', include('django.contrib.auth.urls')),
+] 
 

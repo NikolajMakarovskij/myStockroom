@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_PASSWORD=zx23SA21 
+      - POSTGRES_PASSWORD=${SQL_PASSWORD} 
   db:
     image: postgres:14
     restart: always
@@ -38,7 +38,6 @@ services:
     build: ./nginx
     restart: always
     volumes:
-      #- ./:/home/mybase
       - ./static:/home/mybase/web/static
       - ./media:/home/mybase/web/mediafiles #проброс папки с файлами
     ports:
