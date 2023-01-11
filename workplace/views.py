@@ -43,7 +43,7 @@ class WorkplaceCreate(DataMixin, CreateView):
     model = workplace
     form_class = workplaceForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('workplace')
+    success_url = reverse_lazy('workplace:workplace')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,7 +55,7 @@ class WorkplaceUpdate(DataMixin, UpdateView):
     model = workplace
     template_name = 'Forms/add.html'
     form_class = workplaceForm
-    success_url = reverse_lazy('workplace')
+    success_url = reverse_lazy('workplace:workplace')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,11 +66,11 @@ class WorkplaceUpdate(DataMixin, UpdateView):
 class WorkplaceDelete(DataMixin, DeleteView):
     model = workplace
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('workplace')
+    success_url = reverse_lazy('workplace:workplace')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить рабочее место",selflink='workplace')
+        c_def = self.get_user_context(title="Удалить рабочее место",selflink='workplace:workplace')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -134,9 +134,9 @@ class RoomDelete(DataMixin, DeleteView):
     model = room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room')
-    
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить кабинет",selflink='room')
+        c_def = self.get_user_context(title="Удалить кабинет",selflink='workplace:room')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
