@@ -1,5 +1,5 @@
 from django.test import TestCase
-from catalog.models.models import *
+from employee.models import employee, post, departament
 from django.urls import reverse
 
 

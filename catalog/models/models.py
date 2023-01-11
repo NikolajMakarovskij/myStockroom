@@ -1,5 +1,5 @@
 from django.db import models
-from .employee_model import *
+from employee.models import employee
 from .software_model import *
 from .workstation_model import *
 from .printer_model import *
@@ -132,7 +132,7 @@ class storage(models.Model):
         verbose_name="Объем памяти"
         )
     employee = models.ForeignKey(
-        'employee',
+        employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите сотрудника",

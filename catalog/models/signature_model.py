@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from .models import *
 from django.urls import reverse
+from employee.models import employee
 import uuid 
 
 class signature (models.Model): #electronic digital signature
@@ -39,14 +40,14 @@ class signature (models.Model): #electronic digital signature
         verbose_name="Срок действия закрытой части"
         )
     employeeRegister = models.ForeignKey(
-        'employee',
+        employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник на которого оформлена ЭЦП"
         )
     employeeStorage = models.ForeignKey(
-        'employee',
+        employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         related_name='+',

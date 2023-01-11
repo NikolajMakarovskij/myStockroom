@@ -4,10 +4,10 @@ from .views import *
 urlpatterns = [    
     #кабинеты
     re_path(r'^room/$', RoomListView.as_view(), name='room'),
-    path(r'room/(?P<pk>[-\w]+)$', RoomDetailView.as_view(), name='room-detail'),
+    path(r'^room/(?P<pk>[-\w]+)$', RoomDetailView.as_view(), name='room-detail'),
     path(r'^room/create$', RoomCreate.as_view(), name='new-room'),
-    re_path(r'room/(?P<pk>[-\w]+)/update$', RoomUpdate.as_view(), name='room-update'),
-    re_path(r'room/(?P<pk>[-\w]+)/delete$', RoomDelete.as_view(), name='room-delete'),
+    re_path(r'^room/(?P<pk>[-\w]+)/update$', RoomUpdate.as_view(), name='room-update'),
+    re_path(r'^room/(?P<pk>[-\w]+)/delete$', RoomDelete.as_view(), name='room-delete'),
     #рабочие места
     re_path(r'^$', WorkplaceListView.as_view(), name='workplace'),
     path(r'^(?P<pk>[-\w]+)$', WorkplaceDetailView.as_view(), name='workplace-detail'),

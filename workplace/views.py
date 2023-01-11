@@ -110,7 +110,7 @@ class RoomCreate(DataMixin, CreateView):
     model = room
     form_class = roomForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('workplace:room')
+    success_url = reverse_lazy('workplace:room-detail')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,7 +122,7 @@ class RoomUpdate(DataMixin, UpdateView):
     model = room
     template_name = 'Forms/add.html'
     form_class = roomForm
-    success_url = reverse_lazy('workplace:room')
+    success_url = reverse_lazy('workplace:room-detail')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

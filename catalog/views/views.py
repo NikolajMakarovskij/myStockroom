@@ -4,7 +4,6 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..utils import *
-from .employee_view import *
 from .software_view import *
 from .workstation_view import *
 from .printer_view import *

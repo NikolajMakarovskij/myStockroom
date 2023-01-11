@@ -11,24 +11,7 @@ urlpatterns = [
     #склад
     re_path(r'^warehouse/$', views.warehouseView.as_view(), name='warehouse'),
 
-    #сотрудники
-    re_path(r'^employee/$', views.EmployeeListView.as_view(), name='employee'),
-    re_path(r'^employee/(?P<pk>[-\w]+)$', views.EmployeeDetailView.as_view(), name='employee-detail'),
-    path(r'^employee/create$', views.EmployeeCreate.as_view(), name='new-employee'),
-    re_path(r'^employee/(?P<pk>[-\w]+)/update$', views.EmployeeUpdate.as_view(), name='employee-update'),
-    re_path(r'^employee/(?P<pk>[-\w]+)/delete$', views.EmployeeDelete.as_view(), name='employee-delete'),
-    #Должность
-    re_path(r'^post/$', views.postListView.as_view(), name='post'),
-    re_path(r'^post/(?P<pk>[-\w]+)$', views.postDetailView.as_view(), name='post-detail'),
-    path(r'^post/create$', views.postCreate.as_view(), name='new-post'),
-    re_path(r'^post/(?P<pk>[-\w]+)/update$', views.postUpdate.as_view(), name='post-update'),
-    re_path(r'^post/(?P<pk>[-\w]+)/delete$', views.postDelete.as_view(), name='post-delete'),
-    #Отдел
-    re_path(r'^departament/$', views.departamentListView.as_view(), name='departament'),
-    re_path(r'^departament/(?P<pk>[-\w]+)$', views.departamentDetailView.as_view(), name='departament-detail'),
-    path(r'^departament/create$', views.departamentCreate.as_view(), name='new-departament'),
-    re_path(r'^departament/(?P<pk>[-\w]+)/update$', views.departamentUpdate.as_view(), name='departament-update'),
-    re_path(r'^departament/(?P<pk>[-\w]+)/delete$', views.departamentDelete.as_view(), name='departament-delete'),
+
     #софт
     re_path(r'^software/$', views.softwareListView.as_view(), name='software'),
     re_path(r'^software/(?P<pk>[-\w]+)$', views.softwareDetailView.as_view(), name='software-detail'),

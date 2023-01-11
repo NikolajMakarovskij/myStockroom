@@ -6,7 +6,7 @@ from django.conf import settings
 menu = [
     {'title':  "Главная страница", 'url_name': 'index'},
     {'title':  "Раб. места", 'url_name': 'workplace:workplace'},
-    {'title':  "Сотрудники", 'url_name': 'employee'},
+    {'title':  "Сотрудники", 'url_name': 'employee:employee'},
     {'title':  "Софт", 'url_name': 'software'},
     {'title':  "Раб. станции", 'url_name': 'workstation'},
     {'title':  "Принтеры", 'url_name': 'printer'},
