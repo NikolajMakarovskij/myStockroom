@@ -3,6 +3,7 @@ from .ups_model import *
 from .models import *
 from django.urls import reverse
 import uuid 
+from workplace.models import workplace
 
 class workstation(models.Model):
     id = models.UUIDField(
@@ -137,7 +138,7 @@ class workstation(models.Model):
         verbose_name="Блок бесперебойного питания"
         )
     workplace = models.ForeignKey(
-        'workplace',
+        workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочее место",

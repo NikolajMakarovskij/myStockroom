@@ -1,6 +1,7 @@
 from django.db import models
 from .models import *
 from django.urls import reverse
+from workplace.models import workplace
 import uuid 
 
 class printer (models.Model):
@@ -103,7 +104,7 @@ class printer (models.Model):
         verbose_name="Боковой лоток для подачи бумаги"
         )
     workplace = models.ForeignKey(
-        'workplace',
+        workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочее место",

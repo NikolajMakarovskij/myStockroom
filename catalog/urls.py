@@ -10,18 +10,7 @@ urlpatterns = [
     re_path(r'^consumables/$', views.consumablesView.as_view(), name='consumables'),
     #склад
     re_path(r'^warehouse/$', views.warehouseView.as_view(), name='warehouse'),
-    #кабинеты
-    re_path(r'^room/$', views.RoomListView.as_view(), name='room'),
-    re_path(r'^room/(?P<pk>[-\w]+)$', views.RoomDetailView.as_view(), name='room-detail'),
-    path(r'^room/create$', views.RoomCreate.as_view(), name='new-room'),
-    re_path(r'^room/(?P<pk>[-\w]+)/update$', views.RoomUpdate.as_view(), name='room-update'),
-    re_path(r'^room/(?P<pk>[-\w]+)/delete$', views.RoomDelete.as_view(), name='room-delete'),
-    #рабочие места
-    re_path(r'^workplace/$', views.WorkplaceListView.as_view(), name='workplace'),
-    re_path(r'^workplace/(?P<pk>[-\w]+)$', views.WorkplaceDetailView.as_view(), name='workplace-detail'),
-    path(r'^workplace/create$', views.WorkplaceCreate.as_view(), name='new-workplace'),
-    re_path(r'^workplace/(?P<pk>[-\w]+)/update$', views.WorkplaceUpdate.as_view(), name='workplace-update'),
-    re_path(r'^workplace/(?P<pk>[-\w]+)/delete$', views.WorkplaceDelete.as_view(), name='workplace-delete'),
+
     #сотрудники
     re_path(r'^employee/$', views.EmployeeListView.as_view(), name='employee'),
     re_path(r'^employee/(?P<pk>[-\w]+)$', views.EmployeeDetailView.as_view(), name='employee-detail'),

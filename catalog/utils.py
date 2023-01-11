@@ -5,7 +5,7 @@ from django.conf import settings
 
 menu = [
     {'title':  "Главная страница", 'url_name': 'index'},
-    {'title':  "Раб. места", 'url_name': 'workplace'},
+    {'title':  "Раб. места", 'url_name': 'workplace:workplace'},
     {'title':  "Сотрудники", 'url_name': 'employee'},
     {'title':  "Софт", 'url_name': 'software'},
     {'title':  "Раб. станции", 'url_name': 'workstation'},
@@ -39,9 +39,10 @@ class DataMixin:
         context['query'] = self.request.GET.get('q')
         
         return context
+
 # button add in form
 class WidgetCanAdd(widgets.Select):
-
+    "Отвечает за кнопку добавить в форме для связанных моделей"
     def __init__(self, related_model, related_url=None, *args, **kw):
 
         super(WidgetCanAdd, self).__init__(*args, **kw)

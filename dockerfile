@@ -1,7 +1,7 @@
 # pull official base image
 FROM python:3.10-bullseye
 # set work directory
-WORKDIR /myBase
+WORKDIR /myStockroom
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

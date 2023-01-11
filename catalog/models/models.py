@@ -1,6 +1,5 @@
 from django.db import models
 from .employee_model import *
-from .workplace_model import *
 from .software_model import *
 from .workstation_model import *
 from .printer_model import *

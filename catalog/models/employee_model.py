@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from .models import *
+from workplace.models import workplace
 import uuid 
 
 class employee(models.Model):
@@ -28,7 +29,7 @@ class employee(models.Model):
         verbose_name="Фамилия сотрудника"
         )
     workplace = models.ForeignKey(
-        'Workplace',
+        workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Выберете рабочее место",

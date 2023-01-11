@@ -4,13 +4,13 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..utils import *
-from .workplace_view import *
 from .employee_view import *
 from .software_view import *
 from .workstation_view import *
 from .printer_view import *
 from .signature_view import *
 from .ups_view import *
+
 
 #Главная
 class indexView(generic.ListView):
