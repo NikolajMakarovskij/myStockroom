@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from workplace.models import workplace
 from employee.models import employee
 from .models import *
-from catalog.models.ups_model import ups
+from ups.models import ups
 from software.models import software, os 
 
 class workstationForm(forms.ModelForm):  
@@ -31,7 +31,7 @@ class workstationForm(forms.ModelForm):
             'dcpower': WidgetCanAdd(dcpower, related_url="workstation:new-dcpower", attrs={'class': 'input-group form-select form-select-lg'}),
             'keyBoard': WidgetCanAdd(keyBoard, related_url="workstation:new-keyBoard", attrs={'class': 'input-group form-select form-select-lg'}),
             'mouse': WidgetCanAdd(mouse, related_url="workstation:new-mouse", attrs={'class': 'input-group form-select form-select-lg'}),
-            'ups': WidgetCanAdd(ups, related_url="new-ups", attrs={'class': 'input-group form-select form-select-lg'}),
+            'ups': WidgetCanAdd(ups, related_url="ups:new-ups", attrs={'class': 'input-group form-select form-select-lg'}),
             'workplace': WidgetCanAdd(workplace, related_url="workplace:new-workplace", attrs={'class': 'input-group form-select form-select-lg'}),
             'employee': WidgetCanAdd(employee, related_url="employee:new-employee", attrs={'class': 'input-group form-select form-select-lg'}),
             'software': WidgetCanAdd(software, related_url="software:new-software", attrs={'class': 'input-group form-select form-select-lg'}),

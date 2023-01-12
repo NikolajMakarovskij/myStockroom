@@ -6,7 +6,7 @@ from .models import *
 from workplace.models import workplace
 from employee.models import employee
 from software.models import software, os
-from catalog.models.ups_model import ups
+from ups.models import ups
 
 
 class workstation(models.Model):

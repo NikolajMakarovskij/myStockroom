@@ -1,5 +1,4 @@
 from .forms import *
-from catalog.models.ups_model import *
 from .models import *
 from django.views import generic
 from django.db.models import Q

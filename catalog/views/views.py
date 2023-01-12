@@ -5,7 +5,6 @@ from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..utils import *
 from .signature_view import *
-from .ups_view import *
 
 
 #Главная

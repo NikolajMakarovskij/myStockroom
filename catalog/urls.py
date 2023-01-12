@@ -32,17 +32,6 @@ urlpatterns = [
     path(r'^storage/create$', views.storageCreate.as_view(), name='new-storage'),
     re_path(r'^storage/(?P<pk>[-\w]+)/update$', views.storageUpdate.as_view(), name='storage-update'),
     re_path(r'^storage/(?P<pk>[-\w]+)/delete$', views.storageDelete.as_view(), name='storage-delete'),
-    #ИБП
-    re_path(r'^ups/$', views.upsListView.as_view(), name='ups'),
-    re_path(r'^ups/(?P<pk>[-\w]+)$', views.upsDetailView.as_view(), name='ups-detail'),
-    path(r'^ups/create$', views.upsCreate.as_view(), name='new-ups'),
-    re_path(r'^ups/(?P<pk>[-\w]+)/update$', views.upsUpdate.as_view(), name='ups-update'),
-    re_path(r'^ups/(?P<pk>[-\w]+)/delete$', views.upsDelete.as_view(), name='ups-delete'),
-    #Кассеты
-    re_path(r'^cassette/$', views.cassetteListView.as_view(), name='cassette'),
-    re_path(r'^cassette/(?P<pk>[-\w]+)$', views.cassetteDetailView.as_view(), name='cassette-detail'),
-    path(r'^cassette/create$', views.cassetteCreate.as_view(), name='new-cassette'),
-    re_path(r'^cassette/(?P<pk>[-\w]+)/update$', views.cassetteUpdate.as_view(), name='cassette-update'),
-    re_path(r'^cassette/(?P<pk>[-\w]+)/delete$', views.cassetteDelete.as_view(), name='cassette-delete'),
+
 
 ]
