@@ -50,7 +50,7 @@
       <td>
         {% if software.licenseKeyImg %}
           <a href="{{ software.licenseKeyImg.url }}">
-            <img src="{{ software.licenseKeyImg.url }}">
+            <img src="{{ software.licenseKeyImg.url }}" style="height:60px">
           </a>
         {% else %}
           <img src="{% static 'images/no_file.svg' %}" class="iconTable">

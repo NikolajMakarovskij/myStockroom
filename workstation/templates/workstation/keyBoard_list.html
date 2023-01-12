@@ -33,7 +33,7 @@
         <td>
           {% if keyBoard.serialImg %}
             <a href="{{ keyBoard.serialImg.url }}">
-              <img src="{{ keyBoard.serialImg.url }}">
+              <img src="{{ keyBoard.serialImg.url }}" style="height:60px">
             </a>
           {% else %}
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">
@@ -43,7 +43,7 @@
         <td>
           {% if keyBoard.inventImg %}
             <a href="{{ keyBoard.inventImg.url }}">
-              <img src="{{ keyBoard.inventImg.url }}">
+              <img src="{{ keyBoard.inventImg.url }}" style="height:60px">
             </a>
           {% else %}
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">

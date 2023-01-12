@@ -10,54 +10,46 @@
       {%include 'search/search.html' %}
     </div>
 <!--block content-->
-{% if monitor_list %}
+{% if mouse_list %}
   <div class="table-responsive">
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
-          <th scope="col">Раб. станция</th>
+          <th scope="col">Мыши</th>
           <th scope="col">Производитель</th>
           <th scope="col">Серийный номер</th>
           <th scope="col">Фото серийного номера</th>
           <th scope="col">Инвентарный номер</th>
           <th scope="col">Фото инвентарного номера</th>
-          <th scope="col">HDMI</th>
-          <th scope="col">VGA</th>
-          <th scope="col">DVI</th>
-          <th scope="col">DisplayPort</th>
-          <th scope="col">USB</th>
+          <th scope="col">Количество</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for monitor in monitor_list %}
+      {% for mouse in mouse_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ monitor.get_absolute_url }}">{{ monitor.name }}</a></td>
-        <td><a class="noDecoration" href="{{ monitor.manufacturer.get_absolute_url }}">{{ monitor.manufacturer.name }}</a></td>
-        <td>{{ monitor.serial }}</td>
+        <td><a class="noDecoration" href="{{ mouse.get_absolute_url }}">{{ mouse.name }}</a></td>
+        <td><a class="noDecoration" href="{{ mouse.manufacturer.get_absolute_url }}">{{ mouse.manufacturer.name }}</a></td>
+        <td>{{ mouse.serial }}</td>
         <td>
-          {% if monitor.serialImg %}
-            <a href="{{ monitor.serialImg.url }}">
-              <img src="{{ monitor.serialImg.url }}">
+          {% if mouse.serialImg %}
+            <a href="{{ mouse.serialImg.url }}">
+              <img src="{{ mouse.serialImg.url }}" style="height:60px">
             </a>
           {% else %}
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">
           {% endif %}
         </td>
-        <td>{{ monitor.invent }}</td>
+        <td>{{ mouse.invent }}</td>
         <td>
-          {% if monitor.inventImg %}
-            <a href="{{ monitor.inventImg.url }}">
-              <img src="{{ monitor.inventImg.url }}">
+          {% if mouse.inventImg %}
+            <a href="{{ mouse.inventImg.url }}">
+              <img src="{{ mouse.inventImg.url }}" style="height:60px">
             </a>
           {% else %}
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">
           {% endif %}
         </td>
-        <td>{{ monitor.hdmi }}</td>
-        <td>{{ monitor.vga }}</td>
-        <td>{{ monitor.dvi }}</td>
-        <td>{{ monitor.displayPort }}</td>
-        <td>{{ monitor.usbPort }}</td>
+        <td>{{ mouse.score }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -66,7 +58,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Мониторы не обнаружены</th>
+          <th scope="col" style="font-size: 32px;">Мыши не обнаружены</th>
         </tr>
       </thead>
     </table>

@@ -3,6 +3,7 @@ from django.db import models
 from .models import *
 from django.urls import reverse
 from employee.models import employee
+from workstation.models import workstation
 import uuid 
 
 class signature (models.Model): #electronic digital signature
@@ -55,7 +56,7 @@ class signature (models.Model): #electronic digital signature
         verbose_name="Сотрудник у которого хранится ЭЦП"
         )
     workstation = models.ForeignKey(
-        'workstation',
+        workstation,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочую станцию",

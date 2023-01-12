@@ -42,7 +42,7 @@
         <td>
           {% if workstation.serialImg %}
             <a href="{{ workstation.serialImg.url }}">
-              <img src="{{ workstation.serialImg.url }}">
+              <img src="{{ workstation.serialImg.url }}" style="height:60px">
             </a>
           {% else %}
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">
@@ -52,10 +52,10 @@
         <td>
           {% if workstation.inventImg %}
             <a href="{{ workstation.inventImg.url }}">
-              <img src="{{ workstation.inventImg.url }}">
+              <img src="{{ workstation.inventImg.url }}" style="height:60px">
             </a>
           {% else %}
-            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable" >
           {% endif %}
         </td>
         <td>{{ workstation.ups }}</td>

@@ -1,5 +1,6 @@
 from ..forms import signatureForm
 from ..models.models import *
+from ..models.signature_model import *
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView

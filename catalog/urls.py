@@ -12,84 +12,8 @@ urlpatterns = [
     re_path(r'^warehouse/$', views.warehouseView.as_view(), name='warehouse'),
 
 
-    #софт
-    re_path(r'^software/$', views.softwareListView.as_view(), name='software'),
-    re_path(r'^software/(?P<pk>[-\w]+)$', views.softwareDetailView.as_view(), name='software-detail'),
-    path(r'^software/create$', views.softwareCreate.as_view(), name='new-software'),
-    re_path(r'^software/(?P<pk>[-\w]+)/update$', views.softwareUpdate.as_view(), name='software-update'),
-    re_path(r'^software/(?P<pk>[-\w]+)/delete$', views.softwareDelete.as_view(), name='software-delete'),
-    #ОС
-    re_path(r'^OS/$', views.OSListView.as_view(), name='OS'),
-    re_path(r'^OS/(?P<pk>[-\w]+)$', views.OSDetailView.as_view(), name='OS-detail'),
-    path(r'^OS/create$', views.OSCreate.as_view(), name='new-OS'),
-    re_path(r'^OS/(?P<pk>[-\w]+)/update$', views.OSUpdate.as_view(), name='OS-update'),
-    re_path(r'^OS/(?P<pk>[-\w]+)/delete$', views.OSDelete.as_view(), name='OS-delete'),
-    #рабочие станции
-    re_path(r'^workstation/$', views.workstationListView.as_view(), name='workstation'), 
-    re_path(r'^workstation/(?P<pk>[-\w]+)$', views.workstationDetailView.as_view(), name='workstation-detail'),
-    path(r'^workstation/create$', views.workstationCreate.as_view(), name='new-workstation'),
-    re_path(r'^workstation/(?P<pk>[-\w]+)/update$', views.workstationUpdate.as_view(), name='workstation-update'),
-    re_path(r'^workstation/(?P<pk>[-\w]+)/delete$', views.workstationDelete.as_view(), name='workstation-delete'),
-    #Монитор
-    re_path(r'^monitor/$', views.monitorListView.as_view(), name='monitor'), 
-    re_path(r'^monitor/(?P<pk>[-\w]+)$', views.monitorDetailView.as_view(), name='monitor-detail'),
-    path(r'^monitor/create$', views.monitorCreate.as_view(), name='new-monitor'),
-    re_path(r'^monitor/(?P<pk>[-\w]+)/update$', views.monitorUpdate.as_view(), name='monitor-update'),
-    re_path(r'^monitor/(?P<pk>[-\w]+)/delete$', views.monitorDelete.as_view(), name='monitor-delete'),
-    #Материнская плата
-    re_path(r'^motherboard/$', views.motherboardListView.as_view(), name='motherboard'), 
-    re_path(r'^motherboard/(?P<pk>[-\w]+)$', views.motherboardDetailView.as_view(), name='motherboard-detail'),
-    path(r'^motherboard/create$', views.motherboardCreate.as_view(), name='new-motherboard'),
-    re_path(r'^motherboard/(?P<pk>[-\w]+)/update$', views.motherboardUpdate.as_view(), name='motherboard-update'),
-    re_path(r'^motherboard/(?P<pk>[-\w]+)/delete$', views.motherboardDelete.as_view(), name='motherboard-delete'),
-    #Процессор
-    re_path(r'^cpu/$', views.cpuListView.as_view(), name='cpu'), 
-    re_path(r'^cpu/(?P<pk>[-\w]+)$', views.cpuDetailView.as_view(), name='cpu-detail'),
-    path(r'^cpu/create$', views.cpuCreate.as_view(), name='new-cpu'),
-    re_path(r'^cpu/(?P<pk>[-\w]+)/update$', views.cpuUpdate.as_view(), name='cpu-update'),
-    re_path(r'^cpu/(?P<pk>[-\w]+)/delete$', views.cpuDelete.as_view(), name='cpu-delete'),
-    #Видеокарта
-    re_path(r'^gpu/$', views.gpuListView.as_view(), name='gpu'), 
-    re_path(r'^gpu/(?P<pk>[-\w]+)$', views.gpuDetailView.as_view(), name='gpu-detail'),
-    path(r'^gpu/create$', views.gpuCreate.as_view(), name='new-gpu'),
-    re_path(r'^gpu/(?P<pk>[-\w]+)/update$', views.gpuUpdate.as_view(), name='gpu-update'),
-    re_path(r'^gpu/(?P<pk>[-\w]+)/delete$', views.gpuDelete.as_view(), name='gpu-delete'),
-    #оперативная память
-    re_path(r'^ram/$', views.ramListView.as_view(), name='ram'), 
-    re_path(r'^ram/(?P<pk>[-\w]+)$', views.ramDetailView.as_view(), name='ram-detail'),
-    path(r'^ram/create$', views.ramCreate.as_view(), name='new-ram'),
-    re_path(r'^ram/(?P<pk>[-\w]+)/update$', views.ramUpdate.as_view(), name='ram-update'),
-    re_path(r'^ram/(?P<pk>[-\w]+)/delete$', views.ramDelete.as_view(), name='ram-delete'),
-    #SSD
-    re_path(r'^ssd/$', views.ssdListView.as_view(), name='ssd'), 
-    re_path(r'^ssd/(?P<pk>[-\w]+)$', views.ssdDetailView.as_view(), name='ssd-detail'),
-    path(r'^ssd/create$', views.ssdCreate.as_view(), name='new-ssd'),
-    re_path(r'^ssd/(?P<pk>[-\w]+)/update$', views.ssdUpdate.as_view(), name='ssd-update'),
-    re_path(r'^ssd/(?P<pk>[-\w]+)/delete$', views.ssdDelete.as_view(), name='ssd-delete'),
-    #HDD
-    re_path(r'^hdd/$', views.hddListView.as_view(), name='hdd'), 
-    re_path(r'^hdd/(?P<pk>[-\w]+)$', views.hddDetailView.as_view(), name='hdd-detail'),
-    path(r'^hdd/create$', views.hddCreate.as_view(), name='new-hdd'),
-    re_path(r'^hdd/(?P<pk>[-\w]+)/update$', views.hddUpdate.as_view(), name='hdd-update'),
-    re_path(r'^hdd/(?P<pk>[-\w]+)/delete$', views.hddDelete.as_view(), name='hdd-delete'),
-    #Блок питания
-    re_path(r'^dcpower/$', views.dcpowerListView.as_view(), name='dcpower'), 
-    re_path(r'^dcpower/(?P<pk>[-\w]+)$', views.dcpowerDetailView.as_view(), name='dcpower-detail'),
-    path(r'^dcpower/create$', views.dcpowerCreate.as_view(), name='new-dcpower'),
-    re_path(r'^dcpower/(?P<pk>[-\w]+)/update$', views.dcpowerUpdate.as_view(), name='dcpower-update'),
-    re_path(r'^dcpower/(?P<pk>[-\w]+)/delete$', views.dcpowerDelete.as_view(), name='dcpower-delete'),
-    #Клавиатура
-    re_path(r'^keyBoard/$', views.keyBoardListView.as_view(), name='keyBoard'), 
-    re_path(r'^keyBoard/(?P<pk>[-\w]+)$', views.keyBoardDetailView.as_view(), name='keyBoard-detail'),
-    path(r'^keyBoard/create$', views.keyBoardCreate.as_view(), name='new-keyBoard'),
-    re_path(r'^keyBoard/(?P<pk>[-\w]+)/update$', views.keyBoardUpdate.as_view(), name='keyBoard-update'),
-    re_path(r'^keyBoard/(?P<pk>[-\w]+)/delete$', views.keyBoardDelete.as_view(), name='keyBoard-delete'),
-    #мышь
-    re_path(r'^mouse/$', views.mouseListView.as_view(), name='mouse'), 
-    re_path(r'^mouse/(?P<pk>[-\w]+)$', views.mouseDetailView.as_view(), name='mouse-detail'),
-    path(r'^mouse/create$', views.mouseCreate.as_view(), name='new-mouse'),
-    re_path(r'^mouse/(?P<pk>[-\w]+)/update$', views.mouseUpdate.as_view(), name='mouse-update'),
-    re_path(r'^mouse/(?P<pk>[-\w]+)/delete$', views.mouseDelete.as_view(), name='mouse-delete'),
+
+    
     #принтеры
     re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),
     re_path(r'^printer/(?P<pk>[-\w]+)$', views.printerDetailView.as_view(), name='printer-detail'),

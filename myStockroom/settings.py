@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'workplace.apps.WorkplaceConfig',
     'employee.apps.EmployeeConfig',
+    'software.apps.SoftwareConfig',
+    'workstation.apps.WorkstationConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
@@ -181,7 +183,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = 'mediafiles/'
 
