@@ -12,6 +12,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [  
+    path('consumables/', include(('consumables.urls','consumables'), namespace='consumables'), ),
     path('workstation/', include(('workstation.urls','workstation'), namespace='workstation'), ),
     path('software/', include(('software.urls','software'), namespace='software'), ),
     path('employee/', include(('employee.urls','employee'), namespace='employee'), ),

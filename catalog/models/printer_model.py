@@ -2,6 +2,7 @@ from django.db import models
 from .models import *
 from django.urls import reverse
 from workplace.models import workplace
+from consumables.models import *
 import uuid 
 
 class printer (models.Model):
@@ -111,21 +112,21 @@ class printer (models.Model):
         verbose_name="Рабочее место"
         )
     cartridge = models.ForeignKey(
-        'cartridge',
+        cartridge,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите картридж",
         verbose_name="Картридж"
         )
     fotoval = models.ForeignKey(
-        'fotoval',
+        fotoval,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите фотовал",
         verbose_name="Фотовал"
         )
     toner = models.ForeignKey(
-        'toner',
+        toner,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите тонер",
@@ -172,196 +173,3 @@ class printer (models.Model):
         verbose_name_plural = 'Принтер'
         ordering = ["name"]
 
-class cartridge (models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    manufacturer = models.ForeignKey(
-        'manufacturer',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    buhCode = models.CharField(
-        max_length=50,
-        help_text="Введите код по бухгалтерии",
-        verbose_name="Код в бухгалтерии"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-
-    def __str__(self):
-        return self.name
-    def get_absolute_url(self):
-        return reverse('cartridge-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Картридж'
-
-class fotoval (models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    manufacturer = models.ForeignKey(
-        'manufacturer',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    buhCode = models.CharField(
-        max_length=50,
-        help_text="Введите код по бухгалтерии",
-        verbose_name="Код в бухгалтерии"
-        )
-    mileage = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите пробег",
-        verbose_name="Пробег"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-
-    def __str__(self):
-        return self.name
-    def get_absolute_url(self):
-        return reverse('fotoval-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Фотовал'
-
-class toner (models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    manufacturer = models.ForeignKey(
-        'manufacturer',
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    buhCode = models.CharField(
-        max_length=50,
-        help_text="Введите код по бухгалтерии",
-        verbose_name="Код в бухгалтерии"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-
-    def __str__(self):
-        return self.name
-    def get_absolute_url(self):
-        return reverse('toner-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
-
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
-    class Meta:
-        verbose_name_plural = 'Тонер'

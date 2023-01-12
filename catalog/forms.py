@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from workplace.models import workplace
 from employee.models import employee
 from workstation.models import workstation
+from consumables.models import *
 from .models.models import *
 from .models.printer_model import *
 from .models.signature_model import *
@@ -38,10 +39,10 @@ class upsForm(forms.ModelForm):
             'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'accumulator1': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator2': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator3': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator4': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator1': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette1': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette2': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette3': WidgetCanAdd(cassette, related_url="new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
@@ -64,35 +65,20 @@ class cassetteForm(forms.ModelForm):
             'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'accumulator1': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator2': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator3': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator4': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator5': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator6': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator7': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator8': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator9': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator10': WidgetCanAdd(accumulator, related_url="new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator1': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator5': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator6': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator7': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator8': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator9': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator10': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
 
-class accumulatorForm(forms.ModelForm):   
-    class Meta:
-        model = accumulator
-        fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','voltage','current','score']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
-            'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
-            'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
-            'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-        } 
+
 
 class printerForm(forms.ModelForm):  
     class Meta:
@@ -124,46 +110,14 @@ class printerForm(forms.ModelForm):
             'tray2': forms.Select(choices=FORMAT, attrs={'class': 'form-select form-select-lg'}),
             'tray3': forms.Select(choices=FORMAT, attrs={'class': 'form-select form-select-lg'}),
             'traySide': forms.Select(choices=FORMAT, attrs={'class': 'form-select form-select-lg'}),
-            'workplace': WidgetCanAdd(workplace, related_url="new-workplace", attrs={'class': 'form-select form-select-lg'}),
-            'cartridge': WidgetCanAdd(cartridge, related_url="new-cartridge", attrs={'class': 'form-select form-select-lg'}),
-            'fotoval': WidgetCanAdd(fotoval, related_url="new-fotoval", attrs={'class': 'form-select form-select-lg'}),
-            'toner': WidgetCanAdd(toner, related_url="new-toner", attrs={'class': 'form-select form-select-lg'}),
+            'workplace': WidgetCanAdd(workplace, related_url="workplace:new-workplace", attrs={'class': 'form-select form-select-lg'}),
+            'cartridge': WidgetCanAdd(cartridge, related_url="consumables:new-cartridge", attrs={'class': 'form-select form-select-lg'}),
+            'fotoval': WidgetCanAdd(fotoval, related_url="consumables:new-fotoval", attrs={'class': 'form-select form-select-lg'}),
+            'toner': WidgetCanAdd(toner, related_url="consumables:new-toner", attrs={'class': 'form-select form-select-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
 
-class cartridgeForm(forms.ModelForm):  
-    class Meta:
-        model = cartridge
-        fields = ['name','manufacturer','buhCode','score' ]
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
-            'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-        } 
 
-class fotovalForm(forms.ModelForm):  
-    class Meta:
-        model = fotoval
-        fields = ['name','manufacturer','mileage','buhCode','score' ]
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
-            'mileage': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-            'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-        } 
-
-class tonerForm(forms.ModelForm):  
-    class Meta:
-        model = toner
-        fields = ['name','manufacturer','buhCode','score' ]
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
-            'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
-        } 
 
 class signatureForm(forms.ModelForm):  
     class Meta:
@@ -197,5 +151,5 @@ class storageForm(forms.ModelForm):
             'plug': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'typeMemory': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'volumeMemory': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'employee': WidgetCanAdd(employee, related_url="new-employee", attrs={'class': 'form-select form-select-lg'}),
+            'employee': WidgetCanAdd(employee, related_url="employee:new-employee", attrs={'class': 'form-select form-select-lg'}),
         } 

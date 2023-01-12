@@ -13,7 +13,7 @@ menu = [
     {'title':  "ЭЦП", 'url_name': 'signature'},
     {'title':  "Справочники", 'url_name': 'references'},
     {'title':  "Склад", 'url_name': 'warehouse'},
-    {'title':  "Расходники", 'url_name': 'consumables'},
+    {'title':  "Расходники", 'url_name': 'consumables:consumables'},
     #{'title':  "Контрагенты", 'url_name': '#'},
     #{'title':  "#", 'url_name': '#'},
     ]
