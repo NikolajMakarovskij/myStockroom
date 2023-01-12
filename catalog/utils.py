@@ -9,7 +9,7 @@ menu = [
     {'title':  "Сотрудники", 'url_name': 'employee:employee'},
     {'title':  "Софт", 'url_name': 'software:software'},
     {'title':  "Раб. станции", 'url_name': 'workstation:workstation'},
-    {'title':  "Принтеры", 'url_name': 'printer'},
+    {'title':  "Принтеры", 'url_name': 'printer:printer'},
     {'title':  "ЭЦП", 'url_name': 'signature'},
     {'title':  "Справочники", 'url_name': 'references'},
     {'title':  "Склад", 'url_name': 'warehouse'},

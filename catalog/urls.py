@@ -12,12 +12,7 @@ urlpatterns = [
 
 
     
-    #принтеры
-    re_path(r'^printer/$', views.printerListView.as_view(), name='printer'),
-    re_path(r'^printer/(?P<pk>[-\w]+)$', views.printerDetailView.as_view(), name='printer-detail'),
-    path(r'^printer/create$', views.printerCreate.as_view(), name='new-printer'),
-    re_path(r'^printer/(?P<pk>[-\w]+)/update$', views.printerUpdate.as_view(), name='printer-update'),
-    re_path(r'^printer/(?P<pk>[-\w]+)/delete$', views.printerDelete.as_view(), name='printer-delete'),
+
 
     #ЭЦП
     re_path(r'^signature/$', views.signatureListView.as_view(), name='signature'),

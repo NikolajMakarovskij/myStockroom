@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'software.apps.SoftwareConfig',
     'workstation.apps.WorkstationConfig',
     'consumables.apps.ConsumablesConfig',
+    'printer.apps.PrinterConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
