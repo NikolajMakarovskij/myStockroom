@@ -2,6 +2,9 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.forms import widgets
 from django.conf import settings
+import csv
+import datetime
+from django.http import HttpResponse
 
 menu = [
     {'title':  "Главная страница", 'url_name': 'index'},
@@ -40,7 +43,7 @@ class DataMixin:
         
         return context
 
-# button add in form
+# Кнопка добавить для формы
 class WidgetCanAdd(widgets.Select):
     "Отвечает за кнопку добавить в форме для связанных моделей"
     def __init__(self, related_model, related_url=None, *args, **kw):
@@ -62,3 +65,28 @@ class WidgetCanAdd(widgets.Select):
             (self.related_url, name))
         output.append('<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
         return mark_safe(''.join(output))
+
+#Функция экспорта
+class ExportAdmin:
+    def export_to_csv(modeladmin, request, queryset):
+        opts = modeladmin.model._meta
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(opts.verbose_name)
+        writer = csv.writer(response)
+        fields = [field for field in opts.get_fields() if not field.many_to_many and not field.one_to_many]
+        # Write a first row with header information
+        writer.writerow([field.verbose_name for field in fields])
+        # Write data rows
+        for obj in queryset:
+            data_row = []
+            for field in fields:
+                value = getattr(obj, field.name)
+                if isinstance(value, datetime.datetime):
+                    value = value.strftime('%d/%m/%Y')
+                data_row.append(value)
+            writer.writerow(data_row)
+        return response
+    export_to_csv.short_description = 'экспорт CSV'
+    class Meta:
+        verbose_name = 'экспорт CSV'
+        verbose_name_plural = 'экспорт CSV'

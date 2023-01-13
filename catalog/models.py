@@ -50,5 +50,6 @@ class references(models.Model):
                 )
         return fields
     class Meta:
+        verbose_name = 'Справочники'
         verbose_name_plural = 'Справочники'
         ordering = ["name", ]
