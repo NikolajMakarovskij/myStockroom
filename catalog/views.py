@@ -1,10 +1,10 @@
-from ..forms import *
-from ..models.models import *
+from .forms import *
+from .models import *
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..utils import *
-from .signature_view import *
+from .utils import *
+from signature.models import signature
 
 
 #Главная

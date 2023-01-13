@@ -3,7 +3,7 @@ from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
 from consumables.models import accumulator
 from .models import cassette, ups
-from catalog.models.models import manufacturer
+from catalog.models import manufacturer
 
 class upsForm(forms.ModelForm):   
     class Meta:

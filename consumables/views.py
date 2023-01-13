@@ -4,7 +4,7 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.utils import *
-from catalog.models.models import references
+from catalog.models import references
 
 #Расходники
 class consumablesView(DataMixin, generic.ListView):

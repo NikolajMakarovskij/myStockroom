@@ -1,5 +1,5 @@
 from django.db import models
-from catalog.models.models import manufacturer
+from catalog.models import manufacturer
 from django.urls import reverse
 import uuid 
 

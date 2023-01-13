@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from catalog.models.models import manufacturer
+from catalog.models import manufacturer
 import uuid 
 
 class cartridge (models.Model):

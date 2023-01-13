@@ -1,37 +1,26 @@
 from django.urls import path, re_path
-from .views import views
+from .views import *
 
 urlpatterns = [
     #главная
-    re_path(r'^$', views.indexView.as_view(), name='index'),
+    re_path(r'^$', indexView.as_view(), name='index'),
     #справочники
-    re_path(r'^references/$', views.referencesView.as_view(), name='references'),
+    re_path(r'^references/$', referencesView.as_view(), name='references'),
     #склад
-    re_path(r'^warehouse/$', views.warehouseView.as_view(), name='warehouse'),
-
-
-
-    
-
-
-    #ЭЦП
-    re_path(r'^signature/$', views.signatureListView.as_view(), name='signature'),
-    re_path(r'^signature/(?P<pk>[-\w]+)$', views.signatureDetailView.as_view(), name='signature-detail'),
-    path(r'^signature/create$', views.signatureCreate.as_view(), name='new-signature'),
-    re_path(r'^signature/(?P<pk>[-\w]+)/update$', views.signatureUpdate.as_view(), name='signature-update'),
-    re_path(r'^signature/(?P<pk>[-\w]+)/delete$', views.signatureDelete.as_view(), name='signature-delete'),
+    re_path(r'^warehouse/$', warehouseView.as_view(), name='warehouse'),
+ 
     #Производитель
-    re_path(r'^manufacturer/$', views.manufacturerListView.as_view(), name='manufacturer'),
-    re_path(r'^manufacturer/(?P<pk>[-\w]+)$', views.manufacturerDetailView.as_view(), name='manufacturer-detail'),
-    path(r'^manufacturer/create$', views.manufacturerCreate.as_view(), name='new-manufacturer'),
-    re_path(r'^manufacturer/(?P<pk>[-\w]+)/update$', views.manufacturerUpdate.as_view(), name='manufacturer-update'),
-    re_path(r'^manufacturer/(?P<pk>[-\w]+)/delete$', views.manufacturerDelete.as_view(), name='manufacturer-delete'),
+    re_path(r'^manufacturer/$', manufacturerListView.as_view(), name='manufacturer'),
+    re_path(r'^manufacturer/(?P<pk>[-\w]+)$', manufacturerDetailView.as_view(), name='manufacturer-detail'),
+    path(r'^manufacturer/create$', manufacturerCreate.as_view(), name='new-manufacturer'),
+    re_path(r'^manufacturer/(?P<pk>[-\w]+)/update$', manufacturerUpdate.as_view(), name='manufacturer-update'),
+    re_path(r'^manufacturer/(?P<pk>[-\w]+)/delete$', manufacturerDelete.as_view(), name='manufacturer-delete'),
     #Накопитель
-    re_path(r'^storage/$', views.storageListView.as_view(), name='storage'),
-    re_path(r'^storage/(?P<pk>[-\w]+)$', views.storageDetailView.as_view(), name='storage-detail'),
-    path(r'^storage/create$', views.storageCreate.as_view(), name='new-storage'),
-    re_path(r'^storage/(?P<pk>[-\w]+)/update$', views.storageUpdate.as_view(), name='storage-update'),
-    re_path(r'^storage/(?P<pk>[-\w]+)/delete$', views.storageDelete.as_view(), name='storage-delete'),
+    re_path(r'^storage/$', storageListView.as_view(), name='storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)$', storageDetailView.as_view(), name='storage-detail'),
+    path(r'^storage/create$', storageCreate.as_view(), name='new-storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/update$', storageUpdate.as_view(), name='storage-update'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/delete$', storageDelete.as_view(), name='storage-delete'),
 
 
 ]
