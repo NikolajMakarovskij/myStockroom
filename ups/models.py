@@ -2,8 +2,9 @@ from django.db import models
 from django.urls import reverse
 import uuid 
 from consumables.models import accumulator, manufacturer
+from catalog.utils import ModelMixin
 
-class ups (models.Model):
+class ups (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -132,41 +133,16 @@ class ups (models.Model):
         )
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('ups:ups-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'ИБП'
         verbose_name_plural = 'ИБП'
         ordering = ['name']
 
-class cassette (models.Model):
+class cassette (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -312,35 +288,10 @@ class cassette (models.Model):
         )
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('ups:cassette-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Кассета'
         verbose_name_plural = 'Кассеты'

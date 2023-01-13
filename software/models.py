@@ -2,8 +2,9 @@ from django.db import models
 from counterparty.models import manufacturer
 from django.urls import reverse
 import uuid 
+from catalog.utils import ModelMixin
 
-class software (models.Model):
+class software (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -55,41 +56,16 @@ class software (models.Model):
 
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('software:software-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Програмное обеспечение'
         verbose_name_plural = 'Програмное обеспечение'
         ordering = [ "name", ]
 
-class os (models.Model):
+class os (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -139,35 +115,10 @@ class os (models.Model):
         )
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('software:OS-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Операционная система'
         verbose_name_plural = 'Операционные системы'

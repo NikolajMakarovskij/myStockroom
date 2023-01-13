@@ -90,3 +90,34 @@ class ExportAdmin:
     class Meta:
         verbose_name = 'экспорт CSV'
         verbose_name_plural = 'экспорт CSV'
+
+#отбор значений модели
+class ModelMixin:
+    def get_all_fields(self):
+        """Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView """
+        fields = []
+        expose_fields = ['id']
+        for f in self._meta.fields:
+
+            fname = f.name        
+            # resolve picklists/choices, with get_xyz_display() function
+            get_choice = 'get_'+fname+'_display'
+            if hasattr(self, get_choice):
+                value = getattr(self, get_choice)()
+            else:
+                try:
+                    value = getattr(self, fname)
+                except AttributeError:
+                    value = None
+
+            # only display fields with values and skip some fields entirely
+            if f.editable and value and f.name not in (expose_fields) :
+
+                fields.append(
+                    {
+                    'label':f.verbose_name, 
+                    'name':f.name, 
+                    'value':value,
+                    }
+                )
+        return fields

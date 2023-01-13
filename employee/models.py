@@ -2,8 +2,9 @@ from django.db import models
 from django.urls import reverse
 from workplace.models import workplace
 import uuid 
+from catalog.utils import ModelMixin
 
-class employee(models.Model):
+class employee(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -49,41 +50,16 @@ class employee(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('employee:employee-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', 'Workplace', 'post') :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
         ordering = ["name", "-workplace"]
 
-class departament(models.Model):
+class departament(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -97,41 +73,16 @@ class departament(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('employee:departament-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Отдел'
         verbose_name_plural = 'Отделы'
         ordering = ["name", ]
 
-class post(models.Model):
+class post(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -152,35 +103,10 @@ class post(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('employee:post-detail', args=[str(self.id)])
-    def get_all_fields(self):
-        """Returns a list of all field names on the instance."""
-        fields = []
-        for f in self._meta.fields:
 
-            fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
-            get_choice = 'get_'+fname+'_display'
-            if hasattr(self, get_choice):
-                value = getattr(self, get_choice)()
-            else:
-                try:
-                    value = getattr(self, fname)
-                except AttributeError:
-                    value = None
-
-            # only display fields with values and skip some fields entirely
-            if f.editable and value and f.name not in ('id', ) :
-
-                fields.append(
-                    {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
-                    }
-                )
-        return fields
     class Meta:
         verbose_name = 'Должность'
         verbose_name_plural = 'Должности'
