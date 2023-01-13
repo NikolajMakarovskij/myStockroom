@@ -1,11 +1,7 @@
 from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
-from employee.models import employee
-from workstation.models import workstation
-from consumables.models import *
-from catalog.models import storage
-from .models import signature
+from .models import *
 
 class signatureForm(forms.ModelForm):  
     class Meta:

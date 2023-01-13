@@ -26,7 +26,7 @@ class printerForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'modelPrinter': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

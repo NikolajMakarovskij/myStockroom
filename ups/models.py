@@ -1,8 +1,7 @@
 from django.db import models
 from django.urls import reverse
 import uuid 
-from consumables.models import accumulator
-from catalog.models import manufacturer
+from consumables.models import accumulator, manufacturer
 
 class ups (models.Model):
     id = models.UUIDField(

@@ -27,4 +27,10 @@ urlpatterns = [
     path(r'^accumulator/create$', accumulatorCreate.as_view(), name='new-accumulator'),
     re_path(r'^accumulator/(?P<pk>[-\w]+)/update$', accumulatorUpdate.as_view(), name='accumulator-update'),
     re_path(r'^accumulator/(?P<pk>[-\w]+)/delete$', accumulatorDelete.as_view(), name='accumulator-delete'),
+    #Накопитель
+    re_path(r'^storage/$', storageListView.as_view(), name='storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)$', storageDetailView.as_view(), name='storage-detail'),
+    path(r'^storage/create$', storageCreate.as_view(), name='new-storage'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/update$', storageUpdate.as_view(), name='storage-update'),
+    re_path(r'^storage/(?P<pk>[-\w]+)/delete$', storageDelete.as_view(), name='storage-delete'),
 ]

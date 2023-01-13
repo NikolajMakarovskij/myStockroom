@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from workplace.models import workplace
 from consumables.models import *
-from catalog.models import manufacturer
+from counterparty.models import manufacturer
 import uuid 
 
 class printer (models.Model):

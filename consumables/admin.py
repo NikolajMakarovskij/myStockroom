@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import cartridge, fotoval, toner, accumulator
+from .models import cartridge, fotoval, toner, accumulator, storage
 import csv
 import datetime
 from django.http import HttpResponse
@@ -61,5 +61,14 @@ class AccumulatorAdmin(admin.ModelAdmin):
     actions = [export_to_csv]
     
 admin.site.register(accumulator, AccumulatorAdmin)
+
+class StorageAdmin(admin.ModelAdmin):
+    model = storage
+    list_display = ['name','modelStorage','manufacturer','plug','typeMemory','volumeMemory','employee' ]
+    list_filter = ['manufacturer', ]
+    search_fields = ['name','modelStorage','manufacturer','serial','serialImg','inventImg','invent','plug','typeMemory','volumeMemory','employee']
+    actions = [export_to_csv]
+    
+admin.site.register(storage, StorageAdmin)
 
 

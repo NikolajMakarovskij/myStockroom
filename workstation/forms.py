@@ -1,11 +1,7 @@
 from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
-from workplace.models import workplace
-from employee.models import employee
 from .models import *
-from ups.models import ups
-from software.models import software, os 
 
 class workstationForm(forms.ModelForm):  
     class Meta:
@@ -15,7 +11,7 @@ class workstationForm(forms.ModelForm):
             ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'modelComputer': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
@@ -46,7 +42,7 @@ class monitorForm(forms.ModelForm):
             ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -71,7 +67,7 @@ class motherboardForm(forms.ModelForm):
             ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -105,7 +101,7 @@ class cpuForm(forms.ModelForm):
             ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -135,7 +131,7 @@ class gpuForm(forms.ModelForm):
             )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'type': forms.Select(choices=plug, attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
@@ -154,7 +150,7 @@ class ramForm(forms.ModelForm):
         fields = ['name','manufacturer','type','serial','serialImg','inventImg','invent','ramCapacity','rang','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'type': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
@@ -171,7 +167,7 @@ class ssdForm(forms.ModelForm):
         fields = ['name','manufacturer','type','serial','serialImg','inventImg','invent','capacity','plug','speedRead','speadWrite','resourse','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'type': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
@@ -191,7 +187,7 @@ class hddForm(forms.ModelForm):
         fields = ['name','manufacturer','serial','serialImg','inventImg','invent','capacity','plug','speedRead','speadWrite','rpm','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -210,7 +206,7 @@ class dcpowerForm(forms.ModelForm):
         fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','motherboard','cpu','gpu','sata','molex','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -230,7 +226,7 @@ class keyBoardForm(forms.ModelForm):
         fields = ['name','manufacturer','serial','serialImg','inventImg','invent','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -244,7 +240,7 @@ class mouseForm(forms.ModelForm):
         fields = ['name','manufacturer','serial','serialImg','inventImg','invent','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

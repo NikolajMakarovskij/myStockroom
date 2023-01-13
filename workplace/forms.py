@@ -1,7 +1,7 @@
 from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
-from .models import workplace, room
+from .models import *
 
 class workplaceForm(forms.ModelForm):  
     class Meta:

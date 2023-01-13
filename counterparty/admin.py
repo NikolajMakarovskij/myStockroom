@@ -1,10 +1,8 @@
 from django.contrib import admin
-from .models import references
+from .models import manufacturer
 import csv
 import datetime
 from django.http import HttpResponse
-
-
 
 def export_to_csv(modeladmin, request, queryset):
     opts = modeladmin.model._meta
@@ -26,14 +24,11 @@ def export_to_csv(modeladmin, request, queryset):
     return response
 export_to_csv.short_description = 'экспорт CSV'
 
-admin.site.site_header = 'Панель администратора базы техники компании'
-admin.site.site_title = 'Панель администратора'
-admin.site.index_title = 'Администрирование базы'
-
-class ReferencesAdmin(admin.ModelAdmin):
-    model = references
-    list_display = ['name', 'linkname', ]
-    search_fields = ['name', 'linkname', ]
+class ManufacturerAdmin(admin.ModelAdmin):
+    model = manufacturer
+    list_display = ['name', 'country', 'production']
+    list_filter = [ 'country', 'production']
+    search_fields = ['name', 'country', 'production']
     actions = [export_to_csv]
     
-admin.site.register(references, ReferencesAdmin)
+admin.site.register(manufacturer, ManufacturerAdmin)

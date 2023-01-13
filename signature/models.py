@@ -1,10 +1,9 @@
 import datetime
 from django.db import models
-from .models import *
 from django.urls import reverse
 from employee.models import employee
 from workstation.models import workstation
-from catalog.models import storage
+from consumables.models import storage
 import uuid 
 
 class signature (models.Model): #electronic digital signature

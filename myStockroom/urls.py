@@ -12,6 +12,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [  
+    path('counterparty/', include(('counterparty.urls','counterparty'), namespace='counterparty'), ),
     path('signature/', include(('signature.urls','signature'), namespace='signature'), ),
     path('ups/', include(('ups.urls','ups'), namespace='ups'), ),
     path('printer/', include(('printer.urls','printer'), namespace='printer'), ),

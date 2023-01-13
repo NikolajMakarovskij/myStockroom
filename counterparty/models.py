@@ -1,27 +1,32 @@
 from django.db import models
 from django.urls import reverse
 import uuid 
-    
 
-class references(models.Model):
+class manufacturer (models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         help_text="ID"
-    )
+        )
     name = models.CharField(
-        max_length=50,
-        help_text="Введите название",
-        verbose_name="Название"
+        max_length=150,
+        help_text="Введите наименование производителя",
+        verbose_name="Производитель"
         )
-    linkname = models.CharField(
-        max_length=50,
-        help_text="Введите ссылку",
-        verbose_name="Ссылка"
+    country = models.CharField(
+        max_length=150,
+        help_text="Введите название страны",
+        verbose_name="Страна"
         )
-
+    production = models.CharField(
+        max_length=150,
+        help_text="Введите страну производства",
+        verbose_name="Страна производства"
+        )
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('counterparty:manufacturer-detail', args=[str(self.id)])
     def get_all_fields(self):
         """Returns a list of all field names on the instance."""
         fields = []
@@ -50,5 +55,6 @@ class references(models.Model):
                 )
         return fields
     class Meta:
-        verbose_name_plural = 'Справочники'
-        ordering = ["name", ]
+        verbose_name = 'Производитель'
+        verbose_name_plural = 'Производители'
+        ordering = [ "name", ]

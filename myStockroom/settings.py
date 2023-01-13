@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'printer.apps.PrinterConfig',
     'ups.apps.UpsConfig',
     'signature.apps.SignatureConfig',
+    'counterparty.apps.CounterpartyConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
