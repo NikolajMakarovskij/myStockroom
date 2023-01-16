@@ -1,150 +1,39 @@
 from django.contrib import admin
-from .models import  *
-
-@admin.register(Building)
-class Building(admin.ModelAdmin):
-    model = Building
-    fields = [
-        'name'
-    ]
-
-@admin.register(Floor)
-class Floor(admin.ModelAdmin):
-    model = Floor
-    fields = [
-        ('name', 'Building')
-    ]
-
-@admin.register(Room)
-class Room(admin.ModelAdmin):
-    model = Room
-    fields = [
-        ('name', 'Floor', 'Building')
-    ]
-
-@admin.register(Employee)
-class Employee(admin.ModelAdmin):
-    model = Employee
-    fields = [        
-        ('name', 'Workplace'),
-        ('post', 'departament')
-    ]
-
-@admin.register(Workplace)
-class Workplace(admin.ModelAdmin):
-    model = Workplace
-    fields = [
-        'name',
-        ('Room', 'Floor', 'Building')
-    ]
-
-@admin.register(departament)
-class departament(admin.ModelAdmin):
-    model = departament
-    fields = [
-        ('name')
-    ]
-
-@admin.register(post)
-class post(admin.ModelAdmin):
-    model = post
-    fields = [
-        ('name', 'departament')
-    ]
+from .models import references
+import csv
+import datetime
+from django.http import HttpResponse
 
 
 
-@admin.register(workstation)
-class workstation(admin.ModelAdmin):
-    model = workstation
-    fields = [
-        ('name', 'manufacturer'), 
-        ('Workplace', 'Employee'),
-        ('serial', 'serialImg'),
-        ('invent','inventImg'),
-        ('motherboard','monitor', 'OS'),
-        'CPU','GPU', 'RAM', 'SSD', 'HDD',
-        'DCPower', 'keyBoard', 'mouse',
-        ]
+def export_to_csv(modeladmin, request, queryset):
+    opts = modeladmin.model._meta
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(opts.verbose_name)
+    writer = csv.writer(response)
+    fields = [field for field in opts.get_fields() if not field.many_to_many and not field.one_to_many]
+    # Write a first row with header information
+    writer.writerow([field.verbose_name for field in fields])
+    # Write data rows
+    for obj in queryset:
+        data_row = []
+        for field in fields:
+            value = getattr(obj, field.name)
+            if isinstance(value, datetime.datetime):
+                value = value.strftime('%d/%m/%Y')
+            data_row.append(value)
+        writer.writerow(data_row)
+    return response
+export_to_csv.short_description = 'экспорт CSV'
 
-@admin.register(software)
-class software(admin.ModelAdmin):
-    model = software
-    fields = [
-        ('name', 'manufacturer'),
-        'licenseKeyText',
-        'licenseKeyImg',
-        'licenseKeyFile', 
-        ('Employee', 'workstation'),
-    ]
+admin.site.site_header = 'Панель администратора базы техники компании'
+admin.site.site_title = 'Панель администратора'
+admin.site.index_title = 'Администрирование базы'
 
-@admin.register(OS)
-class OS(admin.ModelAdmin):
-    model = OS
-    fields = [
-        ('name', 'manufacturer'),
-        ('licenseKeyText', 'licenseKeyImg', 'licenseKeyFile' )
-    ]
-
-@admin.register(monitor)
-class monitor(admin.ModelAdmin):
-    model = monitor
-    fields = [
-        ('name','manufacturer'),
-        ('serial','serialImg'),
-        ('invent','inventImg'),
-
-    ]
-
-@admin.register(motherboard)
-class motherboard(admin.ModelAdmin):
-    model = motherboard
-    fields = [
-        ('name','manufacturer'),
-        ('serial','serialImg'),
-        'CPUSoket', 'RAMSlot', 'USBPort',
-        'COMPort', 'PCI_E', 'PCI', 'VGA',
-        'SATA', 'HDMI', 'DispayPort',
-        'powerSupply', 'powerSupplyCPU',
-    ]
-
-@admin.register(printer)
-class printer(admin.ModelAdmin):
-    model = printer
-    fields = [
-        ('name','manufactured'),
-        ('serial','serialImg'),
-        ('invent', 'inventImg'),
-        ('cartridge', 'paper'),
-        'USBPort', 'LANPort',
-        'Employee', 'Workplace', 'workstation',
-    ]
-
-@admin.register(cartridge)
-class cartridge(admin.ModelAdmin):
-    model = cartridge
-    fields = [
-        ('name','manufactured'),
-        ('serial','serialImg'),
-        ('buhCode', 'score'),
-    ]
-
-@admin.register(paper)
-class paper(admin.ModelAdmin):
-    model = paper
-    fields = [
-        ('name','manufactured'),
-        ('paperFormat','score'),
-    ]
-
-@admin.register(digitalSignature)
-class digitalSignature(admin.ModelAdmin):
-    model = digitalSignature
-    fields = [
-        ('name','validityPeriod'),
-        ('licenseKeyText','licenseKeyImg', 'licenseKeyFile'),
-        ('Employee','employeeEmail'), 
-        ('Workplace', 'workstation'),
-    ]
-
-
+class ReferencesAdmin(admin.ModelAdmin):
+    model = references
+    list_display = ['name', 'linkname', ]
+    search_fields = ['name', 'linkname', ]
+    actions = [export_to_csv]
+    
+admin.site.register(references, ReferencesAdmin)

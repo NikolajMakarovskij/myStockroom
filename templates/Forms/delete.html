@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{%load static%}
+
+<div clas="FormsBase">
+    <h1 class="text-center mt-3">{{title}}</h1>
+        <form method="POST" class="post-form row g-2 mt-3">
+        {% csrf_token %}
+        <h1 class="text-center mt-5">Подтвердите удаление</h1>
+        <div class="row">   
+        <div class="d-flex justify-content-center input-group mt-5 ">
+            {%if selflink%}
+            <a class="btn btn-lg btn-success btn-outline-dark bg-gradient input-group-text" 
+                href="{% url selflink %}">
+                    Нет
+            </a>
+            {%endif%}
+            <button type="submit" class="save btn btn-lg btn-danger btn-outline-dark btn-danger bg-gradient ">
+               Да
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

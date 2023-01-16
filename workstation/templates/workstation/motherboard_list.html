@@ -1,0 +1,79 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if motherboard_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Раб. станция</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Серийный номер</th>
+          <th scope="col">Фото серийного номера</th>
+          <th scope="col">Инвентарный номер</th>
+          <th scope="col">Фото инвентарного номера</th>
+          <th scope="col">Сокет</th>
+          <th scope="col">RAM</th>
+          <th scope="col">Питание материнской платы</th>
+          <th scope="col">Питание CPU</th>
+          <th scope="col">HDMI</th>
+          <th scope="col">VGA</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for motherboard in motherboard_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ motherboard.get_absolute_url }}">{{ motherboard.name }}</a></td>
+        <td><a class="noDecoration" href="{{ motherboard.manufacturer.get_absolute_url }}">{{ motherboard.manufacturer.name }}</a></td>
+        <td>{{ motherboard.serial }}</td>
+        <td>
+          {% if motherboard.serialImg %}
+            <a href="{{ motherboard.serialImg.url }}">
+              <img src="{{ motherboard.serialImg.url }}" style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ motherboard.invent }}</td>
+        <td>
+          {% if motherboard.inventImg %}
+            <a href="{{ motherboard.inventImg.url }}">
+              <img src="{{ motherboard.inventImg.url }}"style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ motherboard.cpuSoket }}</td>
+        <td>{{ motherboard.ramSlot }}</td>
+        <td>{{ motherboard.powerSupply }}</td>
+        <td>{{ motherboard.powerSupplyCPU }}</td>
+        <td>{{ motherboard.hdmi }}</td>
+        <td>{{ motherboard.vga }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Мониторы не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

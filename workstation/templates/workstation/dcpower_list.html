@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if dcpower_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Блок питания</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Мощность</th>
+          <th scope="col">Питание материнской платы</th>
+          <th scope="col">Питание CPU</th>
+          <th scope="col">Питание GPU</th>
+          <th scope="col">Питание SATA</th>
+          <th scope="col">Питание molex</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for dcpower in dcpower_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ dcpower.get_absolute_url }}">{{ dcpower.name }}</a></td>
+        <td><a class="noDecoration" href="{{ dcpower.manufacturer.get_absolute_url }}">{{ dcpower.manufacturer.name }}</a></td>
+        <td>{{ dcpower.power }}</td>
+        <td>{{ dcpower.motherboard }}</td>
+        <td>{{ dcpower.cpu }}</td>
+        <td>{{ dcpower.gpu }}</td>
+        <td>{{ dcpower.sata }}</td>
+        <td>{{ dcpower.molex }}</td>
+        <td>{{ dcpower.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Блоки питания не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    
+    {% endif %}
+  </div>
+</div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

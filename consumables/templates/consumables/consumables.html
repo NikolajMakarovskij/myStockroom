@@ -1,0 +1,63 @@
+{% extends "base_generic.html" %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% block content %}
+<div class="col ">
+    <div class="row row-cols-3 row-cols-md-3">
+        <div class="col nodecorationIndex">
+            <a href="{% url 'consumables:cartridge' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                    <h5 class="card-title">Картриджы</h5>
+                    </div>
+                <img src="{% static 'images/cartridge.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+        <div class="col nodecorationIndex justify-content-center">
+            <a href="{% url 'consumables:toner' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                        <h5 class="card-title">Тонеры</h5>
+                    </div>
+                    <img src="{% static 'images/toner.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+        <div class="col nodecorationIndex">
+            <a href="{% url 'consumables:fotoval' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                        <h5 class="card-title">Фотовалы</h5>
+                    </div>
+                    <img src="{% static 'images/fotoval.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row row-cols-3 row-cols-md-3">
+        <div class="col nodecorationIndex">
+            <a href="{% url 'consumables:accumulator' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                        <h5 class="card-title">Аккумуляторы</h5>
+                    </div>
+                    <img src="{% static 'images/accumulator.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+        <div class="col nodecorationIndex">
+            <a href="{% url 'consumables:storage' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                        <h5 class="card-title">Накопители</h5>
+                    </div>
+                    <img src="{% static 'images/storage.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

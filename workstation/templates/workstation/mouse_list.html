@@ -1,0 +1,69 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if mouse_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Мыши</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Серийный номер</th>
+          <th scope="col">Фото серийного номера</th>
+          <th scope="col">Инвентарный номер</th>
+          <th scope="col">Фото инвентарного номера</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for mouse in mouse_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ mouse.get_absolute_url }}">{{ mouse.name }}</a></td>
+        <td><a class="noDecoration" href="{{ mouse.manufacturer.get_absolute_url }}">{{ mouse.manufacturer.name }}</a></td>
+        <td>{{ mouse.serial }}</td>
+        <td>
+          {% if mouse.serialImg %}
+            <a href="{{ mouse.serialImg.url }}">
+              <img src="{{ mouse.serialImg.url }}" style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ mouse.invent }}</td>
+        <td>
+          {% if mouse.inventImg %}
+            <a href="{{ mouse.inventImg.url }}">
+              <img src="{{ mouse.inventImg.url }}" style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ mouse.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Мыши не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

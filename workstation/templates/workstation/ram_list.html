@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if ram_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">RAM</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Тип памяти</th>
+          <th scope="col">Объем памяти</th>
+          <th scope="col">Ранг</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for ram in ram_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ ram.get_absolute_url }}">{{ ram.name }}</a></td>
+        <td><a class="noDecoration" href="{{ ram.manufacturer.get_absolute_url }}">{{ ram.manufacturer.name }}</a></td>
+        <td>{{ ram.type }}</td>
+        <td>{{ ram.ramCapacity }}</td>
+        <td>{{ ram.rang }}</td>
+        <td>{{ ram.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Оперативная память не обнаружена</th>
+        </tr>
+      </thead>
+    </table>
+    
+    {% endif %}
+  </div>
+</div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

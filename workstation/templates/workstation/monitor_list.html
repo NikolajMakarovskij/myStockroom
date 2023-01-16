@@ -1,0 +1,77 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if monitor_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Раб. станция</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Серийный номер</th>
+          <th scope="col">Фото серийного номера</th>
+          <th scope="col">Инвентарный номер</th>
+          <th scope="col">Фото инвентарного номера</th>
+          <th scope="col">HDMI</th>
+          <th scope="col">VGA</th>
+          <th scope="col">DVI</th>
+          <th scope="col">DisplayPort</th>
+          <th scope="col">USB</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for monitor in monitor_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ monitor.get_absolute_url }}">{{ monitor.name }}</a></td>
+        <td><a class="noDecoration" href="{{ monitor.manufacturer.get_absolute_url }}">{{ monitor.manufacturer.name }}</a></td>
+        <td>{{ monitor.serial }}</td>
+        <td>
+          {% if monitor.serialImg %}
+            <a href="{{ monitor.serialImg.url }}">
+              <img src="{{ monitor.serialImg.url }}" style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable">
+          {% endif %}
+        </td>
+        <td>{{ monitor.invent }}</td>
+        <td>
+          {% if monitor.inventImg %}
+            <a href="{{ monitor.inventImg.url }}">
+              <img src="{{ monitor.inventImg.url }}" style="height:60px">
+            </a>
+          {% else %}
+            <img src="{% static 'images/no_file.svg' %}" class="iconTable" >
+          {% endif %}
+        </td>
+        <td>{{ monitor.hdmi }}</td>
+        <td>{{ monitor.vga }}</td>
+        <td>{{ monitor.dvi }}</td>
+        <td>{{ monitor.displayPort }}</td>
+        <td>{{ monitor.usbPort }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Мониторы не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

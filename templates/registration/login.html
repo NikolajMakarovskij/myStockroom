@@ -8,36 +8,23 @@
 
 {% if next %}
   {% if user.is_authenticated %}
-    <p>У вас нет доступа к данному контенты. Чтобы продолжить,
+    <p>У вас нет доступа к данному контенту. Чтобы продолжить,
     авторизуйтесь.</p>
   {% else %}
     <p>Авторизуйтесь, чтобы увидеть.</p>
   {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table class="table_login">
+{% load django_bootstrap5 %}
 
-<tr>
-  <td class="td_login">{{ form.username.label_tag }}</td>
-  <td class="td_login"><div class="form_login">{{ form.username }}</div></td>
-</tr>
+<form action="{% url 'login' %}" method="post" class="form ">
+ {% csrf_token %}
 
-<tr>
-  <td class="td_login">{{ form.password.label_tag }}</td>
-  <td class="td_login"><div class="form_login">{{ form.password }}</div></td>
-</tr>
-</table>
+ {% bootstrap_form form %}
 
-<input type="submit" class="button_login" value="Войти"/>
-<input type="hidden" name="Далее" value="{{ next }}" />
+ {% bootstrap_button button_type="submit" content="Войти" %}
+
+
 </form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<div class="text_login">
-  <p ><a href="{% url 'password_reset' %}">Сбросить пароль?</a></p>
-</div>
-
 
 {% endblock %}

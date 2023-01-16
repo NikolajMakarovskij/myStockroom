@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% block content %}
+<div class="col ">
+    <div class="row row-cols-3 row-cols-md-3">
+        <div class="col nodecorationIndex">
+            <a href="{% url 'counterparty:manufacturer' %}">
+                <div class="card text-white text-center bg-dark square justify-content-center">
+                    <div class="card-header">
+                    <h5 class="card-title">Производители</h5>
+                    </div>
+                <img src="{% static 'images/manufacturer.svg' %}" class="card-img-top iconIndex">
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

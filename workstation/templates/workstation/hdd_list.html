@@ -1,0 +1,58 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if hdd_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">HDD</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Объем памяти</th>
+          <th scope="col">Тип подключения</th>
+          <th scope="col">Скорость чтения</th>
+          <th scope="col">Скорость записи</th>
+          <th scope="col">Ресурс</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for hdd in hdd_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ hdd.get_absolute_url }}">{{ hdd.name }}</a></td>
+        <td><a class="noDecoration" href="{{ hdd.manufacturer.get_absolute_url }}">{{ hdd.manufacturer.name }}</a></td>
+        <td>{{ hdd.capacity }}</td>
+        <td>{{ hdd.plug }}</td>
+        <td>{{ hdd.speedRead }}</td>
+        <td>{{ hdd.speadWrite }}</td>
+        <td>{{ hdd.rpm }}</td>
+        <td>{{ hdd.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">HDD не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    
+    {% endif %}
+  </div>
+</div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

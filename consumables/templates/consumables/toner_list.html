@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% load static %}
+    <div class="table-responsive"> 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+<!--block content-->
+{% if toner_list %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Тонер</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Код в бухгалтерии</th>
+          <th scope="col">Остаток на складе</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for toner in toner_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ toner.get_absolute_url }}">{{ toner.name }}</a></td>
+        <td><a class="noDecoration" href="{{ toner.manufacturer.get_absolute_url }}">{{ toner.manufacturer.name }}</a></td>
+        <td>{{ toner.buhCode }}</td>
+        <td>{{ toner.score }}</td>
+      </tr>
+      {% endfor %}
+  </table>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Тонер не обнаружен</th>
+        </tr>
+      </thead>
+    </table>
+    {% endif %}
+  </div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

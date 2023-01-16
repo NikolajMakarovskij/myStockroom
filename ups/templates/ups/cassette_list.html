@@ -1,0 +1,75 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+    <div > 
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption> 
+<!--search block-->
+      {%include 'search/search.html' %}
+    </div>
+<!--block content-->
+{% if cassette_list %}
+  <div class="table-responsive">
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Кассета</th>
+          <th scope="col">Производитель</th>
+          <th scope="col">Мощность</th>
+          <th scope="col">Напряжение</th>
+          <th scope="col">Ток</th>
+          <th scope="col">Аккумулятор 1</th>
+          <th scope="col">Аккумулятор 2</th>
+          <th scope="col">Аккумулятор 3</th>
+          <th scope="col">Аккумулятор 4</th>
+          <th scope="col">Аккумулятор 5</th>
+          <th scope="col">Аккумулятор 6</th>
+          <th scope="col">Аккумулятор 7</th>
+          <th scope="col">Аккумулятор 8</th>
+          <th scope="col">Аккумулятор 9</th>
+          <th scope="col">Аккумулятор 10</th>
+          <th scope="col">Количество</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for cassette in cassette_list %}
+      <tr>
+        <td><a class="noDecoration" href="{{ cassette.get_absolute_url }}">{{ cassette.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.manufacturer.get_absolute_url }}">{{ cassette.manufacturer.name }}</a></td>
+        <td>{{ cassette.power }}</td>
+        <td>{{ cassette.voltage }}</td>
+        <td>{{ cassette.current }}</td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator1.get_absolute_url }}">{{ cassette.accumulator1.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator2.get_absolute_url }}">{{ cassette.accumulator2.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator3.get_absolute_url }}">{{ cassette.accumulator3.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator4.get_absolute_url }}">{{ cassette.accumulator4.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator5.get_absolute_url }}">{{ cassette.accumulator5.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator6.get_absolute_url }}">{{ cassette.accumulator6.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator7.get_absolute_url }}">{{ cassette.accumulator7.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator8.get_absolute_url }}">{{ cassette.accumulator8.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator9.get_absolute_url }}">{{ cassette.accumulator9.name }}</a></td>
+        <td><a class="noDecoration" href="{{ cassette.accumulator10.get_absolute_url }}">{{ cassette.accumulator10.name }}</a></td>
+        <td>{{ cassette.score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+    {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead> 
+        <tr>
+          <th scope="col" style="font-size: 32px;">Аккумуляторы не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+    
+    {% endif %}
+  </div>
+</div>
+<!--block pagination-->  
+  {%include 'pagination/pagination.html' %}
+{% endblock %}
+
