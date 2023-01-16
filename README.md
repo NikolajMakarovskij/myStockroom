@@ -3,7 +3,7 @@
 ## Разворачивание через docker-compose
   1. Открыть папку проекта в терминале  
     - ввести команды по очереди:
-    ```docker
+    ```python
         docker-compose up -d --build
         docker-compose exec web python3 manage.py migrate --noinput
         docker-compose exec web python3 manage.py collectstatic --no-input --clear
