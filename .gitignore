@@ -1,7 +1,6 @@
-/.DS_Store
-catalog/migrations
-.gitignore
+*.DS_Store
+**/migrations/
 database
 media
-./env
+
 
