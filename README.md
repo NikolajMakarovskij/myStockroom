@@ -27,33 +27,19 @@
 
 ## Разворачивание в docker-compose для деплоя 
 <details><summary>Команды</summary>
-```
-  docker-compose -f docker-compose.prod.yml down -v
-```
-```
-  docker-compose -f docker-compose.prod.yml up -d --build
-```
-```
-  docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
-```
-```
-  docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
-```
-```
-  docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
-```
+  -  docker-compose -f docker-compose.prod.yml down -v
+  -  docker-compose -f docker-compose.prod.yml up -d --build
+  -  docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+  -  docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
+  -  docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
 </details>
 
 ## Удалить все контейнеры  </summary>
 <details><summary>Команды</summary>
   - разработка
-      ```
-        docker-compose -f docker-compose down -v
-      ```
+      -  docker-compose -f docker-compose down -v
   - деплой
-      ```
-        docker-compose -f docker-compose.prod.yml down -v
-      ```
+      -  docker-compose -f docker-compose.prod.yml down -v
 </details>
 
 ## В разработке
