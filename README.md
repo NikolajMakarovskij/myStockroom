@@ -4,7 +4,7 @@
   1. Открыть папку проекта в терминале  
     - ввести команды по очереди:
       ```
-        docker-compose up -d --build
+      docker-compose up -d --build
       ```  
       ```
       docker-compose exec web python3 manage.py migrate --noinput
@@ -54,7 +54,7 @@
 
   - разработка
       ```
-        docker-compose -f docker-compose down -v
+        docker-compose down -v
       ```
   - деплой
       ```

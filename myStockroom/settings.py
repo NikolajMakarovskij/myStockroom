@@ -191,7 +191,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = 'mediafiles/'
+MEDIA_URL = 'media/'
 
 MAX_UPLOAD_SIZE = "104857600"
 
