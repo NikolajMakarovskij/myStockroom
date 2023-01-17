@@ -25,8 +25,8 @@
           python3 manage.py createsuperuser
       ```
 
-##<details><summary> Разворачивание в docker-compose для деплоя </summary>
-
+## Разворачивание в docker-compose для деплоя 
+<details><summary>Команды</summary>
 ```
   docker-compose -f docker-compose.prod.yml down -v
 ```
@@ -44,7 +44,8 @@
 ```
 </details>
 
-##<details><summary> Удалить все контейнеры  </summary>
+## Удалить все контейнеры  </summary>
+<details><summary>Команды</summary>
   - разработка
       ```
         docker-compose -f docker-compose down -v
