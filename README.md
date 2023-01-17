@@ -66,9 +66,9 @@
 
 ## В разработке
 
-- [X] https://github.com/NikolajMakarovskij/myStockroom/issues/6#issue-1536290556
-- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/7#issue-1536290939
-- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/8#issue-1536291827
-- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/9#issue-1536291919
-- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/10#issue-1536292001
+ - [X] Рефакторинг старого проекта https://github.com/NikolajMakarovskij/myStockroom/issues/6
+ - [ ] Склад https://github.com/NikolajMakarovskij/myStockroom/issues/7
+ - [ ] Таски для обработки логики склада https://github.com/NikolajMakarovskij/myStockroom/issues/8
+ - [ ] Таски для приложения ЭЦП https://github.com/NikolajMakarovskij/myStockroom/issues/9
+ - [ ] Docker-compose для деплоя https://github.com/NikolajMakarovskij/myStockroom/issues/10
     
