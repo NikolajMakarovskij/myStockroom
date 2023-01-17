@@ -1,7 +1,7 @@
 from django import forms
 from consumables.models import cartridge, toner, fotoval, accumulator
-
-CARTRIDGE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, cartridge.score)]
+cartridge_score = 5
+CARTRIDGE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, cartridge_score)]
 
 
 class StockAddProductForm(forms.Form):
