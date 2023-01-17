@@ -66,9 +66,9 @@
 
 ## В разработке
 
-- [X] Рефакторинг старого проекта
-- [ ] Склад
-- [ ] Таски для обработки логики склада (Celery/redis)
-- [ ] Таски для приложения ЭЦП
-- [ ] Docker-compose для деплоя
+- [X] https://github.com/NikolajMakarovskij/myStockroom/issues/6#issue-1536290556
+- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/7#issue-1536290939
+- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/8#issue-1536291827
+- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/9#issue-1536291919
+- [ ] https://github.com/NikolajMakarovskij/myStockroom/issues/10#issue-1536292001
     
