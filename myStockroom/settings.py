@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'ups.apps.UpsConfig',
     'signature.apps.SignatureConfig',
     'counterparty.apps.CounterpartyConfig',
+    'stockroom.apps.StockroomConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
@@ -89,7 +90,7 @@ INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'x.x.x.x','x.x.x.x'
 
 #start celery
 
-from celery.schedules import crontab
+#from celery.schedules import crontab
 from datetime import timedelta
 
 CELERY_BROKER_URL = 'redis://redis:6379'
@@ -190,7 +191,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = 'mediafiles/'
+MEDIA_URL = 'media/'
 
 MAX_UPLOAD_SIZE = "104857600"
 
@@ -208,4 +209,4 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
 CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
-
+STOCK_SESSION_ID = 'stock'
