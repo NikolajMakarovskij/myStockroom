@@ -6,7 +6,7 @@ from .models import *
 
 class cartridgeForm(forms.ModelForm):  
     class Meta:
-        model = cartridge
+        model = Cartridge
         fields = ['name','manufacturer','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -17,7 +17,7 @@ class cartridgeForm(forms.ModelForm):
 
 class fotovalForm(forms.ModelForm):  
     class Meta:
-        model = fotoval
+        model = Fotoval
         fields = ['name','manufacturer','mileage','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -29,7 +29,7 @@ class fotovalForm(forms.ModelForm):
 
 class tonerForm(forms.ModelForm):  
     class Meta:
-        model = toner
+        model = Toner
         fields = ['name','manufacturer','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -40,7 +40,7 @@ class tonerForm(forms.ModelForm):
 
 class accumulatorForm(forms.ModelForm):   
     class Meta:
-        model = accumulator
+        model = Accumulator
         fields = ['name','manufacturer','power','voltage','current','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -57,7 +57,7 @@ class accumulatorForm(forms.ModelForm):
 
 class storageForm(forms.ModelForm):  
     class Meta:
-        model = storage
+        model = Storage
         fields = ['name','modelStorage','manufacturer','serial','serialImg','inventImg','invent','plug','typeMemory','volumeMemory','employee']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

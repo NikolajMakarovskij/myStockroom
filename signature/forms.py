@@ -16,6 +16,6 @@ class signatureForm(forms.ModelForm):
             'employeeRegister': WidgetCanAdd(employee, related_url="employee:new-employee", attrs={'class': 'form-select form-select-lg'}),
             'employeeStorage': WidgetCanAdd(employee, related_url="employee:new-employee", attrs={'class': 'form-select form-select-lg'}),
             'workstation': WidgetCanAdd(workstation, related_url="workstation:new-workstation", attrs={'class': 'form-select form-select-lg'}),
-            'storage': WidgetCanAdd(storage, related_url="consumables:new-storage", attrs={'class': 'form-select form-select-lg'}),
+            'storage': WidgetCanAdd(Storage, related_url="consumables:new-storage", attrs={'class': 'form-select form-select-lg'}),
             #'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 

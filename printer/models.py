@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from workplace.models import workplace
-from consumables.models import *
+from consumables.models import Cartridge, Fotoval, Toner
 from counterparty.models import manufacturer
 from catalog.utils import ModelMixin
 import uuid 
@@ -113,21 +113,21 @@ class printer (ModelMixin, models.Model):
         verbose_name="Рабочее место"
         )
     cartridge = models.ForeignKey(
-        cartridge,
+        Cartridge,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите картридж",
         verbose_name="Картридж"
         )
     fotoval = models.ForeignKey(
-        fotoval,
+        Fotoval,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите фотовал",
         verbose_name="Фотовал"
         )
     toner = models.ForeignKey(
-        toner,
+        Toner,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите тонер",

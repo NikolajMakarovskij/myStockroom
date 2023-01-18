@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from consumables.models import cartridge, fotoval, toner, accumulator
+from consumables.models import Cartridge
 from .stock import Stock
 from .forms import StockAddProductForm
 
 @require_POST
 def stock_add(request, cartridge_id):
     stock = Stock(request)
-    cartridge = get_object_or_404(cartridge, id=cartridge_id)
+    cartridge = get_object_or_404(Cartridge, id=cartridge_id)
     form = StockAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
@@ -18,7 +18,7 @@ def stock_add(request, cartridge_id):
 
 def stock_remove(request, cartridge_id):
     stock = Stock(request)
-    cartridge = get_object_or_404(cartridge, id=cartridge_id)
+    cartridge = get_object_or_404(Cartridge, id=cartridge_id)
     stock.remove(cartridge)
     return redirect('stockroom:stock_detail')
 

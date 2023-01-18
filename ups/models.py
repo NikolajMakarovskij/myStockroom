@@ -1,7 +1,8 @@
 from django.db import models
 from django.urls import reverse
 import uuid 
-from consumables.models import accumulator, manufacturer
+from consumables.models import Accumulator
+from counterparty.models import manufacturer
 from catalog.utils import ModelMixin
 
 class ups (ModelMixin, models.Model):
@@ -65,14 +66,14 @@ class ups (ModelMixin, models.Model):
         verbose_name="Ток"
         )
     accumulator1 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите аккумулятор",
         verbose_name="Аккумулятор № 1"
         )
     accumulator2 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -80,7 +81,7 @@ class ups (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 2"
         )
     accumulator3 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -88,7 +89,7 @@ class ups (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 3"
         )
     accumulator4 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -203,14 +204,14 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Ток"
         )
     accumulator1 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите аккумулятор",
         verbose_name="Аккумулятор № 1"
         )
     accumulator2 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -218,7 +219,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 2"
         )
     accumulator3 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -226,7 +227,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 3"
         )
     accumulator4 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -234,7 +235,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 4"
         )
     accumulator5 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -242,7 +243,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 5"
         )
     accumulator6 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -250,7 +251,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 6"
         )
     accumulator7 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -258,7 +259,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 7"
         )
     accumulator8 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -266,7 +267,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 8"
         )
     accumulator9 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
@@ -274,7 +275,7 @@ class cassette (ModelMixin, models.Model):
         verbose_name="Аккумулятор № 9"
         )
     accumulator10 = models.ForeignKey(
-        accumulator,
+        Accumulator,
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True, null=True,
