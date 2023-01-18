@@ -1,5 +1,5 @@
 from django.test import TestCase
-from workplace.models import room, workplace
+from workplace.models import Room, Workplace
 from django.urls import reverse
 
 class RoomListViewTest(TestCase):
@@ -8,7 +8,7 @@ class RoomListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_rooms = 149
         for room_num in range(number_of_rooms):
-            room.objects.create(name='Christian %s' % room_num,)
+            Room.objects.create(name='Christian %s' % room_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workplace/room/')
@@ -44,7 +44,7 @@ class WorkplaceListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_workplaces = 149
         for Workplace_num in range(number_of_workplaces):
-            workplace.objects.create(name='Christian %s' % Workplace_num,)
+            Workplace.objects.create(name='Christian %s' % Workplace_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workplace/')

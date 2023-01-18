@@ -3,7 +3,7 @@ from django.urls import reverse
 import uuid 
 from catalog.utils import ModelMixin
 
-class manufacturer (ModelMixin, models.Model):
+class Manufacturer (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

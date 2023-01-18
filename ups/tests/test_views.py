@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..models import ups, cassette
+from ..models import Ups, Cassette
 from django.urls import reverse
 
 class upsViewTest(TestCase):
@@ -8,7 +8,7 @@ class upsViewTest(TestCase):
     def setUpTestData(cls):
         number_of_ups = 149
         for ups_num in range(number_of_ups):
-            ups.objects.create(name='Christian %s' % ups_num,)
+            Ups.objects.create(name='Christian %s' % ups_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/ups/')
@@ -44,7 +44,7 @@ class cassetteViewTest(TestCase):
     def setUpTestData(cls):
         number_of_cassette = 149
         for cassette_num in range(number_of_cassette):
-            cassette.objects.create(name='Christian %s' % cassette_num,)
+            Cassette.objects.create(name='Christian %s' % cassette_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/ups/cassette/')

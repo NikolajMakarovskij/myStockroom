@@ -7,7 +7,7 @@ from catalog.utils import *
 from .views import *
 
 class signatureListView(DataMixin, generic.ListView):
-    model = signature
+    model = Signature
     template_name = 'signature/signature_list.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -19,7 +19,7 @@ class signatureListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = signature.objects.filter(
+        object_list = Signature.objects.filter(
                 Q(name__icontains=query)|  
                 Q(periodOpen__icontains=query)|
                 Q(periodClose__icontains=query)|
@@ -35,7 +35,7 @@ class signatureListView(DataMixin, generic.ListView):
         return object_list
 
 class signatureDetailView(DataMixin, generic.DetailView):
-    model = signature
+    model = Signature
     template_name = 'signature/signature_detail.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -45,7 +45,7 @@ class signatureDetailView(DataMixin, generic.DetailView):
         return context
 
 class signatureCreate(DataMixin, CreateView):
-    model = signature
+    model = Signature
     form_class = signatureForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('signature:signature')
@@ -57,7 +57,7 @@ class signatureCreate(DataMixin, CreateView):
         return context
 
 class signatureUpdate(DataMixin, UpdateView):
-    model = signature
+    model = Signature
     template_name = 'Forms/add.html'
     form_class = signatureForm
     success_url = reverse_lazy('signature:signature')
@@ -69,7 +69,7 @@ class signatureUpdate(DataMixin, UpdateView):
         return context
 
 class signatureDelete(DataMixin, DeleteView):
-    model = signature
+    model = Signature
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('signature:signature')
 

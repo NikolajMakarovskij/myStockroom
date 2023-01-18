@@ -1,5 +1,5 @@
 from django.test import TestCase
-from software.models import software, os
+from software.models import Software, Os
 from django.urls import reverse
 
 class softwareViewTest(TestCase):
@@ -8,7 +8,7 @@ class softwareViewTest(TestCase):
     def setUpTestData(cls):
         number_of_software = 149
         for software_num in range(number_of_software):
-            software.objects.create(name='Christian %s' % software_num,)
+            Software.objects.create(name='Christian %s' % software_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/software/')
@@ -43,7 +43,7 @@ class OSViewTest(TestCase):
     def setUpTestData(cls):
         number_of_OS = 149
         for OS_num in range(number_of_OS):
-            os.objects.create(name='Christian %s' % OS_num,)
+            Os.objects.create(name='Christian %s' % OS_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/software/OS/')

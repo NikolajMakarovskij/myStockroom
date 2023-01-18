@@ -1,10 +1,10 @@
 from django.db import models
 from django.urls import reverse
-from workplace.models import workplace
+from workplace.models import Workplace
 import uuid 
 from catalog.utils import ModelMixin
 
-class employee(ModelMixin, models.Model):
+class Employee(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -29,7 +29,7 @@ class employee(ModelMixin, models.Model):
         verbose_name="Фамилия сотрудника"
         )
     workplace = models.ForeignKey(
-        workplace,
+        Workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Выберете рабочее место",
@@ -59,7 +59,7 @@ class employee(ModelMixin, models.Model):
         verbose_name_plural = 'Сотрудники'
         ordering = ["name", "-workplace"]
 
-class departament(ModelMixin, models.Model):
+class Departament(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -82,7 +82,7 @@ class departament(ModelMixin, models.Model):
         verbose_name_plural = 'Отделы'
         ordering = ["name", ]
 
-class post(ModelMixin, models.Model):
+class Post(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -94,7 +94,7 @@ class post(ModelMixin, models.Model):
         verbose_name="Должность"
         )
     departament = models.ForeignKey(
-        'departament',
+        'Departament',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Введите название отдела",

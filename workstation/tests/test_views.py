@@ -8,7 +8,7 @@ class workstationViewTest(TestCase):
     def setUpTestData(cls):
         number_of_workstation = 149
         for workstation_num in range(number_of_workstation):
-            workstation.objects.create(name='Christian %s' % workstation_num,)
+            Workstation.objects.create(name='Christian %s' % workstation_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/')
@@ -44,7 +44,7 @@ class monitorViewTest(TestCase):
     def setUpTestData(cls):
         number_of_monitor = 149
         for monitor_num in range(number_of_monitor):
-            monitor.objects.create(name='Christian %s' % monitor_num,)
+            Monitor.objects.create(name='Christian %s' % monitor_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/monitor/')
@@ -80,7 +80,7 @@ class motherboardViewTest(TestCase):
     def setUpTestData(cls):
         number_of_motherboard = 149
         for motherboard_num in range(number_of_motherboard):
-            motherboard.objects.create(name='Christian %s' % motherboard_num,)
+            Motherboard.objects.create(name='Christian %s' % motherboard_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/motherboard/')
@@ -116,7 +116,7 @@ class cpuViewTest(TestCase):
     def setUpTestData(cls):
         number_of_cpu = 149
         for cpu_num in range(number_of_cpu):
-            cpu.objects.create(name='Christian %s' % cpu_num,)
+            Cpu.objects.create(name='Christian %s' % cpu_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/cpu/')
@@ -152,7 +152,7 @@ class gpuViewTest(TestCase):
     def setUpTestData(cls):
         number_of_gpu = 149
         for gpu_num in range(number_of_gpu):
-            gpu.objects.create(name='Christian %s' % gpu_num,)
+            Gpu.objects.create(name='Christian %s' % gpu_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/gpu/')
@@ -188,7 +188,7 @@ class ramViewTest(TestCase):
     def setUpTestData(cls):
         number_of_ram = 149
         for ram_num in range(number_of_ram):
-            ram.objects.create(name='Christian %s' % ram_num,)
+            Ram.objects.create(name='Christian %s' % ram_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/ram/')
@@ -224,7 +224,7 @@ class ssdViewTest(TestCase):
     def setUpTestData(cls):
         number_of_ssd = 149
         for ssd_num in range(number_of_ssd):
-            ssd.objects.create(name='Christian %s' % ssd_num,)
+            Ssd.objects.create(name='Christian %s' % ssd_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/ssd/')
@@ -260,7 +260,7 @@ class hddViewTest(TestCase):
     def setUpTestData(cls):
         number_of_hdd = 149
         for hdd_num in range(number_of_hdd):
-            hdd.objects.create(name='Christian %s' % hdd_num,)
+            Hdd.objects.create(name='Christian %s' % hdd_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/hdd/')
@@ -296,7 +296,7 @@ class dcpowerViewTest(TestCase):
     def setUpTestData(cls):
         number_of_dcpower = 149
         for dcpower_num in range(number_of_dcpower):
-            dcpower.objects.create(name='Christian %s' % dcpower_num,)
+            Dcpower.objects.create(name='Christian %s' % dcpower_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/dcpower/')
@@ -331,7 +331,7 @@ class keyBoardViewTest(TestCase):
     def setUpTestData(cls):
         number_of_keyBoard = 149
         for keyBoard_num in range(number_of_keyBoard):
-            keyBoard.objects.create(name='Christian %s' % keyBoard_num,)
+            KeyBoard.objects.create(name='Christian %s' % keyBoard_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/keyBoard/')
@@ -367,7 +367,7 @@ class mouseViewTest(TestCase):
     def setUpTestData(cls):
         number_of_mouse = 149
         for mouse_num in range(number_of_mouse):
-            mouse.objects.create(name='Christian %s' % mouse_num,)
+            Mouse.objects.create(name='Christian %s' % mouse_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/workstation/mouse/')

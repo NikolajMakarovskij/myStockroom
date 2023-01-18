@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..models import printer
+from ..models import Printer
 from django.urls import reverse
 
 class printerViewTest(TestCase):
@@ -8,7 +8,7 @@ class printerViewTest(TestCase):
     def setUpTestData(cls):
         number_of_printer = 149
         for printer_num in range(number_of_printer):
-            printer.objects.create(name='Christian %s' % printer_num,)
+            Printer.objects.create(name='Christian %s' % printer_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/printer/')
