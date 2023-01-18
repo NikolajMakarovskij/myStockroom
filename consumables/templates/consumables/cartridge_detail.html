@@ -54,6 +54,11 @@
     href="{% url delete cartridge.id%}">
       Удалить
   </a>
+  <form action="{% url 'stockroom:stock_add' cartridge.id %}" method="post" >
+    {{ stock_product_form }}
+    {% csrf_token %}
+    <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient  ">
+</form>
 </div>
 {% endblock %}
 

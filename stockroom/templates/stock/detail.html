@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% block title %}
+    Склад
+{% endblock %}
+{% block content %}
+    <h1>Склад</h1>
+    <table class="table-responsive">
+        <thead>
+        <tr>
+            <th>Расходник</th>
+            <th>Количество</th>
+            <th>Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in stock %}
+            {% with cartridge=item.cartridge %}
+                <tr>
+                    <td>
+                        <a href="{{ cartridge.get_absolute_url }}">
+                            {{cartridge.name}}
+                        </a>
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{% url 'stockroom:stock_remove' cartridge.id%}">Удалть</a></td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url 'consumables:cartridge' %}" class="btn btn-lg btn-outline-dark bg-gradient  input-group-text">Картриджы</a>
+        <a href="#" class="btn btn-lg btn-outline-dark bg-gradient  input-group-text">На главную</a>
+    </p>
+{% endblock %}

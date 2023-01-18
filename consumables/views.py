@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.utils import *
 from catalog.models import references
+from stockroom.forms import StockAddProductForm
 
 #Расходники
 class consumablesView(DataMixin, generic.ListView):
@@ -43,6 +44,7 @@ class cartridgeListView(DataMixin, generic.ListView):
 class cartridgeDetailView(DataMixin, generic.DetailView):
     model = cartridge
     template_name = 'consumables/cartridge_detail.html'
+    stock_product_form = StockAddProductForm()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
