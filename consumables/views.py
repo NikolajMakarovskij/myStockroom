@@ -25,7 +25,7 @@ class cartridgeListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Картриджы", searchlink='consumables:cartridge', add='consumables:new-cartridge')
+        c_def = self.get_user_context(title="Картриджы", searchlink='consumables:cartridge_list', add='consumables:new-cartridge')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -56,7 +56,7 @@ class cartridgeCreate(DataMixin, CreateView):
     model = cartridge
     form_class = cartridgeForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:cartridge')
+    success_url = reverse_lazy('consumables:cartridge_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,7 +68,7 @@ class cartridgeUpdate(DataMixin, UpdateView):
     model = cartridge
     template_name = 'Forms/add.html'
     form_class = cartridgeForm
-    success_url = reverse_lazy('consumables:cartridge')
+    success_url = reverse_lazy('consumables:cartridge_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,11 +79,11 @@ class cartridgeUpdate(DataMixin, UpdateView):
 class cartridgeDelete(DataMixin, DeleteView):
     model = cartridge
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('consumables:cartridge')
+    success_url = reverse_lazy('consumables:cartridge_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить картридж",selflink='consumables:cartridge')
+        c_def = self.get_user_context(title="Удалить картридж",selflink='consumables:cartridge_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -94,7 +94,7 @@ class fotovalListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Фотовалы", searchlink='consumables:fotoval', add='consumables:new-fotoval')
+        c_def = self.get_user_context(title="Фотовалы", searchlink='consumables:fotoval_list', add='consumables:new-fotoval')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -125,7 +125,7 @@ class fotovalCreate(DataMixin, CreateView):
     model = fotoval
     form_class = fotovalForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:fotoval')
+    success_url = reverse_lazy('consumables:fotoval_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,7 +137,7 @@ class fotovalUpdate(DataMixin, UpdateView):
     model = fotoval
     template_name = 'Forms/add.html'
     form_class = fotovalForm
-    success_url = reverse_lazy('consumables:fotoval')
+    success_url = reverse_lazy('consumables:fotoval_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -148,11 +148,11 @@ class fotovalUpdate(DataMixin, UpdateView):
 class fotovalDelete(DataMixin, DeleteView):
     model = fotoval
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('consumables:fotoval')
+    success_url = reverse_lazy('consumables:fotoval_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить фотовал",selflink='consumables:fotoval')
+        c_def = self.get_user_context(title="Удалить фотовал",selflink='consumables:fotoval_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -163,7 +163,7 @@ class tonerListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Тонер", searchlink='consumables:toner', add='consumables:new-toner')
+        c_def = self.get_user_context(title="Тонер", searchlink='consumables:toner_list', add='consumables:new-toner')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -193,7 +193,7 @@ class tonerCreate(DataMixin, CreateView):
     model = toner
     form_class = tonerForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:toner')
+    success_url = reverse_lazy('consumables:toner_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,7 +205,7 @@ class tonerUpdate(DataMixin, UpdateView):
     model = toner
     template_name = 'Forms/add.html'
     form_class = tonerForm
-    success_url = reverse_lazy('consumables:toner')
+    success_url = reverse_lazy('consumables:toner_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -216,11 +216,11 @@ class tonerUpdate(DataMixin, UpdateView):
 class tonerDelete(DataMixin, DeleteView):
     model = toner
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('consumables:toner')
+    success_url = reverse_lazy('consumables:toner_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить тонер",selflink='consumables:toner')
+        c_def = self.get_user_context(title="Удалить тонер",selflink='consumables:toner_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -231,7 +231,7 @@ class accumulatorListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Аккумуляторы", searchlink='consumables:accumulator',add='consumables:new-accumulator')
+        c_def = self.get_user_context(title="Аккумуляторы", searchlink='consumables:accumulator_list',add='consumables:new-accumulator')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -263,7 +263,7 @@ class accumulatorCreate(DataMixin, CreateView):
     model = accumulator
     form_class = accumulatorForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:accumulator')
+    success_url = reverse_lazy('consumables:accumulator_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -275,7 +275,7 @@ class accumulatorUpdate(DataMixin, UpdateView):
     model = accumulator
     template_name = 'Forms/add.html'
     form_class = accumulatorForm
-    success_url = reverse_lazy('consumables:accumulator')
+    success_url = reverse_lazy('consumables:accumulator_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -286,11 +286,11 @@ class accumulatorUpdate(DataMixin, UpdateView):
 class accumulatorDelete(DataMixin, DeleteView):
     model = accumulator
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('consumables:accumulator')
+    success_url = reverse_lazy('consumables:accumulator_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить аккумулятор",selflink='consumables:accumulator')
+        c_def = self.get_user_context(title="Удалить аккумулятор",selflink='consumables:accumulator_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -301,7 +301,7 @@ class storageListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Список накопителей", searchlink='consumables:storage',add='consumables:new-storage',)
+        c_def = self.get_user_context(title="Список накопителей", searchlink='consumables:storage_list',add='consumables:new-storage',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -336,7 +336,7 @@ class storageCreate(DataMixin, CreateView):
     model = storage
     form_class = storageForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:storage')
+    success_url = reverse_lazy('consumables:storage_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -348,7 +348,7 @@ class storageUpdate(DataMixin, UpdateView):
     model = storage
     template_name = 'Forms/add.html'
     form_class = storageForm
-    success_url = reverse_lazy('consumables:storage')
+    success_url = reverse_lazy('consumables:storage_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -359,10 +359,10 @@ class storageUpdate(DataMixin, UpdateView):
 class storageDelete(DataMixin, DeleteView):
     model = storage
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('consumables:storage')
+    success_url = reverse_lazy('consumables:storage_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить накопитель",selflink='consumables:storage')
+        c_def = self.get_user_context(title="Удалить накопитель",selflink='consumables:storage_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
