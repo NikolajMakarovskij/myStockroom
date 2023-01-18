@@ -1,13 +1,13 @@
 from django.urls import reverse_lazy
 from .forms import softwareForm, OSForm
-from .models import software, os
+from .models import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from catalog.utils import DataMixin
 
 class softwareListView(DataMixin, generic.ListView):
-    model = software
+    model = Software
     template_name = 'software/software_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -20,7 +20,7 @@ class softwareListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = software.objects.filter(
+        object_list = Software.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(version__icontains=query) |
@@ -34,7 +34,7 @@ class softwareListView(DataMixin, generic.ListView):
         return object_list
 
 class softwareDetailView(DataMixin, generic.DetailView):
-    model = software
+    model = Software
     template_name = 'software/software_detail.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class softwareDetailView(DataMixin, generic.DetailView):
         return context
 
 class softwareCreate(DataMixin, CreateView):
-    model = software
+    model = Software
     form_class = softwareForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:software')
@@ -55,7 +55,7 @@ class softwareCreate(DataMixin, CreateView):
         return context
 
 class softwareUpdate(DataMixin, UpdateView):
-    model = software
+    model = Software
     template_name = 'Forms/add.html'
     form_class = softwareForm
     success_url = reverse_lazy('software:software')
@@ -67,7 +67,7 @@ class softwareUpdate(DataMixin, UpdateView):
         return context
 
 class softwareDelete(DataMixin, DeleteView):
-    model = software
+    model = Software
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:software')
 
@@ -79,7 +79,7 @@ class softwareDelete(DataMixin, DeleteView):
 
 #ОС
 class OSListView(DataMixin, generic.ListView):
-    model = os
+    model = Os
     template_name = 'software/OS_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -92,7 +92,7 @@ class OSListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = os.objects.filter(
+        object_list = Os.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) | 
                 Q(version__icontains=query) |
@@ -101,7 +101,7 @@ class OSListView(DataMixin, generic.ListView):
         return object_list
 
 class OSDetailView(DataMixin, generic.DetailView):
-    model = os
+    model = Os
     template_name = 'software/OS_detail.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,7 +110,7 @@ class OSDetailView(DataMixin, generic.DetailView):
         return context 
 
 class OSCreate(DataMixin, CreateView):
-    model = os
+    model = Os
     form_class = OSForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:OS')
@@ -122,7 +122,7 @@ class OSCreate(DataMixin, CreateView):
         return context
 
 class OSUpdate(DataMixin, UpdateView):
-    model = os
+    model = Os
     template_name = 'Forms/add.html'
     form_class = OSForm
     success_url = reverse_lazy('software:OS')
@@ -134,7 +134,7 @@ class OSUpdate(DataMixin, UpdateView):
         return context
 
 class OSDelete(DataMixin, DeleteView):
-    model = os
+    model = Os
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:OS')
 

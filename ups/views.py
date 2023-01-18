@@ -1,5 +1,5 @@
 from .forms import cassetteForm, upsForm
-from .models import cassette, ups
+from .models import Cassette, Ups
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,7 +7,7 @@ from catalog.utils import *
 
 #Блок питания
 class upsListView(DataMixin, generic.ListView):
-    model = ups
+    model = Ups
     template_name = 'ups/ups_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -20,7 +20,7 @@ class upsListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = ups.objects.filter(
+        object_list = Ups.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -41,7 +41,7 @@ class upsListView(DataMixin, generic.ListView):
         return object_list
 
 class upsDetailView(DataMixin, generic.DetailView):
-    model = ups
+    model = Ups
     template_name = 'ups/ups_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -51,7 +51,7 @@ class upsDetailView(DataMixin, generic.DetailView):
         return context
 
 class upsCreate(DataMixin, CreateView):
-    model = ups
+    model = Ups
     form_class = upsForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('ups:ups')
@@ -63,7 +63,7 @@ class upsCreate(DataMixin, CreateView):
         return context
 
 class upsUpdate(DataMixin, UpdateView):
-    model = ups
+    model = Ups
     template_name = 'Forms/add.html'
     form_class = upsForm
     success_url = reverse_lazy('ups:ups')
@@ -75,7 +75,7 @@ class upsUpdate(DataMixin, UpdateView):
         return context
 
 class upsDelete(DataMixin, DeleteView):
-    model = ups
+    model = Ups
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('ups:ups')
 
@@ -87,7 +87,7 @@ class upsDelete(DataMixin, DeleteView):
 
 #кассеты
 class cassetteListView(DataMixin, generic.ListView):
-    model = cassette
+    model = Cassette
     template_name = 'ups/cassette_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -100,7 +100,7 @@ class cassetteListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = cassette.objects.filter(
+        object_list = Cassette.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -123,7 +123,7 @@ class cassetteListView(DataMixin, generic.ListView):
         return object_list
 
 class cassetteDetailView(DataMixin, generic.DetailView):
-    model = cassette
+    model = Cassette
     template_name = 'ups/cassette_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -133,7 +133,7 @@ class cassetteDetailView(DataMixin, generic.DetailView):
         return context
 
 class cassetteCreate(DataMixin, CreateView):
-    model = cassette
+    model = Cassette
     form_class = cassetteForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('ups:cassette')
@@ -145,7 +145,7 @@ class cassetteCreate(DataMixin, CreateView):
         return context
 
 class cassetteUpdate(DataMixin, UpdateView):
-    model = cassette
+    model = Cassette
     template_name = 'Forms/add.html'
     form_class = cassetteForm
     success_url = reverse_lazy('ups:cassette')
@@ -157,7 +157,7 @@ class cassetteUpdate(DataMixin, UpdateView):
         return context
 
 class cassetteDelete(DataMixin, DeleteView):
-    model = cassette
+    model = Cassette
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('ups:cassette')
 

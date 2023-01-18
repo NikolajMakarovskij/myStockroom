@@ -9,7 +9,7 @@ from catalog.utils import *
 
 #Рабочие станции
 class workstationListView(DataMixin, generic.ListView):
-    model = workstation
+    model = Workstation
     template_name = 'workstation/workstation_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -22,7 +22,7 @@ class workstationListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = workstation.objects.filter(
+        object_list = Workstation.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(modelComputer__icontains=query) | 
@@ -55,7 +55,7 @@ class workstationListView(DataMixin, generic.ListView):
         return object_list
 
 class workstationDetailView(DataMixin, generic.DetailView):
-    model = workstation
+    model = Workstation
     template_name = 'workstation/workstation_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -65,7 +65,7 @@ class workstationDetailView(DataMixin, generic.DetailView):
         return context
 
 class workstationCreate(DataMixin, CreateView):
-    model = workstation
+    model = Workstation
     form_class = workstationForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:workstation')
@@ -77,7 +77,7 @@ class workstationCreate(DataMixin, CreateView):
         return context
 
 class workstationUpdate(DataMixin, UpdateView):
-    model = workstation
+    model = Workstation
     template_name = 'Forms/add.html'
     form_class = workstationForm
     success_url = reverse_lazy('workstation:workstation')
@@ -89,7 +89,7 @@ class workstationUpdate(DataMixin, UpdateView):
         return context
 
 class workstationDelete(DataMixin, DeleteView):
-    model = workstation
+    model = Workstation
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:workstation')
 
@@ -101,7 +101,7 @@ class workstationDelete(DataMixin, DeleteView):
 
 #Монитор
 class monitorListView(DataMixin, generic.ListView):
-    model = monitor
+    model = Monitor
     template_name = 'workstation/monitor_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -114,7 +114,7 @@ class monitorListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = monitor.objects.filter(
+        object_list = Monitor.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -132,7 +132,7 @@ class monitorListView(DataMixin, generic.ListView):
         return object_list
 
 class monitorDetailView(DataMixin, generic.DetailView):
-    model = monitor
+    model = Monitor
     template_name = 'workstation/monitor_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -142,7 +142,7 @@ class monitorDetailView(DataMixin, generic.DetailView):
         return context
 
 class monitorCreate(DataMixin, CreateView):
-    model = monitor
+    model = Monitor
     form_class = monitorForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:monitor')
@@ -154,7 +154,7 @@ class monitorCreate(DataMixin, CreateView):
         return context
 
 class monitorUpdate(DataMixin, UpdateView):
-    model = monitor
+    model = Monitor
     template_name = 'Forms/add.html'
     form_class = monitorForm
     success_url = reverse_lazy('workstation:monitor')
@@ -166,7 +166,7 @@ class monitorUpdate(DataMixin, UpdateView):
         return context
 
 class monitorDelete(DataMixin, DeleteView):
-    model = monitor
+    model = Monitor
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:monitor')
 
@@ -178,7 +178,7 @@ class monitorDelete(DataMixin, DeleteView):
 
 #Материнская плата
 class motherboardListView(DataMixin, generic.ListView):
-    model = motherboard
+    model = Motherboard
     template_name = 'workstation/motherboard_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -191,7 +191,7 @@ class motherboardListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = motherboard.objects.filter(
+        object_list = Motherboard.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -219,7 +219,7 @@ class motherboardListView(DataMixin, generic.ListView):
         return object_list
 
 class motherboardDetailView(DataMixin, generic.DetailView):
-    model = motherboard
+    model = Motherboard
     template_name = 'workstation/motherboard_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -229,7 +229,7 @@ class motherboardDetailView(DataMixin, generic.DetailView):
         return context
 
 class motherboardCreate(DataMixin, CreateView):
-    model = motherboard
+    model = Motherboard
     form_class = motherboardForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:motherboard')
@@ -241,7 +241,7 @@ class motherboardCreate(DataMixin, CreateView):
         return context
 
 class motherboardUpdate(DataMixin, UpdateView):
-    model = motherboard
+    model = Motherboard
     template_name = 'Forms/add.html'
     form_class = motherboardForm
     success_url = reverse_lazy('workstation:motherboard')
@@ -253,7 +253,7 @@ class motherboardUpdate(DataMixin, UpdateView):
         return context
 
 class motherboardDelete(DataMixin, DeleteView):
-    model = motherboard
+    model = Motherboard
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:motherboard')
 
@@ -265,7 +265,7 @@ class motherboardDelete(DataMixin, DeleteView):
 
 #Процессор
 class cpuListView(DataMixin, generic.ListView):
-    model = cpu
+    model = Cpu
     template_name = 'workstation/cpu_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -278,7 +278,7 @@ class cpuListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = cpu.objects.filter(
+        object_list = Cpu.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -300,7 +300,7 @@ class cpuListView(DataMixin, generic.ListView):
         return object_list
 
 class cpuDetailView(DataMixin, generic.DetailView):
-    model = cpu
+    model = Cpu
     template_name = 'workstation/cpu_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -310,7 +310,7 @@ class cpuDetailView(DataMixin, generic.DetailView):
         return context
 
 class cpuCreate(DataMixin, CreateView):
-    model = cpu
+    model = Cpu
     form_class = cpuForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:cpu')
@@ -322,7 +322,7 @@ class cpuCreate(DataMixin, CreateView):
         return context
 
 class cpuUpdate(DataMixin, UpdateView):
-    model = cpu
+    model = Cpu
     template_name = 'Forms/add.html'
     form_class = cpuForm
     success_url = reverse_lazy('workstation:cpu')
@@ -334,7 +334,7 @@ class cpuUpdate(DataMixin, UpdateView):
         return context
 
 class cpuDelete(DataMixin, DeleteView):
-    model = cpu
+    model = Cpu
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:cpu')
     
@@ -346,7 +346,7 @@ class cpuDelete(DataMixin, DeleteView):
 
 #Видеокарта
 class gpuListView(DataMixin, generic.ListView):
-    model = gpu
+    model = Gpu
     template_name = 'workstation/gpu_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -359,7 +359,7 @@ class gpuListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = gpu.objects.filter(
+        object_list = Gpu.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(type__icontains=query) | 
@@ -374,7 +374,7 @@ class gpuListView(DataMixin, generic.ListView):
         return object_list
 
 class gpuDetailView(DataMixin, generic.DetailView):
-    model = gpu
+    model = Gpu
     template_name = 'workstation/gpu_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -384,7 +384,7 @@ class gpuDetailView(DataMixin, generic.DetailView):
         return context
 
 class gpuCreate(DataMixin, CreateView):
-    model = gpu
+    model = Gpu
     form_class = gpuForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:gpu')
@@ -396,7 +396,7 @@ class gpuCreate(DataMixin, CreateView):
         return context
 
 class gpuUpdate(DataMixin, UpdateView):
-    model = gpu
+    model = Gpu
     template_name = 'Forms/add.html'
     form_class = gpuForm
     success_url = reverse_lazy('workstation:gpu')
@@ -408,7 +408,7 @@ class gpuUpdate(DataMixin, UpdateView):
         return context
 
 class gpuDelete(DataMixin, DeleteView):
-    model = gpu
+    model = Gpu
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:gpu')
 
@@ -420,7 +420,7 @@ class gpuDelete(DataMixin, DeleteView):
 
 #Оперативная память
 class ramListView(DataMixin, generic.ListView):
-    model = ram
+    model = Ram
     template_name = 'workstation/ram_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -433,7 +433,7 @@ class ramListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = ram.objects.filter(
+        object_list = Ram.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(type__icontains=query) | 
@@ -446,7 +446,7 @@ class ramListView(DataMixin, generic.ListView):
         return object_list
 
 class ramDetailView(DataMixin, generic.DetailView):
-    model = ram
+    model = Ram
     template_name = 'workstation/ram_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -456,7 +456,7 @@ class ramDetailView(DataMixin, generic.DetailView):
         return context
 
 class ramCreate(DataMixin, CreateView):
-    model = ram
+    model = Ram
     form_class = ramForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:ram')
@@ -468,7 +468,7 @@ class ramCreate(DataMixin, CreateView):
         return context
 
 class ramUpdate(DataMixin, UpdateView):
-    model = ram
+    model = Ram
     template_name = 'Forms/add.html'
     form_class = ramForm
     success_url = reverse_lazy('workstation:ram')
@@ -480,7 +480,7 @@ class ramUpdate(DataMixin, UpdateView):
         return context
 
 class ramDelete(DataMixin, DeleteView):
-    model = ram
+    model = Ram
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:ram')
 
@@ -492,7 +492,7 @@ class ramDelete(DataMixin, DeleteView):
 
 #SSD
 class ssdListView(DataMixin, generic.ListView):
-    model = ssd
+    model = Ssd
     template_name = 'workstation/ssd_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -505,7 +505,7 @@ class ssdListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = ssd.objects.filter(
+        object_list = Ssd.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(type__icontains=query) | 
@@ -521,7 +521,7 @@ class ssdListView(DataMixin, generic.ListView):
         return object_list
 
 class ssdDetailView(DataMixin, generic.DetailView):
-    model = ssd
+    model = Ssd
     template_name = 'workstation/ssd_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -531,7 +531,7 @@ class ssdDetailView(DataMixin, generic.DetailView):
         return context
 
 class ssdCreate(DataMixin, CreateView):
-    model = ssd
+    model = Ssd
     form_class = ssdForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:ssd')
@@ -543,7 +543,7 @@ class ssdCreate(DataMixin, CreateView):
         return context
 
 class ssdUpdate(DataMixin, UpdateView):
-    model = ssd
+    model = Ssd
     template_name = 'Forms/add.html'
     form_class = ssdForm
     success_url = reverse_lazy('workstation:ssd')
@@ -555,7 +555,7 @@ class ssdUpdate(DataMixin, UpdateView):
         return context
 
 class ssdDelete(DataMixin, DeleteView):
-    model = ssd
+    model = Ssd
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:ssd')
 
@@ -567,7 +567,7 @@ class ssdDelete(DataMixin, DeleteView):
 
 #HDD
 class hddListView(DataMixin, generic.ListView):
-    model = hdd
+    model = Hdd
     template_name = 'workstation/hdd_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -580,7 +580,7 @@ class hddListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = hdd.objects.filter(
+        object_list = Hdd.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -595,7 +595,7 @@ class hddListView(DataMixin, generic.ListView):
         return object_list
 
 class hddDetailView(DataMixin, generic.DetailView):
-    model = hdd
+    model = Hdd
     template_name = 'workstation/hdd_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -605,7 +605,7 @@ class hddDetailView(DataMixin, generic.DetailView):
         return context
 
 class hddCreate(DataMixin, CreateView):
-    model = hdd
+    model = Hdd
     form_class = hddForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:hdd')
@@ -617,7 +617,7 @@ class hddCreate(DataMixin, CreateView):
         return context
 
 class hddUpdate(DataMixin, UpdateView):
-    model = hdd
+    model = Hdd
     template_name = 'Forms/add.html'
     form_class = hddForm
     success_url = reverse_lazy('workstation:hdd')
@@ -629,7 +629,7 @@ class hddUpdate(DataMixin, UpdateView):
         return context
 
 class hddDelete(DataMixin, DeleteView):
-    model = hdd
+    model = Hdd
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:hdd')
     
@@ -641,7 +641,7 @@ class hddDelete(DataMixin, DeleteView):
 
 #Блок питания
 class dcpowerListView(DataMixin, generic.ListView):
-    model = dcpower
+    model = Dcpower
     template_name = 'workstation/dcpower_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -654,7 +654,7 @@ class dcpowerListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = dcpower.objects.filter(
+        object_list = Dcpower.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -670,7 +670,7 @@ class dcpowerListView(DataMixin, generic.ListView):
         return object_list
 
 class dcpowerDetailView(DataMixin, generic.DetailView):
-    model = dcpower
+    model = Dcpower
     template_name = 'workstation/dcpower_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -680,7 +680,7 @@ class dcpowerDetailView(DataMixin, generic.DetailView):
         return context
 
 class dcpowerCreate(DataMixin, CreateView):
-    model = dcpower
+    model = Dcpower
     form_class = dcpowerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:dcpower')
@@ -692,7 +692,7 @@ class dcpowerCreate(DataMixin, CreateView):
         return context
 
 class dcpowerUpdate(DataMixin, UpdateView):
-    model = dcpower
+    model = Dcpower
     template_name = 'Forms/add.html'
     form_class = dcpowerForm
     success_url = reverse_lazy('workstation:dcpower')
@@ -704,7 +704,7 @@ class dcpowerUpdate(DataMixin, UpdateView):
         return context
 
 class dcpowerDelete(DataMixin, DeleteView):
-    model = dcpower
+    model = Dcpower
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:dcpower')
 
@@ -716,7 +716,7 @@ class dcpowerDelete(DataMixin, DeleteView):
 
 #Клавиатура
 class keyBoardListView(DataMixin, generic.ListView):
-    model = keyBoard
+    model = KeyBoard
     template_name = 'workstation/keyBoard_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -729,7 +729,7 @@ class keyBoardListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = keyBoard.objects.filter(
+        object_list = KeyBoard.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -739,7 +739,7 @@ class keyBoardListView(DataMixin, generic.ListView):
         return object_list
 
 class keyBoardDetailView(DataMixin, generic.DetailView):
-    model = keyBoard
+    model = KeyBoard
     template_name = 'workstation/keyBoard_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -749,7 +749,7 @@ class keyBoardDetailView(DataMixin, generic.DetailView):
         return context
 
 class keyBoardCreate(DataMixin, CreateView):
-    model = keyBoard
+    model = KeyBoard
     form_class = keyBoardForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:keyBoard')
@@ -761,7 +761,7 @@ class keyBoardCreate(DataMixin, CreateView):
         return context
 
 class keyBoardUpdate(DataMixin, UpdateView):
-    model = keyBoard
+    model = KeyBoard
     template_name = 'Forms/add.html'
     form_class = keyBoardForm
     success_url = reverse_lazy('workstation:keyBoard')
@@ -773,7 +773,7 @@ class keyBoardUpdate(DataMixin, UpdateView):
         return context
 
 class keyBoardDelete(DataMixin, DeleteView):
-    model = keyBoard
+    model = KeyBoard
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:keyBoard')
 
@@ -785,7 +785,7 @@ class keyBoardDelete(DataMixin, DeleteView):
 
 #Мышь
 class mouseListView(DataMixin, generic.ListView):
-    model = mouse
+    model = Mouse
     template_name = 'workstation/mouse_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -798,7 +798,7 @@ class mouseListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = mouse.objects.filter(
+        object_list = Mouse.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
@@ -808,7 +808,7 @@ class mouseListView(DataMixin, generic.ListView):
         return object_list
 
 class mouseDetailView(DataMixin, generic.DetailView):
-    model = mouse
+    model = Mouse
     template_name = 'workstation/mouse_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -818,7 +818,7 @@ class mouseDetailView(DataMixin, generic.DetailView):
         return context
 
 class mouseCreate(DataMixin, CreateView):
-    model = mouse
+    model = Mouse
     form_class = mouseForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:mouse')
@@ -830,7 +830,7 @@ class mouseCreate(DataMixin, CreateView):
         return context
 
 class mouseUpdate(DataMixin, UpdateView):
-    model = mouse
+    model = Mouse
     template_name = 'Forms/add.html'
     form_class = mouseForm
     success_url = reverse_lazy('workstation:mouse')
@@ -842,7 +842,7 @@ class mouseUpdate(DataMixin, UpdateView):
         return context
 
 class mouseDelete(DataMixin, DeleteView):
-    model = mouse
+    model = Mouse
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:mouse')
 

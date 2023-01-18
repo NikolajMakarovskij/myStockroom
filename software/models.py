@@ -1,10 +1,10 @@
 from django.db import models
-from counterparty.models import manufacturer
+from counterparty.models import Manufacturer
 from django.urls import reverse
 import uuid 
 from catalog.utils import ModelMixin
 
-class software (ModelMixin, models.Model):
+class Software (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -16,7 +16,7 @@ class software (ModelMixin, models.Model):
         verbose_name="Програмное обеспечение"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -65,7 +65,7 @@ class software (ModelMixin, models.Model):
         verbose_name_plural = 'Програмное обеспечение'
         ordering = [ "name", ]
 
-class os (ModelMixin, models.Model):
+class Os (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -77,7 +77,7 @@ class os (ModelMixin, models.Model):
         verbose_name="Операционная система"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",

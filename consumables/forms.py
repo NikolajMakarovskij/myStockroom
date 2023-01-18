@@ -10,7 +10,7 @@ class cartridgeForm(forms.ModelForm):
         fields = ['name','manufacturer','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
@@ -21,7 +21,7 @@ class fotovalForm(forms.ModelForm):
         fields = ['name','manufacturer','mileage','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'mileage': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
             'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
@@ -33,7 +33,7 @@ class tonerForm(forms.ModelForm):
         fields = ['name','manufacturer','buhCode','score' ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'buhCode': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
@@ -44,7 +44,7 @@ class accumulatorForm(forms.ModelForm):
         fields = ['name','manufacturer','power','voltage','current','score']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -62,7 +62,7 @@ class storageForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'modelStorage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -70,5 +70,5 @@ class storageForm(forms.ModelForm):
             'plug': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'typeMemory': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'volumeMemory': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'employee': WidgetCanAdd(employee, related_url="employee:new-employee", attrs={'class': 'form-select form-select-lg'}),
+            'employee': WidgetCanAdd(Employee, related_url="employee:new-employee", attrs={'class': 'form-select form-select-lg'}),
         } 

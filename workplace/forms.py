@@ -5,16 +5,16 @@ from .models import *
 
 class workplaceForm(forms.ModelForm):  
     class Meta:
-        model = workplace
+        model = Workplace
         fields = ['name', 'room',]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'room': WidgetCanAdd(room, related_url="workplace:new-room", attrs={'class': 'input-group form-select form-select-lg'}),
+            'room': WidgetCanAdd(Room, related_url="workplace:new-room", attrs={'class': 'input-group form-select form-select-lg'}),
         } 
 
 class roomForm(forms.ModelForm):  
     class Meta:
-        model = room
+        model = Room
         fields = ['name', 'floor', 'building',]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

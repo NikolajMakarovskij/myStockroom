@@ -3,7 +3,7 @@ from django.urls import reverse
 import uuid
 from catalog.utils import ModelMixin
 
-class room(ModelMixin, models.Model):
+class Room(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -39,7 +39,7 @@ class room(ModelMixin, models.Model):
         verbose_name_plural = 'Кабинеты'
         ordering = ["name"]
 
-class workplace(ModelMixin, models.Model):
+class Workplace(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -51,7 +51,7 @@ class workplace(ModelMixin, models.Model):
         verbose_name="Рабочее место"
         )
     room = models.ForeignKey(
-        'room',
+        'Room',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Выберете номер кабинета",

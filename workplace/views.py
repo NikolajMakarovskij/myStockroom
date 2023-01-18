@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from .forms import roomForm, workplaceForm
-from .models import room, workplace
+from .models import Room, Workplace
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
@@ -8,7 +8,7 @@ from catalog.utils import DataMixin
 
 #Рабочие места
 class WorkplaceListView(DataMixin, generic.ListView):
-    model = workplace
+    model = Workplace
     template_name = 'workplace/workplace_list.html'
   
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -21,7 +21,7 @@ class WorkplaceListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = workplace.objects.filter(
+        object_list = Workplace.objects.filter(
                 Q(name__icontains=query) |
                 Q(room__name__icontains=query) |
                 Q(room__floor__icontains=query) |
@@ -30,7 +30,7 @@ class WorkplaceListView(DataMixin, generic.ListView):
         return object_list
 
 class WorkplaceDetailView(DataMixin, generic.DetailView):
-    model = workplace
+    model = Workplace
     template_name = 'workplace/workplace_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -40,7 +40,7 @@ class WorkplaceDetailView(DataMixin, generic.DetailView):
         return context
 
 class WorkplaceCreate(DataMixin, CreateView):
-    model = workplace
+    model = Workplace
     form_class = workplaceForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:workplace')
@@ -52,7 +52,7 @@ class WorkplaceCreate(DataMixin, CreateView):
         return context
 
 class WorkplaceUpdate(DataMixin, UpdateView):
-    model = workplace
+    model = Workplace
     template_name = 'Forms/add.html'
     form_class = workplaceForm
     success_url = reverse_lazy('workplace:workplace')
@@ -64,7 +64,7 @@ class WorkplaceUpdate(DataMixin, UpdateView):
         return context
 
 class WorkplaceDelete(DataMixin, DeleteView):
-    model = workplace
+    model = Workplace
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:workplace')
 
@@ -76,7 +76,7 @@ class WorkplaceDelete(DataMixin, DeleteView):
 
 #Кабинеты
 class RoomListView(DataMixin, generic.ListView):
-    model = room
+    model = Room
     template_name = 'workplace/room_list.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -89,7 +89,7 @@ class RoomListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = room.objects.filter(
+        object_list = Room.objects.filter(
                 Q(name__icontains=query) |
                 Q(floor__icontains=query) |
                 Q(building__icontains=query) 
@@ -97,7 +97,7 @@ class RoomListView(DataMixin, generic.ListView):
         return object_list
 
 class RoomDetailView(DataMixin, generic.DetailView):
-    model = room
+    model = Room
     template_name = 'workplace/room_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -107,7 +107,7 @@ class RoomDetailView(DataMixin, generic.DetailView):
         return context
 
 class RoomCreate(DataMixin, CreateView):
-    model = room
+    model = Room
     form_class = roomForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:room')
@@ -119,7 +119,7 @@ class RoomCreate(DataMixin, CreateView):
         return context
 
 class RoomUpdate(DataMixin, UpdateView):
-    model = room
+    model = Room
     template_name = 'Forms/add.html'
     form_class = roomForm
     success_url = reverse_lazy('workplace:room')
@@ -131,7 +131,7 @@ class RoomUpdate(DataMixin, UpdateView):
         return context
 
 class RoomDelete(DataMixin, DeleteView):
-    model = room
+    model = Room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room')
 

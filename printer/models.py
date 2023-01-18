@@ -1,12 +1,12 @@
 from django.db import models
 from django.urls import reverse
-from workplace.models import workplace
+from workplace.models import Workplace
 from consumables.models import Cartridge, Fotoval, Toner
-from counterparty.models import manufacturer
+from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 import uuid 
 
-class printer (ModelMixin, models.Model):
+class Printer (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,
@@ -25,7 +25,7 @@ class printer (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -106,7 +106,7 @@ class printer (ModelMixin, models.Model):
         verbose_name="Боковой лоток для подачи бумаги"
         )
     workplace = models.ForeignKey(
-        workplace,
+        Workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочее место",

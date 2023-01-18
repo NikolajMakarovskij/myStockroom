@@ -1,15 +1,15 @@
 from django.db import models
-from counterparty.models import manufacturer
+from counterparty.models import Manufacturer
 from django.urls import reverse
 import uuid 
 from .models import *
-from workplace.models import workplace
-from employee.models import employee
-from software.models import software, os
-from ups.models import ups
+from workplace.models import Workplace
+from employee.models import Employee
+from software.models import Software, Os
+from ups.models import Ups
 from catalog.utils import ModelMixin
 
-class workstation(ModelMixin, models.Model):
+class Workstation(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -21,7 +21,7 @@ class workstation(ModelMixin, models.Model):
         verbose_name="Рабочая станция"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -58,105 +58,105 @@ class workstation(ModelMixin, models.Model):
         verbose_name="Фото инвентарного номера"
         )
     motherboard = models.ForeignKey(
-        'motherboard',
+        'Motherboard',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите материнскую плату",
         verbose_name="Материнская плата"
         )
     monitor = models.ForeignKey(
-        'monitor',
+        'Monitor',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите монитор",
         verbose_name="Монитор"
         )
     cpu = models.ForeignKey(
-        'cpu',
+        'Cpu',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите CPU",
         verbose_name="CPU"
         )
     gpu = models.ForeignKey(
-        'gpu',
+        'Gpu',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите GPU",
         verbose_name="GPU"
         )
     ram = models.ForeignKey(
-        'ram',
+        'Ram',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите RAM",
         verbose_name="RAM"
         )
     ssd = models.ForeignKey(
-        'ssd',
+        'Ssd',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите SSD",
         verbose_name="SSD"
         )
     hdd = models.ForeignKey(
-        'hdd',
+        'Hdd',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите HDD",
         verbose_name="HDD"
         )
     dcpower = models.ForeignKey(
-        'dcpower',
+        'Dcpower',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите блок питания",
         verbose_name="Блок питания"
         )
     keyBoard = models.ForeignKey(
-        'keyBoard',
+        'KeyBoard',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите клавиатуру",
         verbose_name="Клавиатура"
         )
     mouse = models.ForeignKey(
-        'mouse',
+        'Mouse',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите мышь",
         verbose_name="Мышь"
         )
     ups = models.ForeignKey(
-        ups,
+        Ups,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите блок бесперебойного питания",
         verbose_name="Блок бесперебойного питания"
         )
     workplace = models.ForeignKey(
-        workplace,
+        Workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочее место",
         verbose_name="Рабочее место"
         )
     employee = models.ForeignKey(
-        employee,
+        Employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник"
         )
     software = models.ForeignKey(
-        software,
+        Software,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите програмное обеспечение",
         verbose_name="Програмное обеспечение"
         )
     os = models.ForeignKey(
-        os,
+        Os,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите операционную систему",
@@ -174,7 +174,7 @@ class workstation(ModelMixin, models.Model):
         verbose_name_plural = 'Рабочие станции'
         ordering = ["employee", "name", "workplace"]
 
-class monitor (ModelMixin, models.Model):
+class Monitor (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -186,7 +186,7 @@ class monitor (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -281,7 +281,7 @@ class monitor (ModelMixin, models.Model):
         verbose_name_plural = 'Мониторы'
         ordering = ['name']
 
-class motherboard (ModelMixin, models.Model):
+class Motherboard (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -293,7 +293,7 @@ class motherboard (ModelMixin, models.Model):
         verbose_name="Название модели",
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -449,7 +449,7 @@ class motherboard (ModelMixin, models.Model):
         verbose_name_plural = 'Материнские платы'
         ordering = ['name']
 
-class cpu (ModelMixin, models.Model):
+class Cpu (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -461,7 +461,7 @@ class cpu (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -579,7 +579,7 @@ class cpu (ModelMixin, models.Model):
         verbose_name_plural = 'CPUs'
         ordering = ['name']
 
-class gpu (ModelMixin, models.Model):
+class Gpu (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -601,7 +601,7 @@ class gpu (ModelMixin, models.Model):
         verbose_name="Тип подключения"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -671,7 +671,7 @@ class gpu (ModelMixin, models.Model):
         verbose_name_plural = 'GPUs'
         ordering = ['name']
 
-class ram (ModelMixin, models.Model):
+class Ram (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -688,7 +688,7 @@ class ram (ModelMixin, models.Model):
         verbose_name="Тип памяти"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -745,7 +745,7 @@ class ram (ModelMixin, models.Model):
         verbose_name = 'RAM'
         verbose_name_plural = 'RAMs'
 
-class ssd (ModelMixin, models.Model):
+class Ssd (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -762,7 +762,7 @@ class ssd (ModelMixin, models.Model):
         verbose_name="Тип памяти"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -838,7 +838,7 @@ class ssd (ModelMixin, models.Model):
         verbose_name_plural = 'SSDs'
         ordering = ['name']
 
-class hdd (ModelMixin, models.Model):
+class Hdd (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -850,7 +850,7 @@ class hdd (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -925,7 +925,7 @@ class hdd (ModelMixin, models.Model):
         verbose_name = 'HDD'
         verbose_name_plural = 'HDDs'
 
-class dcpower (ModelMixin, models.Model):
+class Dcpower (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -937,7 +937,7 @@ class dcpower (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -1019,7 +1019,7 @@ class dcpower (ModelMixin, models.Model):
         verbose_name_plural = 'Блоки питания'
         ordering = ['name']
 
-class keyBoard (ModelMixin, models.Model):
+class KeyBoard (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -1031,7 +1031,7 @@ class keyBoard (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -1076,7 +1076,7 @@ class keyBoard (ModelMixin, models.Model):
         verbose_name = 'Клавиатура'
         verbose_name_plural = 'Клавиатуры'
 
-class mouse (ModelMixin, models.Model):
+class Mouse (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -1088,7 +1088,7 @@ class mouse (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",

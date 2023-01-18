@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
-from counterparty.models import manufacturer
-from employee.models import employee
+from counterparty.models import Manufacturer
+from employee.models import Employee
 from catalog.utils import ModelMixin
 import uuid 
 
@@ -18,7 +18,7 @@ class Cartridge (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -60,7 +60,7 @@ class Fotoval (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -106,7 +106,7 @@ class Toner (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -147,7 +147,7 @@ class Accumulator (ModelMixin, models.Model):
         verbose_name="Модель"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -201,7 +201,7 @@ class Storage(ModelMixin, models.Model):
         verbose_name="Название"
         )
     manufacturer = models.ForeignKey(
-        manufacturer,
+        Manufacturer,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите производителя",
@@ -256,7 +256,7 @@ class Storage(ModelMixin, models.Model):
         verbose_name="Объем памяти"
         )
     employee = models.ForeignKey(
-        employee,
+        Employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите сотрудника",

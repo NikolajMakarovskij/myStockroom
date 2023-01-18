@@ -8,7 +8,7 @@ class signatureViewTest(TestCase):
     def setUpTestData(cls):
         number_of_signature = 149
         for signature_num in range(number_of_signature):
-            signature.objects.create(name='Christian %s' % signature_num,)
+            Signature.objects.create(name='Christian %s' % signature_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/signature/')
