@@ -71,4 +71,7 @@
  - [ ] Таски для обработки логики склада https://github.com/NikolajMakarovskij/myStockroom/issues/8
  - [ ] Таски для приложения ЭЦП https://github.com/NikolajMakarovskij/myStockroom/issues/9
  - [ ] Docker-compose для деплоя https://github.com/NikolajMakarovskij/myStockroom/issues/10
+- [ ] #14
+- [ ] #13
+- [ ] #15
     
