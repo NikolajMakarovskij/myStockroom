@@ -71,7 +71,7 @@
  - [ ] Таски для обработки логики склада https://github.com/NikolajMakarovskij/myStockroom/issues/8
  - [ ] Таски для приложения ЭЦП https://github.com/NikolajMakarovskij/myStockroom/issues/9
  - [ ] Docker-compose для деплоя https://github.com/NikolajMakarovskij/myStockroom/issues/10
-- [ ] #14
-- [ ] #13
-- [ ] #15
+ - [ ] добавление расходников на склад [#14](https://github.com/NikolajMakarovskij/myStockroom/issues/14)
+ - [ ] добавить форму установки картриджа в принтер с автоматическим списанием со склада [#13](https://github.com/NikolajMakarovskij/myStockroom/issues/13)
+ - [ ] добавить лог для склада [#15](https://github.com/NikolajMakarovskij/myStockroom/issues/15)
     
