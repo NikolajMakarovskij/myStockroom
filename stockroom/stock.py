@@ -1,5 +1,5 @@
 from django.conf import settings
-from consumables.models import cartridge, accumulator, fotoval, toner
+from consumables.models import Cartridge
 
 class Stock(object):
 
@@ -48,7 +48,7 @@ class Stock(object):
         """
         cartridge_ids = self.stock.keys()
         # получение объектов на склад и добавление их в корзину
-        cartridges = cartridge.objects.filter(id__in=cartridge_ids)
+        cartridges = Cartridge.objects.filter(id__in=cartridge_ids)
         for cartridge in cartridges:
             self.stock[str(cartridge.id)]['cartridge'] = cartridge
 

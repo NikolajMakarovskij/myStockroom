@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from employee.models import employee
 from workstation.models import workstation
-from consumables.models import storage
+from consumables.models import Storage
 from catalog.utils import ModelMixin
 import uuid 
 
@@ -64,7 +64,7 @@ class signature (ModelMixin, models.Model): #electronic digital signature
         verbose_name="Рабочая станция"
         )
     storage = models.ForeignKey(
-        storage,
+        Storage,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите накопитель",

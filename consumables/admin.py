@@ -1,50 +1,50 @@
 from django.contrib import admin
-from .models import cartridge, fotoval, toner, accumulator, storage
+from .models import Cartridge, Fotoval, Toner, Accumulator, Storage
 from catalog.utils import ExportAdmin
 
 class CartridgeAdmin(ExportAdmin, admin.ModelAdmin):
-    model = cartridge
+    model = Cartridge
     list_display = ['name','manufacturer','buhCode','score' ]
     list_filter = ['manufacturer', ]
     search_fields = ['name','manufacturer','buhCode','score' ]
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(cartridge, CartridgeAdmin)
+admin.site.register(Cartridge, CartridgeAdmin)
 
 class TonerAdmin(ExportAdmin, admin.ModelAdmin):
-    model = toner
+    model = Toner
     list_display = ['name','manufacturer','buhCode','score' ]
     list_filter = ['manufacturer', ]
     search_fields = ['name','manufacturer','buhCode','score' ]
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(toner, TonerAdmin)
+admin.site.register(Toner, TonerAdmin)
 
 class FotovalAdmin(ExportAdmin, admin.ModelAdmin):
-    model = fotoval
+    model = Fotoval
     list_display = ['name','manufacturer','mileage','buhCode','score']
     list_filter = ['manufacturer', ]
     search_fields = ['name','manufacturer','mileage','buhCode','score']
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(fotoval, FotovalAdmin)
+admin.site.register(Fotoval, FotovalAdmin)
 
 class AccumulatorAdmin(ExportAdmin, admin.ModelAdmin):
-    model = accumulator
+    model = Accumulator
     list_display = ['name','manufacturer','power','voltage','current','score' ]
     list_filter = ['manufacturer', ]
     search_fields = ['name','manufacturer','power','voltage','current','score']
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(accumulator, AccumulatorAdmin)
+admin.site.register(Accumulator, AccumulatorAdmin)
 
 class StorageAdmin(ExportAdmin, admin.ModelAdmin):
-    model = storage
+    model = Storage
     list_display = ['name','modelStorage','manufacturer','plug','typeMemory','volumeMemory','employee' ]
     list_filter = ['manufacturer', ]
     search_fields = ['name','modelStorage','manufacturer','serial','serialImg','inventImg','invent','plug','typeMemory','volumeMemory','employee']
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(storage, StorageAdmin)
+admin.site.register(Storage, StorageAdmin)
 
 

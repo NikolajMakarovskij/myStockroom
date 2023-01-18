@@ -1,7 +1,6 @@
 from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
-from consumables.models import accumulator
 from .models import *
 
 class upsForm(forms.ModelForm):   
@@ -19,10 +18,10 @@ class upsForm(forms.ModelForm):
             'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'accumulator1': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator2': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator3': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator4': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator1': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette1': WidgetCanAdd(cassette, related_url="ups:new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette2': WidgetCanAdd(cassette, related_url="ups:new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
             'cassette3': WidgetCanAdd(cassette, related_url="ups:new-cassette", attrs={'class': 'input-group form-select form-select-lg'}),
@@ -45,15 +44,15 @@ class cassetteForm(forms.ModelForm):
             'power': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'voltage': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'current': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'accumulator1': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator2': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator3': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator4': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator5': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator6': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator7': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator8': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator9': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
-            'accumulator10': WidgetCanAdd(accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator1': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator2': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator3': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator4': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator5': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator6': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator7': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator8': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator9': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
+            'accumulator10': WidgetCanAdd(Accumulator, related_url="consumables:new-accumulator", attrs={'class': 'input-group form-select form-select-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 

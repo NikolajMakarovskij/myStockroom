@@ -1,5 +1,5 @@
 from .forms import cartridgeForm, fotovalForm, tonerForm, accumulatorForm, storageForm
-from .models import cartridge, fotoval, toner, accumulator, storage
+from .models import Cartridge, Fotoval, Toner, Accumulator, Storage
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -20,7 +20,7 @@ class consumablesView(DataMixin, generic.ListView):
 
 #Картриджы
 class cartridgeListView(DataMixin, generic.ListView):
-    model = cartridge
+    model = Cartridge
     template_name = 'consumables/cartridge_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -33,7 +33,7 @@ class cartridgeListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = cartridge.objects.filter(
+        object_list = Cartridge.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(buhCode__icontains=query) |
@@ -42,7 +42,7 @@ class cartridgeListView(DataMixin, generic.ListView):
         return object_list
 
 class cartridgeDetailView(DataMixin, generic.DetailView):
-    model = cartridge
+    model = Cartridge
     template_name = 'consumables/cartridge_detail.html'
     stock_product_form = StockAddProductForm()
 
@@ -53,7 +53,7 @@ class cartridgeDetailView(DataMixin, generic.DetailView):
         return context
 
 class cartridgeCreate(DataMixin, CreateView):
-    model = cartridge
+    model = Cartridge
     form_class = cartridgeForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:cartridge_list')
@@ -65,7 +65,7 @@ class cartridgeCreate(DataMixin, CreateView):
         return context
 
 class cartridgeUpdate(DataMixin, UpdateView):
-    model = cartridge
+    model = Cartridge
     template_name = 'Forms/add.html'
     form_class = cartridgeForm
     success_url = reverse_lazy('consumables:cartridge_list')
@@ -77,7 +77,7 @@ class cartridgeUpdate(DataMixin, UpdateView):
         return context
 
 class cartridgeDelete(DataMixin, DeleteView):
-    model = cartridge
+    model = Cartridge
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:cartridge_list')
 
@@ -89,7 +89,7 @@ class cartridgeDelete(DataMixin, DeleteView):
 
 #Фотовалы
 class fotovalListView(DataMixin, generic.ListView):
-    model = fotoval
+    model = Fotoval
     template_name = 'consumables/fotoval_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -102,7 +102,7 @@ class fotovalListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = fotoval.objects.filter(
+        object_list = Fotoval.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(mileage__icontains=query) |
@@ -112,7 +112,7 @@ class fotovalListView(DataMixin, generic.ListView):
         return object_list
 
 class fotovalDetailView(DataMixin, generic.DetailView):
-    model = fotoval
+    model = Fotoval
     template_name = 'consumables/fotoval_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -122,7 +122,7 @@ class fotovalDetailView(DataMixin, generic.DetailView):
         return context
 
 class fotovalCreate(DataMixin, CreateView):
-    model = fotoval
+    model = Fotoval
     form_class = fotovalForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:fotoval_list')
@@ -134,7 +134,7 @@ class fotovalCreate(DataMixin, CreateView):
         return context
 
 class fotovalUpdate(DataMixin, UpdateView):
-    model = fotoval
+    model = Fotoval
     template_name = 'Forms/add.html'
     form_class = fotovalForm
     success_url = reverse_lazy('consumables:fotoval_list')
@@ -146,7 +146,7 @@ class fotovalUpdate(DataMixin, UpdateView):
         return context
 
 class fotovalDelete(DataMixin, DeleteView):
-    model = fotoval
+    model = Fotoval
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:fotoval_list')
 
@@ -158,7 +158,7 @@ class fotovalDelete(DataMixin, DeleteView):
 
 #Тонер
 class tonerListView(DataMixin, generic.ListView):
-    model = toner
+    model = Toner
     template_name = 'consumables/toner_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -171,7 +171,7 @@ class tonerListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = toner.objects.filter(
+        object_list = Toner.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(buhCode__icontains=query) |
@@ -180,7 +180,7 @@ class tonerListView(DataMixin, generic.ListView):
         return object_list
 
 class tonerDetailView(DataMixin, generic.DetailView):
-    model = toner
+    model = Toner
     template_name = 'consumables/toner_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -190,7 +190,7 @@ class tonerDetailView(DataMixin, generic.DetailView):
         return context
 
 class tonerCreate(DataMixin, CreateView):
-    model = toner
+    model = Toner
     form_class = tonerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:toner_list')
@@ -202,7 +202,7 @@ class tonerCreate(DataMixin, CreateView):
         return context
 
 class tonerUpdate(DataMixin, UpdateView):
-    model = toner
+    model = Toner
     template_name = 'Forms/add.html'
     form_class = tonerForm
     success_url = reverse_lazy('consumables:toner_list')
@@ -214,7 +214,7 @@ class tonerUpdate(DataMixin, UpdateView):
         return context
 
 class tonerDelete(DataMixin, DeleteView):
-    model = toner
+    model = Toner
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:toner_list')
 
@@ -226,7 +226,7 @@ class tonerDelete(DataMixin, DeleteView):
 
 #аккумуляторы
 class accumulatorListView(DataMixin, generic.ListView):
-    model = accumulator
+    model = Accumulator
     template_name = 'consumables/accumulator_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -239,7 +239,7 @@ class accumulatorListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = accumulator.objects.filter(
+        object_list = Accumulator.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(power__icontains=query) | 
@@ -250,7 +250,7 @@ class accumulatorListView(DataMixin, generic.ListView):
         return object_list
 
 class accumulatorDetailView(DataMixin, generic.DetailView):
-    model = accumulator
+    model = Accumulator
     template_name = 'consumables/accumulator_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -260,7 +260,7 @@ class accumulatorDetailView(DataMixin, generic.DetailView):
         return context
 
 class accumulatorCreate(DataMixin, CreateView):
-    model = accumulator
+    model = Accumulator
     form_class = accumulatorForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:accumulator_list')
@@ -272,7 +272,7 @@ class accumulatorCreate(DataMixin, CreateView):
         return context
 
 class accumulatorUpdate(DataMixin, UpdateView):
-    model = accumulator
+    model = Accumulator
     template_name = 'Forms/add.html'
     form_class = accumulatorForm
     success_url = reverse_lazy('consumables:accumulator_list')
@@ -284,7 +284,7 @@ class accumulatorUpdate(DataMixin, UpdateView):
         return context
 
 class accumulatorDelete(DataMixin, DeleteView):
-    model = accumulator
+    model = Accumulator
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:accumulator_list')
 
@@ -296,7 +296,7 @@ class accumulatorDelete(DataMixin, DeleteView):
 
 #Накопитель
 class storageListView(DataMixin, generic.ListView):
-    model = storage
+    model = Storage
     template_name = 'consumables/storage_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -309,7 +309,7 @@ class storageListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = storage.objects.filter(
+        object_list = Storage.objects.filter(
                 Q(name__icontains=query) |
                 Q(manufacturer__name__icontains=query) |
                 Q(plug__icontains=query) |
@@ -323,7 +323,7 @@ class storageListView(DataMixin, generic.ListView):
         return object_list
 
 class storageDetailView(DataMixin, generic.DetailView):
-    model = storage
+    model = Storage
     template_name = 'consumables/storage_detail.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -333,7 +333,7 @@ class storageDetailView(DataMixin, generic.DetailView):
         return context
 
 class storageCreate(DataMixin, CreateView):
-    model = storage
+    model = Storage
     form_class = storageForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:storage_list')
@@ -345,7 +345,7 @@ class storageCreate(DataMixin, CreateView):
         return context
 
 class storageUpdate(DataMixin, UpdateView):
-    model = storage
+    model = Storage
     template_name = 'Forms/add.html'
     form_class = storageForm
     success_url = reverse_lazy('consumables:storage_list')
@@ -357,7 +357,7 @@ class storageUpdate(DataMixin, UpdateView):
         return context
 
 class storageDelete(DataMixin, DeleteView):
-    model = storage
+    model = Storage
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:storage_list')
 

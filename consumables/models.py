@@ -6,7 +6,7 @@ from catalog.utils import ModelMixin
 import uuid 
 
 #Картридж
-class cartridge (ModelMixin, models.Model):
+class Cartridge (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -48,7 +48,7 @@ class cartridge (ModelMixin, models.Model):
         
 
 #Фотовал
-class fotoval (ModelMixin, models.Model):
+class Fotoval (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -94,7 +94,7 @@ class fotoval (ModelMixin, models.Model):
         ordering = ['name']
 
 #Тонер
-class toner (ModelMixin, models.Model):
+class Toner (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -135,7 +135,7 @@ class toner (ModelMixin, models.Model):
         ordering = ['name']
 
 #Аккумулятор
-class accumulator (ModelMixin, models.Model):
+class Accumulator (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -189,7 +189,7 @@ class accumulator (ModelMixin, models.Model):
         ordering = ['name']   
 
 #Накопитель
-class storage(ModelMixin, models.Model):
+class Storage(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

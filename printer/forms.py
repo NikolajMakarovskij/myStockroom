@@ -2,9 +2,8 @@ from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
 from workplace.models import workplace
-from consumables.models import *
-from catalog.models import *
-from .models import printer
+from counterparty.models import manufacturer
+from .models import *
 
 
 class printerForm(forms.ModelForm):  
@@ -38,8 +37,8 @@ class printerForm(forms.ModelForm):
             'tray3': forms.Select(choices=FORMAT, attrs={'class': 'form-select form-select-lg'}),
             'traySide': forms.Select(choices=FORMAT, attrs={'class': 'form-select form-select-lg'}),
             'workplace': WidgetCanAdd(workplace, related_url="workplace:new-workplace", attrs={'class': 'form-select form-select-lg'}),
-            'cartridge': WidgetCanAdd(cartridge, related_url="consumables:new-cartridge", attrs={'class': 'form-select form-select-lg'}),
-            'fotoval': WidgetCanAdd(fotoval, related_url="consumables:new-fotoval", attrs={'class': 'form-select form-select-lg'}),
-            'toner': WidgetCanAdd(toner, related_url="consumables:new-toner", attrs={'class': 'form-select form-select-lg'}),
+            'cartridge': WidgetCanAdd(Cartridge, related_url="consumables:new-cartridge", attrs={'class': 'form-select form-select-lg'}),
+            'fotoval': WidgetCanAdd(Fotoval, related_url="consumables:new-fotoval", attrs={'class': 'form-select form-select-lg'}),
+            'toner': WidgetCanAdd(Toner, related_url="consumables:new-toner", attrs={'class': 'form-select form-select-lg'}),
             'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         } 
