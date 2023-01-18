@@ -1,5 +1,5 @@
 from .forms import printerForm
-from .models import printer
+from .models import Printer
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,7 +7,7 @@ from catalog.utils import *
 
 #Принтеры
 class printerListView(DataMixin, generic.ListView):
-    model = printer
+    model = Printer
     template_name = 'printer/printer_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -20,7 +20,7 @@ class printerListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = printer.objects.filter(
+        object_list = Printer.objects.filter(
                 Q(name__icontains=query) | 
                 Q(modelPrinter__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
@@ -37,7 +37,7 @@ class printerListView(DataMixin, generic.ListView):
         return object_list
 
 class printerDetailView(DataMixin, generic.DetailView):
-    model = printer
+    model = Printer
     template_name = 'printer/printer_detail.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -48,7 +48,7 @@ class printerDetailView(DataMixin, generic.DetailView):
         return context
 
 class printerCreate(DataMixin, CreateView):
-    model = printer
+    model = Printer
     form_class = printerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('printer:printer')
@@ -60,7 +60,7 @@ class printerCreate(DataMixin, CreateView):
         return context
 
 class printerUpdate(DataMixin, UpdateView):
-    model = printer
+    model = Printer
     template_name = 'Forms/add.html'
     form_class = printerForm
     success_url = reverse_lazy('printer:printer')
@@ -72,7 +72,7 @@ class printerUpdate(DataMixin, UpdateView):
         return context
 
 class printerDelete(DataMixin, DeleteView):
-    model = printer
+    model = Printer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('printer:printer')
 

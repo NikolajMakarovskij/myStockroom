@@ -5,11 +5,11 @@ from .models import *
 
 class softwareForm(forms.ModelForm):  
     class Meta:
-        model = software
+        model = Software
         fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile',]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -19,11 +19,11 @@ class softwareForm(forms.ModelForm):
 
 class OSForm(forms.ModelForm):  
     class Meta:
-        model = os
+        model = Os
         fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile',]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
             'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

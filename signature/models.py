@@ -1,13 +1,13 @@
 import datetime
 from django.db import models
 from django.urls import reverse
-from employee.models import employee
-from workstation.models import workstation
+from employee.models import Employee
+from workstation.models import Workstation
 from consumables.models import Storage
 from catalog.utils import ModelMixin
 import uuid 
 
-class signature (ModelMixin, models.Model): #electronic digital signature
+class Signature (ModelMixin, models.Model): #electronic digital signature
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,
@@ -42,14 +42,14 @@ class signature (ModelMixin, models.Model): #electronic digital signature
         verbose_name="Срок действия закрытой части"
         )
     employeeRegister = models.ForeignKey(
-        employee,
+        Employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник на которого оформлена ЭЦП"
         )
     employeeStorage = models.ForeignKey(
-        employee,
+        Employee,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         related_name='+',
@@ -57,7 +57,7 @@ class signature (ModelMixin, models.Model): #electronic digital signature
         verbose_name="Сотрудник у которого хранится ЭЦП"
         )
     workstation = models.ForeignKey(
-        workstation,
+        Workstation,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочую станцию",

@@ -1,6 +1,6 @@
 from .forms import manufacturerForm
-from .models import manufacturer
-from catalog.models import references
+from .models import Manufacturer
+from catalog.models import References
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -9,7 +9,7 @@ from catalog.utils import *
 #Контрагенты
 class CounterpartyView(DataMixin, generic.ListView):
     template_name = 'counterparty/counterparty.html'
-    model = references
+    model = References
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -19,7 +19,7 @@ class CounterpartyView(DataMixin, generic.ListView):
 
 #Производитель
 class manufacturerListView(DataMixin, generic.ListView):
-    model = manufacturer
+    model = Manufacturer
     template_name = 'counterparty/manufacturer_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -32,7 +32,7 @@ class manufacturerListView(DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query :
             query = '' 
-        object_list = manufacturer.objects.filter(
+        object_list = Manufacturer.objects.filter(
                 Q(name__icontains=query) |
                 Q(country__icontains=query) |
                 Q(production__icontains=query) 
@@ -40,7 +40,7 @@ class manufacturerListView(DataMixin, generic.ListView):
         return object_list
 
 class manufacturerDetailView(DataMixin, generic.DetailView):
-    model = manufacturer
+    model = Manufacturer
     template_name = 'counterparty/manufacturer_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -50,7 +50,7 @@ class manufacturerDetailView(DataMixin, generic.DetailView):
         return context
 
 class manufacturerCreate(DataMixin, CreateView):
-    model = manufacturer
+    model = Manufacturer
     form_class = manufacturerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('counterparty:manufacturer')
@@ -62,7 +62,7 @@ class manufacturerCreate(DataMixin, CreateView):
         return context
 
 class manufacturerUpdate(DataMixin, UpdateView):
-    model = manufacturer
+    model = Manufacturer
     template_name = 'Forms/add.html'
     form_class = manufacturerForm
     success_url = reverse_lazy('counterparty:manufacturer')
@@ -74,7 +74,7 @@ class manufacturerUpdate(DataMixin, UpdateView):
         return context
 
 class manufacturerDelete(DataMixin, DeleteView):
-    model = manufacturer
+    model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer')
 

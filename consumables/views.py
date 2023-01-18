@@ -4,13 +4,13 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.utils import *
-from catalog.models import references
+from catalog.models import References
 from stockroom.forms import StockAddProductForm
 
 #Расходники
 class consumablesView(DataMixin, generic.ListView):
     template_name = 'consumables/consumables.html'
-    model = references
+    model = References
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

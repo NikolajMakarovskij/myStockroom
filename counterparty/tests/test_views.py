@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..models import manufacturer
+from ..models import Manufacturer
 from django.urls import reverse
 
 
@@ -9,7 +9,7 @@ class manufacturerViewTest(TestCase):
     def setUpTestData(cls):
         number_of_manufacturer = 149
         for manufacturer_num in range(number_of_manufacturer):
-            manufacturer.objects.create(name='Christian %s' % manufacturer_num,)
+            Manufacturer.objects.create(name='Christian %s' % manufacturer_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/counterparty/manufacturer/')

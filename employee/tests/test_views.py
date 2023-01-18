@@ -1,5 +1,5 @@
 from django.test import TestCase
-from employee.models import employee, post, departament
+from employee.models import Employee, Post, Departament
 from django.urls import reverse
 
 
@@ -9,7 +9,7 @@ class EmployeeListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_employees = 149
         for employee_num in range(number_of_employees):
-            employee.objects.create(name='Christian %s' % employee_num,)
+            Employee.objects.create(name='Christian %s' % employee_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/employee/')
@@ -45,7 +45,7 @@ class postViewTest(TestCase):
     def setUpTestData(cls):
         number_of_post = 149
         for post_num in range(number_of_post):
-            post.objects.create(name='Christian %s' % post_num,)
+            Post.objects.create(name='Christian %s' % post_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/employee/post/')
@@ -81,7 +81,7 @@ class departamentViewTest(TestCase):
     def setUpTestData(cls):
         number_of_departament = 149
         for departament_num in range(number_of_departament):
-            departament.objects.create(name='Christian %s' % departament_num,)
+            Departament.objects.create(name='Christian %s' % departament_num,)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/employee/departament/')
