@@ -9,6 +9,7 @@ urlpatterns = [
     path(r'^cartridge/create$', cartridgeCreate.as_view(), name='new-cartridge'),
     re_path(r'^cartridge/(?P<pk>[-\w]+)/update$', cartridgeUpdate.as_view(), name='cartridge-update'),
     re_path(r'^cartridge/(?P<pk>[-\w]+)/delete$', cartridgeDelete.as_view(), name='cartridge-delete'),
+
     #фотовалы
     re_path(r'^fotoval/$', fotovalListView.as_view(), name='fotoval_list'),
     re_path(r'^fotoval/(?P<pk>[-\w]+)$', fotovalDetailView.as_view(), name='fotoval-detail'),
