@@ -1,11 +1,12 @@
 from .forms import cartridgeForm, fotovalForm, tonerForm, accumulatorForm, storageForm
 from .models import Cartridge, Fotoval, Toner, Accumulator, Storage
 from django.views import generic
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 from catalog.models import References
-from stockroom.forms import StockAddProductForm
+from stockroom.forms import StockAddCartridgeForm
 
 #Расходники
 class consumablesView(DataMixin, generic.ListView):
@@ -41,18 +42,18 @@ class cartridgeListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class cartridgeDetailView(DataMixin, generic.DetailView):
+class cartridgeDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Cartridge
     template_name = 'consumables/cartridge_detail.html'
-    stock_product_form = StockAddProductForm()
+    form_class = StockAddCartridgeForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Картридж",add='consumables:new-cartridge',update='consumables:cartridge-update',delete='consumables:cartridge-delete',)
+        c_def = self.get_user_context(title="Картридж",add='consumables:new-cartridge',update='consumables:cartridge-update',delete='consumables:cartridge-delete',)# addtostock='consumables:add-to-stock')
         context = dict(list(context.items()) + list(c_def.items()))
-        return context
+        return context 
 
-class cartridgeCreate(DataMixin, CreateView):
+class cartridgeCreate(DataMixin,CreateView):
     model = Cartridge
     form_class = cartridgeForm
     template_name = 'Forms/add.html'
