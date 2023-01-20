@@ -10,7 +10,7 @@ class Stock(object):
         self.session = request.session
         stock = self.session.get(settings.STOCK_SESSION_ID)
         if not stock:
-            # save an empty cart in the session
+            # Сохранение пустого склада
             stock = self.session[settings.STOCK_SESSION_ID] = {}
         self.stock = stock
 
@@ -51,6 +51,8 @@ class Stock(object):
         cartridges = Cartridge.objects.filter(id__in=cartridge_ids)
         for cartridge in cartridges:
             self.stock[str(cartridge.id)]['cartridge'] = cartridge
+        for item in self.stock.values():
+            yield item
 
     def __len__(self):
         """

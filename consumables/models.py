@@ -32,7 +32,7 @@ class Cartridge (ModelMixin, models.Model):
     score = models.IntegerField(
         blank=True, null=True,
         help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
+        verbose_name="Остаток на складе",
         )
 
     def __str__(self):
