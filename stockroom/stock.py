@@ -19,8 +19,9 @@ class Stock(object):
         Добавить продукт на склад или обновить его количество.
         """
         cartridge_id = str(cartridge.id)
+        cartridge_score = int(cartridge.score)
         if cartridge_id not in self.stock:
-            self.stock[cartridge_id] = {'quantity': 0 }
+            self.stock[cartridge_id] = {'quantity': cartridge_score }
         if update_quantity:
             self.stock[cartridge_id]['quantity'] = quantity
         else:
