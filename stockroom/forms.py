@@ -1,7 +1,7 @@
 from django import forms
 from consumables.models import Cartridge
 cartridge_score = 10
-CARTRIDGE_QUANTITY_CHOICES = [(i, str(i)) for i in range(-10, cartridge_score)]
+CARTRIDGE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, cartridge_score)]
 
 
 class StockAddCartridgeForm(forms.Form):
