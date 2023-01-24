@@ -16,7 +16,9 @@
           <th scope="col">Тонер</th>
           <th scope="col">Производитель</th>
           <th scope="col">Код в бухгалтерии</th>
-          <th scope="col">Остаток на складе</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Стеллаж</th>
+          <th scope="col">Полка</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
@@ -26,6 +28,8 @@
         <td><a class="noDecoration" href="{{ toner.manufacturer.get_absolute_url }}">{{ toner.manufacturer.name }}</a></td>
         <td>{{ toner.buhCode }}</td>
         <td>{{ toner.score }}</td>
+        <td>{{ toner.rack }}</td>
+        <td>{{ toner.shelf }}</td>
       </tr>
       {% endfor %}
   </table>

@@ -1,8 +1,9 @@
 from .forms import cassetteForm, upsForm
+from stockroom.forms import PrinterAddForm
 from .models import Cassette, Ups
 from django.views import generic
 from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 
 #Блок питания
@@ -40,9 +41,10 @@ class upsListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class upsDetailView(DataMixin, generic.DetailView):
+class upsDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Ups
     template_name = 'ups/ups_detail.html'
+    form_class = PrinterAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,9 +124,10 @@ class cassetteListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class cassetteDetailView(DataMixin, generic.DetailView):
+class cassetteDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Cassette
     template_name = 'ups/cassette_detail.html'
+    form_class = PrinterAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

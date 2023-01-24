@@ -22,7 +22,7 @@ urlpatterns += [
     path('software/', include(('software.urls','software'), namespace='software'), ),
     path('employee/', include(('employee.urls','employee'), namespace='employee'), ),
     path('workplace/', include(('workplace.urls','workplace'), namespace='workplace'), ),
-    path('', include('catalog.urls')),
+    path('', include(('catalog.urls','catalog'), namespace='catalog'),),
     
     path('accounts/', include('django.contrib.auth.urls')),
 ] 

@@ -2,9 +2,10 @@ from .forms import signatureForm
 from .models import *
 from django.views import generic
 from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 from .views import *
+from stockroom.forms import PrinterAddForm
 
 class signatureListView(DataMixin, generic.ListView):
     model = Signature
@@ -34,9 +35,10 @@ class signatureListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class signatureDetailView(DataMixin, generic.DetailView):
+class signatureDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Signature
     template_name = 'signature/signature_detail.html'
+    form_class = PrinterAddForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

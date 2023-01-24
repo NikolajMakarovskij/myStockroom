@@ -192,6 +192,12 @@ a.button_link:hover {
     text-decoration: none;
     color: hsl(207, 7%, 30%);
 }
+.noDecorationMenu,
+.noDecorationMenu:active, 
+.noDecorationMenu:hover {
+    text-decoration: none;
+    color: #f8f9fa;
+}
 .sizes{
     height: 100vh; /* For 100% screen height */
     width:  100vw; /* For 100% screen width */

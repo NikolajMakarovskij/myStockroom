@@ -7,6 +7,9 @@ import uuid
 
 #Картридж
 class Cartridge (ModelMixin, models.Model):
+    """
+    Модель картриджей
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -30,9 +33,19 @@ class Cartridge (ModelMixin, models.Model):
         verbose_name="Код в бухгалтерии"
         )
     score = models.IntegerField(
-        blank=True, null=True,
+        blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
+        )
+    rack = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите стеллаж",
+        verbose_name="№ стеллажа",
+        )
+    shelf = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите полку",
+        verbose_name="№ полки",
         )
 
     def __str__(self):
@@ -49,6 +62,9 @@ class Cartridge (ModelMixin, models.Model):
 
 #Фотовал
 class Fotoval (ModelMixin, models.Model):
+    """
+    Модель фотовалов
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -77,9 +93,19 @@ class Fotoval (ModelMixin, models.Model):
         verbose_name="Пробег"
         )
     score = models.IntegerField(
-        blank=True, null=True,
+        blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
+        )
+    rack = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите стеллаж",
+        verbose_name="№ стеллажа",
+        )
+    shelf = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите полку",
+        verbose_name="№ полки",
         )
 
     def __str__(self):
@@ -95,6 +121,9 @@ class Fotoval (ModelMixin, models.Model):
 
 #Тонер
 class Toner (ModelMixin, models.Model):
+    """
+    Модель тонеров
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -118,9 +147,19 @@ class Toner (ModelMixin, models.Model):
         verbose_name="Код в бухгалтерии"
         )
     score = models.IntegerField(
-        blank=True, null=True,
+        blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
+        )
+    rack = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите стеллаж",
+        verbose_name="№ стеллажа",
+        )
+    shelf = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите полку",
+        verbose_name="№ полки",
         )
 
     def __str__(self):
@@ -136,6 +175,9 @@ class Toner (ModelMixin, models.Model):
 
 #Аккумулятор
 class Accumulator (ModelMixin, models.Model):
+    """
+    Модель аккумуляторов
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -172,9 +214,19 @@ class Accumulator (ModelMixin, models.Model):
         verbose_name="Ток"
         )
     score = models.IntegerField(
-        blank=True, null=True,
+        blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
+        )
+    rack = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите стеллаж",
+        verbose_name="№ стеллажа",
+        )
+    shelf = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите полку",
+        verbose_name="№ полки",
         )
 
     def __str__(self):
@@ -190,6 +242,9 @@ class Accumulator (ModelMixin, models.Model):
 
 #Накопитель
 class Storage(ModelMixin, models.Model):
+    """
+    Модель накопителей
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -262,6 +317,22 @@ class Storage(ModelMixin, models.Model):
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник"
         )
+    score = models.IntegerField(
+        blank=True, default=0,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе"
+        )
+    rack = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите стеллаж",
+        verbose_name="№ стеллажа",
+        )
+    shelf = models.IntegerField(
+        blank=True, default=0,
+        help_text="Укажите полку",
+        verbose_name="№ полки",
+        )
+    
     
     def __str__(self):
         return self.name

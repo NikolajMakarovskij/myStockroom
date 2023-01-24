@@ -16,7 +16,9 @@
           <th scope="col">Картридж</th>
           <th scope="col">Производитель</th>
           <th scope="col">Код в бухгалтерии</th>
-          <th scope="col">Остаток на складе</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Стеллаж</th>
+          <th scope="col">Полка</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
@@ -26,6 +28,8 @@
         <td><a class="noDecoration" href="{{ cartridge.manufacturer.get_absolute_url }}">{{ cartridge.manufacturer.name }}</a></td>
         <td>{{ cartridge.buhCode }}</td>
         <td>{{ cartridge.score }}</td>
+        <td>{{ cartridge.rack }}</td>
+        <td>{{ cartridge.shelf }}</td>
       </tr>
       {% endfor %}
   </table>
