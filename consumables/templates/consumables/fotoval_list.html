@@ -17,7 +17,6 @@
           <th scope="col">Производитель</th>
           <th scope="col">Пробег</th>
           <th scope="col">Код в бухгалтерии</th>
-          <th scope="col">Остаток на складе</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
@@ -27,7 +26,6 @@
         <td><a class="noDecoration" href="{{ fotoval.manufacturer.get_absolute_url }}">{{ fotoval.manufacturer.name }}</a></td>
         <td>{{ fotoval.mileage }}</a></td>
         <td>{{ fotoval.buhCode }}</a></td>
-        <td>{{ fotoval.score }}</a></td>
       </tr>
       {% endfor %}
   </table>

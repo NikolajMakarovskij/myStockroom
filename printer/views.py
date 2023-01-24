@@ -1,8 +1,9 @@
 from .forms import printerForm
+from stockroom.forms import PrinterAddForm
 from .models import Printer
 from django.views import generic
 from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 
 #Принтеры
@@ -36,9 +37,10 @@ class printerListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class printerDetailView(DataMixin, generic.DetailView):
+class printerDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Printer
     template_name = 'printer/printer_detail.html'
+    form_class = PrinterAddForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
