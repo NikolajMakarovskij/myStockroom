@@ -17,13 +17,11 @@
         <tr>
           <th scope="col">Сотрудник</th>
           <th scope="col">Раб. станция</th>
-          <th scope="col">Производитель</th>
           <th scope="col">Модель</th>
           <th scope="col">Серийный номер</th>
           <th scope="col">Фото серийного номера</th>
           <th scope="col">Инвентарный номер</th>
           <th scope="col">Фото инвентарного номера</th>
-          <th scope="col">ИБП</th>
           <th scope="col">ОС</th>
           <th scope="col">Раб. место</th>
           <th scope="col">Кабинет</th>
@@ -36,7 +34,6 @@
       <tr>
         <td><a class="noDecoration" href="{{ workstation.employee.get_absolute_url }}">{{ workstation.employee.name }} {{ workstation.employee.sername }} {{ workstation.employee.family }}</a></td>
         <td><a class="noDecoration" href="{{ workstation.get_absolute_url }}">{{ workstation.name }}</a></td>
-        <td><a class="noDecoration" href="{{ workstation.manufacturer.get_absolute_url }}">{{ workstation.manufacturer.name }}</a></td>
         <td>{{ workstation.modelComputer }}</td>
         <td>{{ workstation.serial }}</td>
         <td>
@@ -58,7 +55,6 @@
             <img src="{% static 'images/no_file.svg' %}" class="iconTable" >
           {% endif %}
         </td>
-        <td>{{ workstation.ups }}</td>
         <td><a class="noDecoration" href="{{ workstation.os.get_absolute_url }}">{{ workstation.os.name }}</a></td>
         <td><a class="noDecoration" href="{{ workstation.workplace.get_absolute_url }}">{{ workstation.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ workstation.workplace.room.get_absolute_url }}">{{ workstation.workplace.room.name }}</a></td>

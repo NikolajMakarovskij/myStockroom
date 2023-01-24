@@ -1,12 +1,11 @@
 from .forms import cartridgeForm, fotovalForm, tonerForm, accumulatorForm, storageForm
 from .models import Cartridge, Fotoval, Toner, Accumulator, Storage
 from django.views import generic
-from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 from catalog.models import References
-from stockroom.forms import StockAddCartridgeForm
+from stockroom.forms import StockAddForm, StockAddForm
 
 #Расходники
 class consumablesView(DataMixin, generic.ListView):
@@ -38,14 +37,16 @@ class cartridgeListView(DataMixin, generic.ListView):
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(buhCode__icontains=query) |
-                Q(score__icontains=query)    
+                Q(score__icontains=query) |
+                Q(rack__icontains=query) |
+                Q(shelf__icontains=query)    
         )
         return object_list
 
 class cartridgeDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Cartridge
     template_name = 'consumables/cartridge_detail.html'
-    form_class = StockAddCartridgeForm
+    form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,13 +109,16 @@ class fotovalListView(DataMixin, generic.ListView):
                 Q(manufacturer__name__icontains=query) |
                 Q(mileage__icontains=query) |
                 Q(buhCode__icontains=query) |
-                Q(score__icontains=query)    
+                Q(score__icontains=query) |
+                Q(rack__icontains=query) |
+                Q(shelf__icontains=query)  
         )
         return object_list
 
-class fotovalDetailView(DataMixin, generic.DetailView):
+class fotovalDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Fotoval
     template_name = 'consumables/fotoval_detail.html'
+    form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -176,13 +180,16 @@ class tonerListView(DataMixin, generic.ListView):
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(buhCode__icontains=query) |
-                Q(score__icontains=query)    
+                Q(score__icontains=query) |
+                Q(rack__icontains=query) |
+                Q(shelf__icontains=query)    
         )
         return object_list
 
-class tonerDetailView(DataMixin, generic.DetailView):
+class tonerDetailView(DataMixin,FormMixin, generic.DetailView):
     model = Toner
     template_name = 'consumables/toner_detail.html'
+    form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -246,13 +253,16 @@ class accumulatorListView(DataMixin, generic.ListView):
                 Q(power__icontains=query) | 
                 Q(voltage__icontains=query) |  
                 Q(current__icontains=query) | 
-                Q(score__icontains=query) 
+                Q(score__icontains=query) |
+                Q(rack__icontains=query) |
+                Q(shelf__icontains=query) 
         )
         return object_list
 
-class accumulatorDetailView(DataMixin, generic.DetailView):
+class accumulatorDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Accumulator
     template_name = 'consumables/accumulator_detail.html'
+    form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -323,9 +333,10 @@ class storageListView(DataMixin, generic.ListView):
         )
         return object_list
 
-class storageDetailView(DataMixin, generic.DetailView):
+class storageDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Storage
     template_name = 'consumables/storage_detail.html'
+    form_class = StockAddForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

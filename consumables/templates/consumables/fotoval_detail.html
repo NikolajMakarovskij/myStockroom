@@ -38,21 +38,34 @@
       {% endfor %}
     </div>
   </div>
-<div class="d-flex justify-content-center input-group mt-3 ">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
-      Добавить
-  </a>
+  <div class="d-flex justify-content-center input-group mt-3 ">
+    <form action="{% url 'stockroom:stock_add_fotoval' fotoval.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+      {% csrf_token %}
+      <div class="input-group mb-3">
+        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
+        <div class="">{{ form.quantity }}</div>
+        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_rack.label }}</div>
+        <div class="">{{ form.number_rack }}</div>
+        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_shelf.label }}</div>
+        <div class="">{{ form.number_shelf }}</div>
+        <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+      </div>
+    </form>
+  </div>
+  <div class="d-flex justify-content-center input-group mt-3 ">
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      href="{% url add %}">
+        Добавить
+    </a>
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      href="{% url update fotoval.id%}">
+        Редактировать
+    </a>
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      href="{% url delete fotoval.id%}">
+        Удалить
+    </a>
+  </div>
 
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update fotoval.id%}">
-      Редактировать
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete fotoval.id%}">
-      Удалить
-  </a>
-</div>
 {% endblock %}
 

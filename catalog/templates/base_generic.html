@@ -17,20 +17,25 @@
   {% if user.is_authenticated %}
   <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark bg-gradient">
     <div class="container-fluid">
-      <div class="col-9">
+      <div class="col-8">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="true" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
       {% if user.is_authenticated %}
         {% if user.is_superuser %}  
-        <div class="nav-item  col-1 text-secondary">
-          <a class="noDecoration" href="/admin/">
+        <div class="nav-item  col-1 text-light">
+          <a class="noDecorationMenu" href="/admin/">
             <h5>админка</h5>
           </a>
         </div>
         {% endif %} 
-        <div class="nav-item col-1 text-secondary">        
+        <div class="nav-item col-1 ">        
+          <a class="noDecorationMenu " href="{% url 'stockroom:stock_detail' %}">
+            <h5>Склад</h5>
+          </a>
+        </div>  
+        <div class="nav-item col-1 text-light">        
           <h5 class="">
             {{ user.get_username }}
           </h5>

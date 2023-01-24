@@ -4,36 +4,36 @@ from catalog.utils import ExportAdmin
 
 class CartridgeAdmin(ExportAdmin, admin.ModelAdmin):
     model = Cartridge
-    list_display = ['name','manufacturer','buhCode','score' ]
-    list_filter = ['manufacturer', ]
-    search_fields = ['name','manufacturer','buhCode','score' ]
+    list_display = ['name','manufacturer','buhCode','score', 'rack', 'shelf' ]
+    list_filter = ['manufacturer', 'rack', 'shelf']
+    search_fields = ['name','manufacturer','buhCode','score','rack', 'shelf' ]
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Cartridge, CartridgeAdmin)
 
 class TonerAdmin(ExportAdmin, admin.ModelAdmin):
     model = Toner
-    list_display = ['name','manufacturer','buhCode','score' ]
-    list_filter = ['manufacturer', ]
-    search_fields = ['name','manufacturer','buhCode','score' ]
+    list_display = ['name','manufacturer','buhCode','score','rack', 'shelf' ]
+    list_filter = ['manufacturer', 'rack', 'shelf']
+    search_fields = ['name','manufacturer','buhCode','score','rack', 'shelf' ]
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Toner, TonerAdmin)
 
 class FotovalAdmin(ExportAdmin, admin.ModelAdmin):
     model = Fotoval
-    list_display = ['name','manufacturer','mileage','buhCode','score']
-    list_filter = ['manufacturer', ]
-    search_fields = ['name','manufacturer','mileage','buhCode','score']
+    list_display = ['name','manufacturer','mileage','buhCode','score','rack', 'shelf']
+    list_filter = ['manufacturer', 'rack', 'shelf']
+    search_fields = ['name','manufacturer','mileage','buhCode','score','rack', 'shelf']
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Fotoval, FotovalAdmin)
 
 class AccumulatorAdmin(ExportAdmin, admin.ModelAdmin):
     model = Accumulator
-    list_display = ['name','manufacturer','power','voltage','current','score' ]
-    list_filter = ['manufacturer', ]
-    search_fields = ['name','manufacturer','power','voltage','current','score']
+    list_display = ['name','manufacturer','power','voltage','current','score','rack', 'shelf' ]
+    list_filter = ['manufacturer', 'rack', 'shelf']
+    search_fields = ['name','manufacturer','power','voltage','current','score','rack', 'shelf']
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Accumulator, AccumulatorAdmin)

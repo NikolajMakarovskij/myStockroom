@@ -7,15 +7,15 @@ import datetime
 from django.http import HttpResponse
 
 menu = [
-    {'title':  "Главная страница", 'url_name': 'index'},
+    {'title':  "Главная страница", 'url_name': 'catalog:index'},
     {'title':  "Раб. места", 'url_name': 'workplace:workplace'},
     {'title':  "Сотрудники", 'url_name': 'employee:employee'},
     {'title':  "Софт", 'url_name': 'software:software'},
     {'title':  "Раб. станции", 'url_name': 'workstation:workstation'},
     {'title':  "Принтеры", 'url_name': 'printer:printer'},
     {'title':  "ЭЦП", 'url_name': 'signature:signature'},
-    {'title':  "Справочники", 'url_name': 'references'},
-    #{'title':  "Склад", 'url_name': 'warehouse'},
+    {'title':  "Справочники", 'url_name': 'catalog:references'},
+    {'title':  "Склад", 'url_name': 'stockroom:stock_detail'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
     #{'title':  "#", 'url_name': '#'},
@@ -34,7 +34,12 @@ printerMenu = [
     {'title':  "Информация о тонере", 'anchor': '#tonerInfo'},
     {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
     ]
+
+
 class DataMixin:
+    """
+    Миксин с пагинацией, меню, поиском
+    """
     paginate_by =  10
     def get_user_context(self, **kwargs):
         context = kwargs
@@ -43,9 +48,11 @@ class DataMixin:
         
         return context
 
-# Кнопка добавить для формы
+
 class WidgetCanAdd(widgets.Select):
-    "Отвечает за кнопку добавить в форме для связанных моделей"
+    """
+    Кнопка добавить в форме для связанных моделей
+    """
     def __init__(self, related_model, related_url=None, *args, **kw):
 
         super(WidgetCanAdd, self).__init__(*args, **kw)
@@ -66,8 +73,11 @@ class WidgetCanAdd(widgets.Select):
         output.append('<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
         return mark_safe(''.join(output))
 
-#Функция экспорта
+
 class ExportAdmin:
+    """
+    Функция экспорта в админке
+    """
     def export_to_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         response = HttpResponse(content_type='text/csv')
@@ -91,8 +101,11 @@ class ExportAdmin:
         verbose_name = 'экспорт CSV'
         verbose_name_plural = 'экспорт CSV'
 
-#отбор значений модели
+
 class ModelMixin:
+    """
+    Миксин с функциями для моделей
+    """
     def get_all_fields(self):
         """Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView """
         fields = []
@@ -100,7 +113,7 @@ class ModelMixin:
         for f in self._meta.fields:
 
             fname = f.name        
-            # resolve picklists/choices, with get_xyz_display() function
+            # Разрешает списки выбора с помощью get_xyz_display() 
             get_choice = 'get_'+fname+'_display'
             if hasattr(self, get_choice):
                 value = getattr(self, get_choice)()
@@ -110,7 +123,7 @@ class ModelMixin:
                 except AttributeError:
                     value = None
 
-            # only display fields with values and skip some fields entirely
+            # Отображение полей всех полей, кроме исключенных
             if f.editable and value and f.name not in (expose_fields) :
 
                 fields.append(
