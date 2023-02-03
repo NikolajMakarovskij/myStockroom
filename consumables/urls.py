@@ -2,7 +2,17 @@ from django.urls import path, re_path
 from .views import *
 
 urlpatterns = [
-    re_path(r'^$', consumablesView.as_view(), name='consumables'),
+    #Расходники
+    path('', consumablesView.as_view(), name='consumables_list'),
+    path('category/<slug:category_slug>', consumablesCategoriesView.as_view(), name='category'),
+    re_path(r'^(?P<pk>[-\w]+)$', consumablesDetailView.as_view(), name='consumables-detail'),
+    path(r'^create$', consumablesCreate.as_view(), name='new-consumables'),
+    re_path(r'^(?P<pk>[-\w]+)/update$', consumablesUpdate.as_view(), name='consumables-update'),
+    re_path(r'^(?P<pk>[-\w]+)/delete$', consumablesDelete.as_view(), name='consumables-delete'),
+    
+    
+    
+    
     #картриджы
     re_path(r'^cartridge/$', cartridgeListView.as_view(), name='cartridge_list'),
     re_path(r'^cartridge/(?P<pk>[-\w]+)$', cartridgeDetailView.as_view(), name='cartridge-detail'),
