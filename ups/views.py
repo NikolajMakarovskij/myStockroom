@@ -1,5 +1,5 @@
 from .forms import cassetteForm, upsForm
-from stockroom.forms import PrinterAddForm
+from stockroom.forms import ConsumableInstallForm
 from .models import Cassette, Ups
 from django.views import generic
 from django.db.models import Q
@@ -29,14 +29,8 @@ class upsListView(DataMixin, generic.ListView):
                 Q(power__icontains=query) | 
                 Q(voltage__icontains=query) |  
                 Q(current__icontains=query) | 
-                Q(accumulator1__name__icontains=query) |
-                Q(accumulator2__name__icontains=query) |
-                Q(accumulator3__name__icontains=query) |
-                Q(accumulator4__name__icontains=query) | 
-                Q(cassette1__name__icontains=query) | 
-                Q(cassette2__name__icontains=query) |
-                Q(cassette3__name__icontains=query) |
-                Q(cassette4__name__icontains=query) |
+                Q(accumulator__name__icontains=query) |
+                Q(cassette__name__icontains=query) | 
                 Q(score__icontains=query) 
         )
         return object_list
@@ -44,7 +38,7 @@ class upsListView(DataMixin, generic.ListView):
 class upsDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Ups
     template_name = 'ups/ups_detail.html'
-    form_class = PrinterAddForm
+    form_class = ConsumableInstallForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,16 +104,7 @@ class cassetteListView(DataMixin, generic.ListView):
                 Q(power__icontains=query) | 
                 Q(voltage__icontains=query) |  
                 Q(current__icontains=query) | 
-                Q(accumulator1__name__icontains=query) | 
-                Q(accumulator2__name__icontains=query) | 
-                Q(accumulator3__name__icontains=query) | 
-                Q(accumulator4__name__icontains=query) | 
-                Q(accumulator5__name__icontains=query) | 
-                Q(accumulator6__name__icontains=query) | 
-                Q(accumulator7__name__icontains=query) | 
-                Q(accumulator8__name__icontains=query) | 
-                Q(accumulator9__name__icontains=query) | 
-                Q(accumulator10__name__icontains=query) | 
+                Q(accumulator__name__icontains=query) | 
                 Q(score__icontains=query) 
         )
         return object_list
@@ -127,7 +112,7 @@ class cassetteListView(DataMixin, generic.ListView):
 class cassetteDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Cassette
     template_name = 'ups/cassette_detail.html'
-    form_class = PrinterAddForm
+    form_class = ConsumableInstallForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

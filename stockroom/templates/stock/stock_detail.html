@@ -25,205 +25,35 @@
                             </thead>
                             <tbody>
                             {% for item in stock %}
-                                {% if item.cartridge %}
-                                    {% with cartridge=item.cartridge %}
+                                
+                                    {% with consumable=item.consumable %}
                                         <tr>
                                             <td>
-                                                <a class="noDecoration" href="{{ cartridge.get_absolute_url }}">
-                                                    {{cartridge.name}}
+                                                <a class="noDecoration" href="{{ consumable.get_absolute_url }}">
+                                                    {{consumable.id}}
                                                 </a>
                                             </td>
-                                            <td>{{cartridge.buhCode}}</td>
+                                            <td>{{consumable.buhCode}}</td>
                                             <td>{{item.quantity}}</td>
                                             <td>{{item.number_rack}}</td>
                                             <td>{{item.number_shelf}}</td>
-                                            <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_cartridge' cartridge.id%}">Удалть</a></td>
+                                            <td>{{item.consumable.name}}</td>
+                                            
                                         </tr>
                                     {% endwith %}
-                                {% endif %}
+                                
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        Тонеры
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
-                    <div class="accordion-body">
-                        <table class="table align-middle table-hover" style="text-align:center">
-                            <thead>
-                                <tr>
-                                    <th>Расходник</th>
-                                    <th>Код по бухгалтерии</th>
-                                    <th>Количество</th>
-                                    <th>Стеллаж</th>
-                                    <th>Полка</th>
-                                    <th>Удалить</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in stock %}
-                                {% if item.toner %}
-                                    {% with toner=item.toner %}
-                                        <tr>
-                                            <td>
-                                                <a class="noDecoration" href="{{ toner.get_absolute_url }}">
-                                                    {{toner.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{toner.buhCode}}</td>
-                                            <td>{{item.quantity}}</td>
-                                            <td>{{item.number_rack}}</td>
-                                            <td>{{item.number_shelf}}</td>
-                                            <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_toner' toner.id%}">Удалть</a></td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>                    
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                        Фотовалы
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
-                    <div class="accordion-body">
-                        <table class="table align-middle table-hover" style="text-align:center">
-                            <thead>
-                                <tr>
-                                    <th>Расходник</th>
-                                    <th>Код по бухгалтерии</th>
-                                    <th>Количество</th>
-                                    <th>Стеллаж</th>
-                                    <th>Полка</th>
-                                    <th>Удалить</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in stock %}
-                                {% if item.fotoval %}
-                                    {% with fotoval=item.fotoval %}
-                                        <tr>
-                                            <td>
-                                                <a class="noDecoration" href="{{ fotoval.get_absolute_url }}">
-                                                    {{fotoval.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{fotoval.buhCode}}</td>
-                                            <td>{{item.quantity}}</td>
-                                            <td>{{item.number_rack}}</td>
-                                            <td>{{item.number_shelf}}</td>
-                                            <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_fotoval' fotoval.id%}">Удалть</a></td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>   
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFourth">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourth" aria-expanded="true" aria-controls="collapseFourth">
-                        Аккумуляторы
-                    </button>
-                </h2>
-                <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth">
-                    <div class="accordion-body">
-                        <table class="table align-middle table-hover" style="text-align:center">
-                            <thead>
-                                <tr>
-                                    <th>Расходник</th>
-                                    <th>Код по бухгалтерии</th>
-                                    <th>Количество</th>
-                                    <th>Стеллаж</th>
-                                    <th>Полка</th>
-                                    <th>Удалить</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in stock %}
-                                {% if item.accumulator %}
-                                    {% with accumulator=item.accumulator %}
-                                        <tr>
-                                            <td>
-                                                <a class="noDecoration" href="{{ accumulator.get_absolute_url }}">
-                                                    {{accumulator.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{accumulator.buhCode}}</td>
-                                            <td>{{ item.quantity }}</td>
-                                            <td>{{ item.number_rack }}</td>
-                                            <td>{{ item.number_shelf }}</td>
-                                            <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_accumulator' accumulator.id%}">Удалть</a></td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>                       
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                    <button class="accordion-button collapsed"  type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                        Накопители
-                    </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
-                    <div class="accordion-body">
-                        <table class="table align-middle table-hover" style="text-align:center">
-                            <thead>
-                                <tr>
-                                    <th>Расходник</th>
-                                    <th>Код по бухгалтерии</th>
-                                    <th>Количество</th>
-                                    <th>Стеллаж</th>
-                                    <th>Полка</th>
-                                    <th>Удалить</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in stock %}
-                                {% if item.storage %}
-                                    {% with storage=item.storage %}
-                                        <tr>
-                                            <td>
-                                                <a class="noDecoration" href="{{ storage.get_absolute_url }}">
-                                                    {{storage.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{storage.buhCode}}</td>
-                                            <td>{{item.quantity}}</td>
-                                            <td>{{item.number_rack}}</td>
-                                            <td>{{item.number_shelf}}</td>
-                                            <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_storage' storage.id%}">Удалть</a></td>
-                                        </tr>
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>                       
-                    </div>
-                </div>
-            </div>
+
         </div>
 
     <div class="text-right mt-3">
         <p class="text-right">
-            <a href="{% url 'consumables:consumables' %}" class="btn btn-lg btn-outline-dark bg-gradient  input-group-text">Расходники</a>
+            <a href="{% url 'consumables:consumables_list' %}" class="btn btn-lg btn-outline-dark bg-gradient  input-group-text">Расходники</a>
             <a href="{% url 'catalog:index' %}" class="btn btn-lg btn-outline-dark bg-gradient  input-group-text">На главную</a>
         </p>
     </div>

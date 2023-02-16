@@ -1,5 +1,5 @@
 from .forms import printerForm
-from stockroom.forms import PrinterAddForm
+from stockroom.forms import ConsumableInstallForm
 from .models import Printer
 from django.views import generic
 from django.db.models import Q
@@ -27,7 +27,7 @@ class printerListView(DataMixin, generic.ListView):
                 Q(manufacturer__name__icontains=query) |
                 Q(cartridge__name__icontains=query) |
                 Q(fotoval__name__icontains=query) |
-                Q(fotoval__mileage__icontains=query) |
+                Q(fotodrumm__name__icontains=query) |
                 Q(toner__name__icontains=query) |
                 Q(score__icontains=query) |   
                 Q(workplace__name__icontains=query) |
@@ -40,7 +40,7 @@ class printerListView(DataMixin, generic.ListView):
 class printerDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Printer
     template_name = 'printer/printer_detail.html'
-    form_class = PrinterAddForm
+    form_class = ConsumableInstallForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

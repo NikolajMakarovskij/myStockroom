@@ -9,14 +9,14 @@
     <a name="cartridgeInfo" class="btn" data-bs-toggle="collapse" href="#cartridgeInfoContent" role="button"
       aria-expanded="false" aria-controls="cartridgeInfoContent">
       <h1 class="card-title">
-        <img src="{% static 'images/cartridge.svg' %}" class="iconHeader">
-        Информация о картридже
+        <img src="{% static 'images/consumables.svg' %}" class="iconHeader">
+        Информация о расходнике
       </h1>
     </a>
   </div>
   <div class="collapse" id="cartridgeInfoContent">
     <div class="row row-cols-3 row-cols-md-3">
-      {% for f in cartridge.get_all_fields %}
+      {% for f in consumables.get_all_fields %}
       <div class="col mt-3">
         <div class="card border-dark  h-100">
           <div class="card-header">
@@ -38,9 +38,9 @@
       {% endfor %}
     </div>
   </div>
-
+  {% if consumables %}
   <div class="d-flex justify-content-center input-group mt-3 ">
-    <form action="{% url 'stockroom:stock_add_cartridge' cartridge.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+    <form action="{% url 'stockroom:stock_add_consumable' consumables.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
       {% csrf_token %}
       <div class="input-group mb-3">
         <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
@@ -53,21 +53,22 @@
       </div>
     </form>
   </div>
+  {% endif %}
   <div class="d-flex justify-content-center input-group mt-3 ">
         <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
           href="{% url add %}">
             Добавить
         </a>
         <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-          href="{% url update cartridge.id%}">
+          href="{% url update consumables.id%}">
             Редактировать
         </a>
         <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-          href="{% url delete cartridge.id%}">
+          href="{% url delete consumables.id%}">
             Удалить
         </a>      
-      </div>
   </div>
 </div>
-{% endblock %}
 
+</div>
+{% endblock %}
