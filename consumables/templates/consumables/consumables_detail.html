@@ -38,9 +38,9 @@
       {% endfor %}
     </div>
   </div>
-  {% if cartridge %}
+  {% if consumables %}
   <div class="d-flex justify-content-center input-group mt-3 ">
-    <form action="{% url 'stockroom:stock_add_cartridge' cartridge.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+    <form action="{% url 'stockroom:stock_add_consumable' consumables.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
       {% csrf_token %}
       <div class="input-group mb-3">
         <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>

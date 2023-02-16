@@ -1,6 +1,6 @@
 asgiref
 diff-match-patch
-Django==4.1.6
+Django >=4.1.6,<=5
 gunicorn
 celery
 django-celery-beat

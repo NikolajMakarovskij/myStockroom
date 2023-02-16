@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
 from .views import *
-from stockroom.forms import PrinterAddForm
+from stockroom.forms import ConsumableInstallForm
 
 class signatureListView(DataMixin, generic.ListView):
     model = Signature
@@ -38,7 +38,7 @@ class signatureListView(DataMixin, generic.ListView):
 class signatureDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Signature
     template_name = 'signature/signature_detail.html'
-    form_class = PrinterAddForm
+    form_class = ConsumableInstallForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
