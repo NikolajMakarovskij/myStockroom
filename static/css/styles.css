@@ -26,12 +26,22 @@
     list-style-type: none;
     text-decoration: none;
 }
+.nav-tabs .active,
+.nav-tabs .nav-item:hover,
+.nav-tabs .nav-link:hover {
+    background-color: rgba(128, 128, 128, 0.850) !important;
+    border-color: rgba(128, 128, 128, 0.850) !important;
+    color:#ffffff !important;
+
+}
+
 .nav-pills .active,
 .nav-pills .nav-item:hover {
     background-color: rgba(128, 128, 128, 0.850) !important;
     border-color: rgba(128, 128, 128, 0.850) !important;
     color:#adb5bd;
 }
+
 .btn-primary,
 .btn-primary:visited{
     background-color: rgba(128, 128, 128, 0.850) !important;

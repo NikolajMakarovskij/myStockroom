@@ -1,10 +1,11 @@
 from django.db import models
 from django.urls import reverse
 from workplace.models import Workplace
-from consumables.models import Cartridge, Fotoval, Toner
+from consumables.models import Consumables, Categories
 from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 import uuid 
+
 
 class Printer (ModelMixin, models.Model):
     id = models.UUIDField(
@@ -113,31 +114,48 @@ class Printer (ModelMixin, models.Model):
         verbose_name="Рабочее место"
         )
     cartridge = models.ForeignKey(
-        Cartridge,
-        on_delete=models.SET_NULL,
+        Consumables, 
         blank=True, null=True,
+        on_delete=models.CASCADE,
+        related_name='cartridge',
         help_text="Укажите картридж",
         verbose_name="Картридж"
         )
     fotoval = models.ForeignKey(
-        Fotoval,
-        on_delete=models.SET_NULL,
+        Consumables,
         blank=True, null=True,
+        on_delete=models.CASCADE,
+        related_name='fotoval',
         help_text="Укажите фотовал",
         verbose_name="Фотовал"
         )
     toner = models.ForeignKey(
-        Toner,
-        on_delete=models.SET_NULL,
+        Consumables,
         blank=True, null=True,
+        on_delete=models.CASCADE,
+        related_name='toner',
         help_text="Укажите тонер",
         verbose_name="Тонер"
+        )
+    fotodrumm = models.ForeignKey(
+        Consumables,
+        blank=True, null=True,
+        related_name='fotodrumm',
+        on_delete=models.CASCADE,
+        help_text="Укажите фотобарабан",
+        verbose_name="Фотобарабан"
         )
     score = models.IntegerField(
         blank=True, null=True,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
         )
+    note = models.TextField(
+        max_length=1000,
+        blank=True, null=True,
+        help_text="Введите примечание",
+        verbose_name="Примечание"
+        ) 
 
     def __str__(self):
         return self.name
