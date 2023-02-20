@@ -1,9 +1,10 @@
 # Логика склада
 
 ## Модели склада, расходника и устройства
-    - Склад
-    '''
-    python
+    
+- Склад
+
+```python
     class Stockroom (ModelMixin, models.Model):
         consumables = models.OneToOneField(Consumables, primary_key = True)
         categories = models.ForeignKey('Categories')
@@ -12,10 +13,11 @@
         rack = models.IntegerField(verbose_name="Стеллаж" )
         shelf = models.IntegerField(verbose_name="Полка")
         mileage #TODO рассмотреть добавление
-    '''
-    - Расходник
-    '''
-    python
+```
+
+- Расходник
+
+```python
     class Consumables (ModelMixin, models.Model):
         """
         Модель расходников
@@ -29,10 +31,11 @@
         buhCode = models.CharField(verbose_name="Код в бухгалтерии")
         score = models.IntegerField(verbose_name="Остаток на складе")
         mileage #TODO рассмотреть добавление
-    '''
-    - Пример устройства
-    '''
-    python
+```
+
+- Пример устройства
+
+```python
     class Printer (ModelMixin, models.Model):
         """
         Модель принтера. Рассмотреть объединение всех устройств в единую модель
@@ -49,13 +52,13 @@
         fotodrumm = models.ForeignKey(Consumables, verbose_name="Фотобарабан")
         score = models.IntegerField(verbose_name="Остаток на складе")
         mileage #TODO рассмотреть добавление
-    '''
+```
 
 ## Методы склада
 
-    - Добавление расходника на склад
-    '''
-    python
+- Добавление расходника на склад
+
+```python
         def add_consumable(self, consumable, quantity=1, number_rack=1, number_shelf=1, mileage=0  update_quantity=False):
             """
             Добавить на склад или обновить его количество.
@@ -87,11 +90,11 @@
                                                                 mileage=int(mileage),
                                                                 )                                                
             self.save()
-    '''
+```
 
-    - Установка расходника в устройство
-    '''
-    python
+- Установка расходника в устройство
+
+```python
         def device_add_consumable(self, consumable, quantity=1, mileage=0 update_quantity=False):
             """
             Установка расходника в устройство
@@ -110,4 +113,4 @@
                                                                 mileage += int(mileage), #реализовать обновление пробега при установке нового расходника
                                                                 ) 
             self.sav
-    '''
+```
