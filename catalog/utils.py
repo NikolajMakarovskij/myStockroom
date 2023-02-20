@@ -15,10 +15,9 @@ menu = [
     {'title':  "Принтеры", 'url_name': 'printer:printer'},
     {'title':  "ЭЦП", 'url_name': 'signature:signature'},
     {'title':  "Справочники", 'url_name': 'catalog:references'},
-    {'title':  "Склад", 'url_name': 'stockroom:stock_detail'},
-    {'title':  "Расходники", 'url_name': 'consumables:consumables'},
+    {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
+    {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
-    #{'title':  "#", 'url_name': '#'},
     ]
 workstationMenu = [
     {'title':  "Информация о системе", 'anchor': '#systemInfo'},
@@ -41,10 +40,16 @@ class DataMixin:
     Миксин с пагинацией, меню, поиском
     """
     paginate_by =  10
+    
     def get_user_context(self, **kwargs):
+        categories = None
         context = kwargs
         context['menu'] = menu
         context['query'] = self.request.GET.get('q')
+        context['categories'] = categories
+        if 'categories_selected' not in context:
+            context['categories_selected'] = 0
+    
         
         return context
 
@@ -109,7 +114,7 @@ class ModelMixin:
     def get_all_fields(self):
         """Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView """
         fields = []
-        expose_fields = ['id']
+        expose_fields = ['id', 'slug']
         for f in self._meta.fields:
 
             fname = f.name        

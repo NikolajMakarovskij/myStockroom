@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 import uuid 
-from consumables.models import Accumulator
+from consumables.models import Consumables
 from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 
@@ -65,67 +65,19 @@ class Ups (ModelMixin, models.Model):
         help_text="Укажите ток",
         verbose_name="Ток"
         )
-    accumulator1 = models.ForeignKey(
-        Accumulator,
+    accumulator = models.ForeignKey(
+        Consumables,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите аккумулятор",
         verbose_name="Аккумулятор № 1"
         )
-    accumulator2 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 2"
-        )
-    accumulator3 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 3"
-        )
-    accumulator4 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 4"
-        )
-    cassette1 = models.ForeignKey(
+    cassette = models.ForeignKey(
         'Cassette',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите кассету",
         verbose_name="Кассета № 1"
-        )
-    cassette2 = models.ForeignKey(
-        'Cassette',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите кассету",
-        verbose_name="Кассета № 2"
-        )
-    cassette3 = models.ForeignKey(
-        'Cassette',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите кассету",
-        verbose_name="Кассета № 3"
-        )
-    cassette4 = models.ForeignKey(
-        'Cassette',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите кассету",
-        verbose_name="Кассета № 4"
         )
     score = models.IntegerField(
         blank=True, null=True,
@@ -203,84 +155,12 @@ class Cassette (ModelMixin, models.Model):
         help_text="Укажите ток",
         verbose_name="Ток"
         )
-    accumulator1 = models.ForeignKey(
-        Accumulator,
+    accumulator = models.ForeignKey(
+        Consumables,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите аккумулятор",
         verbose_name="Аккумулятор № 1"
-        )
-    accumulator2 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 2"
-        )
-    accumulator3 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 3"
-        )
-    accumulator4 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 4"
-        )
-    accumulator5 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 5"
-        )
-    accumulator6 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 6"
-        )
-    accumulator7 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 7"
-        )
-    accumulator8 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 8"
-        )
-    accumulator9 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 9"
-        )
-    accumulator10 = models.ForeignKey(
-        Accumulator,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True, null=True,
-        help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 10"
         )
     score = models.IntegerField(
         blank=True, null=True,
