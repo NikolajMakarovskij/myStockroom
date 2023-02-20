@@ -27,6 +27,16 @@ class Stockroom (ModelMixin, models.Model):
         null=True, blank=True,
         verbose_name="Дата установки"
         )
+    rack = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите номер стеллажа",
+        verbose_name="Стеллаж"
+        )
+    shelf = models.IntegerField(
+        blank=True, null=True,
+        help_text="Введите номер полки",
+        verbose_name="Полка"
+        )
     def __str__(self):
         return self.consumables
 

@@ -40,12 +40,11 @@ class Stock(object):
                                     consumables = consumable_add,
             #                        categories = category,
                                     dateAddToStock = datetime.date.today(),
-                                    #dateInstall = datetime.date.today()
+                                    rack=int(number_rack),
+                                    shelf=int(number_shelf)
             )
             Consumables.objects.filter(id = consumable_id).update(
                                                             score=int(quantity),
-                                                            rack=int(number_rack),
-                                                            shelf=int(number_shelf)
                                                             )
         self.save()
 
