@@ -99,16 +99,6 @@ class Consumables (ModelMixin, models.Model):
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
         )
-    rack = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите номер стеллажа",
-        verbose_name="Стеллаж"
-        )
-    shelf = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите номер полки",
-        verbose_name="Полка"
-        )
     description = models.TextField(
         max_length=1000,
         blank=True, null=True,

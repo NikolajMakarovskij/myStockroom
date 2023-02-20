@@ -1,5 +1,7 @@
+import datetime
 from django.conf import settings
 from consumables.models import Consumables 
+from .models import Stockroom, Categories
 
 class Stock(object):
 
@@ -16,25 +18,33 @@ class Stock(object):
 
     def add_consumable(self, consumable, quantity=1, number_rack=1, number_shelf=1, update_quantity=False):
         """
-        Добавить картридж на склад или обновить его количество.
+        Добавить расходник на склад или обновить его количество.
         """
         consumable_id = str(consumable.id)
-        consumable_score = str(consumable.score)
-        consumable_rack = str(consumable.rack)
-        consumable_shelf = str(consumable.shelf)
-
-        if consumable_id not in self.stock:
-           self.stock[consumable_id] = {'quantity': consumable_score, 'number_rack': consumable_rack,'number_shelf': consumable_shelf }
-        if update_quantity:
-            self.stock[consumable_id]['quantity'] = quantity
+        consumable_score = int(str(consumable.score))
+        consumable_add = Consumables.objects.get(id = consumable_id)
+        if Stockroom.objects.filter(consumables = consumable_id):
+            consumable_score += quantity 
+            Consumables.objects.filter(id = consumable_id).update(
+                                                            score = consumable_score
+                                                            )
+            Stockroom.objects.filter(consumables = consumable_id).update(
+                                                                    dateAddToStock = datetime.date.today()
+            )
         else:
-            self.stock[consumable_id]['quantity'] += quantity
-            self.stock[consumable_id]['number_rack'] = number_rack
-            self.stock[consumable_id]['number_shelf'] = number_shelf
-        Consumables.objects.filter(id = consumable_id).update(
-                                                            score=self.stock[consumable_id]['quantity'],
-                                                            rack=self.stock[consumable_id]['number_rack'],
-                                                            shelf=self.stock[consumable_id]['number_shelf']
+            #category = Categories.objects.create(
+            #                                    name =  Consumables.objects.filter(id = consumable_id).get(categories.name),
+            #                                    slug =  Consumables.objects.filter(id = consumable_id).get(categories.slug)
+            #)
+            Stockroom.objects.create(
+                                    consumables = consumable_add,
+            #                        categories = category,
+                                    dateAddToStock = datetime.date.today(),
+                                    rack=int(number_rack),
+                                    shelf=int(number_shelf)
+            )
+            Consumables.objects.filter(id = consumable_id).update(
+                                                            score=int(quantity),
                                                             )
         self.save()
 
@@ -49,24 +59,23 @@ class Stock(object):
         Удаление картриджа со склада
         """
         consumable_id = str(consumable.id)
-        if consumable_id in self.stock:
-            del self.stock[consumable_id]
+        if Stockroom.objects.filter(consumables = consumable_id):
+            Stockroom.objects.filter(consumables = consumable_id).delete()
             self.save()
 
-    def printer_install_consumable(self, consumable, quantity=1, update_quantity=False):
+    def device_add_consumable(self, consumable, quantity=1, update_quantity=False):
         """
-        Уменьшает количество картриджей
+        Установка расходника в устройство
         """
         consumable_id = str(consumable.id)
-        consumable_score = int(consumable.score)
-
-        if consumable_id not in self.stock:
-            self.stock[consumable_id] = {'quantity': consumable_score,}
-        if update_quantity:
-            self.stock[consumable_id]['quantity'] = quantity
-        else:
-            self.stock[consumable_id]['quantity'] -= quantity
-        Consumables.objects.filter(id = consumable_id).update(score=self.stock[consumable_id]['quantity'])
+        consumable_score = int(str(consumable.score))
+        consumable_score -= quantity 
+        Consumables.objects.filter(id = consumable_id).update(
+                                                        score = consumable_score
+                                                            )
+        Stockroom.objects.filter(consumables = consumable_id).update(
+                                                                dateInstall = datetime.date.today()
+            )
         self.save()
 
     def __iter__(self):
