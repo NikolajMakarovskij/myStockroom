@@ -15,10 +15,9 @@ menu = [
     {'title':  "Принтеры", 'url_name': 'printer:printer'},
     {'title':  "ЭЦП", 'url_name': 'signature:signature'},
     {'title':  "Справочники", 'url_name': 'catalog:references'},
-    {'title':  "Склад", 'url_name': 'stockroom:stock'},
+    {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
-    #{'title':  "#", 'url_name': '#'},
     ]
 workstationMenu = [
     {'title':  "Информация о системе", 'anchor': '#systemInfo'},
