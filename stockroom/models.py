@@ -41,7 +41,7 @@ class Stockroom (ModelMixin, models.Model):
         return self.consumables
 
     def get_absolute_url(self):
-        return reverse('stockroom:stock-detail', args=[str(self.id)])
+        return reverse('stockroom:stock-detail', args=[str(self.consumables)])
 
     class Meta:
         verbose_name = 'Кассета'
@@ -79,3 +79,10 @@ class Categories(ModelMixin, models.Model):
         verbose_name = 'Группа расходников'
         verbose_name_plural = 'Группы расходников'
         ordering = ['name']
+
+#class History(models.Model):
+#        id = models.UUIDField(
+#        primary_key=True,
+#        default=uuid.uuid4,
+#        help_text="ID"
+#        )

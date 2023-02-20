@@ -1,7 +1,7 @@
 import datetime
 from django.conf import settings
 from consumables.models import Consumables 
-from .models import Stockroom,Categories
+from .models import Stockroom, Categories
 
 class Stock(object):
 
@@ -18,7 +18,7 @@ class Stock(object):
 
     def add_consumable(self, consumable, quantity=1, number_rack=1, number_shelf=1, update_quantity=False):
         """
-        Добавить картридж на склад или обновить его количество.
+        Добавить расходник на склад или обновить его количество.
         """
         consumable_id = str(consumable.id)
         consumable_score = int(str(consumable.score))
@@ -65,7 +65,7 @@ class Stock(object):
 
     def device_add_consumable(self, consumable, quantity=1, update_quantity=False):
         """
-        Уменьшает количество картриджей
+        Установка расходника в устройство
         """
         consumable_id = str(consumable.id)
         consumable_score = int(str(consumable.score))
