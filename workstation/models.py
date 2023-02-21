@@ -9,6 +9,38 @@ from software.models import Software, Os
 from ups.models import Ups
 from catalog.utils import ModelMixin
 
+
+class Categories(ModelMixin, models.Model):
+    """
+    Модель группы для принтеров
+    """
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название",
+        verbose_name="Название"
+        )
+    slug = models.SlugField(
+        max_length=50, unique=True, db_index=True,
+        help_text="Введите URL (для работы навигациии в расходниках)",
+        verbose_name="URL"
+        )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('workstation:category',kwargs={'category_slug': self.slug})
+
+    class Meta:
+        verbose_name = 'Группа рабочих станций'
+        verbose_name_plural = 'Группы рабочих станций'
+        ordering = ['name']
+
 class Workstation(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -27,11 +59,12 @@ class Workstation(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель"
         )
-    modelComputer = models.CharField(
-        max_length=200,
+    categories = models.ForeignKey(
+        'Categories',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
-        help_text="Введите название модели",
-        verbose_name="Модель"
+        help_text="Укажите группу",
+        verbose_name="Группа"
         )
     serial = models.CharField(
         max_length=50,

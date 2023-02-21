@@ -10,13 +10,13 @@ FOTOVAL_FILTER = Consumables.objects.filter(categories__name__contains='Фото
 FOTODRUMM_FILTER = Consumables.objects.filter(categories__name__contains='Фотобарабан')
 
 class printerForm(forms.ModelForm):
-    cartridge =  forms.ModelChoiceField(queryset=CARTRIDGE_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    fotoval =  forms.ModelChoiceField(queryset=FOTOVAL_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    toner =  forms.ModelChoiceField(queryset=TONER_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    fotodrumm =  forms.ModelChoiceField(queryset=FOTODRUMM_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
+    cartridge =  forms.ModelChoiceField(queryset=CARTRIDGE_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Картридж")
+    fotoval =  forms.ModelChoiceField(queryset=FOTOVAL_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Тонер")
+    toner =  forms.ModelChoiceField(queryset=TONER_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Фотовал")
+    fotodrumm =  forms.ModelChoiceField(queryset=FOTODRUMM_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Фотобарабан")
     class Meta:
         model = Printer
-        fields = ['name','modelPrinter','manufacturer','serial','serialImg','inventImg','invent','usbPort','lanPort',
+        fields = ['name','categories','manufacturer','serial','serialImg','inventImg','invent','usbPort','lanPort',
         'tray1','tray2','tray3','traySide','workplace','cartridge','fotoval','toner','fotodrumm','score','note'
             ]
         FORMAT = (
@@ -31,7 +31,7 @@ class printerForm(forms.ModelForm):
             )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'modelPrinter': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'categories': WidgetCanAdd(Categories, attrs={'class': 'form-select form-select-lg'}),
             'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),

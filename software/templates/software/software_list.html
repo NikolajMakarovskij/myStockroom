@@ -17,10 +17,6 @@
         <th scope="col">Производитель</th>
         <th scope="col">Версия</th>
         <th scope="col">Разрядность</th>
-        <th scope="col">Раб. станция</th>
-        <th scope="col">ОС</th>
-        <th scope="col">Раб. место</th>
-        <th scope="col">Кабинет</th> 
         <th scope="col">Лицензионный ключ</th>
         <th scope="col">Лицензионный ключ</th>
         <th scope="col">Лицензионный ключ</th>
@@ -33,10 +29,6 @@
       <td><a class="noDecoration" href="{{ software.manufacturer.get_absolute_url }}">{{ software.manufacturer.name }}</a></td>
       <td>{{ software.version }}</td>
       <td>{{ software.bitDepth }}</td>
-      <td><a class="noDecoration" href="{{ software.workstation.get_absolute_url }}">{{ software.workstation.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.os.get_absolute_url }}">{{ software.workstation.os.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.workplace.get_absolute_url }}">{{ software.workstation.workplace.name }}</a></td>
-      <td><a class="noDecoration" href="{{ software.workstation.workplace.room.get_absolute_url }}">{{ software.workstation.workplace.room.name }}</a></td>
       <td>{{software.licenseKeyText}}</td>
       <td>
         {% if software.licenseKeyFile %}
