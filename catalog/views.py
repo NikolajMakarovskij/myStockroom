@@ -2,10 +2,12 @@ from .forms import *
 from .models import References
 from django.views import generic
 from .utils import *
+from signature.models import Signature
 
 
 #Главная
 class indexView(generic.ListView):
+    model = Signature
     template_name = 'index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -24,6 +26,7 @@ class referencesView(DataMixin, generic.ListView):
         c_def = self.get_user_context(title="Справочники", searchlink='catalog:references',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
 
 
 

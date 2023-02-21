@@ -31,8 +31,8 @@ services:
     image: postgres:14
     restart: always
     environment:
-      POSTGRES_USER: admindb
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: adminDevelop
+      POSTGRES_PASSWORD: zx23SA21
       POSTGRES_DB: buildAndTech
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
