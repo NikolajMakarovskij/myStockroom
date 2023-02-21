@@ -70,7 +70,7 @@ class printerCreate(DataMixin, CreateView):
     model = Printer
     form_class = printerForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('printer:printer')
+    success_url = reverse_lazy('printer:printer_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,7 +82,7 @@ class printerUpdate(DataMixin, UpdateView):
     model = Printer
     template_name = 'Forms/add.html'
     form_class = printerForm
-    success_url = reverse_lazy('printer:printer')
+    success_url = reverse_lazy('printer:printer_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,11 +93,11 @@ class printerUpdate(DataMixin, UpdateView):
 class printerDelete(DataMixin, DeleteView):
     model = Printer
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('printer:printer')
+    success_url = reverse_lazy('printer:printer_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить принтер",selflink='printer:printer')
+        c_def = self.get_user_context(title="Удалить принтер",selflink='printer:printer_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

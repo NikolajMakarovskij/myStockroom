@@ -10,10 +10,10 @@ FOTOVAL_FILTER = Consumables.objects.filter(categories__name__contains='Фото
 FOTODRUMM_FILTER = Consumables.objects.filter(categories__name__contains='Фотобарабан')
 
 class printerForm(forms.ModelForm):
-    cartridge =  forms.ModelChoiceField(queryset=CARTRIDGE_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    fotoval =  forms.ModelChoiceField(queryset=FOTOVAL_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    toner =  forms.ModelChoiceField(queryset=TONER_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    fotodrumm =  forms.ModelChoiceField(queryset=FOTODRUMM_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
+    cartridge =  forms.ModelChoiceField(queryset=CARTRIDGE_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Картридж")
+    fotoval =  forms.ModelChoiceField(queryset=FOTOVAL_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Тонер")
+    toner =  forms.ModelChoiceField(queryset=TONER_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Фотовал")
+    fotodrumm =  forms.ModelChoiceField(queryset=FOTODRUMM_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}), label="Фотобарабан")
     class Meta:
         model = Printer
         fields = ['name','categories','manufacturer','serial','serialImg','inventImg','invent','usbPort','lanPort',

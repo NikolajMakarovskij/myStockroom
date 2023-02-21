@@ -9,7 +9,6 @@ from signature.models import Signature
 
 #Главная
 class indexView(generic.ListView):
-    model = Signature
     template_name = 'index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -25,20 +24,10 @@ class referencesView(DataMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Справочники", searchlink='references',)
+        c_def = self.get_user_context(title="Справочники", searchlink='catalog:references',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-#Склад
-class warehouseView(DataMixin, generic.ListView):
-    model = References
-    template_name = 'catalog/references.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Справочники", searchlink='references',)
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
 
 
