@@ -112,5 +112,5 @@
             Variable_model.objects.filter(id = consumable_id).update(
                                                                 mileage += int(mileage), #реализовать обновление пробега при установке нового расходника
                                                                 ) 
-            self.sav
+            self.save()
 ```

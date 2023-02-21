@@ -10,6 +10,34 @@
       {%include 'search/search.html' %}
     </div>
 <!--block content-->
+{% if not menu_categories %}
+  <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+          <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'workstation:workstation_list' %}active{% endif %}" href="{% url 'workstation:workstation_list' %}">
+            Все группы
+          </a>
+      </li>
+    </ul>
+  </nav>
+{% else %}
+  <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+          <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'workstation:workstation_list' %}active{% endif %}" href="{% url 'workstation:workstation_list' %}">
+            Все группы
+          </a>
+      </li>
+      {% for item in menu_categories %}
+        <li class="nav-item ">
+          <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
+            href="{{ item.get_absolute_url }}">{{item.name}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endif %}
 {% if workstation_list %}
   <div class="table-responsive">
     <table class="table align-middle table-hover" style="text-align:center">
@@ -17,11 +45,8 @@
         <tr>
           <th scope="col">Сотрудник</th>
           <th scope="col">Раб. станция</th>
-          <th scope="col">Модель</th>
           <th scope="col">Серийный номер</th>
-          <th scope="col">Фото серийного номера</th>
           <th scope="col">Инвентарный номер</th>
-          <th scope="col">Фото инвентарного номера</th>
           <th scope="col">ОС</th>
           <th scope="col">Раб. место</th>
           <th scope="col">Кабинет</th>
@@ -34,10 +59,10 @@
       <tr>
         <td><a class="noDecoration" href="{{ workstation.employee.get_absolute_url }}">{{ workstation.employee.name }} {{ workstation.employee.sername }} {{ workstation.employee.family }}</a></td>
         <td><a class="noDecoration" href="{{ workstation.get_absolute_url }}">{{ workstation.name }}</a></td>
-        <td>{{ workstation.modelComputer }}</td>
-        <td>{{ workstation.serial }}</td>
         <td>
-          {% if workstation.serialImg %}
+          {% if workstation.serial %}
+            {{ workstation.serial }}
+          {% elif workstation.serialImg %}
             <a href="{{ workstation.serialImg.url }}">
               <img src="{{ workstation.serialImg.url }}" style="height:60px">
             </a>
@@ -45,9 +70,10 @@
             <img src="{% static 'images/no_file.svg' %}" class="iconTable">
           {% endif %}
         </td>
-        <td>{{ workstation.invent }}</td>
         <td>
-          {% if workstation.inventImg %}
+          {% if workstation.invent %}
+            {{ workstation.invent }}
+          {% elif workstation.inventImg %}
             <a href="{{ workstation.inventImg.url }}">
               <img src="{{ workstation.inventImg.url }}" style="height:60px">
             </a>
@@ -74,8 +100,8 @@
     </table>
     {% endif %}
   </div>
-</div>
-</div>
-<!--block pagination-->  
+  <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
+</div>
+</div>
 {% endblock %}

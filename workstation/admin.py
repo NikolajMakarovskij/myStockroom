@@ -4,13 +4,22 @@ from catalog.utils import ExportAdmin
 
 class WorkstationAdmin(ExportAdmin, admin.ModelAdmin):
     model = Workstation
-    list_display = ['name','manufacturer','modelComputer','workplace','employee', 'software', 'os']
+    list_display = ['name','manufacturer','categories','workplace','employee', 'software', 'os']
     list_filter = ['workplace__room__floor', 'workplace__room__building','manufacturer', 'os']
     search_fields = ['name','manufacturer','modelComputer','serial','serialImg','inventImg','invent','motherboard',
             'monitor','cpu','gpu','ram','ssd','hdd','dcpower','keyBoard','mouse','ups','workplace','employee', 'software', 'os']
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Workstation ,WorkstationAdmin)
+
+class CategoriesAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Categories
+    list_display = ['name', 'slug']
+    search_fields = ['name']
+    prepopulated_fields = {"slug": ("name", )}
+    actions = [ExportAdmin.export_to_csv]
+    
+admin.site.register(Categories, CategoriesAdmin)
 
 class MonitorAdmin(ExportAdmin, admin.ModelAdmin):
     model = Monitor

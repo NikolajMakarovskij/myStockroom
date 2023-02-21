@@ -6,13 +6,13 @@ from .models import *
 class workstationForm(forms.ModelForm):  
     class Meta:
         model = Workstation
-        fields = ['name','manufacturer','modelComputer','serial','serialImg','inventImg','invent','motherboard',
+        fields = ['name','manufacturer','categories','serial','serialImg','inventImg','invent','motherboard',
             'monitor','cpu','gpu','ram','ssd','hdd','dcpower','keyBoard','mouse','ups','workplace','employee', 'software', 'os'
             ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
-            'modelComputer': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'categories': WidgetCanAdd(Categories, attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

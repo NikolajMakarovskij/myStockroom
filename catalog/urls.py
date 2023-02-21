@@ -6,8 +6,6 @@ urlpatterns = [
     re_path(r'^$', indexView.as_view(), name='index'),
     #справочники
     re_path(r'^references/$', referencesView.as_view(), name='references'),
-    #склад
-    re_path(r'^warehouse/$', warehouseView.as_view(), name='warehouse'),
 
 
 

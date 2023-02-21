@@ -7,6 +7,38 @@ from catalog.utils import ModelMixin
 import uuid 
 
 
+class Categories(ModelMixin, models.Model):
+    """
+    Модель группы для принтеров
+    """
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название",
+        verbose_name="Название"
+        )
+    slug = models.SlugField(
+        max_length=50, unique=True, db_index=True,
+        help_text="Введите URL (для работы навигациии в расходниках)",
+        verbose_name="URL"
+        )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('printer:category',kwargs={'category_slug': self.slug})
+
+    class Meta:
+        verbose_name = 'Группа принтеров'
+        verbose_name_plural = 'Группы принтеров'
+        ordering = ['name']
+
+
 class Printer (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True, 
@@ -19,11 +51,12 @@ class Printer (ModelMixin, models.Model):
         help_text="Введите название принтера",
         verbose_name="Название"
         )
-    modelPrinter = models.CharField(
-        max_length=50,
+    categories = models.ForeignKey(
+        'Categories',
+        on_delete=models.SET_NULL,
         blank=True, null=True,
-        help_text="Введите модель принтера",
-        verbose_name="Модель"
+        help_text="Укажите группу",
+        verbose_name="Группа"
         )
     manufacturer = models.ForeignKey(
         Manufacturer,
