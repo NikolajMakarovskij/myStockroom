@@ -3,7 +3,9 @@ from .views import *
 
 urlpatterns = [
     #рабочие станции
-    re_path(r'^$', workstationListView.as_view(), name='workstation'), 
+    re_path(r'^$', workstationListView.as_view(), name='workstation_list'),
+    re_path(r'^search$', workstationListView.as_view(), name='workstation_search'),  
+    path('category/<slug:category_slug>', workstationCategoryListView.as_view(), name='category'),
     re_path(r'^(?P<pk>[-\w]+)$', workstationDetailView.as_view(), name='workstation-detail'),
     path(r'^create$', workstationCreate.as_view(), name='new-workstation'),
     re_path(r'^(?P<pk>[-\w]+)/update$', workstationUpdate.as_view(), name='workstation-update'),
