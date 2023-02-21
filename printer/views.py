@@ -1,6 +1,6 @@
 from .forms import printerForm
 from stockroom.forms import ConsumableInstallForm
-from .models import Printer
+from .models import Printer, Categories
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
@@ -11,9 +11,11 @@ class printerListView(DataMixin, generic.ListView):
     model = Printer
     template_name = 'printer/printer_list.html'
     
+    
     def get_context_data(self, *, object_list=None, **kwargs):
+        menu_categories = Categories.objects.all()
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer', add='printer:new-printer')
+        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=menu_categories)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -23,7 +25,6 @@ class printerListView(DataMixin, generic.ListView):
             query = '' 
         object_list = Printer.objects.filter(
                 Q(name__icontains=query) | 
-                Q(modelPrinter__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
                 Q(cartridge__name__icontains=query) |
                 Q(fotoval__name__icontains=query) |
@@ -36,6 +37,22 @@ class printerListView(DataMixin, generic.ListView):
                 Q(workplace__room__building__icontains=query) 
         )
         return object_list
+
+class printerCategoryListView(DataMixin, generic.ListView):
+    model = Printer.objects
+    template_name = 'printer/printer_list.html'
+    
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        menu_categories = Categories.objects.all()
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=menu_categories)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = Printer.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list 
 
 class printerDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Printer

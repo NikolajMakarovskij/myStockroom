@@ -56,7 +56,7 @@ class Consumables (ModelMixin, models.Model):
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
-        verbose_name="группа"
+        verbose_name="Группа"
         )
     serial = models.CharField(
         max_length=50,

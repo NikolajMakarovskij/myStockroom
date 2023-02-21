@@ -13,8 +13,9 @@ class workstationListView(DataMixin, generic.ListView):
     template_name = 'workstation/workstation_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
+        menu_categories = Categories.objects.all()
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation',add='workstation:new-workstation')
+        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=menu_categories)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -25,7 +26,6 @@ class workstationListView(DataMixin, generic.ListView):
         object_list = Workstation.objects.filter(
                 Q(name__icontains=query) | 
                 Q(manufacturer__name__icontains=query) |
-                Q(modelComputer__icontains=query) | 
                 Q(serial__icontains=query) | 
                 Q(invent__icontains=query) | 
                 Q(motherboard__name__icontains=query) | 
@@ -54,6 +54,21 @@ class workstationListView(DataMixin, generic.ListView):
         )
         return object_list
 
+class workstationCategoryListView(DataMixin, generic.ListView):
+    model = Workstation.objects
+    template_name = 'workstation/workstation_list.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        menu_categories = Categories.objects.all()
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=menu_categories)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = Workstation.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list
+
 class workstationDetailView(DataMixin, generic.DetailView):
     model = Workstation
     template_name = 'workstation/workstation_detail.html'
@@ -68,7 +83,7 @@ class workstationCreate(DataMixin, CreateView):
     model = Workstation
     form_class = workstationForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('workstation:workstation')
+    success_url = reverse_lazy('workstation:workstation_list')
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,7 +95,7 @@ class workstationUpdate(DataMixin, UpdateView):
     model = Workstation
     template_name = 'Forms/add.html'
     form_class = workstationForm
-    success_url = reverse_lazy('workstation:workstation')
+    success_url = reverse_lazy('workstation:workstation_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -91,11 +106,11 @@ class workstationUpdate(DataMixin, UpdateView):
 class workstationDelete(DataMixin, DeleteView):
     model = Workstation
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('workstation:workstation')
+    success_url = reverse_lazy('workstation:workstation_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить рабочую станцию",selflink='workstation:workstation')
+        c_def = self.get_user_context(title="Удалить рабочую станцию",selflink='workstation:workstation_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

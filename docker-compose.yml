@@ -30,12 +30,14 @@ services:
   db:
     image: postgres:14
     restart: always
-    volumes:
-      - ./database:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=adminDevelop
-      - POSTGRES_PASSWORD=zx23SA21
-      - POSTGRES_DB=buildAndTech
+      POSTGRES_USER: admindb
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: buildAndTech
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database:/var/lib/postgresql/data
 
   nginx:
     build: ./nginx
@@ -95,8 +97,8 @@ services:
     image: dpage/pgadmin4:6.14
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: makarovskiynv@adm.lbt.yanao.ru
-      PGADMIN_DEFAULT_PASSWORD: zx23SA21
+      PGADMIN_DEFAULT_EMAIL: admin@admin.db
+      PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_LISTEN_PORT: 80
     ports:
       - "8080:80"
@@ -110,6 +112,11 @@ services:
      
 volumes:
   pgadmin-data:  
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./pgadmin-data/_data
 
   
    

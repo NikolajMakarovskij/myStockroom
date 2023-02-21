@@ -16,7 +16,7 @@ class printerForm(forms.ModelForm):
     fotodrumm =  forms.ModelChoiceField(queryset=FOTODRUMM_FILTER, widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
     class Meta:
         model = Printer
-        fields = ['name','modelPrinter','manufacturer','serial','serialImg','inventImg','invent','usbPort','lanPort',
+        fields = ['name','categories','manufacturer','serial','serialImg','inventImg','invent','usbPort','lanPort',
         'tray1','tray2','tray3','traySide','workplace','cartridge','fotoval','toner','fotodrumm','score','note'
             ]
         FORMAT = (
@@ -31,7 +31,7 @@ class printerForm(forms.ModelForm):
             )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'modelPrinter': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'categories': WidgetCanAdd(Categories, attrs={'class': 'form-select form-select-lg'}),
             'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
