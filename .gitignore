@@ -1,8 +1,9 @@
 *.DS_Store
 **/migrations/
 database/pgdata
+pgadmin-data/_data/*
 media
-static
+
 
 
 .vscode/settings.json
