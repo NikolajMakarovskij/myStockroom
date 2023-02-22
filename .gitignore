@@ -2,9 +2,9 @@
 **/migrations/
 database/pgdata
 pgadmin-data/_data/*
-media
+media/*
 static/*
-
+site_cache/*
 
 .vscode/settings.json
 
