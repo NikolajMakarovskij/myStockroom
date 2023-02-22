@@ -196,6 +196,16 @@ MEDIA_URL = 'media/'
 MAX_UPLOAD_SIZE = "104857600"
 
 #end file settings
+#start caches
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'site_cache'),
+    }
+}
+
+#end caches
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
