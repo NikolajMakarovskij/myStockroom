@@ -200,8 +200,12 @@ MAX_UPLOAD_SIZE = "104857600"
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'site_cache'),
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379',
+        'TIMEOUT': 300,
+        'db': '16',
+        'parser_class': 'redis.connection.PythonParser',
+        'pool_class': 'redis.BlockingConnectionPool',
     }
 }
 

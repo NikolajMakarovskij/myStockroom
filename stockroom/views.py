@@ -18,7 +18,7 @@ class stockroomView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         menu_categories = Categories.objects.all()
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_list', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -36,7 +36,7 @@ class stockroomView(DataMixin, generic.ListView):
                 Q(consumables__invent__icontains=query) |
                 Q(dateInstall__icontains=query) |
                 Q(dateAddToStock__icontains=query) 
-        )
+        ).select_related('consumables', 'consumables__manufacturer', 'consumables__categories')
         return object_list
 
 class stockroomCategoriesView(DataMixin, generic.ListView):
@@ -46,7 +46,7 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs ):
         menu_categories = Categories.objects.all()
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_list', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

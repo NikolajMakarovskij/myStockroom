@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% load static %}
-  {% load cache %}
 
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
@@ -54,7 +53,6 @@
 <!-- side navigation -->
 {% block sidemenu %}
   <div class="row" >
-    {% cache 300 nav_menu %}
     <div class="col-sm-2 min-vh-100 collapse show collapse-horizontal" id="navbarMenu">
       <nav class="navbar fix-top navmenu h-100  flex-column navbar-dark bg-dark justify-content-start">
         {% block mainmenu %}
@@ -78,7 +76,6 @@
         </ul>
       </nav>
     </div>
-    {% endcache %}
     {% endblock sidemenu %}
 
     <div class="col ">

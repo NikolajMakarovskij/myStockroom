@@ -13,7 +13,7 @@ class upsListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="ИБП", searchlink='ups:ups',add='ups:new-ups')
+        c_def = self.get_user_context(title="ИБП", searchlink='ups:ups_search',add='ups:new-ups')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -32,7 +32,7 @@ class upsListView(DataMixin, generic.ListView):
                 Q(accumulator__name__icontains=query) |
                 Q(cassette__name__icontains=query) | 
                 Q(score__icontains=query) 
-        )
+        ).select_related('manufacturer','accumulator','cassette')
         return object_list
 
 class upsDetailView(DataMixin, FormMixin, generic.DetailView):
@@ -50,7 +50,7 @@ class upsCreate(DataMixin, CreateView):
     model = Ups
     form_class = upsForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('ups:ups')
+    success_url = reverse_lazy('ups:ups_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,7 +62,7 @@ class upsUpdate(DataMixin, UpdateView):
     model = Ups
     template_name = 'Forms/add.html'
     form_class = upsForm
-    success_url = reverse_lazy('ups:ups')
+    success_url = reverse_lazy('ups:ups_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,11 +73,11 @@ class upsUpdate(DataMixin, UpdateView):
 class upsDelete(DataMixin, DeleteView):
     model = Ups
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('ups:ups')
+    success_url = reverse_lazy('ups:ups_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить ИБП",selflink='ups:ups')
+        c_def = self.get_user_context(title="Удалить ИБП",selflink='ups:ups_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -88,7 +88,7 @@ class cassetteListView(DataMixin, generic.ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кассеты", searchlink='ups:cassette',add='ups:new-cassette')
+        c_def = self.get_user_context(title="Кассеты", searchlink='ups:cassette_search',add='ups:new-cassette')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -106,7 +106,7 @@ class cassetteListView(DataMixin, generic.ListView):
                 Q(current__icontains=query) | 
                 Q(accumulator__name__icontains=query) | 
                 Q(score__icontains=query) 
-        )
+        ).select_related('manufacturer','accumulator')
         return object_list
 
 class cassetteDetailView(DataMixin, FormMixin, generic.DetailView):
@@ -124,7 +124,7 @@ class cassetteCreate(DataMixin, CreateView):
     model = Cassette
     form_class = cassetteForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('ups:cassette')
+    success_url = reverse_lazy('ups:cassette_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -136,7 +136,7 @@ class cassetteUpdate(DataMixin, UpdateView):
     model = Cassette
     template_name = 'Forms/add.html'
     form_class = cassetteForm
-    success_url = reverse_lazy('ups:cassette')
+    success_url = reverse_lazy('ups:cassette_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -147,11 +147,11 @@ class cassetteUpdate(DataMixin, UpdateView):
 class cassetteDelete(DataMixin, DeleteView):
     model = Cassette
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('ups:cassette')
+    success_url = reverse_lazy('ups:cassette_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить кассету",selflink='ups:cassette')
+        c_def = self.get_user_context(title="Удалить кассету",selflink='ups:cassette_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

@@ -5,6 +5,7 @@ gunicorn
 celery
 django-celery-beat
 redis
+hiredis
 flower
 django-adaptors
 django-appconf

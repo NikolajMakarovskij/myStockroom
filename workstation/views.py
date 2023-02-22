@@ -4,6 +4,7 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from catalog.utils import *
+from django.core.cache import cache
 
 
 
@@ -13,9 +14,12 @@ class workstationListView(DataMixin, generic.ListView):
     template_name = 'workstation/workstation_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        work_cat = cache.get('work_cat')
+        if not work_cat:
+            work_cat = Categories.objects.all()
+            cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -51,7 +55,7 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(workplace__room__name__icontains=query) |
                 Q(workplace__room__floor__icontains=query) |
                 Q(workplace__room__building__icontains=query) 
-        )
+        ).select_related('categories', 'manufacturer', 'workplace','workplace__room', 'software', 'employee', 'os')
         return object_list
 
 class workstationCategoryListView(DataMixin, generic.ListView):
@@ -59,14 +63,17 @@ class workstationCategoryListView(DataMixin, generic.ListView):
     template_name = 'workstation/workstation_list.html'
     
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        work_cat = cache.get('work_cat')
+        if not work_cat:
+            work_cat = Categories.objects.all()
+            cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        object_list = Workstation.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Workstation.objects.filter(categories__slug=self.kwargs['category_slug']).select_related('categories', 'manufacturer', 'workplace','workplace__room', 'software', 'employee', 'os')
         return object_list
 
 class workstationDetailView(DataMixin, generic.DetailView):
