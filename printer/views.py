@@ -17,7 +17,7 @@ class printerListView(DataMixin, generic.ListView):
         print_cat = cache.get('print_cat')
         if not print_cat:
             print_cat = Categories.objects.all()
-            cache.set('print_cat', print_cat, 300)
+            cache.aset('print_cat', print_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=print_cat)
         context = dict(list(context.items()) + list(c_def.items()))
@@ -51,7 +51,7 @@ class printerCategoryListView(DataMixin, generic.ListView):
         print_cat = cache.get('print_cat')
         if not print_cat:
             print_cat = Categories.objects.all()
-            cache.set('print_cat', print_cat, 300)
+            cache.aset('print_cat', print_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=print_cat)
         context = dict(list(context.items()) + list(c_def.items()))

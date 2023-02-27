@@ -16,7 +16,7 @@ class consumablesView(DataMixin, generic.ListView):
         cons_cat = cache.get('cons_cat')
         if not cons_cat:
             cons_cat = Categories.objects.all()
-            cache.set('cons_cat', cons_cat, 300)
+            cache.aset('cons_cat', cons_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Расходники", searchlink='consumables:consumables_search',add='consumables:new-consumables', menu_categories=cons_cat)
         context = dict(list(context.items()) + list(c_def.items()))
@@ -45,7 +45,7 @@ class consumablesCategoriesView(DataMixin, generic.ListView):
         cons_cat = cache.get('cons_cat')
         if not cons_cat:
             cons_cat = Categories.objects.all()
-            cache.set('cons_cat', cons_cat, 300)
+            cache.aset('cons_cat', cons_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Расходники", searchlink='consumables:consumables_list',add='consumables:new-consumables', menu_categories=cons_cat)
         context = dict(list(context.items()) + list(c_def.items()))

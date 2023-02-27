@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.forms import widgets
@@ -42,15 +43,14 @@ class DataMixin:
     paginate_by =  10
     
     def get_user_context(self, **kwargs):
-        categories = None
+        side_menu = cache.get('side_menu')
+        if not side_menu:
+            side_menu = menu
+            cache.aset('side_menu', side_menu, 3000)
         context = kwargs
-        context['menu'] = menu
+        context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
-        context['categories'] = categories
-        if 'categories_selected' not in context:
-            context['categories_selected'] = 0
-    
-        
+  
         return context
 
 

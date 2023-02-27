@@ -17,7 +17,7 @@ class workstationListView(DataMixin, generic.ListView):
         work_cat = cache.get('work_cat')
         if not work_cat:
             work_cat = Categories.objects.all()
-            cache.set('work_cat', work_cat, 300)
+            cache.aset('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
@@ -66,7 +66,7 @@ class workstationCategoryListView(DataMixin, generic.ListView):
         work_cat = cache.get('work_cat')
         if not work_cat:
             work_cat = Categories.objects.all()
-            cache.set('work_cat', work_cat, 300)
+            cache.aset('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
