@@ -150,6 +150,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("SQL_PASSWORD", "zx23SA21"),
         "HOST": os.environ.get("SQL_HOST", "db"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
+        'CONN_MAX_AGE': 60 * 10,  
     }
 }
 
@@ -167,6 +168,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 #start region settings
 
@@ -202,10 +206,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': 'redis://redis:6379',
-        'TIMEOUT': 300,
         'db': '16',
-        'parser_class': 'redis.connection.PythonParser',
-        'pool_class': 'redis.BlockingConnectionPool',
     }
 }
 

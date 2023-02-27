@@ -11,6 +11,7 @@ class Signature (ModelMixin, models.Model): #electronic digital signature
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,
+        db_index=True,
         help_text="ID"
         )
     name = models.CharField(

@@ -9,6 +9,7 @@ class Stockroom (ModelMixin, models.Model):
         Consumables,
         on_delete = models.CASCADE,
         primary_key = True,
+        db_index=True,
         help_text="Введите название расходника",
         verbose_name="Расходники"
         )

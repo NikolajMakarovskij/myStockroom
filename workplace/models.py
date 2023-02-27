@@ -7,6 +7,7 @@ class Room(ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
+        db_index=True,
         help_text="ID"
         )
     name = models.CharField(
@@ -41,6 +42,7 @@ class Room(ModelMixin, models.Model):
 
 class Workplace(ModelMixin, models.Model):
     id = models.UUIDField(
+        db_index=True,
         primary_key=True,
         default=uuid.uuid4,
         help_text="ID"

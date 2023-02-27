@@ -17,7 +17,7 @@ class workstationListView(DataMixin, generic.ListView):
         work_cat = cache.get('work_cat')
         if not work_cat:
             work_cat = Categories.objects.all()
-            cache.aset('work_cat', work_cat, 300)
+            cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
@@ -55,7 +55,8 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(workplace__room__name__icontains=query) |
                 Q(workplace__room__floor__icontains=query) |
                 Q(workplace__room__building__icontains=query) 
-        ).select_related('categories', 'manufacturer', 'workplace','workplace__room', 'software', 'employee', 'os')
+        ).select_related('workplace','workplace__room', 'employee', 'os').only('employee__name', 'employee__sername', 'employee__family', 'name', 'serial', 
+                  'serialImg', 'invent', 'inventImg', 'os__name', 'workplace__name', 'workplace__room__name', 'workplace__room__floor', 'workplace__room__building') 
         return object_list
 
 class workstationCategoryListView(DataMixin, generic.ListView):
@@ -66,7 +67,7 @@ class workstationCategoryListView(DataMixin, generic.ListView):
         work_cat = cache.get('work_cat')
         if not work_cat:
             work_cat = Categories.objects.all()
-            cache.aset('work_cat', work_cat, 300)
+            cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
         context = dict(list(context.items()) + list(c_def.items()))
@@ -81,9 +82,14 @@ class workstationDetailView(DataMixin, generic.DetailView):
     template_name = 'workstation/workstation_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        work_menu = cache.get('work_menu')
+        if not work_menu:
+            work_menu = workstationMenu
+            cache.set('work_menu', work_menu, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочая станция",add='workstation:new-workstation',update='workstation:workstation-update',delete='workstation:workstation-delete')
         context = dict(list(context.items()) + list(c_def.items()))
+        context['detailMenu'] = work_menu
         return context
 
 class workstationCreate(DataMixin, CreateView):
