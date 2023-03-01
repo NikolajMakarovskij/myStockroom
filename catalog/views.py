@@ -7,6 +7,9 @@ from signature.models import Signature
 
 #Главная
 class indexView(generic.ListView):
+    """
+    Главная
+    """
     model = Signature
     template_name = 'index.html'
 
@@ -18,6 +21,9 @@ class indexView(generic.ListView):
 
 #Справочники
 class referencesView(DataMixin, generic.ListView):
+    """
+    Список ссылок на справочники
+    """
     model = References
     template_name = 'catalog/references.html'
 

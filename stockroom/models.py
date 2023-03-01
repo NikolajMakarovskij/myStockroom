@@ -5,6 +5,9 @@ from consumables.models import Consumables
 from catalog.utils import ModelMixin
 
 class Stockroom (ModelMixin, models.Model):
+    """
+    Расширение модели расходников для склада. Номенклатура расходников склада и справочника может различаться, однако количество каждого расходника должно совпадать
+    """
     consumables = models.OneToOneField(
         Consumables,
         on_delete = models.CASCADE,
@@ -81,9 +84,28 @@ class Categories(ModelMixin, models.Model):
         verbose_name_plural = 'Группы расходников'
         ordering = ['name']
 
-#class History(models.Model):
-#        id = models.UUIDField(
-#        primary_key=True,
-#        default=uuid.uuid4,
-#        help_text="ID"
-#        )
+class History(models.Model):
+        """
+        Модель для хранения истории использования расходников
+        """
+        id = models.UUIDField(
+            primary_key=True,
+            default=uuid.uuid4,
+            help_text="ID"
+        )
+        name = models.CharField(
+            max_length=50,
+            help_text="Введите название",
+            verbose_name="Название"
+        )
+        categories = models.ForeignKey(
+            'Categories',
+            on_delete=models.SET_NULL,
+            blank=True, null=True,
+            help_text="Укажите группу",
+            verbose_name="группа"
+        )
+        dateInstall = models.DateField(
+            null=True, blank=True,
+            verbose_name="Дата установки"
+        )

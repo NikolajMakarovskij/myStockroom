@@ -10,6 +10,9 @@ DEVICE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, device_score)]
 
 
 class StockAddForm(forms.Form):
+    """
+    Форма добавляет расходник на склад. Добавляется в template и DetailView расходника 
+    """
     quantity = forms.TypedChoiceField(choices=CONSUMABLE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput, label='Обновить')
@@ -19,6 +22,9 @@ class StockAddForm(forms.Form):
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
 
 class ConsumableInstallForm(forms.Form):
+    """
+    Форма использования расходника в технике. Добавляется в template и DetailView техники
+    """
     quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput, label='Обновить')

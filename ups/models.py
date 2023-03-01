@@ -6,6 +6,9 @@ from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 
 class Ups (ModelMixin, models.Model):
+    """
+    Модель УПС
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

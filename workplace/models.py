@@ -41,6 +41,9 @@ class Room(ModelMixin, models.Model):
         ordering = ["name"]
 
 class Workplace(ModelMixin, models.Model):
+    """
+    Модель рабочего места. Используется в workstation
+    """
     id = models.UUIDField(
         db_index=True,
         primary_key=True,

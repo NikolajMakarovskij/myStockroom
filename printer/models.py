@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from workplace.models import Workplace
-from consumables.models import Consumables, Categories
+from consumables.models import Consumables
 from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 import uuid 
@@ -40,6 +40,9 @@ class Categories(ModelMixin, models.Model):
 
 
 class Printer (ModelMixin, models.Model):
+    """
+    Модель принтеров
+    """
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,

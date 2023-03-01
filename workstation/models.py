@@ -42,6 +42,9 @@ class Categories(ModelMixin, models.Model):
         ordering = ['name']
 
 class Workstation(ModelMixin, models.Model):
+    """
+    Модель компьютерной техники
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

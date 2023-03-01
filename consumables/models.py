@@ -7,7 +7,7 @@ import uuid
 #Расходники
 class Categories(ModelMixin, models.Model):
     """
-    Модель группы для расходников
+    Модель группы для расходников. Связи один ко многим с моделями printer, ups, signature
     """
     id = models.UUIDField(
         primary_key=True,

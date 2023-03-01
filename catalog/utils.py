@@ -112,7 +112,9 @@ class ModelMixin:
     Миксин с функциями для моделей
     """
     def get_all_fields(self):
-        """Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView """
+        """
+        Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView
+        """
         fields = []
         expose_fields = ['id', 'slug']
         for f in self._meta.fields:

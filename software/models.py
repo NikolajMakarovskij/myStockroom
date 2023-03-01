@@ -5,6 +5,9 @@ import uuid
 from catalog.utils import ModelMixin
 
 class Software (ModelMixin, models.Model):
+    """
+    Модель софта
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -67,6 +70,9 @@ class Software (ModelMixin, models.Model):
         ordering = [ "name", ]
 
 class Os (ModelMixin, models.Model):
+    """
+    Модель ОС
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
