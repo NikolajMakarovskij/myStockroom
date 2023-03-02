@@ -74,4 +74,3 @@ class cassetteViewTest(TestCase):
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['cassette_list']) == 9)
 
-

@@ -7,4 +7,4 @@ static/*
 site_cache/*
 
 .vscode/settings.json
-
+.pytest_cache

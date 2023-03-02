@@ -72,4 +72,4 @@ class WorkplaceListViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['workplace_list']) == 9)
+        self.assertTrue( len(resp.context['workplace_list']) == 9)        

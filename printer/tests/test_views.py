@@ -37,5 +37,3 @@ class printerViewTest(TestCase):
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['printer_list']) == 9)
-
-

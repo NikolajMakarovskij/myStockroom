@@ -781,6 +781,7 @@ class Ram (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'RAM'
         verbose_name_plural = 'RAMs'
+        ordering = ['name']
 
 class Ssd (ModelMixin, models.Model):
     id = models.UUIDField(
@@ -961,6 +962,7 @@ class Hdd (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'HDD'
         verbose_name_plural = 'HDDs'
+        ordering = ['name']
 
 class Dcpower (ModelMixin, models.Model):
     id = models.UUIDField(
@@ -1112,6 +1114,7 @@ class KeyBoard (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Клавиатура'
         verbose_name_plural = 'Клавиатуры'
+        ordering = ['name']
 
 class Mouse (ModelMixin, models.Model):
     id = models.UUIDField(

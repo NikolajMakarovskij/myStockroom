@@ -1,4 +1,5 @@
 asgiref
+attrs
 diff-match-patch
 Django >=4.1.6,<=5
 gunicorn
@@ -15,6 +16,10 @@ crispy-bootstrap5
 Pillow
 psycopg2
 psycopg2-binary
+python-dateutil
+pytz
 six
 sqlparse
 django-debug-toolbar
+pytest
+pytest-django
