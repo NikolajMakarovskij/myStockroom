@@ -16,24 +16,24 @@ class EmployeeListViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('employee:employee'))
+        resp = self.client.get(reverse('employee:employee_list'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('employee:employee'))
+        resp = self.client.get(reverse('employee:employee_list'))
         self.assertEqual(resp.status_code, 200)
 
         self.assertTemplateUsed(resp, 'employee/employee_list.html')
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('employee:employee'))
+        resp = self.client.get(reverse('employee:employee_list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['employee_list']) == 10)
 
     def test_lists_all_employee(self):
-        resp = self.client.get(reverse('employee:employee')+'?page=15')
+        resp = self.client.get(reverse('employee:employee_list')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
@@ -52,24 +52,24 @@ class postViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('employee:post'))
+        resp = self.client.get(reverse('employee:post_list'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('employee:post'))
+        resp = self.client.get(reverse('employee:post_list'))
         self.assertEqual(resp.status_code, 200)
 
         self.assertTemplateUsed(resp, 'employee/post_list.html')
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('employee:post'))
+        resp = self.client.get(reverse('employee:post_list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['post_list']) == 10)
 
     def test_lists_all_signature(self):
-        resp = self.client.get(reverse('employee:post')+'?page=15')
+        resp = self.client.get(reverse('employee:post_list')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
@@ -88,24 +88,24 @@ class departamentViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('employee:departament'))
+        resp = self.client.get(reverse('employee:departament_list'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('employee:departament'))
+        resp = self.client.get(reverse('employee:departament_list'))
         self.assertEqual(resp.status_code, 200)
 
         self.assertTemplateUsed(resp, 'employee/departament_list.html')
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('employee:departament'))
+        resp = self.client.get(reverse('employee:departament_list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['departament_list']) == 10)
 
     def test_lists_all_signature(self):
-        resp = self.client.get(reverse('employee:departament')+'?page=15')
+        resp = self.client.get(reverse('employee:departament_list')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)

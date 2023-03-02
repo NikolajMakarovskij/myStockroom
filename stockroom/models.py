@@ -89,14 +89,13 @@ class History(models.Model):
         Модель для хранения истории использования расходников
         """
         id = models.UUIDField(
-            primary_key=True,
+            primary_key=True, db_index=True,
             default=uuid.uuid4,
             help_text="ID"
         )
         name = models.CharField(
             max_length=50,
-            help_text="Введите название",
-            verbose_name="Название"
+            verbose_name="Расходник"
         )
         categories = models.ForeignKey(
             'Categories',
@@ -105,7 +104,15 @@ class History(models.Model):
             help_text="Укажите группу",
             verbose_name="группа"
         )
+        score = models.IntegerField(
+            blank=True, default=0,
+            verbose_name="Количество",
+        )
         dateInstall = models.DateField(
             null=True, blank=True,
             verbose_name="Дата установки"
+        )
+        user = models.CharField(
+            max_length=50,
+            verbose_name="Пользователь"
         )

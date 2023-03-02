@@ -15,24 +15,24 @@ class upsViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('ups:ups'))
+        resp = self.client.get(reverse('ups:ups_list'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('ups:ups'))
+        resp = self.client.get(reverse('ups:ups_list'))
         self.assertEqual(resp.status_code, 200)
 
         self.assertTemplateUsed(resp, 'ups/ups_list.html')
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('ups:ups'))
+        resp = self.client.get(reverse('ups:ups_list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['ups_list']) == 10)
 
     def test_lists_all_ups(self):
-        resp = self.client.get(reverse('ups:ups')+'?page=15')
+        resp = self.client.get(reverse('ups:ups_list')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
@@ -51,24 +51,24 @@ class cassetteViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        resp = self.client.get(reverse('ups:cassette'))
+        resp = self.client.get(reverse('ups:cassette_list'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        resp = self.client.get(reverse('ups:cassette'))
+        resp = self.client.get(reverse('ups:cassette_list'))
         self.assertEqual(resp.status_code, 200)
 
         self.assertTemplateUsed(resp, 'ups/cassette_list.html')
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('ups:cassette'))
+        resp = self.client.get(reverse('ups:cassette_list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['cassette_list']) == 10)
 
     def test_lists_all_cassette(self):
-        resp = self.client.get(reverse('ups:cassette')+'?page=15')
+        resp = self.client.get(reverse('ups:cassette_list')+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)

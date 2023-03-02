@@ -51,7 +51,6 @@ class Stock(object):
     def save(self):
         # Обновление сессии 
         self.session[settings.STOCK_SESSION_ID] = self.stock
-        # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
     def remove_consumable(self, consumable):
