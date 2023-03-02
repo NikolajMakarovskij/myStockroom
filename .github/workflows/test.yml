@@ -22,7 +22,7 @@ jobs:
           - 5432
 
     services:
-      postgres:
+      db:
         image: postgres:14
         env:
           POSTGRES_DB: ${{ matrix.database-name }}
