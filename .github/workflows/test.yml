@@ -20,6 +20,10 @@ jobs:
           - db
         database-port:
           - 5432
+        secrets:
+          - foo
+        debug:
+          - 1
 
     services:
       db:
@@ -68,6 +72,8 @@ jobs:
         isort --check --diff .
     - name: Setup test database
       env:
+        DEBUG: ${{ matrix.debug }}
+        SECRET_KEY: ${{ matrix.secrets}}
         POSTGRES_DB_NAME: ${{ matrix.database-name }}
         POSTGRES_USER: ${{ matrix.database-user }}
         POSTGRES_PASSWORD: ${{ matrix.database-password }}
