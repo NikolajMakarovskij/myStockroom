@@ -2,9 +2,8 @@
 **/migrations/
 database/pgdata
 pgadmin-data/_data/*
-media/*
-static/*
-site_cache/*
+media
+static
 
 .vscode/settings.json
 .pytest_cache
