@@ -6,8 +6,8 @@ from ..models import Consumables, Categories
 def test_consumable_create():
     # Create dummy data 
     category = Categories.objects.create(
-        name = "my_category",
-        slug = "my_category"
+        name = "my_category_name",
+        slug = "my_category_slug"
     ) 
     consumable = Consumables.objects.create(  
         name = "my_consumable",  
