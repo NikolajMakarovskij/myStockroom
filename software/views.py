@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from catalog.utils import DataMixin
 
+
 class softwareListView(DataMixin, generic.ListView):
     model = Software
     template_name = 'software/software_list.html'
