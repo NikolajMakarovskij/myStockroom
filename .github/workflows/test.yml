@@ -24,8 +24,9 @@ jobs:
           SQL_PORT: 5432
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
-      - name: Run mirations
+      - name: Run migrations
         run: docker-compose exec web python3 manage.py makemigrations
+      - name: Run migrate
         run: docker-compose exec web python3 manage.py migrate
       - name: Run tests
         run: docker-compose exec web pytest
