@@ -78,8 +78,6 @@ jobs:
         POSTGRES_DB_HOST: ${{ matrix.database-host }}
         POSTGRES_DB_PORT: ${{ matrix.database-port }}
         POSTGRES_DB: ${{ matrix.database-name }}
-      depends_on:
-        - db
       run: |
         export DATABASE_URL=localhost://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
         export SECRET_KEY=foo
