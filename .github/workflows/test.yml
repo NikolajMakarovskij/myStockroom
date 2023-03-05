@@ -79,13 +79,13 @@ jobs:
         POSTGRES_DB_PORT: ${{ matrix.database-port }}
         POSTGRES_DB: ${{ matrix.database-name }}
       run: |
-        export DATABASE_URL=db://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        export DATABASE_URL=localhost://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
         export SECRET_KEY=foo
         export DEBUG=1
     - name: Run migrations
       run: |
-        export DATABASE_URL=db://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
-        export SECRET_KEY=foo
+        export DATABASE_URL=localhost://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        export SECRET_KEY=${{ secrets.SECRET_KEY }}
         export DEBUG=1
         export ALLOWED_HOSTS=localhost
         export GITHUB_WORKFLOW=True
@@ -99,7 +99,7 @@ jobs:
           pytest
       env:
         DATABASE_URL: postgres://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
-        SECRET_KEY: foo
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: 1
         ALLOWED_HOSTS: localhost
         GITHUB_WORKFLOW: True
