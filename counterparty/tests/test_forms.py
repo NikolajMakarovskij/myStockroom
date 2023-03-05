@@ -19,7 +19,7 @@ def test_consumable_form_name_invalid():
     err_mes = "Обязательное поле."
 
     form_data = {
-        'name': "",
+        'name': "qwe",
     }
     form = manufacturerForm(data=form_data)
     assert form.is_valid() is False
