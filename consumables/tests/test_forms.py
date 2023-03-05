@@ -22,12 +22,20 @@ def test_consumable_form_valid():
     assert form.is_valid() is True
 
 @pytest.mark.django_db
+def test_consumable_form_name_invalid():
+    """Тест на наличие бухгалтерского кода"""
+    err_mes = "Обязательное поле."
+    form_data = {
+        'name': "",
+    }
+    form = consumablesForm(data=form_data)
+    assert form.is_valid() is False
+    assert [err_mes] == form.errors['name']
+
+@pytest.mark.django_db
 def test_consumable_form_code_invalid():
     """Тест на наличие бухгалтерского кода"""
-    Categories.objects.create(name="my_category")
-    Manufacturer.objects.create(name="My_manufacturer")
     err_mes = "Обязательное поле."
-
     form_data = {
         'name': "my_consumable",
         'buhCode': "",
@@ -39,10 +47,7 @@ def test_consumable_form_code_invalid():
 @pytest.mark.django_db
 def test_consumable_form_score_invalid():
     """Тест на правильность данных в поле количества"""
-    Categories.objects.create(name="my_category")
-    Manufacturer.objects.create(name="My_manufacturer")
     err_mes = "Введите целое число."
-
     form_data = {
         "name": "my_consumable",
         "score": "qwerty",
