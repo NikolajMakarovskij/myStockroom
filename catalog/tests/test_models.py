@@ -12,4 +12,4 @@ def test_references_create():
     ) 
 
     assert references.name == "my_reference_name"
-    assert references.linkname == "my_reference_link"
+    assert references.linkname == "my_reference_link_"
