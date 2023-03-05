@@ -25,10 +25,10 @@ jobs:
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
       - name: Run migrations
-        run: docker-compose exec web python3 manage.py makemigrations
+        run: web python3 manage.py makemigrations
       - name: Run migrate
-        run: docker-compose exec web python3 manage.py migrate
+        run: web python3 manage.py migrate
       - name: Run tests
-        run: docker-compose exec web pytest
+        run: web pytest
       - name: Stop conteiners
         run: docker-compose down -v
