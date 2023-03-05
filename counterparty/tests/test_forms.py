@@ -14,10 +14,9 @@ def test_manufacturer_form_valid():
     assert form.is_valid() is True
 
 @pytest.mark.django_db
-def test_consumable_form_name_invalid():
-    """Тест на наличие бухгалтерского кода"""
+def test_manufacturer_form_name_invalid():
+    """Тест на наличие названия"""
     err_mes = "Обязательное поле."
-
     form_data = {
         'name': "",
     }

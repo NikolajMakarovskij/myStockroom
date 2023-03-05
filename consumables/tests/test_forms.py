@@ -23,14 +23,14 @@ def test_consumable_form_valid():
 
 @pytest.mark.django_db
 def test_consumable_form_name_invalid():
-    """Тест на наличие бухгалтерского кода"""
-    err_mes = "Обязательное поле."
+    """Тест на наличие названия"""
+    err_name = "Обязательное поле."
     form_data = {
         'name': "",
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_mes] == form.errors['name']
+    assert [err_name] == form.errors['name']
 
 @pytest.mark.django_db
 def test_consumable_form_code_invalid():
