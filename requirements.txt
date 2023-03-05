@@ -14,7 +14,7 @@ django-crispy-forms
 django-bootstrap5
 crispy-bootstrap5
 Pillow
-libpq-dev
+libpq
 psycopg2
 psycopg2-binary
 python-dateutil
