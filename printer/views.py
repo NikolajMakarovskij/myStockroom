@@ -5,6 +5,7 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from catalog.utils import *
+from django.core.cache import cache
 
 #Принтеры
 class printerListView(DataMixin, generic.ListView):
@@ -13,9 +14,12 @@ class printerListView(DataMixin, generic.ListView):
     
     
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        print_cat = cache.get('print_cat')
+        if not print_cat:
+            print_cat = Categories.objects.all()
+            cache.set('print_cat', print_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=print_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -35,7 +39,7 @@ class printerListView(DataMixin, generic.ListView):
                 Q(workplace__room__name__icontains=query) |
                 Q(workplace__room__floor__icontains=query) |
                 Q(workplace__room__building__icontains=query) 
-        )
+        ).select_related('manufacturer','categories', 'cartridge', 'fotoval', 'fotodrumm', 'toner', 'workplace', 'workplace__room')
         return object_list
 
 class printerCategoryListView(DataMixin, generic.ListView):
@@ -44,14 +48,17 @@ class printerCategoryListView(DataMixin, generic.ListView):
     
     
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        print_cat = cache.get('print_cat')
+        if not print_cat:
+            print_cat = Categories.objects.all()
+            cache.set('print_cat', print_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Принтеры", searchlink='printer:printer_search', add='printer:new-printer', menu_categories=print_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        object_list = Printer.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Printer.objects.filter(categories__slug=self.kwargs['category_slug']).select_related('manufacturer', 'categories', 'cartridge', 'fotoval', 'fotodrumm', 'toner', 'workplace', 'workplace__room')
         return object_list 
 
 class printerDetailView(DataMixin, FormMixin, generic.DetailView):
@@ -60,10 +67,14 @@ class printerDetailView(DataMixin, FormMixin, generic.DetailView):
     form_class = ConsumableInstallForm
     
     def get_context_data(self, *, object_list=None, **kwargs):
+        printer_menu = cache.get('printer_menu')
+        if not printer_menu:
+            printer_menu = printerMenu
+            cache.set('printer_menu', printer_menu, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Принтер",add='printer:new-printer',update='printer:printer-update',delete='printer:printer-delete',)
         context = dict(list(context.items()) + list(c_def.items()))
-        context['detailMenu'] = printerMenu
+        context['detailMenu'] = printer_menu
         return context
 
 class printerCreate(DataMixin, CreateView):

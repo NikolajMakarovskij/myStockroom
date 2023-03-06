@@ -150,6 +150,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("SQL_PASSWORD", "zx23SA21"),
         "HOST": os.environ.get("SQL_HOST", "db"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
+        'CONN_MAX_AGE': 60 * 10,  
     }
 }
 
@@ -168,13 +169,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
 #start region settings
 
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Yekaterinburg'
-
-USE_L10N = False
 
 USE_I18N = True
 
@@ -196,6 +197,20 @@ MEDIA_URL = 'media/'
 MAX_UPLOAD_SIZE = "104857600"
 
 #end file settings
+#start caches
+
+
+CACHES = {
+    'default': {
+        #'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379',
+        'db': '16',
+    }
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+#end caches
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

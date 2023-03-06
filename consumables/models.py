@@ -7,7 +7,7 @@ import uuid
 #Расходники
 class Categories(ModelMixin, models.Model):
     """
-    Модель группы для расходников
+    Модель группы для расходников. Связи один ко многим с моделями printer, ups, signature
     """
     id = models.UUIDField(
         primary_key=True,
@@ -44,6 +44,7 @@ class Consumables (ModelMixin, models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
+        db_index=True,
         help_text="ID"
         )
     name = models.CharField(

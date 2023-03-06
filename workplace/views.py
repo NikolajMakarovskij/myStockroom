@@ -13,7 +13,7 @@ class WorkplaceListView(DataMixin, generic.ListView):
   
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace:workplace',add='workplace:new-workplace')
+        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace:workplace_search',add='workplace:new-workplace')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -26,7 +26,7 @@ class WorkplaceListView(DataMixin, generic.ListView):
                 Q(room__name__icontains=query) |
                 Q(room__floor__icontains=query) |
                 Q(room__building__icontains=query) 
-        )
+        ).select_related('room')
         return object_list
 
 class WorkplaceDetailView(DataMixin, generic.DetailView):
@@ -43,7 +43,7 @@ class WorkplaceCreate(DataMixin, CreateView):
     model = Workplace
     form_class = workplaceForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('workplace:workplace')
+    success_url = reverse_lazy('workplace:workplace_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,7 +55,7 @@ class WorkplaceUpdate(DataMixin, UpdateView):
     model = Workplace
     template_name = 'Forms/add.html'
     form_class = workplaceForm
-    success_url = reverse_lazy('workplace:workplace')
+    success_url = reverse_lazy('workplace:workplace_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,11 +66,11 @@ class WorkplaceUpdate(DataMixin, UpdateView):
 class WorkplaceDelete(DataMixin, DeleteView):
     model = Workplace
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('workplace:workplace')
+    success_url = reverse_lazy('workplace:workplace_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить рабочее место",selflink='workplace:workplace')
+        c_def = self.get_user_context(title="Удалить рабочее место",selflink='workplace:workplace_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -81,7 +81,7 @@ class RoomListView(DataMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room',add='workplace:new-room',)
+        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room_search',add='workplace:new-room',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -110,7 +110,7 @@ class RoomCreate(DataMixin, CreateView):
     model = Room
     form_class = roomForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('workplace:room')
+    success_url = reverse_lazy('workplace:room_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,7 +122,7 @@ class RoomUpdate(DataMixin, UpdateView):
     model = Room
     template_name = 'Forms/add.html'
     form_class = roomForm
-    success_url = reverse_lazy('workplace:room')
+    success_url = reverse_lazy('workplace:room_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -133,10 +133,10 @@ class RoomUpdate(DataMixin, UpdateView):
 class RoomDelete(DataMixin, DeleteView):
     model = Room
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('workplace:room')
+    success_url = reverse_lazy('workplace:room_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить кабинет",selflink='workplace:room')
+        c_def = self.get_user_context(title="Удалить кабинет",selflink='workplace:room_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
