@@ -26,7 +26,7 @@ def test_consumable_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "2",
+        'name': "",
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is False
