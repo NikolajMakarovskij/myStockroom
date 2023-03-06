@@ -26,7 +26,7 @@ def test_consumable_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "",
+        'name': "2",
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is False
@@ -38,7 +38,7 @@ def test_consumable_form_code_invalid():
     err_mes = "Обязательное поле."
     form_data = {
         'name': "my_consumable",
-        'buhCode': "1",
+        'buhCode': "",
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is False
