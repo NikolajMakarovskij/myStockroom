@@ -1,10 +1,12 @@
 asgiref
+attrs
 diff-match-patch
 Django >=4.1.6,<=5
 gunicorn
 celery
 django-celery-beat
 redis
+hiredis
 flower
 django-adaptors
 django-appconf
@@ -14,6 +16,10 @@ crispy-bootstrap5
 Pillow
 psycopg2
 psycopg2-binary
+python-dateutil
+pytz
 six
 sqlparse
 django-debug-toolbar
+pytest
+pytest-django

@@ -73,6 +73,7 @@
     </div>
   </div>
   <div class="d-flex justify-content-center input-group mt-3 ">
+    {% if cassette.accumulator %}
     <form action="{% url 'stockroom:device_add_consumable' cassette.accumulator.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
       {% csrf_token %}
       <div class="input-group mb-3">
@@ -81,6 +82,7 @@
         <input type="submit" value="Установить аккумулятор" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
       </div>
     </form>
+    {% endif %}
   </div>
   <div class="d-flex justify-content-center input-group mt-3 ">
     <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 

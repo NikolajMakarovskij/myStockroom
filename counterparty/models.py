@@ -4,9 +4,13 @@ import uuid
 from catalog.utils import ModelMixin
 
 class Manufacturer (ModelMixin, models.Model):
+    """
+    Модель поизводителей. Связи один ко многим с моделями consumables, printer, os, software, ups, workstation
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
+        db_index=True,
         help_text="ID"
         )
     name = models.CharField(

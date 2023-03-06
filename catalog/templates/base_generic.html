@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% load static %}
+
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <script defer src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -15,6 +16,7 @@
 <body class="bodybackground">
   <!--top navigation-->
   {% if user.is_authenticated %}
+  
   <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark bg-gradient">
     <div class="container-fluid">
       <div class="col-8">
@@ -50,7 +52,6 @@
   </nav>
 <!-- side navigation -->
 {% block sidemenu %}
-
   <div class="row" >
     <div class="col-sm-2 min-vh-100 collapse show collapse-horizontal" id="navbarMenu">
       <nav class="navbar fix-top navmenu h-100  flex-column navbar-dark bg-dark justify-content-start">
@@ -76,6 +77,7 @@
       </nav>
     </div>
     {% endblock sidemenu %}
+
     <div class="col ">
       {% block content %}{% endblock %}
       <a  class="btn  btn-ligt btn-out position-fixed bottom-0 end-0 p-3" href="#">

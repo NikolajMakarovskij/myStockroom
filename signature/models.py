@@ -7,10 +7,14 @@ from consumables.models import Consumables
 from catalog.utils import ModelMixin
 import uuid 
 
-class Signature (ModelMixin, models.Model): #electronic digital signature
+class Signature (ModelMixin, models.Model): 
+    """
+    Модель ЭЦП (электронной цифровой подписи)
+    """
     id = models.UUIDField(
         primary_key=True, 
         default=uuid.uuid4,
+        db_index=True,
         help_text="ID"
         )
     name = models.CharField(
@@ -76,7 +80,9 @@ class Signature (ModelMixin, models.Model): #electronic digital signature
 
     def get_absolute_url(self):
         return reverse('signature:signature-detail', args=[str(self.id)])
-        
+ 
+    #методы технические методы для проверки верстки уведомлений. Будут удалены после реализации периодических задач
+
     def dangerDay(self):
 
         return self.dangerDay and datetime.date.today() 
@@ -97,6 +103,8 @@ class Signature (ModelMixin, models.Model): #electronic digital signature
     def warningTwoMounth(self):
         return self.warningTwoMounth and (datetime.date.today() + datetime.timedelta(weeks=8))
         
+    #конец методов
+
     class Meta:
         verbose_name = 'ЭЦП'
         verbose_name_plural = 'ЭЦП'

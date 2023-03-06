@@ -12,7 +12,7 @@ class signatureListView(DataMixin, generic.ListView):
     template_name = 'signature/signature_list.html'
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="ЭЦП", searchlink='signature:signature', add='signature:new-signature')
+        c_def = self.get_user_context(title="ЭЦП", searchlink='signature:signature_search', add='signature:new-signature')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
     
@@ -32,7 +32,7 @@ class signatureListView(DataMixin, generic.ListView):
                 Q(workstation__workplace__room__name__icontains=query)|
                 Q(workstation__workplace__room__floor__icontains=query)|
                 Q(workstation__workplace__room__building__icontains=query)
-        )
+        ).select_related('employeeRegister', 'employeeStorage', 'storage', 'workstation', 'workstation__workplace', 'workstation__workplace__room')
         return object_list
 
 class signatureDetailView(DataMixin, FormMixin, generic.DetailView):
@@ -50,7 +50,7 @@ class signatureCreate(DataMixin, CreateView):
     model = Signature
     form_class = signatureForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('signature:signature')
+    success_url = reverse_lazy('signature:signature_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,7 +62,7 @@ class signatureUpdate(DataMixin, UpdateView):
     model = Signature
     template_name = 'Forms/add.html'
     form_class = signatureForm
-    success_url = reverse_lazy('signature:signature')
+    success_url = reverse_lazy('signature:signature_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,10 +73,10 @@ class signatureUpdate(DataMixin, UpdateView):
 class signatureDelete(DataMixin, DeleteView):
     model = Signature
     template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('signature:signature')
+    success_url = reverse_lazy('signature:signature_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить ЭЦП",selflink='signature:signature')
+        c_def = self.get_user_context(title="Удалить ЭЦП",selflink='signature:signature_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context

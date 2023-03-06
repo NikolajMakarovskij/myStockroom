@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.forms import widgets
@@ -8,13 +9,13 @@ from django.http import HttpResponse
 
 menu = [
     {'title':  "Главная страница", 'url_name': 'catalog:index'},
-    {'title':  "Раб. места", 'url_name': 'workplace:workplace'},
-    {'title':  "Сотрудники", 'url_name': 'employee:employee'},
-    {'title':  "Софт", 'url_name': 'software:software'},
+    {'title':  "Раб. места", 'url_name': 'workplace:workplace_list'},
+    {'title':  "Сотрудники", 'url_name': 'employee:employee_list'},
+    {'title':  "Софт", 'url_name': 'software:software_list'},
     {'title':  "Раб. станции", 'url_name': 'workstation:workstation_list'},
     {'title':  "Принтеры", 'url_name': 'printer:printer_list'},
-    {'title':  "ЭЦП", 'url_name': 'signature:signature'},
-    {'title':  "Справочники", 'url_name': 'catalog:references'},
+    {'title':  "ЭЦП", 'url_name': 'signature:signature_list'},
+    {'title':  "Справочники", 'url_name': 'catalog:references_list'},
     {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
@@ -42,15 +43,14 @@ class DataMixin:
     paginate_by =  10
     
     def get_user_context(self, **kwargs):
-        categories = None
+        side_menu = cache.get('side_menu')
+        if not side_menu:
+            side_menu = menu
+            cache.set('side_menu', side_menu, 3000)
         context = kwargs
-        context['menu'] = menu
+        context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
-        context['categories'] = categories
-        if 'categories_selected' not in context:
-            context['categories_selected'] = 0
-    
-        
+  
         return context
 
 
@@ -112,7 +112,9 @@ class ModelMixin:
     Миксин с функциями для моделей
     """
     def get_all_fields(self):
-        """Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView """
+        """
+        Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView
+        """
         fields = []
         expose_fields = ['id', 'slug']
         for f in self._meta.fields:

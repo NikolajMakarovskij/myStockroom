@@ -3,6 +3,8 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 {% block content %}
+{% load cache %}
+{% cache 900 index_page %}
 <div class="col ">
   <div class="row row-cols-3 row-cols-md-3">
     <div class="col nodecorationIndex">
@@ -26,7 +28,7 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'catalog:references' %}">
+      <a href="{% url 'catalog:references_list' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Справочники</h5>
@@ -38,7 +40,7 @@
   </div>
   <div class="row row-cols-3 row-cols-md-3">
     <div class="col nodecorationIndex justify-content-center">
-      <a href="{% url 'workplace:workplace' %}">
+      <a href="{% url 'workplace:workplace_list' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Рабочие места</h5>
@@ -70,7 +72,7 @@
   </div>
   <div class="row row-cols-3 row-cols-md-3">
     <div class="col nodecorationIndex">
-      <a href="{% url 'software:software' %}">
+      <a href="{% url 'software:software_list' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Софт</h5>
@@ -80,7 +82,7 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'signature:signature' %}">
+      <a href="{% url 'signature:signature_list' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">ЭЦП</h5>
@@ -90,7 +92,7 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'employee:employee' %}">
+      <a href="{% url 'employee:employee_list' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Сотрудники</h5>
@@ -112,7 +114,7 @@
         </a>
       </div>
   </div>
-
+{% endcache %}
 <!--toast messages-->
   {% include 'toast.html'%}
 

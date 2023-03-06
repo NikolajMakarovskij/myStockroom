@@ -7,7 +7,7 @@ class Stock(object):
 
     def __init__(self, request):
         """
-        Инициализируем склад
+        Инициализирует склад
         """
         self.session = request.session
         stock = self.session.get(settings.STOCK_SESSION_ID)
@@ -51,7 +51,6 @@ class Stock(object):
     def save(self):
         # Обновление сессии 
         self.session[settings.STOCK_SESSION_ID] = self.stock
-        # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
     def remove_consumable(self, consumable):
@@ -77,22 +76,3 @@ class Stock(object):
                                                                 dateInstall = datetime.date.today()
             )
         self.save()
-
-    def __iter__(self):
-        """
-        Перебор элементов на складе и получение расходников из базы данных.
-        """
-        stock_ids = self.stock.keys()
-        # получение расходника со склада 
-        consumables = Consumables.objects.filter(id__in=stock_ids)
-        for consumable in consumables:
-            self.stock[str(consumable.id)]['consumable'] = consumables
-
-        for item in self.stock.values():
-            yield item
-
-    def __len__(self):
-        """
-        Подсчет всех расходников на складе.
-        """
-        return sum(item['quantity'] for item in self.stock.values())

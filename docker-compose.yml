@@ -36,7 +36,7 @@ services:
     restart: always
     volumes:
       - ./static:/home/myStockroom/web/static
-      - ./media:/home/myStockroom/web/mediafiles #проброс папки с файлами
+      - ./media:/home/myStockroom/web/mediafiles 
     ports:
       - 80:80
     depends_on:
