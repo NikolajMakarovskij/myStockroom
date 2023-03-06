@@ -1,10 +1,11 @@
 *.DS_Store
 **/migrations/
 database/pgdata
+pgadmin-data/_data/azurecredentialcache
+pgadmin-data/_data/sessions
+pgadmin-data/_data/storage
+pgadmin-data/_data/pgadmin4.db
+.vscode/settings.json
+.pytest_cache
 media
 static
-
-
-
-.vscode/settings.json
-
