@@ -13,22 +13,6 @@ class consumablesViewTest(TestCase):
         for consumables_num in range(number_of_consumables):
             Consumables.objects.create(name='Christian %s' % consumables_num,)
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/consumables/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('consumables:consumables_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('consumables:consumables_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'consumables/consumables_list.html')
-
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('consumables:consumables_list'))

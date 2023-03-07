@@ -8,6 +8,4 @@ urlpatterns = [
     re_path(r'^references/$', referencesView.as_view(), name='references_list'),
     re_path(r'^references/search$', referencesView.as_view(), name='references_search')
 
-
-
 ]

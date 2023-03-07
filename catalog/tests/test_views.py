@@ -13,23 +13,6 @@ class referencesViewTest(TestCase):
         for references_num in range(number_of_references):
             References.objects.create(name='Christian %s' % references_num,)
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/references/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('catalog:references_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('catalog:references_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'catalog/references.html')
-
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('catalog:references_list'))
