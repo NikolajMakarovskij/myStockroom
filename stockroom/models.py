@@ -114,5 +114,6 @@ class History(models.Model):
         )
         user = models.CharField(
             max_length=50,
+            null=True, blank=True,
             verbose_name="Пользователь"
         )

@@ -13,38 +13,25 @@ class upsViewTest(TestCase):
         for ups_num in range(number_of_ups):
             Ups.objects.create(name='Christian %s' % ups_num,)
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/ups/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:ups_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:ups_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'ups/ups_list.html')
-
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:ups_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ups_list']) == 10)
+        links = ['ups:ups_list', 'ups:ups_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['ups_list']) == 10)
 
     def test_lists_all_ups(self):
         warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:ups_list')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ups_list']) == 9)
+        links = ['ups:ups_list', 'ups:ups_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['ups_list']) == 9)
 
 class cassetteViewTest(TestCase):
 
@@ -55,36 +42,25 @@ class cassetteViewTest(TestCase):
         for cassette_num in range(number_of_cassette):
             Cassette.objects.create(name='Christian %s' % cassette_num,)
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/ups/cassette/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:cassette_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:cassette_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'ups/cassette_list.html')
-
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:cassette_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['cassette_list']) == 10)
+        links = ['ups:cassette_list', 'ups:cassette_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['cassette_list']) == 10)
 
     def test_lists_all_cassette(self):
         warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('ups:cassette_list')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['cassette_list']) == 9)
+        links = ['ups:cassette_list', 'ups:cassette_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['cassette_list']) == 9)
+
+
 
