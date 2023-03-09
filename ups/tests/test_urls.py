@@ -3,259 +3,50 @@ from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
 from ..models import Ups, Cassette
 
-#ups_list
+#list and create
 @pytest.mark.django_db
-def test_ups_list_url_exists_at_desired_location(client):
+def test_list_url_exists_at_desired_location(client):
    warnings.filterwarnings(action="ignore")
-   url = ('')
-   response = client.get(url)
-   assert response.status_code == 200
+   links = ['/ups/','/ups/search','/ups/cassette/','/ups/cassette/search']
+   for link in links:
+      url = (link)
+      response = client.get(url)
+      assert response.status_code == 200
 
 @pytest.mark.django_db
-def test_ups_list_url(client):
+def test_list_uses_correct_url_nad_template(client):
    warnings.filterwarnings(action="ignore")
-   url = reverse('ups:ups_list')
-   response = client.get(url)
-   assert response.status_code == 200
+   links = [
+      {'link': 'ups:ups_list','template': 'ups/ups_list.html'},
+      {'link': 'ups:ups_search','template': 'ups/ups_list.html'},
+      {'link': 'ups:new-ups','template': 'Forms/add.html'},
+      {'link': 'ups:cassette_list','template': 'ups/cassette_list.html'},
+      {'link': 'ups:cassette_search','template': 'ups/cassette_list.html'},
+      {'link': 'ups:new-cassette','template': 'Forms/add.html'},
+   ]
+   for each in links:
+      url = reverse(each.get('link'))
+      response = client.get(url)
+      assert response.status_code == 200
+      assertTemplateUsed(response, each.get('template'))
 
-@pytest.mark.django_db
-def test_ups_list_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:ups_list')
-   response = client.get(url)
-   assertTemplateUsed(response, 'ups/ups_list.html')
-
-#ups_search
-@pytest.mark.django_db
-def test_ups_search_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
-   url = ('/ups/search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_ups_search_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:ups_search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_ups_search_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:ups_search')
-   response = client.get(url)
-   assertTemplateUsed(response, 'ups/ups_list.html')
-
-#ups_detail
+#detail_update_delete
 @pytest.mark.django_db
 def test_ups_detail_url(client):
    warnings.filterwarnings(action="ignore")
-   Ups.objects.create(
-      name="some_ups",
-   )
-   ups = Ups.objects.get(name="some_ups")
-   url = reverse('ups:ups-detail', kwargs={"pk": ups.pk})
-   response = client.get(url)
-   assert response.status_code == 200
+   links = [
+      {'model': Ups,'link': 'ups:ups-detail', 'template': 'ups/ups_detail.html'},
+      {'model': Ups,'link': 'ups:ups-update', 'template': 'Forms/add.html'},
+      {'model': Ups,'link': 'ups:ups-delete', 'template': 'Forms/delete.html'},
+      {'model': Cassette,'link': 'ups:cassette-detail', 'template': 'ups/cassette_detail.html'},
+      {'model': Cassette,'link': 'ups:cassette-update', 'template': 'Forms/add.html'},
+      {'model': Cassette,'link': 'ups:cassette-delete', 'template': 'Forms/delete.html'},
+   ]
+   for each in links:
+      model = each.get('model').objects.create(name="some_model")
+      url = reverse(each.get('link'), kwargs={"pk": model.pk})
+      response = client.get(url)
+      assert response.status_code == 200
+      assertTemplateUsed(response, each.get('template'))
 
-@pytest.mark.django_db
-def test_ups_detail_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Ups.objects.create(
-      name="some_ups",
-    )
-    ups = Ups.objects.get(name="some_ups")
-    url = reverse('ups:ups-detail', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'ups/ups_detail.html')
-
-#ups_create
-@pytest.mark.django_db
-def test_ups_create_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:new-ups')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_ups_create_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:new-ups')
-   response = client.get(url)
-   assertTemplateUsed(response, 'Forms/add.html')
-
-#ups_update
-@pytest.mark.django_db
-def test_ups_update_url(client):
-    warnings.filterwarnings(action="ignore")
-    Ups.objects.create(
-      name="some_ups",
-    )
-    ups = Ups.objects.get(name="some_ups")
-    url = reverse('ups:ups-update', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_ups_update_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Ups.objects.create(
-      name="some_ups",
-    )
-    ups = Ups.objects.get(name="some_ups")
-    url = reverse('ups:ups-update', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, "Forms/add.html")
-
-#ups_delete
-@pytest.mark.django_db
-def test_ups_delete_url(client):
-    warnings.filterwarnings(action="ignore")
-    Ups.objects.create(
-      name="some_ups",
-    )
-    ups = Ups.objects.get(name="some_ups")
-    url = reverse('ups:ups-delete', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_ups_delete_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Ups.objects.create(
-      name="some_ups",
-    )
-    ups = Ups.objects.get(name="some_ups")
-    url = reverse('ups:ups-delete', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'Forms/delete.html')
-
-#cassette_list
-@pytest.mark.django_db
-def test_cassette_list_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
-   url = ('/ups/cassette/')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_list_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:cassette_list')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_list_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:cassette_list')
-   response = client.get(url)
-   assertTemplateUsed(response, 'ups/cassette_list.html')
-
-#cassette_search
-@pytest.mark.django_db
-def test_cassette_search_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
-   url = ('/ups/cassette/search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_search_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:cassette_search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_search_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:cassette_search')
-   response = client.get(url)
-   assertTemplateUsed(response, 'ups/cassette_list.html')
-
-#cassette_detail
-@pytest.mark.django_db
-def test_cassette_detail_url(client):
-   warnings.filterwarnings(action="ignore")
-   Cassette.objects.create(
-      name="some_ups",
-   )
-   ups = Cassette.objects.get(name="some_ups")
-   url = reverse('ups:cassette-detail', kwargs={"pk": ups.pk})
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_detail_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Cassette.objects.create(
-      name="some_ups",
-    )
-    ups = Cassette.objects.get(name="some_ups")
-    url = reverse('ups:cassette-detail', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'ups/cassette_detail.html')
-
-#cassette_create
-@pytest.mark.django_db
-def test_cassette_create_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:new-cassette')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_create_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('ups:new-cassette')
-   response = client.get(url)
-   assertTemplateUsed(response, 'Forms/add.html')
-
-#cassette_update
-@pytest.mark.django_db
-def test_cassette_update_url(client):
-    warnings.filterwarnings(action="ignore")
-    Cassette.objects.create(
-      name="some_ups",
-    )
-    ups = Cassette.objects.get(name="some_ups")
-    url = reverse('ups:cassette-update', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_update_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Cassette.objects.create(
-      name="some_ups",
-    )
-    ups = Cassette.objects.get(name="some_ups")
-    url = reverse('ups:cassette-update', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, "Forms/add.html")
-
-#cassette_delete
-@pytest.mark.django_db
-def test_cassette_delete_url(client):
-    warnings.filterwarnings(action="ignore")
-    Cassette.objects.create(
-      name="some_ups",
-    )
-    ups = Cassette.objects.get(name="some_ups")
-    url = reverse('ups:cassette-delete', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_cassette_delete_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Cassette.objects.create(
-      name="some_ups",
-    )
-    ups = Cassette.objects.get(name="some_ups")
-    url = reverse('ups:cassette-delete', kwargs={"pk": ups.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'Forms/delete.html')
 

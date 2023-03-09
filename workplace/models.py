@@ -12,7 +12,6 @@ class Room(ModelMixin, models.Model):
         )
     name = models.CharField(
         max_length=15,
-        blank=True,
         help_text="Введите номер кабинета",
         verbose_name="Кабинет",
         )

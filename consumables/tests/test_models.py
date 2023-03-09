@@ -30,7 +30,6 @@ def test_category_unique_slug():
             slug = "my_category"
         )
         )
-    
 
 @pytest.mark.django_db  
 def test_consumable_create():

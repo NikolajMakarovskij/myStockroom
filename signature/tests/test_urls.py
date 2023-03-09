@@ -3,130 +3,42 @@ from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
 from ..models import Signature
 
-#list
+#list and create
 @pytest.mark.django_db
-def test_signature_list_url_exists_at_desired_location(client):
+def test_list_url_exists_at_desired_location(client):
    warnings.filterwarnings(action="ignore")
-   url = ('')
-   response = client.get(url)
-   assert response.status_code == 200
+   links = ['/signature/','/signature/search']
+   for link in links:
+      url = (link)
+      response = client.get(url)
+      assert response.status_code == 200
 
 @pytest.mark.django_db
-def test_signature_list_url(client):
+def test_list_uses_correct_url_nad_template(client):
    warnings.filterwarnings(action="ignore")
-   url = reverse('signature:signature_list')
-   response = client.get(url)
-   assert response.status_code == 200
+   links = [
+      {'link': 'signature:signature_list','template': 'signature/signature_list.html'},
+      {'link': 'signature:signature_search','template': 'signature/signature_list.html'},
+      {'link': 'printer:new-printer','template': 'Forms/add.html'},
+   ]
+   for each in links:
+      url = reverse(each.get('link'))
+      response = client.get(url)
+      assert response.status_code == 200
+      assertTemplateUsed(response, each.get('template'))
 
+#detail_update_delete
 @pytest.mark.django_db
-def test_signature_list_uses_correct_template(client):
+def test_details_url(client):
    warnings.filterwarnings(action="ignore")
-   url = reverse('signature:signature_list')
-   response = client.get(url)
-   assertTemplateUsed(response, 'signature/signature_list.html')
-
-#search
-@pytest.mark.django_db
-def test_signature_search_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
-   url = ('/signature/search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_signature_search_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('signature:signature_search')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_signature_search_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('signature:signature_search')
-   response = client.get(url)
-   assertTemplateUsed(response, 'signature/signature_list.html')
-
-#detail
-@pytest.mark.django_db
-def test_signature_detail_url(client):
-   warnings.filterwarnings(action="ignore")
-   Signature.objects.create(
-      name="some_signature",
-   )
-   sig = Signature.objects.get(name="some_signature")
-   url = reverse('signature:signature-detail', kwargs={"pk": sig.pk})
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_signature_detail_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Signature.objects.create(
-      name="some_signature",
-    )
-    sig = Signature.objects.get(name="some_signature")
-    url = reverse('signature:signature-detail', kwargs={"pk": sig.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'signature/signature_detail.html')
-
-#create
-@pytest.mark.django_db
-def test_signature_create_url(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('signature:new-signature')
-   response = client.get(url)
-   assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_signature_create_uses_correct_template(client):
-   warnings.filterwarnings(action="ignore")
-   url = reverse('signature:new-signature')
-   response = client.get(url)
-   assertTemplateUsed(response, 'Forms/add.html')
-
-#update
-@pytest.mark.django_db
-def test_signature_update_url(client):
-    warnings.filterwarnings(action="ignore")
-    Signature.objects.create(
-      name="some_signature",
-    )
-    sig = Signature.objects.get(name="some_signature")
-    url = reverse('signature:signature-update', kwargs={"pk": sig.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_signature_update_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Signature.objects.create(
-      name="some_signature",
-    )
-    sig = Signature.objects.get(name="some_signature")
-    url = reverse('signature:signature-update', kwargs={"pk": sig.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, "Forms/add.html")
-
-#delete
-@pytest.mark.django_db
-def test_signature_delete_url(client):
-    warnings.filterwarnings(action="ignore")
-    Signature.objects.create(
-      name="some_signature",
-    )
-    sig = Signature.objects.get(name="some_signature")
-    url = reverse('signature:signature-delete', kwargs={"pk": sig.pk})
-    response = client.get(url)
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_manufacturer_delete_uses_correct_template(client):
-    warnings.filterwarnings(action="ignore")
-    Signature.objects.create(
-      name="some_signature",
-    )
-    sig = Signature.objects.get(name="some_signature")
-    url = reverse('signature:signature-delete', kwargs={"pk": sig.pk})
-    response = client.get(url)
-    assertTemplateUsed(response, 'Forms/delete.html')
+   links = [
+      {'model': Signature,'link': 'signature:signature-detail', 'template': 'signature/signature_detail.html'},
+      {'model': Signature,'link': 'signature:signature-update', 'template': 'Forms/add.html'},
+      {'model': Signature,'link': 'signature:signature-delete', 'template': 'Forms/delete.html'},
+   ]
+   for each in links:
+      model = each.get('model').objects.create(name="some_model")
+      url = reverse(each.get('link'), kwargs={"pk": model.pk})
+      response = client.get(url)
+      assert response.status_code == 200
+      assertTemplateUsed(response, each.get('template'))
