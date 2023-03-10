@@ -1474,7 +1474,7 @@ INSERT INTO public.printer_printer (id, name, serial, "serialImg", invent, "inve
 -- Data for Name: signature_signature; Type: TABLE DATA; Schema: public; Owner: adminDevelop
 --
 
-INSERT INTO public.signature_signature (id, name, "licenseKeyFileOpen", "licenseKeyFileClose", "periodOpen", "periodClose", "employeeRegister_id", "employeeStorage_id", storage_id, workstation_id) VALUES ('94dfb165-4a00-403a-a4b5-de588e82e111', 'оалд', '', '', NULL, NULL, NULL, NULL, NULL, NULL);
+
 
 
 --
