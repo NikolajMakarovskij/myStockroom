@@ -1,3 +1,5 @@
+from unittest import mock
+from django.core.files import File
 import pytest
 from ..forms import softwareForm, OSForm, Manufacturer
 
@@ -12,6 +14,8 @@ def test_sofrware_form_valid():
         "version": "12.rwg5",
         "bitDepth": "x64",
         "licenseKeyText": "Key_354ygar",
+        "licenseKeyImg": mock.MagicMock(spec=File, name='serial_Img'),
+        "licenseKeyFile": mock.MagicMock(spec=File, name='serial_Img')
     }
     form = softwareForm(data=form_data)
     assert form.is_valid() is True

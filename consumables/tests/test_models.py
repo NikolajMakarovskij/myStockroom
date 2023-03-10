@@ -1,8 +1,10 @@
 from django.db.utils import IntegrityError
-import pytest  
+import pytest
 from myStockroom.wsgi import *
 from ..models import Consumables, Categories
 from counterparty.models import Manufacturer
+from django.core.files import File
+from unittest import mock
 
 
 @pytest.mark.django_db  
@@ -12,7 +14,7 @@ def test_category_create():
         name = "my_category_name",
         slug = "my_category_slug"
     )
-
+    assert Categories.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
 
@@ -54,7 +56,7 @@ def test_consumable_create():
         description = "my_description",
         note = "my_note",
     )  
-
+    assert Consumables.objects.count() == 1
     assert consumable.name == "my_consumable"
     assert consumable.categories.name == "my_category"
     assert consumable.categories.slug == "my_category" 
@@ -67,9 +69,6 @@ def test_consumable_create():
     assert consumable.score == "0"
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
-
-
-
 
 
 

@@ -1,3 +1,5 @@
+from unittest import mock
+from django.core.files import File
 import pytest
 from ..forms import printerForm ,Manufacturer, Workplace
 from ..models import Categories
@@ -44,6 +46,8 @@ def test_printer_form_valid():
         "manufacturer": Manufacturer.objects.get(name="epson"),
         "serial": "some_serial",
         "invent": "some_number_124",
+        'serialImg': mock.MagicMock(spec=File, name='serial_Img'),
+        'inventImg': mock.MagicMock(spec=File, name='invent_Img'),
         "usbPort": "some_ports",
         "lanPort": "some_ports",
         "tray1": "A4",

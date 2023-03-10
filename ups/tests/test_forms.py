@@ -1,3 +1,5 @@
+from unittest import mock
+from django.core.files import File
 import pytest
 from ..forms import upsForm, cassetteForm, Manufacturer, Cassette
 from consumables.models import Consumables, Categories as con_cat
@@ -19,6 +21,8 @@ def test_cassette_form_valid():
         "manufacturer": Manufacturer.objects.get(name="epson"),
         "serial": "some_serial",
         "invent": "some_number_124",
+        "serialImg": mock.MagicMock(spec=File, name='serial_Img'),
+        "inventImg": mock.MagicMock(spec=File, name='invent_Img'),
         "power": "150W",
         "voltage": "12V",
         "current": "7A",

@@ -1,5 +1,7 @@
 import pytest
-from ..forms import consumablesForm, Categories, Manufacturer
+from ..forms import consumablesForm, Categories, Manufacturer, Consumables
+from django.core.files import File
+from unittest import mock
 
 @pytest.mark.django_db
 def test_consumable_form_valid():
@@ -17,6 +19,8 @@ def test_consumable_form_valid():
         'score': "0",
         'serial': "some_serial123",
         'invent': "some_invent123",
+        'serialImg': mock.MagicMock(spec=File, name='serial_Img'),
+        'inventImg': mock.MagicMock(spec=File, name='invent_Img'),
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is True
@@ -55,3 +59,4 @@ def test_consumable_form_score_invalid():
     form = consumablesForm(data=form_data)
     assert form.is_valid() is False
     assert [err_mes] == form.errors['score']
+
