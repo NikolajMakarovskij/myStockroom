@@ -12,6 +12,38 @@ class EmployeeListViewTest(TestCase):
         number_of_employees = 149
         for employee_num in range(number_of_employees):
             Employee.objects.create(name='Christian %s' % employee_num,)
+        assert Employee.objects.count() == 149
+
+    def test_context_data_in_list(self):
+        warnings.filterwarnings(action="ignore")
+        links = ['employee:employee_list', 'employee:employee_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список сотрудников'},
+            {'data_key': 'searchlink', 'data_value': 'employee:employee_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-employee'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        warnings.filterwarnings(action="ignore")
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Сотрудник'},
+            {'data_key': 'add', 'data_value': 'employee:new-employee'},
+            {'data_key': 'update', 'data_value': 'employee:employee-update'},
+            {'data_key': 'delete', 'data_value': 'employee:employee-delete'},
+        ]
+        Employee.objects.create(name='Christian_detail',)
+        model = Employee.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:employee-detail', kwargs={"pk": model.pk}))
+        self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
@@ -41,6 +73,38 @@ class postViewTest(TestCase):
         number_of_post = 149
         for post_num in range(number_of_post):
             Post.objects.create(name='Christian %s' % post_num,)
+        assert Post.objects.count() == 149
+
+    def test_context_data_in_list(self):
+        warnings.filterwarnings(action="ignore")
+        links = ['employee:post_list', 'employee:post_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список должностей'},
+            {'data_key': 'searchlink', 'data_value': 'employee:post_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-post'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        warnings.filterwarnings(action="ignore")
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Должность'},
+            {'data_key': 'add', 'data_value': 'employee:new-post'},
+            {'data_key': 'update', 'data_value': 'employee:post-update'},
+            {'data_key': 'delete', 'data_value': 'employee:post-delete'},
+        ]
+        Post.objects.create(name='Christian_detail',)
+        model = Post.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:post-detail', kwargs={"pk": model.pk}))
+        self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
@@ -70,6 +134,38 @@ class departamentViewTest(TestCase):
         number_of_departament = 149
         for departament_num in range(number_of_departament):
             Departament.objects.create(name='Christian %s' % departament_num,)
+        assert Departament.objects.count() == 149
+
+    def test_context_data_in_list(self):
+        warnings.filterwarnings(action="ignore")
+        links = ['employee:departament_list', 'employee:departament_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список отделов'},
+            {'data_key': 'searchlink', 'data_value': 'employee:departament_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-departament'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        warnings.filterwarnings(action="ignore")
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Отдел'},
+            {'data_key': 'add', 'data_value': 'employee:new-departament'},
+            {'data_key': 'update', 'data_value': 'employee:departament-update'},
+            {'data_key': 'delete', 'data_value': 'employee:departament-delete'},
+        ]
+        Departament.objects.create(name='Christian_detail',)
+        model = Departament.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:departament-detail', kwargs={"pk": model.pk}))
+        self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
         warnings.filterwarnings(action="ignore")
