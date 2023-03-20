@@ -24,6 +24,7 @@ def test_consumable_form_valid():
     }
     form = consumablesForm(data=form_data)
     assert form.is_valid() is True
+    
 
 @pytest.mark.django_db
 def test_consumable_form_name_invalid():

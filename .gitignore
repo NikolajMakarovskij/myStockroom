@@ -9,3 +9,4 @@ pgadmin-data/_data/pgadmin4.db
 .pytest_cache
 media
 static
+.coverage
