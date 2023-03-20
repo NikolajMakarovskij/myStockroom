@@ -8,14 +8,12 @@ class EmployeeListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_employees = 149
         for employee_num in range(number_of_employees):
             Employee.objects.create(name='Christian %s' % employee_num,)
         assert Employee.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:employee_list', 'employee:employee_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Список сотрудников'},
@@ -30,7 +28,6 @@ class EmployeeListViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Сотрудник'},
             {'data_key': 'add', 'data_value': 'employee:new-employee'},
@@ -46,7 +43,6 @@ class EmployeeListViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:employee_list', 'employee:employee_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -56,7 +52,6 @@ class EmployeeListViewTest(TestCase):
             self.assertTrue( len(resp.context['employee_list']) == 10)
 
     def test_lists_all_employee(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:employee_list', 'employee:employee_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -69,14 +64,12 @@ class postViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_post = 149
         for post_num in range(number_of_post):
             Post.objects.create(name='Christian %s' % post_num,)
         assert Post.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:post_list', 'employee:post_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Список должностей'},
@@ -91,7 +84,6 @@ class postViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Должность'},
             {'data_key': 'add', 'data_value': 'employee:new-post'},
@@ -107,7 +99,6 @@ class postViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:post_list', 'employee:post_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -117,7 +108,6 @@ class postViewTest(TestCase):
             self.assertTrue( len(resp.context['post_list']) == 10)
 
     def test_lists_all_signature(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:post_list', 'employee:post_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -130,14 +120,12 @@ class departamentViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_departament = 149
         for departament_num in range(number_of_departament):
             Departament.objects.create(name='Christian %s' % departament_num,)
         assert Departament.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:departament_list', 'employee:departament_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Список отделов'},
@@ -152,7 +140,6 @@ class departamentViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Отдел'},
             {'data_key': 'add', 'data_value': 'employee:new-departament'},
@@ -168,7 +155,6 @@ class departamentViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:departament_list', 'employee:departament_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -178,7 +164,6 @@ class departamentViewTest(TestCase):
             self.assertTrue( len(resp.context['departament_list']) == 10)
 
     def test_lists_all_signature(self):
-        warnings.filterwarnings(action="ignore")
         links = ['employee:departament_list', 'employee:departament_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')

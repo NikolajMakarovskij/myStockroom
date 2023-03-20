@@ -7,14 +7,12 @@ class RoomListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_rooms = 149
         for room_num in range(number_of_rooms):
             Room.objects.create(name='r %s' % room_num,)
         assert Room.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:room_list', 'workplace:room_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Кабинеты'},
@@ -29,7 +27,6 @@ class RoomListViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Кабинет'},
             {'data_key': 'add', 'data_value': 'workplace:new-room'},
@@ -45,7 +42,6 @@ class RoomListViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:room_list', 'workplace:room_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -55,7 +51,6 @@ class RoomListViewTest(TestCase):
             self.assertTrue( len(resp.context['room_list']) == 10)
 
     def test_lists_all_room(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:room_list', 'workplace:room_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -68,14 +63,12 @@ class WorkplaceListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_workplaces = 149
         for Workplace_num in range(number_of_workplaces):
             Workplace.objects.create(name='Christian %s' % Workplace_num,)
         assert Workplace.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:workplace_list', 'workplace:workplace_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Рабочие места'},
@@ -90,7 +83,6 @@ class WorkplaceListViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Рабочее место'},
             {'data_key': 'add', 'data_value': 'workplace:new-workplace'},
@@ -106,7 +98,6 @@ class WorkplaceListViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:workplace_list', 'workplace:workplace_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -116,7 +107,6 @@ class WorkplaceListViewTest(TestCase):
             self.assertTrue( len(resp.context['workplace_list']) == 10)
 
     def test_lists_all_workplaces(self):
-        warnings.filterwarnings(action="ignore")
         links = ['workplace:workplace_list', 'workplace:workplace_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')

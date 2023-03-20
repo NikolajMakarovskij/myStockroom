@@ -8,14 +8,12 @@ import warnings
 class referencesViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_references = 149
         for references_num in range(number_of_references):
             References.objects.create(name='Christian %s' % references_num,)
         assert References.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['catalog:references_list', 'catalog:references_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Справочники'},
@@ -29,7 +27,6 @@ class referencesViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['catalog:references_list', 'catalog:references_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -39,7 +36,6 @@ class referencesViewTest(TestCase):
             self.assertTrue( len(resp.context['references_list']) == 10)
 
     def test_lists_all_references(self):
-        warnings.filterwarnings(action="ignore")
         links = ['catalog:references_list', 'catalog:references_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')

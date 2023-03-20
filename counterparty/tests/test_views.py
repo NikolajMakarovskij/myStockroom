@@ -8,14 +8,12 @@ class manufacturerViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_manufacturer = 149
         for manufacturer_num in range(number_of_manufacturer):
             Manufacturer.objects.create(name='Christian %s' % manufacturer_num,)
         assert Manufacturer.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Список производителей'},
@@ -30,7 +28,6 @@ class manufacturerViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Производитель'},
             {'data_key': 'add', 'data_value': 'counterparty:new-manufacturer'},
@@ -45,7 +42,6 @@ class manufacturerViewTest(TestCase):
             self.assertTrue(each.get('data_key') in resp.context)
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -55,7 +51,6 @@ class manufacturerViewTest(TestCase):
             self.assertTrue( len(resp.context['manufacturer_list']) == 10)
 
     def test_lists_all_manufacturer(self):
-        warnings.filterwarnings(action="ignore")
         links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')

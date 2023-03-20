@@ -8,7 +8,6 @@ class consumablesViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_consumables = 149
         Categories.objects.create(name="some_category", slug="some_category")
         for consumables_num in range(number_of_consumables):
@@ -16,7 +15,6 @@ class consumablesViewTest(TestCase):
         assert Consumables.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['consumables:consumables_list', 'consumables:consumables_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Расходники'},
@@ -31,7 +29,6 @@ class consumablesViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Расходник'},
             {'data_key': 'add', 'data_value': 'consumables:new-consumables'},
@@ -47,7 +44,6 @@ class consumablesViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['consumables:consumables_list', 'consumables:consumables_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -57,7 +53,6 @@ class consumablesViewTest(TestCase):
             self.assertTrue( len(resp.context['consumables_list']) == 10)
 
     def test_lists_all_consumables(self):
-        warnings.filterwarnings(action="ignore")
         links = ['consumables:consumables_list', 'consumables:consumables_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -70,7 +65,6 @@ class consumablesCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_consumables = 149
         Categories.objects.create(name="some_category", slug="some_category")
         for consumables_num in range(number_of_consumables):
@@ -79,7 +73,6 @@ class consumablesCategoryViewTest(TestCase):
         assert Categories.objects.count() == 1
 
     def test_context_data_in_category(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Расходники'},
             {'data_key': 'searchlink', 'data_value': 'consumables:consumables_search'},
@@ -92,7 +85,6 @@ class consumablesCategoryViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
@@ -100,7 +92,6 @@ class consumablesCategoryViewTest(TestCase):
         self.assertTrue( len(resp.context['consumables_list']) == 10)
 
     def test_lists_all_categories(self):
-        warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)

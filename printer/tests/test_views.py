@@ -8,13 +8,11 @@ class printerViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_of_printer = 149
-        warnings.filterwarnings(action="ignore")
         for printer_num in range(number_of_printer):
             Printer.objects.create(name='Christian %s' % printer_num,)
         assert Printer.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['printer:printer_list', 'printer:printer_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Принтеры'},
@@ -29,7 +27,6 @@ class printerViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Принтер'},
             {'data_key': 'add', 'data_value': 'printer:new-printer'},
@@ -45,7 +42,6 @@ class printerViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['printer:printer_list', 'printer:printer_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -55,7 +51,6 @@ class printerViewTest(TestCase):
             self.assertTrue( len(resp.context['printer_list']) == 10)
 
     def test_lists_all_printer(self):
-        warnings.filterwarnings(action="ignore")
         links = ['printer:printer_list', 'printer:printer_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -69,7 +64,6 @@ class printerCategoryViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_of_printer = 149
-        warnings.filterwarnings(action="ignore")
         Categories.objects.create(name="some_category", slug="some_category")
         for printer_num in range(number_of_printer):
             Printer.objects.create(name='Christian %s' % printer_num, categories=Categories.objects.get(slug="some_category"))
@@ -77,7 +71,6 @@ class printerCategoryViewTest(TestCase):
         assert Categories.objects.count() == 1
 
     def test_context_data_in_category(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Принтеры'},
             {'data_key': 'searchlink', 'data_value': 'printer:printer_search'},
@@ -90,7 +83,6 @@ class printerCategoryViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('printer:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
@@ -98,7 +90,6 @@ class printerCategoryViewTest(TestCase):
         self.assertTrue( len(resp.context['printer_list']) == 10)
 
     def test_lists_all_printer(self):
-        warnings.filterwarnings(action="ignore")
         resp = self.client.get(reverse('printer:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)

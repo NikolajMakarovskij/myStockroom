@@ -8,7 +8,6 @@ class stockroomViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             cons = Consumables.objects.create(name='Christian %s' % stocks_num,)
@@ -16,7 +15,6 @@ class stockroomViewTest(TestCase):
         assert Consumables.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Склад'},
@@ -30,7 +28,6 @@ class stockroomViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -40,7 +37,6 @@ class stockroomViewTest(TestCase):
             self.assertTrue( len(resp.context['stockroom_list']) == 10)
 
     def test_lists_all_stockroom(self):
-        warnings.filterwarnings(action="ignore")
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')

@@ -8,14 +8,12 @@ class upsViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_ups = 149
         for ups_num in range(number_of_ups):
             Ups.objects.create(name='Christian %s' % ups_num,)
         assert Ups.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:ups_list', 'ups:ups_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'ИБП'},
@@ -30,7 +28,6 @@ class upsViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'ИБП'},
             {'data_key': 'add', 'data_value': 'ups:new-ups'},
@@ -46,7 +43,6 @@ class upsViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:ups_list', 'ups:ups_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -56,7 +52,6 @@ class upsViewTest(TestCase):
             self.assertTrue( len(resp.context['ups_list']) == 10)
 
     def test_lists_all_ups(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:ups_list', 'ups:ups_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
@@ -69,14 +64,12 @@ class cassetteViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_cassette = 149
         for cassette_num in range(number_of_cassette):
             Cassette.objects.create(name='Christian %s' % cassette_num,)
         assert Cassette.objects.count() == 149
 
     def test_context_data_in_list(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:cassette_list', 'ups:cassette_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'Кассеты'},
@@ -91,7 +84,6 @@ class cassetteViewTest(TestCase):
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_context_data_in_detail(self):
-        warnings.filterwarnings(action="ignore")
         context_data = [
             {'data_key': 'title', 'data_value': 'Кассета'},
             {'data_key': 'add', 'data_value': 'ups:new-cassette'},
@@ -107,7 +99,6 @@ class cassetteViewTest(TestCase):
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:cassette_list', 'ups:cassette_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -117,7 +108,6 @@ class cassetteViewTest(TestCase):
             self.assertTrue( len(resp.context['cassette_list']) == 10)
 
     def test_lists_all_cassette(self):
-        warnings.filterwarnings(action="ignore")
         links = ['ups:cassette_list', 'ups:cassette_search']
         for link in links:
             resp = self.client.get(reverse(link)+'?page=15')
