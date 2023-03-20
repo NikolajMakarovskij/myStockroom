@@ -35,6 +35,6 @@ jobs:
       - name: Run migrate
         run: docker-compose exec -T web python3 manage.py migrate
       - name: Run tests
-        run: docker-compose exec -T web pytest -n 4 --cov
+        run: docker-compose exec -T web pytest --cov
       - name: Stop conteiners
         run: docker-compose down -v
