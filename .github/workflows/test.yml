@@ -11,6 +11,8 @@ jobs:
     # На какой ОС будет работать виртуальная машина
     # Можно выбрать Ubuntu, Windows Server или macOS
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
     steps:
       - uses: actions/checkout@v3
       - uses: isbang/compose-action@v1.4.1
@@ -33,6 +35,6 @@ jobs:
       - name: Run migrate
         run: docker-compose exec -T web python3 manage.py migrate
       - name: Run tests
-        run: docker-compose exec -T web pytest -n 4
+        run: docker-compose exec -T web pytest -n 4 --cov
       - name: Stop conteiners
         run: docker-compose down -v
