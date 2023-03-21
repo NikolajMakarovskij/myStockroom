@@ -2,6 +2,8 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
+from printer.models import Printer
+from workplace.models import Room
 from catalog.utils import ModelMixin
 
 class Stockroom (ModelMixin, models.Model):
@@ -93,9 +95,12 @@ class History(models.Model):
             default=uuid.uuid4,
             help_text="ID"
         )
-        name = models.CharField(
-            max_length=50,
-            verbose_name="Расходник"
+        consumable = models.OneToOneField(
+            Consumables,
+            on_delete = models.CASCADE,
+            blank=True, null=True,
+            db_index=True,
+            verbose_name="Расходники"
         )
         categories = models.ForeignKey(
             'Categories',
@@ -103,6 +108,12 @@ class History(models.Model):
             blank=True, null=True,
             help_text="Укажите группу",
             verbose_name="группа"
+        )
+        printer = models.OneToOneField(
+            Printer,
+            on_delete = models.CASCADE,
+            blank=True, null=True,
+            verbose_name="Принтер"
         )
         score = models.IntegerField(
             blank=True, default=0,
@@ -112,8 +123,9 @@ class History(models.Model):
             null=True, blank=True,
             verbose_name="Дата установки"
         )
-        user = models.CharField(
-            max_length=50,
-            null=True, blank=True,
+        room = models.OneToOneField(
+            Room,
+            on_delete = models.CASCADE,
+            blank=True, null=True,
             verbose_name="Пользователь"
         )
