@@ -21,7 +21,7 @@ def test_signature_create():
         workstation = Workstation.objects.get(name="Acer C27"),
         storage = Consumables.objects.get(name = "storage") 
     )  
-
+    assert Signature.objects.count() == 1
     assert signature.name == "signature_name"
     assert signature.periodOpen == "2018-9-12"
     assert signature.periodClose == "2022-3-31"

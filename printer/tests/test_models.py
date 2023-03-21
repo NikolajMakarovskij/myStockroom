@@ -12,7 +12,7 @@ def test_printer_category_create():
         name = "my_category_name",
         slug = "my_category_slug"
     )
-
+    assert Categories.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
 
@@ -57,7 +57,7 @@ def test_printer_create():
         score = "0",
         note = "some_note"
     )  
-
+    assert Printer.objects.count() == 1
     assert printer.name == "printer_name"
     assert printer.categories.name == "printer_category"
     assert printer.manufacturer.name == "epson"

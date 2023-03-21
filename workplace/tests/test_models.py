@@ -13,6 +13,7 @@ def test_room_create():
         building = "name_building",
         floor = "name_floor"
     ) 
+    assert Room.objects.count() == 1
     assert room.name == "name_room"
     assert room.building == "name_building"
     assert room.floor == "name_floor"
@@ -25,7 +26,7 @@ def test_workplace_create():
         name = "my_workplace_name",
         room = Room.objects.get(name="my_room"),
     )
-
+    assert Workplace.objects.count() == 1
     assert post.name == "my_workplace_name"
     assert post.room.name == "my_room"
     

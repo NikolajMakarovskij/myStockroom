@@ -16,7 +16,7 @@ def test_software_create():
         bitDepth = "x64",
         licenseKeyText = "Key_354ygar",
     )
-
+    assert Software.objects.count() == 1
     assert soft.name == "my_software_name"
     assert soft.manufacturer.name == "soft_manufacturer"
     assert soft.version == "12.rwg5"
@@ -34,7 +34,7 @@ def test_OS_create():
         bitDepth = "x64",
         licenseKeyText = "Key_354ygar",
     )
-
+    assert Os.objects.count() == 1
     assert OS.name == "my_OS_name"
     assert OS.manufacturer.name == "soft_manufacturer"
     assert OS.version == "12.rwg5"

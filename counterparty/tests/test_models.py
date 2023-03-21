@@ -11,7 +11,7 @@ def test_manufacturer_create():
         country = "country",
         production = "production_country"
     ) 
-
+    assert Manufacturer.objects.count() == 1
     assert manufacturer.name == "name_manufacturer"
     assert manufacturer.country == "country"
     assert manufacturer.production == "production_country"

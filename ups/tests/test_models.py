@@ -21,7 +21,7 @@ def test_cassette_create():
         accumulator = Consumables.objects.get(name = "accumulator"),
         score = "0",
     )  
-
+    assert Cassette.objects.count() == 1
     assert cassette.name == "cassette_name"
     assert cassette.manufacturer.name == "epson"
     assert cassette.serial == "some_serial"
@@ -55,7 +55,7 @@ def test_ups_create():
         cassette = Cassette.objects.get(name="some_cassette"),
         score = "0",
     )  
-
+    assert Ups.objects.count() == 1
     assert ups.name == "cassette_name"
     assert ups.manufacturer.name == "epson"
     assert ups.serial == "some_serial"

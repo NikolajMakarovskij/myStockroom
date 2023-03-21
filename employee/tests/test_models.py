@@ -12,7 +12,7 @@ def test_departament_create():
     departament = Departament.objects.create(
         name = "name_departament",
     ) 
-
+    assert Departament.objects.count() == 1
     assert departament.name == "name_departament"
 
 @pytest.mark.django_db  
@@ -23,7 +23,7 @@ def test_post_create():
         name = "my_post_name",
         departament = Departament.objects.get(name="my_departament"),
     )
-
+    assert Post.objects.count() == 1
     assert post.name == "my_post_name"
     assert post.departament.name == "my_departament"
     
@@ -46,7 +46,7 @@ def test_employee_create():
         post = Post.objects.get(name = "employee_post"),
         employeeEmail = "admin@admin.com",
     )  
-
+    assert Employee.objects.count() == 1
     assert employee.name == "employee_name"
     assert employee.sername == "employee_sername"
     assert employee.family == "employee_family" 
