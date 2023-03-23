@@ -119,10 +119,9 @@ class History(models.Model):
             null=True, blank=True,
             verbose_name="Дата установки"
         )
-        user = models.OneToOneField(
-            User,
-            on_delete = models.CASCADE,
-            null=True, blank=True,
+        user = models.CharField(
+            blank=True, default=0,
+            max_length=50,
             help_text="Укажите пользователя",
             verbose_name="Пользователь"
         )
