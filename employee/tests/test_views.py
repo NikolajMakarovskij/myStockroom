@@ -8,124 +8,166 @@ class EmployeeListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_employees = 149
         for employee_num in range(number_of_employees):
             Employee.objects.create(name='Christian %s' % employee_num,)
+        assert Employee.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/employee/')
+    def test_context_data_in_list(self):
+        links = ['employee:employee_list', 'employee:employee_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список сотрудников'},
+            {'data_key': 'searchlink', 'data_value': 'employee:employee_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-employee'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Сотрудник'},
+            {'data_key': 'add', 'data_value': 'employee:new-employee'},
+            {'data_key': 'update', 'data_value': 'employee:employee-update'},
+            {'data_key': 'delete', 'data_value': 'employee:employee-delete'},
+        ]
+        Employee.objects.create(name='Christian_detail',)
+        model = Employee.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:employee-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:employee_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:employee_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'employee/employee_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:employee_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['employee_list']) == 10)
+        links = ['employee:employee_list', 'employee:employee_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['employee_list']) == 10)
 
     def test_lists_all_employee(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:employee_list')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['employee_list']) == 9)
+        links = ['employee:employee_list', 'employee:employee_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['employee_list']) == 9)
 
 class postViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_post = 149
         for post_num in range(number_of_post):
             Post.objects.create(name='Christian %s' % post_num,)
+        assert Post.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/employee/post/')
+    def test_context_data_in_list(self):
+        links = ['employee:post_list', 'employee:post_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список должностей'},
+            {'data_key': 'searchlink', 'data_value': 'employee:post_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-post'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Должность'},
+            {'data_key': 'add', 'data_value': 'employee:new-post'},
+            {'data_key': 'update', 'data_value': 'employee:post-update'},
+            {'data_key': 'delete', 'data_value': 'employee:post-delete'},
+        ]
+        Post.objects.create(name='Christian_detail',)
+        model = Post.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:post-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:post_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:post_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'employee/post_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:post_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['post_list']) == 10)
+        links = ['employee:post_list', 'employee:post_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['post_list']) == 10)
 
     def test_lists_all_signature(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:post_list')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['post_list']) == 9)
+        links = ['employee:post_list', 'employee:post_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['post_list']) == 9)
 
 class departamentViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_departament = 149
         for departament_num in range(number_of_departament):
             Departament.objects.create(name='Christian %s' % departament_num,)
+        assert Departament.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/employee/departament/')
+    def test_context_data_in_list(self):
+        links = ['employee:departament_list', 'employee:departament_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Список отделов'},
+            {'data_key': 'searchlink', 'data_value': 'employee:departament_search'},
+            {'data_key': 'add', 'data_value': 'employee:new-departament'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Отдел'},
+            {'data_key': 'add', 'data_value': 'employee:new-departament'},
+            {'data_key': 'update', 'data_value': 'employee:departament-update'},
+            {'data_key': 'delete', 'data_value': 'employee:departament-delete'},
+        ]
+        Departament.objects.create(name='Christian_detail',)
+        model = Departament.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('employee:departament-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:departament_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:departament_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'employee/departament_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:departament_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['departament_list']) == 10)
+        links = ['employee:departament_list', 'employee:departament_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['departament_list']) == 10)
 
     def test_lists_all_signature(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('employee:departament_list')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['departament_list']) == 9)
+        links = ['employee:departament_list', 'employee:departament_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['departament_list']) == 9)

@@ -51,7 +51,6 @@ class Printer (ModelMixin, models.Model):
         )
     name = models.CharField(
         max_length=50,
-        blank=True, null=True,
         help_text="Введите название принтера",
         verbose_name="Название"
         )

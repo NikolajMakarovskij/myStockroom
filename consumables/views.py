@@ -47,7 +47,7 @@ class consumablesCategoriesView(DataMixin, generic.ListView):
             cons_cat = Categories.objects.all()
             cache.set('cons_cat', cons_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходники", searchlink='consumables:consumables_list',add='consumables:new-consumables', menu_categories=cons_cat)
+        c_def = self.get_user_context(title="Расходники", searchlink='consumables:consumables_search',add='consumables:new-consumables', menu_categories=cons_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -64,7 +64,7 @@ class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходники",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete',)
+        c_def = self.get_user_context(title="Расходник",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete',)
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 

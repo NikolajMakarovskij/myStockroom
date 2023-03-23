@@ -7,39 +7,90 @@ class workstationViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_workstation = 149
         for workstation_num in range(number_of_workstation):
             Workstation.objects.create(name='Christian %s' % workstation_num,)
+        assert Workstation.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/')
+    def test_context_data_in_list(self):
+        links = ['workstation:workstation_list', 'workstation:workstation_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Рабочие станции'},
+            {'data_key': 'searchlink', 'data_value': 'workstation:workstation_search'},
+            {'data_key': 'add', 'data_value': 'workstation:new-workstation'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Рабочая станция'},
+            {'data_key': 'add', 'data_value': 'workstation:new-workstation'},
+            {'data_key': 'update', 'data_value': 'workstation:workstation-update'},
+            {'data_key': 'delete', 'data_value': 'workstation:workstation-delete'},
+        ]
+        Workstation.objects.create(name='Christian_detail',)
+        model = Workstation.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('workstation:workstation-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:workstation_list'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:workstation_list'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/workstation_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:workstation_list'))
+        links = ['workstation:workstation_list', 'workstation:workstation_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['workstation_list']) == 10)
+
+    def test_lists_all_workstation(self):
+        links = ['workstation:workstation_list', 'workstation:workstation_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['workstation_list']) == 9)
+
+class workstationsCategoryViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        number_of_consumables = 149
+        Categories.objects.create(name="some_category", slug="some_category")
+        for consumables_num in range(number_of_consumables):
+            Workstation.objects.create(name='Christian %s' % consumables_num, categories=Categories.objects.get(slug="some_category"))
+        assert Workstation.objects.count() == 149
+        assert Categories.objects.count() == 1
+
+    def test_context_data_in_category(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Рабочие станции'},
+            {'data_key': 'searchlink', 'data_value': 'workstation:workstation_search'},
+            {'data_key': 'add', 'data_value': 'workstation:new-workstation'},
+        ]
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
+        self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_pagination_is_ten(self):
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['workstation_list']) == 10)
 
-    def test_lists_all_workstation(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:workstation_list')+'?page=15')
+    def test_lists_all_categories(self):
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
@@ -49,417 +100,167 @@ class monitorViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
         number_of_monitor = 149
         for monitor_num in range(number_of_monitor):
             Monitor.objects.create(name='Christian %s' % monitor_num,)
+        assert Monitor.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/monitor/')
+    def test_context_data_in_list(self):
+        links = ['workstation:monitor_list', 'workstation:monitor_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Мониторы'},
+            {'data_key': 'searchlink', 'data_value': 'workstation:monitor_search'},
+            {'data_key': 'add', 'data_value': 'workstation:new-monitor'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Монитор'},
+            {'data_key': 'add', 'data_value': 'workstation:new-monitor'},
+            {'data_key': 'update', 'data_value': 'workstation:monitor-update'},
+            {'data_key': 'delete', 'data_value': 'workstation:monitor-delete'},
+        ]
+        Monitor.objects.create(name='Christian_detail',)
+        model = Monitor.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('workstation:monitor-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:monitor'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:monitor'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/monitor_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:monitor'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['monitor_list']) == 10)
+        links = ['workstation:monitor_list', 'workstation:monitor_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['monitor_list']) == 10)
 
-    def test_lists_all_workstation(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:monitor')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['monitor_list']) == 9)
-
-class motherboardViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_motherboard = 149
-        for motherboard_num in range(number_of_motherboard):
-            Motherboard.objects.create(name='Christian %s' % motherboard_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/motherboard/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:motherboard'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:motherboard'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/motherboard_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:motherboard'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['motherboard_list']) == 10)
-
-    def test_lists_all_workstation(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:motherboard')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['motherboard_list']) == 9)
-
-class cpuViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_cpu = 149
-        for cpu_num in range(number_of_cpu):
-            Cpu.objects.create(name='Christian %s' % cpu_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/cpu/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:cpu'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:cpu'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/cpu_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:cpu'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['cpu_list']) == 10)
-
-    def test_lists_all_cpu(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:cpu')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['cpu_list']) == 9)
-
-class gpuViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_gpu = 149
-        for gpu_num in range(number_of_gpu):
-            Gpu.objects.create(name='Christian %s' % gpu_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/gpu/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:gpu'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:gpu'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/gpu_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:gpu'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['gpu_list']) == 10)
-
-    def test_lists_all_gpu(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:gpu')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['gpu_list']) == 9)
-    
-class ramViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_ram = 149
-        for ram_num in range(number_of_ram):
-            Ram.objects.create(name='Christian %s' % ram_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/ram/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ram'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ram'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/ram_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ram'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ram_list']) == 10)
-
-    def test_lists_all_ram(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ram')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ram_list']) == 9)
-
-class ssdViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_ssd = 149
-        for ssd_num in range(number_of_ssd):
-            Ssd.objects.create(name='Christian %s' % ssd_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/ssd/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ssd'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ssd'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/ssd_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ssd'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ssd_list']) == 10)
-
-    def test_lists_all_ssd(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:ssd')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['ssd_list']) == 9)
-
-class hddViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_hdd = 149
-        for hdd_num in range(number_of_hdd):
-            Hdd.objects.create(name='Christian %s' % hdd_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/hdd/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:hdd'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:hdd'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/hdd_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:hdd'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['hdd_list']) == 10)
-
-    def test_lists_all_hdd(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:hdd')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['hdd_list']) == 9)
-
-class dcpowerViewTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_dcpower = 149
-        for dcpower_num in range(number_of_dcpower):
-            Dcpower.objects.create(name='Christian %s' % dcpower_num,)
-
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/dcpower/')
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:dcpower'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:dcpower'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'workstation/dcpower_list.html')
-
-    def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:dcpower'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['dcpower_list']) == 10)
-
-    def test_lists_all_dcpower(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:dcpower')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['dcpower_list']) == 9)
+    def test_lists_all_monitor(self):
+        links = ['workstation:monitor_list', 'workstation:monitor_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['monitor_list']) == 9)
 
 class keyBoardViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_keyBoard = 149
-        for keyBoard_num in range(number_of_keyBoard):
-            KeyBoard.objects.create(name='Christian %s' % keyBoard_num,)
+        number_of_monitor = 149
+        for monitor_num in range(number_of_monitor):
+            KeyBoard.objects.create(name='Christian %s' % monitor_num,)
+        assert KeyBoard.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/keyBoard/')
+    def test_context_data_in_list(self):
+        links = ['workstation:keyBoard_list', 'workstation:keyBoard_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Клавиатуры'},
+            {'data_key': 'searchlink', 'data_value': 'workstation:keyBoard_search'},
+            {'data_key': 'add', 'data_value': 'workstation:new-keyBoard'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Клавиатура'},
+            {'data_key': 'add', 'data_value': 'workstation:new-keyBoard'},
+            {'data_key': 'update', 'data_value': 'workstation:keyBoard-update'},
+            {'data_key': 'delete', 'data_value': 'workstation:keyBoard-delete'},
+        ]
+        KeyBoard.objects.create(name='Christian_detail',)
+        model = KeyBoard.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('workstation:keyBoard-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
-
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:keyBoard'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:keyBoard'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/keyBoard_list.html')
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:keyBoard'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['keyboard_list']) == 10)
+        links = ['workstation:keyBoard_list', 'workstation:keyBoard_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['keyboard_list']) == 10)
 
-    def test_lists_all_keyBoard(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:keyBoard')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['keyboard_list']) == 9)
+    def test_lists_all_keyBoards(self):
+        links = ['workstation:keyBoard_list', 'workstation:keyBoard_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['keyboard_list']) == 9)
 
 class mouseViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        warnings.filterwarnings(action="ignore")
-        number_of_mouse = 149
-        for mouse_num in range(number_of_mouse):
-            Mouse.objects.create(name='Christian %s' % mouse_num,)
+        number_of_monitor = 149
+        for monitor_num in range(number_of_monitor):
+            Mouse.objects.create(name='Christian %s' % monitor_num,)
+        assert Mouse.objects.count() == 149
 
-    def test_view_url_exists_at_desired_location(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get('/workstation/mouse/')
+    def test_context_data_in_list(self):
+        links = ['workstation:mouse_list', 'workstation:mouse_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Мыши'},
+            {'data_key': 'searchlink', 'data_value': 'workstation:mouse_search'},
+            {'data_key': 'add', 'data_value': 'workstation:new-mouse'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_context_data_in_detail(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Мышь'},
+            {'data_key': 'add', 'data_value': 'workstation:new-mouse'},
+            {'data_key': 'update', 'data_value': 'workstation:mouse-update'},
+            {'data_key': 'delete', 'data_value': 'workstation:mouse-delete'},
+        ]
+        Mouse.objects.create(name='Christian_detail',)
+        model = Mouse.objects.get(name='Christian_detail',)
+        resp = self.client.get(reverse('workstation:mouse-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
-    def test_view_url_accessible_by_name(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:mouse'))
-        self.assertEqual(resp.status_code, 200)
-
-    def test_view_uses_correct_template(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:mouse'))
-        self.assertEqual(resp.status_code, 200)
-
-        self.assertTemplateUsed(resp, 'workstation/mouse_list.html')
 
     def test_pagination_is_ten(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:mouse'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['mouse_list']) == 10)
+        links = ['workstation:mouse_list', 'workstation:mouse_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['mouse_list']) == 10)
 
-    def test_lists_all_mouse(self):
-        warnings.filterwarnings(action="ignore")
-        resp = self.client.get(reverse('workstation:mouse')+'?page=15')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['mouse_list']) == 9)
+    def test_lists_all_mouses(self):
+        links = ['workstation:mouse_list', 'workstation:mouse_search']
+        for link in links:
+            resp = self.client.get(reverse(link)+'?page=15')
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] == True)
+            self.assertTrue( len(resp.context['mouse_list']) == 9)

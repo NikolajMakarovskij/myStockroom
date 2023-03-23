@@ -16,7 +16,6 @@ class Employee(ModelMixin, models.Model):
         )
     name = models.CharField(
         max_length=50,
-        blank=True, 
         help_text="Введите имя сотрудника",
         verbose_name="Имя сотрудника"
         )

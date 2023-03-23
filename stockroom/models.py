@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
 from catalog.utils import ModelMixin
+from django.contrib.auth.models import User
 
 class Stockroom (ModelMixin, models.Model):
     """
@@ -93,9 +94,15 @@ class History(models.Model):
             default=uuid.uuid4,
             help_text="ID"
         )
-        name = models.CharField(
+        consumable = models.CharField(
+            blank=True, default=0,
             max_length=50,
-            verbose_name="Расходник"
+            verbose_name="Расходники"
+        )
+        consumableId = models.CharField(
+            blank=True, default=0,
+            max_length=50,
+            verbose_name="ID Расходникa"
         )
         categories = models.ForeignKey(
             'Categories',
@@ -112,7 +119,15 @@ class History(models.Model):
             null=True, blank=True,
             verbose_name="Дата установки"
         )
-        user = models.CharField(
-            max_length=50,
+        user = models.OneToOneField(
+            User,
+            on_delete = models.CASCADE,
+            null=True, blank=True,
+            help_text="Укажите пользователя",
             verbose_name="Пользователь"
         )
+
+        class Meta:
+            verbose_name = 'История'
+            verbose_name_plural = 'История'
+            ordering = ['consumable']

@@ -10,6 +10,6 @@ def test_references_create():
         name = "my_reference_name",
         linkname = "my_reference_link"
     ) 
-
+    assert References.objects.count() == 1
     assert references.name == "my_reference_name"
     assert references.linkname == "my_reference_link"
