@@ -3,23 +3,24 @@ from django.views.decorators.http import require_POST
 from consumables.models import Consumables
 from django.views import generic
 from django.db.models import Q
-from .stock import Stock
+from .stock import Stock, History
 from .forms import StockAddForm, ConsumableInstallForm
 from .models import Stockroom, Categories
-from printer.models import Printer
+from django.core.cache import cache
 from catalog.utils import DataMixin
 
 
-#Расходники
+#Склад расходников
 class stockroomView(DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
-    menu_categories = Categories.objects.all()
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Categories.objects.all()
+            cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -45,15 +46,62 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     model = Stockroom
     
     def get_context_data(self, *, object_list=None, **kwargs ):
-        menu_categories = Categories.objects.all()
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Categories.objects.all()
+            cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
         object_list = Stockroom.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list        
+
+#История склада расходников
+class HistoryView(DataMixin, generic.ListView):
+    template_name = 'stock/history_list.html'
+    model = History
+    def get_context_data(self, *, object_list=None, **kwargs):
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Categories.objects.all()
+            cache.set('stock_cat', stock_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = History.objects.filter(
+                Q(consumable__icontains=query) | 
+                Q(categories__name__icontains=query) |
+                Q(dateInstall__icontains=query) |
+                Q(user__icontains=query) 
+        )
+        return object_list
+
+class HistoryCategoriesView(DataMixin, generic.ListView):
+    template_name = 'stock/history_list.html'
+    model = History
+    
+    def get_context_data(self, *, object_list=None, **kwargs ):
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Categories.objects.all()
+            cache.set('stock_cat', stock_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = History.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list     
 
 
 @require_POST

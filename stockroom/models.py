@@ -129,4 +129,4 @@ class History(models.Model):
         class Meta:
             verbose_name = 'История'
             verbose_name_plural = 'История'
-            ordering = ['consumable']
+            ordering = ['dateInstall','consumable']
