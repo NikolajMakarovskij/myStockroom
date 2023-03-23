@@ -93,8 +93,7 @@ def device_add_consumable(request, consumable_id):
 
 @require_POST
 def printer_add_cartridge(request, cartridge_id):
-    if request.user.is_authenticated():
-        username = request.user.username
+    username = request.user
     stock = Stock(request)
     cartridge = get_object_or_404(Consumables, id=cartridge_id)
     form = ConsumableInstallForm(request.POST)
@@ -109,8 +108,7 @@ def printer_add_cartridge(request, cartridge_id):
 
 @require_POST
 def printer_add_toner(request, toner_id):
-    if request.user.is_authenticated():
-        username = request.user.username
+    username = request.user
     stock = Stock(request)
     toner = get_object_or_404(Consumables, id=toner_id)
     form = ConsumableInstallForm(request.POST)
@@ -126,7 +124,7 @@ def printer_add_toner(request, toner_id):
 @require_POST
 def printer_add_fotoval(request, fotoval_id):
     if request.user.is_authenticated():
-        username = request.user.username
+        username = request.user
     stock = Stock(request)
     fotoval = get_object_or_404(Consumables, id=fotoval_id)
     form = ConsumableInstallForm(request.POST)
@@ -141,7 +139,7 @@ def printer_add_fotoval(request, fotoval_id):
 @require_POST
 def printer_add_fotodrumm(request, fotodrumm_id):
     if request.user.is_authenticated():
-        username = request.user.username
+        username = request.user
     stock = Stock(request)
     fotodrumm = get_object_or_404(Consumables, id=fotodrumm_id)
     form = ConsumableInstallForm(request.POST)
@@ -157,7 +155,7 @@ def printer_add_fotodrumm(request, fotodrumm_id):
 @require_POST
 def ups_add_accumulator(request, accumulator_id):
     if request.user.is_authenticated():
-        username = request.user.username
+        username = request.user
     stock = Stock(request)
     accumulator = get_object_or_404(Consumables, id=accumulator_id)
     form = ConsumableInstallForm(request.POST)
@@ -173,7 +171,7 @@ def ups_add_accumulator(request, accumulator_id):
 @require_POST
 def add_storage(request, storage_id):
     if request.user.is_authenticated():
-        username = request.user.username
+        username = request.user
     stock = Stock(request)
     storage = get_object_or_404(Consumables, id=storage_id)
     form = Consumables(request.POST)
