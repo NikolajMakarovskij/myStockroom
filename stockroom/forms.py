@@ -15,7 +15,6 @@ class StockAddForm(forms.Form):
     """
     quantity = forms.TypedChoiceField(choices=CONSUMABLE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput, label='Обновить')
     number_rack = forms.TypedChoiceField(choices=RACK_QUANTITY_CHOICES, coerce=int, label='Стеллаж', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
     number_shelf = forms.TypedChoiceField(choices=SHELF_QUANTITY_CHOICES, coerce=int, label='Полка', 
@@ -27,5 +26,3 @@ class ConsumableInstallForm(forms.Form):
     """
     quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))
-    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput, label='Обновить')
-

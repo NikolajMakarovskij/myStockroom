@@ -1,6 +1,5 @@
 from django.db.utils import IntegrityError
 import pytest  
-from myStockroom.wsgi import *
 from ..models import Stockroom, Consumables, Categories, History
 from printer.models import Printer
 from workplace.models import Room, Workplace
@@ -78,22 +77,16 @@ def test_hysrory_create():
     history = History.objects.create(  
         consumable= Consumables.objects.get(name="my_consumable", score=10),  
         categories = Categories.objects.get(name="my_category"),
-        printer = Printer.objects.get(name="my_printer"),
         score = '1',
         dateInstall = '2022-09-01',
-        room = Printer.objects.filter(name="my_printer").get().workplace.room,
     )  
     assert History.objects.count() == 1
     assert history.consumable.name == "my_consumable"
     assert history.consumable.manufacturer.name == "name_manufacturer"
     assert history.consumable.score == 10
     assert history.categories.name == "my_category"
-    assert history.printer.name == "my_printer"
-    assert history.printer.workplace.name == "pr-112"
-    assert history.printer.workplace.room.name == "112"
     assert history.score == "1"
     assert history.dateInstall == "2022-09-01"
-    assert history.room.name == "112"
 
 
 

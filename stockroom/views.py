@@ -1,11 +1,12 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from consumables.models import Consumables, Categories
+from consumables.models import Consumables
 from django.views import generic
 from django.db.models import Q
 from .stock import Stock
 from .forms import StockAddForm, ConsumableInstallForm
-from .models import Stockroom
+from .models import Stockroom, Categories
+from printer.models import Printer
 from catalog.utils import DataMixin
 
 
@@ -64,7 +65,6 @@ def stock_add_consumable(request, consumable_id):
         cd = form.cleaned_data
         stock.add_consumable(consumable=consumable,
                  quantity=cd['quantity'],
-                 update_quantity=cd['update'],
                  number_rack=cd['number_rack'],
                  number_shelf=cd['number_shelf'],
                  )
@@ -78,98 +78,111 @@ def stock_remove_consumable(request, consumable_id):
 
 @require_POST
 def device_add_consumable(request, consumable_id):
+    username = request.user
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.device_add_consumable(consumable=consumable,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 
 @require_POST
 def printer_add_cartridge(request, cartridge_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     cartridge = get_object_or_404(Consumables, id=cartridge_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=cartridge,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 
 @require_POST
 def printer_add_toner(request, toner_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     toner = get_object_or_404(Consumables, id=toner_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=toner,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 
 @require_POST
 def printer_add_fotoval(request, fotoval_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     fotoval = get_object_or_404(Consumables, id=fotoval_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=fotoval,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username =username,
+                )
     return redirect('stockroom:stock_list')
 
 @require_POST
 def printer_add_fotodrumm(request, fotodrumm_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     fotodrumm = get_object_or_404(Consumables, id=fotodrumm_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=fotodrumm,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 
 @require_POST
 def ups_add_accumulator(request, accumulator_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     accumulator = get_object_or_404(Consumables, id=accumulator_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=accumulator,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 
 @require_POST
 def add_storage(request, storage_id):
+    if request.user.is_authenticated():
+        username = request.user.username
     stock = Stock(request)
     storage = get_object_or_404(Consumables, id=storage_id)
     form = Consumables(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.printer_install_consumable(consumable=storage,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update']
-                 )
+                quantity=cd['quantity'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 

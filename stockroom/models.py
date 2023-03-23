@@ -2,9 +2,8 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
-from printer.models import Printer
-from workplace.models import Room
 from catalog.utils import ModelMixin
+from django.contrib.auth.models import User
 
 class Stockroom (ModelMixin, models.Model):
     """
@@ -95,12 +94,15 @@ class History(models.Model):
             default=uuid.uuid4,
             help_text="ID"
         )
-        consumable = models.OneToOneField(
-            Consumables,
-            on_delete = models.CASCADE,
-            blank=True, null=True,
-            db_index=True,
+        consumable = models.CharField(
+            blank=True, default=0,
+            max_length=50,
             verbose_name="Расходники"
+        )
+        consumableId = models.CharField(
+            blank=True, default=0,
+            max_length=50,
+            verbose_name="ID Расходникa"
         )
         categories = models.ForeignKey(
             'Categories',
@@ -108,12 +110,6 @@ class History(models.Model):
             blank=True, null=True,
             help_text="Укажите группу",
             verbose_name="группа"
-        )
-        printer = models.OneToOneField(
-            Printer,
-            on_delete = models.CASCADE,
-            blank=True, null=True,
-            verbose_name="Принтер"
         )
         score = models.IntegerField(
             blank=True, default=0,
@@ -123,9 +119,15 @@ class History(models.Model):
             null=True, blank=True,
             verbose_name="Дата установки"
         )
-        room = models.OneToOneField(
-            Room,
+        user = models.OneToOneField(
+            User,
             on_delete = models.CASCADE,
-            blank=True, null=True,
+            null=True, blank=True,
+            help_text="Укажите пользователя",
             verbose_name="Пользователь"
         )
+
+        class Meta:
+            verbose_name = 'История'
+            verbose_name_plural = 'История'
+            ordering = ['consumable']

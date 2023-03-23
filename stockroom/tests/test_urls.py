@@ -1,4 +1,4 @@
-import pytest, warnings
+import pytest
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
 from ..models import Categories
@@ -7,7 +7,6 @@ from ..models import Categories
 #list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
    links = ['/stockroom/','/stockroom/search']
    for link in links:
       url = (link)
@@ -16,7 +15,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
-   warnings.filterwarnings(action="ignore")
    links = [
       {'link': 'stockroom:stock_list','template': 'stock/stock_list.html'},
       {'link': 'stockroom:stock_search','template': 'stock/stock_list.html'},
@@ -30,7 +28,6 @@ def test_list_uses_correct_url_nad_template(client):
 #category
 @pytest.mark.django_db
 def test_stockroom_category_url(client):
-   warnings.filterwarnings(action="ignore")
    Categories.objects.create(name="some_category",slug="some_category")
    url = reverse('stockroom:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})
    response = client.get(url)
