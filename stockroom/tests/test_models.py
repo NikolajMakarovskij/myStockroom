@@ -64,29 +64,22 @@ def test_stockroom_create():
 @pytest.mark.django_db  
 def test_hysrory_create():
     """Тестирует создание записи в базе данных для модели Consumables"""
-    Room.objects.create(name="112")
-    Workplace.objects.create(name="pr-112", room=Room.objects.get(name="112"))
     Categories.objects.create(name = "my_category",slug = "my_category")
-    Manufacturer.objects.create(name = "name_manufacturer",) 
-    Consumables.objects.create(
-        name="my_consumable",
-        manufacturer = Manufacturer.objects.get(name = "name_manufacturer"), 
-        score=10
-    )
-    Printer.objects.create(name="my_printer", workplace=Workplace.objects.get(name="pr-112"))
     history = History.objects.create(  
-        consumable= Consumables.objects.get(name="my_consumable", score=10),  
+        consumable = "my_consumable",  
+        consumableId = "name_manufacturer",
         categories = Categories.objects.get(name="my_category"),
-        score = '1',
-        dateInstall = '2022-09-01',
+        score = "1",
+        dateInstall = "2022-09-01",
+        user = "admin"
     )  
     assert History.objects.count() == 1
-    assert history.consumable.name == "my_consumable"
-    assert history.consumable.manufacturer.name == "name_manufacturer"
-    assert history.consumable.score == 10
+    assert history.consumable == "my_consumable"
+    assert history.consumableId == "name_manufacturer"
     assert history.categories.name == "my_category"
     assert history.score == "1"
     assert history.dateInstall == "2022-09-01"
+    assert history.user == "admin"
 
 
 
