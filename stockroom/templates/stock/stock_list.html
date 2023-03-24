@@ -49,6 +49,7 @@
         <tr>
           <th scope="col">Расходник</th>
           <th scope="col">Группа</th>
+          <th scope="col">Принтер</th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Количество</th>
@@ -63,27 +64,34 @@
       <tr>
         <td><a class="noDecoration" href="{{ each.consumables.get_absolute_url }}">{{ each.consumables.name }}</a></td>
         <td>{{ each.consumables.categories}}</td>
+        <td>{{ each.consumables.printer }}</td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
         <td>{{ each.consumables.score }}</td>
-        <td>{{each.dateAddToStock}}</td>
+        <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
-          <td>{{each.dateInstall}}</td>
+          <td>{{ each.dateInstall }}</td>
         {% else %}
           <td></td>
         {% endif %}
         {% if each.consumables.note %}  
-          <td>{{ each.consumables.note}}</td>
+          <td>{{ each.consumables.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_consumable' each.consumables.id %}">Удалить</a></td>
+        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_consumable' each.consumables.id %}"> Удалить </a></td>
       </tr>
       {% endfor %}
   </table>
 
 
     {% endif %}
+  </div>
+  <div class="d-flex justify-content-center input-group mt-3 ">
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      href="{% url 'stockroom:history_list' %}">
+        История
+    </a>
   </div>
 <!--block pagination-->  
   {%include 'pagination/pagination.html' %}

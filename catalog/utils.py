@@ -19,7 +19,6 @@ menu = [
     {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
-    {'title':  "История", 'url_name': 'stockroom:history_list'},
     ]
 workstationMenu = [
     {'title':  "Информация о системе", 'anchor': '#systemInfo'},

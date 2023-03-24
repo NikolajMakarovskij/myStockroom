@@ -106,22 +106,25 @@ class HistoryCategoriesView(DataMixin, generic.ListView):
 
 @require_POST
 def stock_add_consumable(request, consumable_id):
+    username = request.user.username
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.add_consumable(consumable=consumable,
-                 quantity=cd['quantity'],
-                 number_rack=cd['number_rack'],
-                 number_shelf=cd['number_shelf'],
-                 )
+                quantity=cd['quantity'],
+                number_rack=cd['number_rack'],
+                number_shelf=cd['number_shelf'],
+                username = username,
+                )
     return redirect('stockroom:stock_list')
 
 def stock_remove_consumable(request, consumable_id):
+    username = request.user.username
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock.remove_consumable(consumable)
+    stock.remove_consumable(consumable, username = username,)
     return redirect('stockroom:stock_list')
 
 @require_POST

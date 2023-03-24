@@ -153,7 +153,7 @@ class Printer (ModelMixin, models.Model):
         Consumables, 
         blank=True, null=True,
         on_delete=models.CASCADE,
-        related_name='cartridge',
+        related_name='printer',
         help_text="Укажите картридж",
         verbose_name="Картридж"
         )

@@ -51,17 +51,19 @@
           <th scope="col">Группа</th>
           <th scope="col">Количество</th>
           <th scope="col">Дата</th>
+          <th scope="col">Статус</th>
           <th scope="col">Пользователь</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
       {% for each in history_list %}
       <tr>
-        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumablesId}}">{{ each.consumable }}</a></td>
+        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumableId %}">{{ each.consumable }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.score }}</td>
         <td>{{ each.dateInstall }}</td>
-        <td>{{each.user}}</td>
+        <td>{{ each.status }}</td>
+        <td>{{ each.user }}</td>
       </tr>
       {% endfor %}
   </table>

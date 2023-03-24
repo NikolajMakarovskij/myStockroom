@@ -2,8 +2,10 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
+from printer.models import Printer
 from catalog.utils import ModelMixin
 from django.contrib.auth.models import User
+
 
 class Stockroom (ModelMixin, models.Model):
     """
@@ -23,6 +25,15 @@ class Stockroom (ModelMixin, models.Model):
         blank=True, null=True,
         help_text="Укажите группу",
         verbose_name="группа"
+        )
+    printer = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        verbose_name="Принтер"
+        )
+    printerId = models.CharField(
+        max_length=50,
+        blank=True, null=True,
         )
     dateAddToStock = models.DateField(
         null=True, blank=True,
@@ -125,6 +136,16 @@ class History(models.Model):
             help_text="Укажите пользователя",
             verbose_name="Пользователь"
         )
+        STATUS_CHOISES=[
+            ('Приход', 'Приход'),
+            ('Расход', 'Расход'),
+            ('Удаление', 'Удаление'),
+        ]
+        status = models.CharField(
+            max_length=10,
+            choices=STATUS_CHOISES,
+            default='Расход',
+    )
 
         class Meta:
             verbose_name = 'История'
