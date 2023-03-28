@@ -1,7 +1,7 @@
 import pytest, warnings
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
-from ..models import Categories, Workstation, Monitor, Mouse, KeyBoard
+from ..models import Workstation_cat, Workstation, Monitor, Mouse, KeyBoard
 
 #list and create
 @pytest.mark.django_db
@@ -70,8 +70,8 @@ def test_ups_detail_url(client):
 @pytest.mark.django_db
 def test_consumable_category_url(client):
    warnings.filterwarnings(action="ignore")
-   Categories.objects.create(name="some_category",slug="some_category")
-   url = reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})
+   Workstation_cat.objects.create(name="some_category",slug="some_category")
+   url = reverse('consumables:category', kwargs={"category_slug": Workstation_cat.objects.get(slug="some_category")})
    response = client.get(url)
    assert response.status_code == 200
    assertTemplateUsed(response, 'consumables/consumables_list.html')

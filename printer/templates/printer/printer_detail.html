@@ -193,9 +193,8 @@
   </div>
 </div>
 
-<div class="d-flex justify-content-center row row-cols-2 row-cols-md-2">
-  <div class="col mt-3">
-    <form action="{% url 'stockroom:device_add_consumable' printer.cartridge.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
+<div class="d-flex justify-content-center input-group mt-3">
+    <form action="{% url 'stockroom:device_add_consumable' printer.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
       {% csrf_token %}
       <div class="input-group mb-3">
         <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
@@ -203,42 +202,9 @@
         <input type="submit" value="Установить картридж" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
       </div>
     </form>
-  </div>
-  <div class="col mt-3">
-    <form action="{% url 'stockroom:device_add_consumable' printer.fotoval.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
-      {% csrf_token %}
-      <div class="input-group mb-3">
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-        <div class="">{{ form.quantity }}</div>
-        <input type="submit" value="Установить фотовал" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-      </div>
-    </form>
-  </div>
-  <div class="col mt-3">
-    <form action="{% url 'stockroom:device_add_consumable' printer.toner.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
-      {% csrf_token %}
-      <div class="input-group mb-3">
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-        <div class="">{{ form.quantity }}</div>
-        <input type="submit" value="Установить тонер" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-      </div>
-    </form>
-  </div>
-  <div class="col mt-3">
-    <form action="{% url 'stockroom:device_add_consumable' printer.fotodrumm.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
-      {% csrf_token %}
-      <div class="input-group mb-3">
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-        <div class="">{{ form.quantity }}</div>
-        <input type="submit" value="Установить фотобарабан" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-      </div>
-    </form>
-  </div>
-
-
-
-
 </div>
+
+
 <div class="d-flex justify-content-center input-group mt-3 ">
   <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
     href="{% url add %}">

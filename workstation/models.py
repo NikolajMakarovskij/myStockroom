@@ -10,7 +10,7 @@ from ups.models import Ups
 from catalog.utils import ModelMixin
 
 
-class Categories(ModelMixin, models.Model):
+class Workstation_cat(ModelMixin, models.Model):
     """
     Модель группы для принтеров
     """
@@ -64,7 +64,7 @@ class Workstation(ModelMixin, models.Model):
         verbose_name="Производитель"
         )
     categories = models.ForeignKey(
-        'Categories',
+        'Workstation_cat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",

@@ -1,7 +1,7 @@
 import pytest, warnings
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
-from ..models import Categories, Printer
+from ..models import Printer_cat, Printer
 
 #list and create
 @pytest.mark.django_db
@@ -47,8 +47,8 @@ def test_details_url(client):
 @pytest.mark.django_db
 def test_printer_category_url(client):
    warnings.filterwarnings(action="ignore")
-   Categories.objects.create(name="some_category",slug="some_category")
-   url = reverse('printer:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})
+   Printer_cat.objects.create(name="some_category",slug="some_category")
+   url = reverse('printer:category', kwargs={"category_slug": Printer_cat.objects.get(slug="some_category")})
    response = client.get(url)
    assert response.status_code == 200
    assertTemplateUsed(response, 'printer/printer_list.html')

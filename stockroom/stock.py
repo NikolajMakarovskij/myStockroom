@@ -1,7 +1,7 @@
 import datetime
 from django.conf import settings
 from consumables.models import Consumables 
-from .models import Stockroom, Categories, History
+from .models import Stockroom, Stock_cat, History
 
 
 class Stock(object):
@@ -20,10 +20,10 @@ class Stock(object):
     def add_category(consumable_id):
         """Получение категории из расходников"""
         consumable_category = Consumables.objects.get(id = consumable_id).categories.name
-        if Categories.objects.filter(name=consumable_category):
-            consumable_category = Categories.objects.get(name=consumable_category)
+        if Stock_cat.objects.filter(name=consumable_category):
+            consumable_category = Stock_cat.objects.get(name=consumable_category)
         else:
-            consumable_category = Categories.objects.create(
+            consumable_category = Stock_cat.objects.create(
                 name=Consumables.objects.get(id = consumable_id).categories.name,
                 slug=Consumables.objects.get(id = consumable_id).categories.slug
                 )
@@ -41,10 +41,19 @@ class Stock(object):
         )
         return history
 
-    def get_printer(consumable_id):
-        """Получение принтера"""
-        printer = Consumables.objects.get(id=consumable_id).printer.all()
-        return printer
+    def get_device(consumable_id):
+        """Получение устройства"""
+        con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
+        list_device = []
+        if not con_device:
+            devices = 'Нет'
+        else:
+            for device in con_device:
+                list_device.append(device.name)
+            for devices in list_device:
+                devices = ', '.join(list_device)
+        return devices
+
 
 
     def add_consumable(self, consumable, quantity=1, number_rack=1, number_shelf=1, username=None):
@@ -59,7 +68,7 @@ class Stock(object):
             Consumables.objects.filter(id = consumable_id).update(score = consumable_score)
             Stockroom.objects.filter(consumables = consumable_id).update(
                 dateAddToStock = datetime.date.today(),
-                #printer = Stock.get_printer(consumable_id)
+                device = Stock.get_device(consumable_id)
             )
         else:
             Stockroom.objects.create(
@@ -68,7 +77,7 @@ class Stock(object):
                                     dateAddToStock = datetime.date.today(),
                                     rack=int(number_rack),
                                     shelf=int(number_shelf),
-                                    #printer = Stock.get_printer(consumable_id)
+                                    device = Stock.get_device(consumable_id)
             )
             Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
         Stock.create_history(consumable_id, quantity, username, status_choise='Приход')

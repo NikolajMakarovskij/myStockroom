@@ -5,7 +5,7 @@ from django.views import generic
 from django.db.models import Q
 from .stock import Stock, History
 from .forms import StockAddForm, ConsumableInstallForm
-from .models import Stockroom, Categories
+from .models import Stockroom, Stock_cat
 from django.core.cache import cache
 from catalog.utils import DataMixin
 
@@ -17,7 +17,7 @@ class stockroomView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
-            stock_cat = Categories.objects.all()
+            stock_cat = Stock_cat.objects.all()
             cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
@@ -48,7 +48,7 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs ):
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
-            stock_cat = Categories.objects.all()
+            stock_cat = Stock_cat.objects.all()
             cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
@@ -66,7 +66,7 @@ class HistoryView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
-            stock_cat = Categories.objects.all()
+            stock_cat = Stock_cat.objects.all()
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
@@ -92,7 +92,7 @@ class HistoryCategoriesView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs ):
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
-            stock_cat = Categories.objects.all()
+            stock_cat = Stock_cat.objects.all()
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
@@ -142,92 +142,5 @@ def device_add_consumable(request, consumable_id):
     return redirect('stockroom:stock_list')
 
 
-@require_POST
-def printer_add_cartridge(request, cartridge_id):
-    username = request.user.username
-    stock = Stock(request)
-    cartridge = get_object_or_404(Consumables, id=cartridge_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=cartridge,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def printer_add_toner(request, toner_id):
-    username = request.user.username
-    stock = Stock(request)
-    toner = get_object_or_404(Consumables, id=toner_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=toner,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def printer_add_fotoval(request, fotoval_id):
-    username = request.user.username
-    stock = Stock(request)
-    fotoval = get_object_or_404(Consumables, id=fotoval_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=fotoval,
-                quantity=cd['quantity'],
-                username =username,
-                )
-    return redirect('stockroom:stock_list')
-
-@require_POST
-def printer_add_fotodrumm(request, fotodrumm_id):
-    username = request.user.username
-    stock = Stock(request)
-    fotodrumm = get_object_or_404(Consumables, id=fotodrumm_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=fotodrumm,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def ups_add_accumulator(request, accumulator_id):
-    username = request.user.username
-    stock = Stock(request)
-    accumulator = get_object_or_404(Consumables, id=accumulator_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=accumulator,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def add_storage(request, storage_id):
-    username = request.user.username
-    stock = Stock(request)
-    storage = get_object_or_404(Consumables, id=storage_id)
-    form = Consumables(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=storage,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
 
 

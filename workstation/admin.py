@@ -12,14 +12,14 @@ class WorkstationAdmin(ExportAdmin, admin.ModelAdmin):
     
 admin.site.register(Workstation ,WorkstationAdmin)
 
-class CategoriesAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Categories
+class Workstation_catAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Workstation_cat
     list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name", )}
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(Categories, CategoriesAdmin)
+admin.site.register(Workstation_cat, Workstation_catAdmin)
 
 class MonitorAdmin(ExportAdmin, admin.ModelAdmin):
     model = Monitor

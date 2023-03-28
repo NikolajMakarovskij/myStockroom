@@ -2,9 +2,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
-from printer.models import Printer
 from catalog.utils import ModelMixin
-from django.contrib.auth.models import User
 
 
 class Stockroom (ModelMixin, models.Model):
@@ -20,20 +18,16 @@ class Stockroom (ModelMixin, models.Model):
         verbose_name="Расходники"
         )
     categories = models.ForeignKey(
-        'Categories',
+        'Stock_cat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
         verbose_name="группа"
         )
-    printer = models.CharField(
+    device = models.CharField(
         max_length=50,
         blank=True, null=True,
-        verbose_name="Принтер"
-        )
-    printerId = models.CharField(
-        max_length=50,
-        blank=True, null=True,
+        verbose_name="Устройство"
         )
     dateAddToStock = models.DateField(
         null=True, blank=True,
@@ -64,7 +58,7 @@ class Stockroom (ModelMixin, models.Model):
         verbose_name_plural = 'Кассеты'
         ordering = ['consumables']
 
-class Categories(ModelMixin, models.Model):
+class Stock_cat(ModelMixin, models.Model):
     """
     Модель группы для расходников
     """
@@ -116,7 +110,7 @@ class History(models.Model):
             verbose_name="ID Расходникa"
         )
         categories = models.ForeignKey(
-            'Categories',
+            'Stock_cat',
             on_delete=models.SET_NULL,
             blank=True, null=True,
             help_text="Укажите группу",

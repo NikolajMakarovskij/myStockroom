@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categories, History
+from .models import Stock_cat, History
 from catalog.utils import ExportAdmin
 
 class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
@@ -11,11 +11,11 @@ class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     
 admin.site.register(History, HistoryAdmin)
 
-class CategoriesAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Categories
+class Stock_catAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Stock_cat
     list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name", )}
     actions = [ExportAdmin.export_to_csv]
     
-admin.site.register(Categories, CategoriesAdmin)
+admin.site.register(Stock_cat, Stock_catAdmin)

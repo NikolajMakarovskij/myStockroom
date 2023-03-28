@@ -12,7 +12,7 @@ class workstationForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer", attrs={'class': 'input-group form-select form-select-lg'}),
-            'categories': WidgetCanAdd(Categories, attrs={'class': 'form-select form-select-lg'}),
+            'categories': WidgetCanAdd(Workstation_cat, attrs={'class': 'form-select form-select-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

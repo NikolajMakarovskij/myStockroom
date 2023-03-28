@@ -1,19 +1,17 @@
 from django.db.utils import IntegrityError
 import pytest  
-from ..models import Stockroom, Consumables, Categories, History
-from printer.models import Printer
-from workplace.models import Room, Workplace
+from ..models import Stockroom, Consumables, Stock_cat, History
 from counterparty.models import Manufacturer
 
 
 @pytest.mark.django_db  
 def test_category_create():
     """Тестирует создание записи в базе данных для модели Categories приложения Stockroom"""
-    category = Categories.objects.create(
+    category = Stock_cat.objects.create(
         name = "my_category_name",
         slug = "my_category_slug"
     )
-    assert Categories.objects.count() == 1
+    assert Stock_cat.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
 
@@ -21,12 +19,12 @@ def test_category_create():
 def test_category_unique_slug():
     """Тестирует наличие дублирования в поле slug"""
     with pytest.raises(IntegrityError):
-        Categories.objects.create(
+        Stock_cat.objects.create(
             name = "my_category_1",
             slug = "my_category"
         )
 
-        assert  (Categories.objects.create(
+        assert  (Stock_cat.objects.create(
             name = "my_category_2",
             slug = "my_category"
         )
@@ -36,7 +34,7 @@ def test_category_unique_slug():
 @pytest.mark.django_db  
 def test_stockroom_create():
     """Тестирует создание записи в базе данных для модели Consumables"""
-    Categories.objects.create(name = "my_category",slug = "my_category")
+    Stock_cat.objects.create(name = "my_category",slug = "my_category")
     Manufacturer.objects.create(name = "name_manufacturer",) 
     Consumables.objects.create(
         name="my_consumable",
@@ -45,11 +43,12 @@ def test_stockroom_create():
     )
     stockroom = Stockroom.objects.create(  
         consumables= Consumables.objects.get(name="my_consumable", score=10),  
-        categories = Categories.objects.get(name="my_category"),
+        categories = Stock_cat.objects.get(name="my_category"),
         dateAddToStock = "2022-12-25",
         dateInstall = "2023-03-03",
         rack = 6,
-        shelf = 15
+        shelf = 15,
+        device = 'epson'
     )  
     assert Stockroom.objects.count() == 1
     assert stockroom.consumables.name == "my_consumable"
@@ -60,15 +59,16 @@ def test_stockroom_create():
     assert stockroom.dateInstall == "2023-03-03"
     assert stockroom.rack == 6
     assert stockroom.shelf == 15
+    assert stockroom.device == 'epson'
 
 @pytest.mark.django_db  
 def test_hysrory_create():
     """Тестирует создание записи в базе данных для модели Consumables"""
-    Categories.objects.create(name = "my_category",slug = "my_category")
+    Stock_cat.objects.create(name = "my_category",slug = "my_category")
     history = History.objects.create(  
         consumable = "my_consumable",  
         consumableId = "name_manufacturer",
-        categories = Categories.objects.get(name="my_category"),
+        categories = Stock_cat.objects.get(name="my_category"),
         score = "1",
         dateInstall = "2022-09-01",
         user = "admin"

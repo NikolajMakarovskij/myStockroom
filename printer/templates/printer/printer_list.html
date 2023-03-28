@@ -42,9 +42,7 @@
       <thead>
         <tr>
           <th scope="col">Принтер</th>
-          <th scope="col">Картридж</th>
-          <th scope="col">Тонер</th>
-          <th scope="col">Фотовал</th>
+          <th scope="col">Расходник</th>
           <th scope="col">Рабочее место</th>
           <th scope="col">Кабинет</th>
           <th scope="col">Этаж</th>
@@ -55,9 +53,7 @@
       {% for printer in printer_list %}
       <tr>
         <td><a class="noDecoration" href="{{ printer.get_absolute_url }}">{{ printer.name }}</a></td>
-        <td><a class="noDecoration" href="{{ printer.cartridge.get_absolute_url }}">{{ printer.cartridge.name }}</a></td>
-        <td><a class="noDecoration" href="{{ printer.toner.get_absolute_url }}">{{ printer.toner.name }}</a></td>
-        <td><a class="noDecoration" href="{{ printer.fotoval.get_absolute_url }}">{{ printer.fotoval.name }}</a></td>
+        <td><a class="noDecoration" href="{{ printer.cartridge.get_absolute_url }}">{{ printer.consumable.name }}</a></td>
         <td><a class="noDecoration" href="{{ printer.workplace.get_absolute_url }}">{{ printer.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ printer.workplace.room.get_absolute_url }}">{{ printer.workplace.room.name }}</a></td>
         <td>{{ printer.workplace.room.floor }}</td>
