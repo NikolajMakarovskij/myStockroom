@@ -1,4 +1,5 @@
 import datetime, pytest
+from urllib import request
 from ..stock import Stock
 from ..models import *
 
@@ -78,3 +79,39 @@ def test_stock_get_devices():
 
     assert Printer.objects.count() == 3
     assert test_printer == 'printer 1, printer 2, printer 3'
+
+@pytest.mark.django_db 
+def test_stock_add_consumable():
+    """Проверяет работу метода add_consumable класса Stock"""
+    from printer.models import Printer
+    consumable = create_consumable()
+    quantity = 5
+    number_rack = 3
+    number_shelf = 13
+    username = 'admin'
+    Printer.objects.bulk_create([
+        Printer(name='printer 1', consumable = consumable),
+        Printer(name='printer 2', consumable = consumable),
+        Printer(name='printer 3', consumable = consumable),
+    ])
+    Stock.add_consumable(self = Stock(request), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
+    test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')
+    test_get_history = History.objects.get(consumable='my_consumable')
+
+    assert Stockroom.objects.count() == 1
+    assert History.objects.count() == 1
+    assert test_get_stock.categories.name == 'my_category'
+    assert test_get_stock.categories.slug == 'my_category'
+    assert test_get_stock.consumables.name == 'my_consumable'
+    assert test_get_stock.device == 'printer 1, printer 2, printer 3'
+    assert test_get_stock.consumables.score == 5
+    assert test_get_stock.rack == 3
+    assert test_get_stock.shelf == 13
+    assert test_get_stock.dateAddToStock == datetime.date.today()
+    assert test_get_history.consumable == 'my_consumable'
+    assert test_get_history.categories.name == 'my_category'
+    assert test_get_history.categories.slug == 'my_category'
+    assert test_get_history.dateInstall == datetime.date.today()
+    assert test_get_history.score == 5
+    assert test_get_history.user == 'admin'
+    assert test_get_history.status == 'Приход'
