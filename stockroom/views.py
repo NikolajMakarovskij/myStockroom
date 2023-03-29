@@ -15,12 +15,13 @@ class stockroomView(DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
     def get_context_data(self, *, object_list=None, **kwargs):
+        history = History.objects.all()[:5]
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
             stock_cat = Stock_cat.objects.all()
             cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
+        c_def = self.get_user_context(title="Склад расходников", searchlink='stockroom:stock_search', menu_categories=stock_cat, history_list=history)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -46,12 +47,13 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     model = Stockroom
     
     def get_context_data(self, *, object_list=None, **kwargs ):
+        history = History.objects.all()[:5]
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
             stock_cat = Stock_cat.objects.all()
             cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat, history_list=history)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

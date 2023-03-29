@@ -49,7 +49,7 @@
         <tr>
           <th scope="col">Расходник</th>
           <th scope="col">Группа</th>
-          <th scope="col">Принтер</th>
+          <th scope="col">Устройство</th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Количество</th>
@@ -85,16 +85,11 @@
       </tr>
       {% endfor %}
   </table>
-
-
-    {% endif %}
+{% endif %}
   </div>
-  <div class="d-flex justify-content-center input-group mt-3 ">
-    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-      href="{% url 'stockroom:history_list' %}">
-        История
-    </a>
-  </div>
-<!--block pagination-->  
+  <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
+  <!--block history-->
+  {%include 'stock/history_short_list.html' %}
+
 {% endblock %}

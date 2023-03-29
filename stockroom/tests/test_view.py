@@ -17,7 +17,7 @@ class stockroomViewTest(TestCase):
     def test_context_data_in_list(self):
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         context_data = [
-            {'data_key': 'title', 'data_value': 'Склад'},
+            {'data_key': 'title', 'data_value': 'Склад расходников'},
             {'data_key': 'searchlink', 'data_value': 'stockroom:stock_search'},
         ]
         for link in links:

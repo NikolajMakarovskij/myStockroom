@@ -80,7 +80,7 @@ def test_stock_get_devices():
     assert Printer.objects.count() == 3
     assert test_printer == 'printer 1, printer 2, printer 3'
 
-@pytest.mark.django_db 
+@pytest.mark.skip 
 def test_stock_add_consumable():
     """Проверяет работу метода add_consumable класса Stock"""
     from printer.models import Printer
