@@ -82,7 +82,7 @@ class Stock_cat(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('stockroom:category',kwargs={'category_slug': self.slug})
+        return reverse('stockroom:category', kwargs={'category_slug': self.slug})
 
 
     class Meta:

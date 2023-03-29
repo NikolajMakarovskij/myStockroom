@@ -19,26 +19,39 @@ class Stock(object):
 
     def add_category(consumable_id):
         """Получение категории из расходников"""
-        consumable_category = Consumables.objects.get(id = consumable_id).categories.name
-        if Stock_cat.objects.filter(name=consumable_category):
-            consumable_category = Stock_cat.objects.get(name=consumable_category)
+        if not Consumables.objects.get(id = consumable_id).categories:
+            consumable_category = 'None'
         else:
-            consumable_category = Stock_cat.objects.create(
-                name=Consumables.objects.get(id = consumable_id).categories.name,
-                slug=Consumables.objects.get(id = consumable_id).categories.slug
-                )
+            consumable_category = Consumables.objects.get(id = consumable_id).categories.name
+            if Stock_cat.objects.filter(name=consumable_category):
+                consumable_category = Stock_cat.objects.get(name=consumable_category)
+            else:
+                consumable_category = Stock_cat.objects.create(
+                    name=Consumables.objects.get(id = consumable_id).categories.name,
+                    slug=Consumables.objects.get(id = consumable_id).categories.slug
+                    )
         return consumable_category
 
     def create_history(consumable_id, quantity, username, status_choise):
-        history = History.objects.create(
-            consumable=Consumables.objects.get(id = consumable_id).name, 
-            consumableId=Consumables.objects.get(id = consumable_id).id, 
-            score = quantity,
-            dateInstall = datetime.date.today(),
-            categories = Stock.add_category(consumable_id),
-            user = username,
-            status = status_choise
-        )
+        if Stock.add_category(consumable_id) == 'None':
+            history = History.objects.create(
+                consumable=Consumables.objects.get(id = consumable_id).name, 
+                consumableId=Consumables.objects.get(id = consumable_id).id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        else:
+            history = History.objects.create(
+                consumable=Consumables.objects.get(id = consumable_id).name, 
+                consumableId=Consumables.objects.get(id = consumable_id).id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                categories = Stock.add_category(consumable_id),
+                user = username,
+                status = status_choise
+            )
         return history
 
     def get_device(consumable_id):
@@ -71,15 +84,25 @@ class Stock(object):
                 device = Stock.get_device(consumable_id)
             )
         else:
-            Stockroom.objects.create(
-                                    consumables = consumable_add,
-                                    categories = Stock.add_category(consumable_id),
-                                    dateAddToStock = datetime.date.today(),
-                                    rack=int(number_rack),
-                                    shelf=int(number_shelf),
-                                    device = Stock.get_device(consumable_id)
-            )
-            Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
+            if Stock.add_category(consumable_id) == 'None':
+                Stockroom.objects.create(
+                                        consumables = consumable_add,
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                                        device = Stock.get_device(consumable_id)
+                )
+                Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
+            else:
+                Stockroom.objects.create(
+                                        consumables = consumable_add,
+                                        categories = Stock.add_category(consumable_id),
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                                        device = Stock.get_device(consumable_id)
+                )
+                Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
         Stock.create_history(consumable_id, quantity, username, status_choise='Приход')
         self.save()
 

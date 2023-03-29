@@ -1,7 +1,8 @@
 import pytest
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
-from ..models import Stock_cat
+from consumables.models import Consumables
+from ..models import Stock_cat, Stockroom
 
 
 #list and create

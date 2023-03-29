@@ -1,6 +1,9 @@
+import pytest
 from django.test import TestCase
 from ..models import *
+from ..views import *
 from django.urls import reverse
+
 
 
 
@@ -52,7 +55,7 @@ class historystockViewTest(TestCase):
     def setUpTestData(cls):
         number_in_history = 149
         for history_num in range(number_in_history):
-            history = History.objects.create(consumable='Christian %s' % history_num,)    
+            History.objects.create(consumable='Christian %s' % history_num,)    
         assert History.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -85,3 +88,4 @@ class historystockViewTest(TestCase):
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] == True)
             self.assertTrue( len(resp.context['history_list']) == 9)
+
