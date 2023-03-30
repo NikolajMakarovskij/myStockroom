@@ -100,6 +100,44 @@ def test_stock_get_device():
     assert test_printer == 'printer'
 
 @pytest.mark.django_db
+def test_stock_get_device_ups():
+    """Проверяет работу метода get_device класса Stock"""
+    from ups.models import Ups
+    consumable = create_consumable()
+    Ups.objects.create(name='ups', accumulator = consumable)
+    consumable_id = consumable.id
+    test_printer = Stock.get_device(consumable_id)
+
+    assert Ups.objects.count() == 1
+    assert test_printer == 'ups'
+
+@pytest.mark.django_db
+def test_stock_get_device_cassette():
+    """Проверяет работу метода get_device класса Stock"""
+    from ups.models import Cassette
+    consumable = create_consumable()
+    Cassette.objects.create(name='cassette', accumulator = consumable)
+    consumable_id = consumable.id
+    test_printer = Stock.get_device(consumable_id)
+
+    assert Cassette.objects.count() == 1
+    assert test_printer == 'cassette'
+
+@pytest.mark.django_db
+def test_stock_get_device_cassette_and_ups():
+    """Проверяет работу метода get_device класса Stock"""
+    from ups.models import Cassette, Ups
+    consumable = create_consumable()
+    Cassette.objects.create(name='cassette', accumulator = consumable)
+    Ups.objects.create(name='ups', accumulator = consumable)
+    consumable_id = consumable.id
+    test_printer = Stock.get_device(consumable_id)
+
+    assert Cassette.objects.count() == 1
+    assert Ups.objects.count() == 1
+    assert test_printer == 'ups, cassette'
+
+@pytest.mark.django_db
 def test_stock_get_devices():
     """Проверяет работу метода get_device при нескольких связях класса Stock"""
     from printer.models import Printer
