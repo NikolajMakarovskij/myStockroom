@@ -1,4 +1,5 @@
 from django.db.utils import IntegrityError
+from django.urls import reverse
 import pytest  
 from myStockroom.wsgi import *
 from ..models import Employee, Departament, Post
@@ -9,23 +10,29 @@ from workplace.models import Workplace
 @pytest.mark.django_db  
 def test_departament_create():
     """Тестирует создание записи в базе данных для модели Departament приложения Employee"""
-    departament = Departament.objects.create(
+    Departament.objects.create(
         name = "name_departament",
     ) 
+    departament = Departament.objects.get(name = "name_departament")
     assert Departament.objects.count() == 1
     assert departament.name == "name_departament"
+    assert departament.__str__() == "name_departament"
+    assert departament.get_absolute_url() == reverse('employee:departament-detail', kwargs={'pk': departament.pk})
 
 @pytest.mark.django_db  
 def test_post_create():
     """Тестирует создание записи в базе данных для модели Post приложения Employee"""
     Departament.objects.create(name="my_departament") 
-    post = Post.objects.create(
+    Post.objects.create(
         name = "my_post_name",
         departament = Departament.objects.get(name="my_departament"),
     )
+    post = Post.objects.get(name = "my_post_name")
     assert Post.objects.count() == 1
     assert post.name == "my_post_name"
     assert post.departament.name == "my_departament"
+    assert post.__str__() == "my_post_name"
+    assert post.get_absolute_url() == reverse('employee:post-detail', kwargs={'pk': post.pk})
     
 @pytest.mark.django_db  
 def test_employee_create():
@@ -38,7 +45,7 @@ def test_employee_create():
     Workplace.objects.create(
         name = "my_workplace",
     ) 
-    employee = Employee.objects.create(  
+    Employee.objects.create(  
         name = "employee_name",  
         sername = "employee_sername",
         family = "employee_family",  
@@ -46,6 +53,7 @@ def test_employee_create():
         post = Post.objects.get(name = "employee_post"),
         employeeEmail = "admin@admin.com",
     )  
+    employee = Employee.objects.get(name = "employee_name")  
     assert Employee.objects.count() == 1
     assert employee.name == "employee_name"
     assert employee.sername == "employee_sername"
@@ -54,6 +62,8 @@ def test_employee_create():
     assert employee.post.name == "employee_post"
     assert employee.post.departament.name == "my_departament"
     assert employee.employeeEmail == "admin@admin.com"
+    assert employee.__str__() == "employee_name"
+    assert employee.get_absolute_url() == reverse('employee:employee-detail', kwargs={'pk': employee.pk})
 
 @pytest.mark.django_db  
 def test_email_unique():

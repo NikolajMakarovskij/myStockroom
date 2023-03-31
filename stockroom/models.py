@@ -47,11 +47,6 @@ class Stockroom (ModelMixin, models.Model):
         help_text="Введите номер полки",
         verbose_name="Полка"
         )
-    def __str__(self):
-        return self.consumables
-
-    def get_absolute_url(self):
-        return reverse('stockroom:stock-detail', args=[str(self.consumables)])
 
     class Meta:
         verbose_name = 'Кассета'

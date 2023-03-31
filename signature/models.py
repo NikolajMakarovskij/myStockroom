@@ -79,28 +79,7 @@ class Signature (ModelMixin, models.Model):
 
     def get_absolute_url(self):
         return reverse('signature:signature-detail', args=[str(self.id)])
- 
-    #методы технические методы для проверки верстки уведомлений. Будут удалены после реализации периодических задач
 
-    def dangerDay(self):
-
-        return self.dangerDay and datetime.date.today() 
-
-    def warningOneWeek(self):
-
-        return self.warningOneWeek and (datetime.date.today() + datetime.timedelta(weeks=1))
-
-    def warningTwoWeeks(self):
-        return self.warningTwoWeeks and (datetime.date.today() + datetime.timedelta(weeks=2))
-
-    def warningThreeWeeks(self):
-        return self.warningThreeWeeks and (datetime.date.today() + datetime.timedelta(weeks=3))
-
-    def warningOneMounth(self):
-        return self.warningOneMounth and (datetime.date.today() + datetime.timedelta(weeks=4))
-    
-    def warningTwoMounth(self):
-        return self.warningTwoMounth and (datetime.date.today() + datetime.timedelta(weeks=8))
         
     #конец методов
 

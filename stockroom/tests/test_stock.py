@@ -1,4 +1,4 @@
-import datetime, pytest
+import pytest, datetime
 from django.conf import settings
 from ..stock import Stock
 from ..models import *
