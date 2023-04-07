@@ -1,11 +1,10 @@
-import pytest, warnings
+import pytest
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
 
 #index
 @pytest.mark.django_db
 def test_url_exists_at_desired_location(client):
-   warnings.filterwarnings(action="ignore")
    links = ['','/references/','/references/search']
    for link in links:
       url = (link)
@@ -14,7 +13,6 @@ def test_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_urls(client):
-   warnings.filterwarnings(action="ignore")
    links = [
       {'link': 'catalog:index','template': 'index.html'},
       {'link': 'catalog:references_list','template': 'catalog/references.html'},

@@ -44,7 +44,7 @@ def test_stock_no_category():
     Consumables.objects.create(name="my_consumable")
     consumable = Consumables.objects.get(name="my_consumable")
     consumable_id = consumable.id
-    test_category = Stock.add_category(consumable_id)
+    Stock.add_category(consumable_id)
 
     assert Stock_cat.objects.count() == 0
 
@@ -54,7 +54,8 @@ def test_stock_add_category():
     """Проверяет работу метода add_category класса Stock"""
     consumable = create_consumable()
     consumable_id = consumable.id
-    test_category = Stock.add_category(consumable_id)
+    Stock.add_category(consumable_id)
+    test_category = Stock_cat.objects.get(name = 'my_category')
 
     assert Stock_cat.objects.count() == 1
     assert test_category.name == 'my_category'
@@ -68,7 +69,8 @@ def test_stock_create_history():
     quantity = 1
     username = 'admin'
     status_choise = 'Приход'
-    test_history = Stock.create_history(consumable_id, quantity, username, status_choise)
+    Stock.create_history(consumable_id, quantity, username, status_choise)
+    test_history = History.objects.get(consumable = 'my_consumable')
 
     assert History.objects.count() == 1
     assert test_history.categories.name == 'my_category'
