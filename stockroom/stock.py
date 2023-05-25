@@ -4,6 +4,7 @@ from consumables.models import Consumables
 from .models import Stockroom, Stock_cat, History
 
 
+
 class Stock(object):
 
     def __init__(self, request):
@@ -118,6 +119,8 @@ class Stock(object):
                 )
                 Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
         Stock.create_history(consumable_id, quantity, username, status_choise='Приход')
+        
+        
         self.save()
 
     def save(self):

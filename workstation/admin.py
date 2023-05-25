@@ -31,35 +31,6 @@ class MonitorAdmin(ExportAdmin, admin.ModelAdmin):
     
 admin.site.register(Monitor, MonitorAdmin)
 
-class MotherboardAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Motherboard
-    list_display = ['name','manufacturer','cpuSoket','ramSlot','pcie_x1','pcie_x16', 'vga','hdmi','dvi','dispayPort' ]
-    list_filter = ['manufacturer']
-    search_fields = ['name','manufacturer','serial','serialImg','inventImg','invent','cpuSoket','ramSlot',
-                    'usb_2','usb_3','usb_3_1','usb_3_2','usb_4_0','comPort','pcie_x1','pcie_x16', 
-                    'pci','sata','m2','vga','hdmi','dvi','dispayPort','powerSupply','powerSupplyCPU' ]
-    actions = [ExportAdmin.export_to_csv]
-    
-admin.site.register(Motherboard, MotherboardAdmin)
-
-class CpuAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Cpu
-    list_display = ['name','manufacturer','socket','frequency','core','thread','score' ]
-    list_filter = ['manufacturer']
-    search_fields = ['name','manufacturer','serial','serialImg','inventImg','invent','socket','frequency',
-                    'l1','l2','l3','core','thread','memory','memoryCapacity','channelsCapacity','tdp','supply','score']
-    actions = [ExportAdmin.export_to_csv]
-    
-admin.site.register(Cpu, CpuAdmin)
-
-class GpuAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Gpu
-    list_display = ['name','manufacturer','type','gram','score']
-    list_filter = ['manufacturer']
-    search_fields = ['name','manufacturer','type','serial','serialImg','inventImg','invent','gram','gramType','pcie','supply','score']
-    actions = [ExportAdmin.export_to_csv]
-    
-admin.site.register(Gpu, GpuAdmin)
 
 class RamAdmin(ExportAdmin, admin.ModelAdmin):
     model = Ram
@@ -87,15 +58,6 @@ class HddAdmin(ExportAdmin, admin.ModelAdmin):
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(Hdd, HddAdmin )
-
-class DcpowerAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Dcpower
-    list_display = ['name','manufacturer','serial','power','score']
-    list_filter = ['manufacturer']
-    search_fields = ['name','manufacturer','serial','serialImg','inventImg','invent','power','motherboard','cpu','gpu','sata','molex','score']
-    actions = [ExportAdmin.export_to_csv]
-    
-admin.site.register(Dcpower, DcpowerAdmin )
 
 class KeyBoardAdmin(ExportAdmin, admin.ModelAdmin):
     model = KeyBoard

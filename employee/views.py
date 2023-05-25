@@ -4,7 +4,7 @@ from .models import Employee, Departament, Post
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from catalog.utils import DataMixin
+from catalog.utils import DataMixin, FormMessageMixin
 
 #Сотрудники 
 class EmployeeListView(DataMixin, generic.ListView):
@@ -44,11 +44,13 @@ class EmployeeDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class EmployeeCreate(DataMixin, CreateView):
+class EmployeeCreate(DataMixin, FormMessageMixin, CreateView):
     model = Employee
     form_class = employeeForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:employee_list')
+    success_message = 'Сотрудник %(name)s успешно создан'
+    error_message = 'Сотрудника %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,11 +58,13 @@ class EmployeeCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class EmployeeUpdate(DataMixin, UpdateView):
+class EmployeeUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Employee
     template_name = 'Forms/add.html'
     form_class = employeeForm
     success_url = reverse_lazy('employee:employee_list')
+    success_message = 'Сотрудник %(name)s успешно обновлен'
+    error_message = 'Сотрудника %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,10 +72,12 @@ class EmployeeUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class EmployeeDelete(DataMixin, DeleteView):
+class EmployeeDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Employee
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:employee_list')
+    success_message = 'Сотрудник успешно удален'
+    error_message = 'Сотрудника не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,11 +116,13 @@ class postDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class postCreate(DataMixin, CreateView):
+class postCreate(DataMixin, FormMessageMixin, CreateView):
     model = Post
     form_class = postForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:post_list')
+    success_message = 'Должность %(name)s успешно создана'
+    error_message = 'Должность %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,11 +130,13 @@ class postCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class postUpdate(DataMixin, UpdateView):
+class postUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Post
     template_name = 'Forms/add.html'
     form_class = postForm
     success_url = reverse_lazy('employee:post_list')
+    success_message = 'Должность %(name)s успешно обновлена'
+    error_message = 'Должность %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -134,10 +144,12 @@ class postUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class postDelete(DataMixin, DeleteView):
+class postDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Post
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:post_list')
+    success_message = 'Должность успешно удалена'
+    error_message = 'Должность не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,11 +187,13 @@ class departamentDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class departamentCreate(DataMixin, CreateView):
+class departamentCreate(DataMixin, FormMessageMixin, CreateView):
     model = Departament
     form_class = departamentForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:departament_list')
+    success_message = 'Отдел %(name)s успешно создана'
+    error_message = 'Отдел %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -187,11 +201,13 @@ class departamentCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class departamentUpdate(DataMixin, UpdateView):
+class departamentUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Departament
     template_name = 'Forms/add.html'
     form_class = departamentForm
     success_url = reverse_lazy('employee:departament_list')
+    success_message = 'Отдел %(name)s успешно обновлен'
+    error_message = 'Отдел %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -199,10 +215,12 @@ class departamentUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class departamentDelete(DataMixin, DeleteView):
+class departamentDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Departament
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:departament_list')
+    success_message = 'Отдел успешно удален'
+    error_message = 'Отдел не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

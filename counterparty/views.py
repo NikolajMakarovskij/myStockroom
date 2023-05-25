@@ -49,11 +49,13 @@ class manufacturerDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerCreate(DataMixin, CreateView):
+class manufacturerCreate(DataMixin, FormMessageMixin, CreateView):
     model = Manufacturer
     form_class = manufacturerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
+    success_message = 'Производитель %(name)s успешно создан'
+    error_message = 'Производителя %(name)s не удалось создать'
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,11 +63,13 @@ class manufacturerCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerUpdate(DataMixin, UpdateView):
+class manufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Manufacturer
     template_name = 'Forms/add.html'
     form_class = manufacturerForm
     success_url = reverse_lazy('counterparty:manufacturer_list')
+    success_message = 'Производитель %(name)s успешно обновлен'
+    error_message = 'Производителя %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,10 +77,12 @@ class manufacturerUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerDelete(DataMixin, DeleteView):
+class manufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
+    success_message = 'Производитель успешно удален'
+    error_message = 'Производителя не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

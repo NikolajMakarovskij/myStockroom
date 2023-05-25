@@ -9,8 +9,8 @@
   {% load static %}
 
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-  <script defer src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+  <script defer src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
 </head>
 
 <body class="bodybackground">
@@ -79,7 +79,10 @@
     {% endblock sidemenu %}
 
     <div class="col ">
-      {% block content %}{% endblock %}
+      {% block content %}
+      
+      {% endblock %}
+      {%include 'toast.html' %}
       <a  class="btn  btn-ligt btn-out position-fixed bottom-0 end-0 p-3" href="#">
         <div>
           Наверх

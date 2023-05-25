@@ -8,6 +8,7 @@ from .forms import StockAddForm, ConsumableInstallForm
 from .models import Stockroom, Stock_cat
 from django.core.cache import cache
 from catalog.utils import DataMixin
+from django.contrib import messages
 
 
 #Склад расходников
@@ -120,6 +121,17 @@ def stock_add_consumable(request, consumable_id):
                 number_shelf=cd['number_shelf'],
                 username = username,
                 )
+        messages.add_message(request,
+                            level = messages.SUCCESS,
+                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлен на склад',
+                            extra_tags = 'Успешно добавлен'
+                            )
+    else:
+        messages.add_message(request,
+                            level = messages.ERROR,
+                            message = 'Не удалось добавить ' + consumable.name + ' на склад',
+                            extra_tags = 'Ошибка формы'
+                            )
     return redirect('stockroom:stock_list')
 
 def stock_remove_consumable(request, consumable_id):
@@ -127,6 +139,11 @@ def stock_remove_consumable(request, consumable_id):
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     stock.remove_consumable(consumable, username = username,)
+    messages.add_message(request,
+                        level = messages.SUCCESS,
+                        message = consumable.name + ' успешно удален со склада',
+                        extra_tags = 'Успешно удален'
+                        )
     return redirect('stockroom:stock_list')
 
 @require_POST
@@ -141,6 +158,17 @@ def device_add_consumable(request, consumable_id):
                 quantity=cd['quantity'],
                 username = username,
                 )
+        messages.add_message(request,
+                            level = messages.SUCCESS,
+                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
+                            extra_tags = 'Успешное списание'
+                            )
+    else:
+        messages.add_message(request,
+                            level = messages.ERROR,
+                            message = 'Не удалось списать ' + consumable.name +  ' со склада',
+                            extra_tags = 'Ошибка формы'
+                            )
     return redirect('stockroom:stock_list')
 
 

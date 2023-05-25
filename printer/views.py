@@ -74,11 +74,13 @@ class printerDetailView(DataMixin, FormMixin, generic.DetailView):
         context['detailMenu'] = printer_menu
         return context
 
-class printerCreate(DataMixin, CreateView):
+class printerCreate(DataMixin, FormMessageMixin, CreateView):
     model = Printer
     form_class = printerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('printer:printer_list')
+    success_message = '%(categories)s %(name)s успешно создан'
+    error_message = '%(categories)s %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -86,11 +88,13 @@ class printerCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class printerUpdate(DataMixin, UpdateView):
+class printerUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Printer
     template_name = 'Forms/add.html'
     form_class = printerForm
     success_url = reverse_lazy('printer:printer_list')
+    success_message = '%(categories)s %(name)s успешно обновлен'
+    error_message = '%(categories)s %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -102,6 +106,8 @@ class printerDelete(DataMixin, DeleteView):
     model = Printer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('printer:printer_list')
+    success_message = '%(categories)s успешно удален'
+    error_message = '%(categories)s не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

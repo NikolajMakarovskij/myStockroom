@@ -46,11 +46,13 @@ class upsDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class upsCreate(DataMixin, CreateView):
+class upsCreate(DataMixin, FormMessageMixin, CreateView):
     model = Ups
     form_class = upsForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('ups:ups_list')
+    success_message = 'УПС %(name)s успешно создана'
+    error_message = 'УПС %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,11 +60,13 @@ class upsCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class upsUpdate(DataMixin, UpdateView):
+class upsUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Ups
     template_name = 'Forms/add.html'
     form_class = upsForm
     success_url = reverse_lazy('ups:ups_list')
+    success_message = 'УПС %(name)s успешно обновлена'
+    error_message = 'УПС %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,10 +74,12 @@ class upsUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class upsDelete(DataMixin, DeleteView):
+class upsDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Ups
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('ups:ups_list')
+    success_message = 'УПС успешно удалена'
+    error_message = 'УПС не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -120,11 +126,13 @@ class cassetteDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class cassetteCreate(DataMixin, CreateView):
+class cassetteCreate(DataMixin, FormMessageMixin, CreateView):
     model = Cassette
     form_class = cassetteForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('ups:cassette_list')
+    success_message = 'Кассета %(name)s успешно создана'
+    error_message = 'Кассету %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -132,11 +140,13 @@ class cassetteCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class cassetteUpdate(DataMixin, UpdateView):
+class cassetteUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Cassette
     template_name = 'Forms/add.html'
     form_class = cassetteForm
     success_url = reverse_lazy('ups:cassette_list')
+    success_message = 'Кассета %(name)s успешно обновлена'
+    error_message = 'Кассету %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -144,10 +154,12 @@ class cassetteUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class cassetteDelete(DataMixin, DeleteView):
+class cassetteDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Cassette
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('ups:cassette_list')
+    success_message = 'Кассета успешно удалена'
+    error_message = 'Кассету не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

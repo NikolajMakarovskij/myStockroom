@@ -68,11 +68,13 @@ class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 
-class consumablesCreate(DataMixin,CreateView):
+class consumablesCreate(DataMixin, FormMessageMixin, CreateView):
     model = Consumables
     form_class = consumablesForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:consumables_list')
+    success_message = 'Расходник %(name)s успешно создан'
+    error_message = 'Расходник %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,11 +82,13 @@ class consumablesCreate(DataMixin,CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class consumablesUpdate(DataMixin, UpdateView):
+class consumablesUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Consumables
     template_name = 'Forms/add.html'
     form_class = consumablesForm
     success_url = reverse_lazy('consumables:consumables_list')
+    success_message = 'Расходник %(name)s успешно обновлен'
+    error_message = 'Расходник %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,10 +96,12 @@ class consumablesUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class consumablesDelete(DataMixin, DeleteView):
+class consumablesDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Consumables
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:consumables_list')
+    success_message = 'Расходник успешно удален'
+    error_message = 'Расходник не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
