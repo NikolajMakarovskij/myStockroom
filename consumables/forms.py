@@ -2,6 +2,8 @@ from django import forms
 from catalog.utils import WidgetCanAdd
 from django.utils.translation import gettext_lazy as _
 from .models import *
+from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 
 class consumablesForm(forms.ModelForm):  
@@ -21,5 +23,6 @@ class consumablesForm(forms.ModelForm):
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
         } 
+
 
 

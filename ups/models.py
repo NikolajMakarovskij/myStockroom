@@ -73,6 +73,7 @@ class Ups (ModelMixin, models.Model):
         Consumables,
         on_delete=models.SET_NULL,
         blank=True, null=True,
+        related_name='ups',
         help_text="Укажите аккумулятор",
         verbose_name="Аккумулятор № 1"
         )
@@ -164,8 +165,9 @@ class Cassette (ModelMixin, models.Model):
         Consumables,
         on_delete=models.SET_NULL,
         blank=True, null=True,
+        related_name='cassette',
         help_text="Укажите аккумулятор",
-        verbose_name="Аккумулятор № 1"
+        verbose_name="Аккумулятор"
         )
     score = models.IntegerField(
         blank=True, null=True,

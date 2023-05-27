@@ -1,5 +1,5 @@
-from django.db.utils import IntegrityError
-import pytest  
+from django.urls import reverse
+import pytest
 from myStockroom.wsgi import *
 from ..models import Software, Os
 from counterparty.models import Manufacturer
@@ -9,34 +9,40 @@ from counterparty.models import Manufacturer
 def test_software_create():
     """Тестирует создание записи в базе данных для модели Software"""
     Manufacturer.objects.create(name="soft_manufacturer")
-    soft = Software.objects.create(
+    Software.objects.create(
         name = "my_software_name",
         manufacturer = Manufacturer.objects.get(name="soft_manufacturer"),
         version = "12.rwg5",
         bitDepth = "x64",
         licenseKeyText = "Key_354ygar",
     )
+    soft = Software.objects.get(name = "my_software_name")
     assert Software.objects.count() == 1
     assert soft.name == "my_software_name"
     assert soft.manufacturer.name == "soft_manufacturer"
     assert soft.version == "12.rwg5"
     assert soft.bitDepth == "x64"
     assert soft.licenseKeyText == "Key_354ygar"
+    assert soft.__str__() == "my_software_name"
+    assert soft.get_absolute_url() == reverse('software:software-detail', kwargs={'pk': soft.pk})
 
 @pytest.mark.django_db  
 def test_OS_create():
     """Тестирует создание записи в базе данных для модели OS"""
     Manufacturer.objects.create(name="soft_manufacturer")
-    OS = Os.objects.create(
+    Os.objects.create(
         name = "my_OS_name",
         manufacturer = Manufacturer.objects.get(name="soft_manufacturer"),
         version = "12.rwg5",
         bitDepth = "x64",
         licenseKeyText = "Key_354ygar",
     )
+    OS = Os.objects.get(name = "my_OS_name")
     assert Os.objects.count() == 1
     assert OS.name == "my_OS_name"
     assert OS.manufacturer.name == "soft_manufacturer"
     assert OS.version == "12.rwg5"
     assert OS.bitDepth == "x64"
     assert OS.licenseKeyText == "Key_354ygar"
+    assert OS.__str__() == "my_OS_name"
+    assert OS.get_absolute_url() == reverse('software:OS-detail', kwargs={'pk': OS.pk})

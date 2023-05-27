@@ -4,7 +4,7 @@ from .models import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from catalog.utils import DataMixin
+from catalog.utils import DataMixin, FormMessageMixin
 
 
 class softwareListView(DataMixin, generic.ListView):
@@ -38,11 +38,13 @@ class softwareDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class softwareCreate(DataMixin, CreateView):
+class softwareCreate(DataMixin, FormMessageMixin, CreateView):
     model = Software
     form_class = softwareForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:software_list')
+    success_message = 'ПО %(name)s успешно создано'
+    error_message = 'ПО %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,11 +52,13 @@ class softwareCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class softwareUpdate(DataMixin, UpdateView):
+class softwareUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Software
     template_name = 'Forms/add.html'
     form_class = softwareForm
     success_url = reverse_lazy('software:software_list')
+    success_message = 'ПО %(name)s успешно обновлено'
+    error_message = 'ПО %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,10 +66,12 @@ class softwareUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class softwareDelete(DataMixin, DeleteView):
+class softwareDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Software
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:software_list')
+    success_message = 'ПО успешно удалено'
+    error_message = 'ПО не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -105,11 +111,13 @@ class OSDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 
-class OSCreate(DataMixin, CreateView):
+class OSCreate(DataMixin, FormMessageMixin, CreateView):
     model = Os
     form_class = OSForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:OS_list')
+    success_message = 'ОС %(name)s успешно создана'
+    error_message = 'ОС %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -117,11 +125,13 @@ class OSCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class OSUpdate(DataMixin, UpdateView):
+class OSUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Os
     template_name = 'Forms/add.html'
     form_class = OSForm
     success_url = reverse_lazy('software:OS_list')
+    success_message = 'ОС %(name)s успешно обновлена'
+    error_message = 'ОС %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -129,10 +139,12 @@ class OSUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class OSDelete(DataMixin, DeleteView):
+class OSDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Os
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:OS_list')
+    success_message = 'ОС успешно удалена'
+    error_message = 'ОС не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

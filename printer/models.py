@@ -7,7 +7,7 @@ from catalog.utils import ModelMixin
 import uuid 
 
 
-class Categories(ModelMixin, models.Model):
+class Printer_cat(ModelMixin, models.Model):
     """
     Модель группы для принтеров
     """
@@ -55,7 +55,7 @@ class Printer (ModelMixin, models.Model):
         verbose_name="Название"
         )
     categories = models.ForeignKey(
-        'Categories',
+        'Printer_cat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
@@ -145,41 +145,18 @@ class Printer (ModelMixin, models.Model):
     workplace = models.ForeignKey(
         Workplace,
         on_delete=models.SET_NULL,
+        related_name='printer',
         blank=True, null=True,
         help_text="Укажите рабочее место",
         verbose_name="Рабочее место"
         )
-    cartridge = models.ForeignKey(
+    consumable = models.ForeignKey(
         Consumables, 
         blank=True, null=True,
         on_delete=models.CASCADE,
-        related_name='cartridge',
-        help_text="Укажите картридж",
-        verbose_name="Картридж"
-        )
-    fotoval = models.ForeignKey(
-        Consumables,
-        blank=True, null=True,
-        on_delete=models.CASCADE,
-        related_name='fotoval',
-        help_text="Укажите фотовал",
-        verbose_name="Фотовал"
-        )
-    toner = models.ForeignKey(
-        Consumables,
-        blank=True, null=True,
-        on_delete=models.CASCADE,
-        related_name='toner',
-        help_text="Укажите тонер",
-        verbose_name="Тонер"
-        )
-    fotodrumm = models.ForeignKey(
-        Consumables,
-        blank=True, null=True,
-        related_name='fotodrumm',
-        on_delete=models.CASCADE,
-        help_text="Укажите фотобарабан",
-        verbose_name="Фотобарабан"
+        related_name='device',
+        help_text="Укажите расходник",
+        verbose_name="Расходник"
         )
     score = models.IntegerField(
         blank=True, null=True,

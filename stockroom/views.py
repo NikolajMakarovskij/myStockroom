@@ -3,23 +3,26 @@ from django.views.decorators.http import require_POST
 from consumables.models import Consumables
 from django.views import generic
 from django.db.models import Q
-from .stock import Stock
+from .stock import Stock, History
 from .forms import StockAddForm, ConsumableInstallForm
-from .models import Stockroom, Categories
-from printer.models import Printer
+from .models import Stockroom, Stock_cat
+from django.core.cache import cache
 from catalog.utils import DataMixin
+from django.contrib import messages
 
 
-#Расходники
+#Склад расходников
 class stockroomView(DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
-    menu_categories = Categories.objects.all()
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        menu_categories = Categories.objects.all()
+        history = History.objects.all()[:5]
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Stock_cat.objects.all()
+            cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад расходников", searchlink='stockroom:stock_search', menu_categories=stock_cat, history_list=history)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -45,9 +48,13 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     model = Stockroom
     
     def get_context_data(self, *, object_list=None, **kwargs ):
-        menu_categories = Categories.objects.all()
+        history = History.objects.all()[:5]
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Stock_cat.objects.all()
+            cache.set('print_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=menu_categories)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat, history_list=history)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -55,30 +62,93 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
         object_list = Stockroom.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list        
 
+#История склада расходников
+class HistoryView(DataMixin, generic.ListView):
+    template_name = 'stock/history_list.html'
+    model = History
+    def get_context_data(self, *, object_list=None, **kwargs):
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Stock_cat.objects.all()
+            cache.set('stock_cat', stock_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = History.objects.filter(
+                Q(consumable__icontains=query) | 
+                Q(categories__name__icontains=query) |
+                Q(dateInstall__icontains=query) |
+                Q(user__icontains=query) 
+        )
+        return object_list
+
+class HistoryCategoriesView(DataMixin, generic.ListView):
+    template_name = 'stock/history_list.html'
+    model = History
+    
+    def get_context_data(self, *, object_list=None, **kwargs ):
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = Stock_cat.objects.all()
+            cache.set('stock_cat', stock_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История", searchlink='stockroom:history_search', menu_categories=stock_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = History.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list     
+
 
 @require_POST
 def stock_add_consumable(request, consumable_id):
+    username = request.user.username
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.add_consumable(consumable=consumable,
-                 quantity=cd['quantity'],
-                 number_rack=cd['number_rack'],
-                 number_shelf=cd['number_shelf'],
-                 )
+                quantity=cd['quantity'],
+                number_rack=cd['number_rack'],
+                number_shelf=cd['number_shelf'],
+                username = username,
+                )
+        messages.add_message(request,
+                            level = messages.SUCCESS,
+                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлен на склад',
+                            extra_tags = 'Успешно добавлен'
+                            )
+    else:
+        messages.add_message(request,
+                            level = messages.ERROR,
+                            message = 'Не удалось добавить ' + consumable.name + ' на склад',
+                            extra_tags = 'Ошибка формы'
+                            )
     return redirect('stockroom:stock_list')
 
 def stock_remove_consumable(request, consumable_id):
+    username = request.user.username
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock.remove_consumable(consumable)
+    stock.remove_consumable(consumable, username = username,)
+    messages.add_message(request,
+                        level = messages.SUCCESS,
+                        message = consumable.name + ' успешно удален со склада',
+                        extra_tags = 'Успешно удален'
+                        )
     return redirect('stockroom:stock_list')
 
 @require_POST
 def device_add_consumable(request, consumable_id):
-    username = request.user
+    username = request.user.username
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = ConsumableInstallForm(request.POST)
@@ -88,101 +158,19 @@ def device_add_consumable(request, consumable_id):
                 quantity=cd['quantity'],
                 username = username,
                 )
+        messages.add_message(request,
+                            level = messages.SUCCESS,
+                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
+                            extra_tags = 'Успешное списание'
+                            )
+    else:
+        messages.add_message(request,
+                            level = messages.ERROR,
+                            message = 'Не удалось списать ' + consumable.name +  ' со склада',
+                            extra_tags = 'Ошибка формы'
+                            )
     return redirect('stockroom:stock_list')
 
 
-@require_POST
-def printer_add_cartridge(request, cartridge_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    cartridge = get_object_or_404(Consumables, id=cartridge_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=cartridge,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def printer_add_toner(request, toner_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    toner = get_object_or_404(Consumables, id=toner_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=toner,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def printer_add_fotoval(request, fotoval_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    fotoval = get_object_or_404(Consumables, id=fotoval_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=fotoval,
-                quantity=cd['quantity'],
-                username =username,
-                )
-    return redirect('stockroom:stock_list')
-
-@require_POST
-def printer_add_fotodrumm(request, fotodrumm_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    fotodrumm = get_object_or_404(Consumables, id=fotodrumm_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=fotodrumm,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def ups_add_accumulator(request, accumulator_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    accumulator = get_object_or_404(Consumables, id=accumulator_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=accumulator,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
-
-
-@require_POST
-def add_storage(request, storage_id):
-    if request.user.is_authenticated():
-        username = request.user.username
-    stock = Stock(request)
-    storage = get_object_or_404(Consumables, id=storage_id)
-    form = Consumables(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.printer_install_consumable(consumable=storage,
-                quantity=cd['quantity'],
-                username = username,
-                )
-    return redirect('stockroom:stock_list')
 
 

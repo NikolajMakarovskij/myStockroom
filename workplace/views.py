@@ -4,7 +4,7 @@ from .models import Room, Workplace
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from catalog.utils import DataMixin
+from catalog.utils import DataMixin, FormMessageMixin
 
 #Рабочие места
 class WorkplaceListView(DataMixin, generic.ListView):
@@ -39,11 +39,13 @@ class WorkplaceDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class WorkplaceCreate(DataMixin, CreateView):
+class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
     model = Workplace
     form_class = workplaceForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:workplace_list')
+    success_message = 'Рабочее место %(name)s успешно создано'
+    error_message = 'Рабочее место %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,11 +53,13 @@ class WorkplaceCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class WorkplaceUpdate(DataMixin, UpdateView):
+class WorkplaceUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Workplace
     template_name = 'Forms/add.html'
     form_class = workplaceForm
     success_url = reverse_lazy('workplace:workplace_list')
+    success_message = 'Рабочее место %(name)s успешно обновлено'
+    error_message = 'Рабочее место %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,10 +67,12 @@ class WorkplaceUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class WorkplaceDelete(DataMixin, DeleteView):
+class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Workplace
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:workplace_list')
+    success_message = 'Рабочее место успешно удалено'
+    error_message = 'Рабочее место не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -106,11 +112,13 @@ class RoomDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class RoomCreate(DataMixin, CreateView):
+class RoomCreate(DataMixin, FormMessageMixin, CreateView):
     model = Room
     form_class = roomForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:room_list')
+    success_message = 'Кабинет %(name)s успешно создан'
+    error_message = 'Кабинет %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,11 +126,13 @@ class RoomCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class RoomUpdate(DataMixin, UpdateView):
+class RoomUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Room
     template_name = 'Forms/add.html'
     form_class = roomForm
     success_url = reverse_lazy('workplace:room_list')
+    success_message = 'Кабинет %(name)s успешно обновлен'
+    error_message = 'Кабинет %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -130,10 +140,12 @@ class RoomUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class RoomDelete(DataMixin, DeleteView):
+class RoomDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room_list')
+    success_message = 'Кабинет успешно удален'
+    error_message = 'Кабинет не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

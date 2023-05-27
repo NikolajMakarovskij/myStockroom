@@ -1,7 +1,7 @@
-from django.db.utils import IntegrityError
-import pytest  
+import pytest, datetime
 from myStockroom.wsgi import *
 from ..models import Signature, Workstation, Consumables, Employee
+from django.urls import reverse
 
 
 
@@ -12,20 +12,23 @@ def test_signature_create():
     Employee.objects.create(name="some_employee_2")
     Workstation.objects.create(name="Acer C27")
     Consumables.objects.create(name = "storage") 
-    signature = Signature.objects.create(  
+    Signature.objects.create(  
         name = "signature_name", 
-        periodOpen = "2018-9-12",
-        periodClose = "2022-3-31",
+        periodOpen = datetime.date.today(),
+        periodClose = datetime.date.today(),
         employeeRegister = Employee.objects.get(name="some_employee_1"),
         employeeStorage = Employee.objects.get(name="some_employee_2"),
         workstation = Workstation.objects.get(name="Acer C27"),
         storage = Consumables.objects.get(name = "storage") 
     )  
+    signature = Signature.objects.get(name = "signature_name") 
     assert Signature.objects.count() == 1
     assert signature.name == "signature_name"
-    assert signature.periodOpen == "2018-9-12"
-    assert signature.periodClose == "2022-3-31"
+    assert signature.periodOpen == datetime.date.today()
+    assert signature.periodClose == datetime.date.today()
     assert signature.employeeRegister.name == "some_employee_1"
     assert signature.employeeStorage.name == "some_employee_2"
     assert signature.workstation.name == "Acer C27"
     assert signature.storage.name == "storage"
+    assert signature.__str__() == "signature_name"
+    assert signature.get_absolute_url() == reverse('signature:signature-detail', kwargs={'pk': signature.pk})

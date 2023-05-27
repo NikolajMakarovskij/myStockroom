@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.forms import widgets
 from django.conf import settings
+from django.contrib import messages
 import csv
 import datetime
 from django.http import HttpResponse
@@ -141,3 +142,51 @@ class ModelMixin:
                     }
                 )
         return fields
+
+class FormMessageMixin:
+    """
+    Добавляет сообщения в формы
+    """
+    success_message = ''
+    debug_message = ''
+    info_message = ''
+    warning_message = ''
+    error_message = ''
+    success_url = ''
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        success_message = self.get_success_message(form.cleaned_data)
+        debug_message = self.get_debug_message(form.cleaned_data)
+        info_message = self.get_info_message(form.cleaned_data)
+        warning_message = self.get_warning_message(form.cleaned_data)
+        error_message = self.get_error_message(form.cleaned_data)
+        if not response:
+            if error_message:
+                messages.error(self.request, error_message)
+        else:
+            if success_message:
+                messages.debug(self.request, debug_message)
+            if info_message:
+                messages.info(self.request, info_message)
+            if success_message:
+                messages.success(self.request, success_message)
+            if warning_message:
+                messages.warning(self.request, warning_message)
+        return response 
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % cleaned_data
+    
+    def get_debug_message(self, cleaned_data):
+        return self.debug_message % cleaned_data
+    
+    def get_info_message(self, cleaned_data):
+        return self.info_message % cleaned_data
+    
+    def get_warning_message(self, cleaned_data):
+        return self.warning_message % cleaned_data
+    
+    def get_error_message(self, cleaned_data):
+        return self.error_message % cleaned_data
+    

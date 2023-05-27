@@ -3,21 +3,24 @@ import pytest
 from myStockroom.wsgi import *
 from ..models import Consumables, Categories
 from counterparty.models import Manufacturer
-from django.core.files import File
-from unittest import mock
+from django.urls import reverse
+
 
 
 
 @pytest.mark.django_db  
 def test_category_create():
         """Тестирует создание записи в базе данных для модели Categories приложения Consumables"""
-        category = Categories.objects.create(
+        Categories.objects.create(
             name = "my_category_name",
             slug = "my_category_slug"
         )
+        category = Categories.objects.get(name = "my_category_name")
         assert Categories.objects.count() == 1
         assert category.name == "my_category_name"
         assert category.slug == "my_category_slug"
+        assert category.__str__() == 'my_category_name'
+        assert category.get_absolute_url() == reverse('consumables:category',kwargs={'category_slug': category.slug})
 
 @pytest.mark.django_db  
 def test_category_unique_slug():
@@ -46,17 +49,18 @@ def test_consumable_create():
             country = "country",
             production = "production_country"
         ) 
-        consumable = Consumables.objects.create(  
+        Consumables.objects.create(  
             name = "my_consumable",  
             categories = Categories.objects.get(name="my_category"),
             manufacturer = Manufacturer.objects.get(name="name_manufacturer"),  
             serial = "123",
             invent = "321",
             buhCode = "code",
-            score = "0",
+            score = 0,
             description = "my_description",
             note = "my_note",
-        )  
+        )
+        consumable = Consumables.objects.get(name = "my_consumable")
         assert Consumables.objects.count() == 1
         assert consumable.name == "my_consumable"
         assert consumable.categories.name == "my_category"
@@ -67,9 +71,10 @@ def test_consumable_create():
         assert consumable.serial == "123"
         assert consumable.invent == "321"
         assert consumable.buhCode == "code"
-        assert consumable.score == "0"
+        assert consumable.score == 0
         assert consumable.description == "my_description"
         assert consumable.note == "my_note"
-
+        assert consumable.__str__() == 'my_consumable'
+        assert consumable.get_absolute_url() == reverse('consumables:consumables-detail',kwargs={'pk': consumable.pk})
 
 

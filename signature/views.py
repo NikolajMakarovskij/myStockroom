@@ -46,11 +46,13 @@ class signatureDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class signatureCreate(DataMixin, CreateView):
+class signatureCreate(DataMixin, FormMessageMixin, CreateView):
     model = Signature
     form_class = signatureForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('signature:signature_list')
+    success_message = 'ЭЦП %(name)s успешно создана'
+    error_message = 'ЭЦП %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,11 +60,13 @@ class signatureCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class signatureUpdate(DataMixin, UpdateView):
+class signatureUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Signature
     template_name = 'Forms/add.html'
     form_class = signatureForm
     success_url = reverse_lazy('signature:signature_list')
+    success_message = 'ЭЦП %(name)s успешно обновлена'
+    error_message = 'ЭЦП %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,10 +74,12 @@ class signatureUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class signatureDelete(DataMixin, DeleteView):
+class signatureDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Signature
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('signature:signature_list')
+    success_message = 'ЭЦП успешно удалена'
+    error_message = 'ЭЦП не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

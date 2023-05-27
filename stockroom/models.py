@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from consumables.models import Consumables
 from catalog.utils import ModelMixin
-from django.contrib.auth.models import User
+
 
 class Stockroom (ModelMixin, models.Model):
     """
@@ -18,11 +18,16 @@ class Stockroom (ModelMixin, models.Model):
         verbose_name="Расходники"
         )
     categories = models.ForeignKey(
-        'Categories',
+        'Stock_cat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
         verbose_name="группа"
+        )
+    device = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        verbose_name="Устройство"
         )
     dateAddToStock = models.DateField(
         null=True, blank=True,
@@ -42,18 +47,13 @@ class Stockroom (ModelMixin, models.Model):
         help_text="Введите номер полки",
         verbose_name="Полка"
         )
-    def __str__(self):
-        return self.consumables
-
-    def get_absolute_url(self):
-        return reverse('stockroom:stock-detail', args=[str(self.consumables)])
 
     class Meta:
         verbose_name = 'Кассета'
         verbose_name_plural = 'Кассеты'
         ordering = ['consumables']
 
-class Categories(ModelMixin, models.Model):
+class Stock_cat(ModelMixin, models.Model):
     """
     Модель группы для расходников
     """
@@ -77,7 +77,7 @@ class Categories(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('stockroom:category',kwargs={'category_slug': self.slug})
+        return reverse('stockroom:category', kwargs={'category_slug': self.slug})
 
 
     class Meta:
@@ -105,7 +105,7 @@ class History(models.Model):
             verbose_name="ID Расходникa"
         )
         categories = models.ForeignKey(
-            'Categories',
+            'Stock_cat',
             on_delete=models.SET_NULL,
             blank=True, null=True,
             help_text="Укажите группу",
@@ -119,15 +119,24 @@ class History(models.Model):
             null=True, blank=True,
             verbose_name="Дата установки"
         )
-        user = models.OneToOneField(
-            User,
-            on_delete = models.CASCADE,
-            null=True, blank=True,
+        user = models.CharField(
+            blank=True, default=0,
+            max_length=50,
             help_text="Укажите пользователя",
             verbose_name="Пользователь"
         )
+        STATUS_CHOISES=[
+            ('Приход', 'Приход'),
+            ('Расход', 'Расход'),
+            ('Удаление', 'Удаление'),
+        ]
+        status = models.CharField(
+            max_length=10,
+            choices=STATUS_CHOISES,
+            default='Расход',
+    )
 
         class Meta:
             verbose_name = 'История'
             verbose_name_plural = 'История'
-            ordering = ['consumable']
+            ordering = ['-dateInstall','consumable']

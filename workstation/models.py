@@ -10,7 +10,7 @@ from ups.models import Ups
 from catalog.utils import ModelMixin
 
 
-class Categories(ModelMixin, models.Model):
+class Workstation_cat(ModelMixin, models.Model):
     """
     Модель группы для принтеров
     """
@@ -64,7 +64,7 @@ class Workstation(ModelMixin, models.Model):
         verbose_name="Производитель"
         )
     categories = models.ForeignKey(
-        'Categories',
+        'Workstation_cat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
@@ -94,9 +94,8 @@ class Workstation(ModelMixin, models.Model):
         help_text="Прикрепите файл",
         verbose_name="Фото инвентарного номера"
         )
-    motherboard = models.ForeignKey(
-        'Motherboard',
-        on_delete=models.SET_NULL,
+    motherboard = models.CharField(
+        max_length=150,
         blank=True, null=True,
         help_text="Укажите материнскую плату",
         verbose_name="Материнская плата"
@@ -108,16 +107,14 @@ class Workstation(ModelMixin, models.Model):
         help_text="Укажите монитор",
         verbose_name="Монитор"
         )
-    cpu = models.ForeignKey(
-        'Cpu',
-        on_delete=models.SET_NULL,
+    cpu = models.CharField(
+        max_length=150,
         blank=True, null=True,
         help_text="Укажите CPU",
         verbose_name="CPU"
         )
-    gpu = models.ForeignKey(
-        'Gpu',
-        on_delete=models.SET_NULL,
+    gpu = models.CharField(
+        max_length=150,
         blank=True, null=True,
         help_text="Укажите GPU",
         verbose_name="GPU"
@@ -143,9 +140,8 @@ class Workstation(ModelMixin, models.Model):
         help_text="Укажите HDD",
         verbose_name="HDD"
         )
-    dcpower = models.ForeignKey(
-        'Dcpower',
-        on_delete=models.SET_NULL,
+    dcpower = models.CharField(
+        max_length=150,
         blank=True, null=True,
         help_text="Укажите блок питания",
         verbose_name="Блок питания"
@@ -316,396 +312,6 @@ class Monitor (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Монитор'
         verbose_name_plural = 'Мониторы'
-        ordering = ['name']
-
-class Motherboard (ModelMixin, models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите Название модели",
-        verbose_name="Название модели",
-        )
-    manufacturer = models.ForeignKey(
-        Manufacturer,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    serial = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите серийный номер",
-        verbose_name="Серийный номер"
-        )
-    serialImg = models.ImageField(
-        upload_to='motherboard/serial/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото серийного номера"
-        )
-    invent = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите инвентарный номер",
-        verbose_name="Инвентарный номер"
-        )
-    inventImg = models.ImageField(
-        upload_to='motherboard/invent/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото инвентарного номера"
-        )
-    cpuSoket = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Описание сокета",
-        verbose_name="CPU Soket"
-        )
-    ramSlot = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Описание RAM",
-        verbose_name="RAM Slot"
-        )
-    usb_2 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="USB 2.0"
-        )
-    usb_3 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="USB 3.0"
-        )
-    usb_3_1 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="USB 3.1"
-        )
-    usb_3_2 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="USB 3.2"
-        )
-    usb_4_0 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="USB 4.0"
-        )
-    comPort = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="COM Port"
-        )
-    pcie_x1 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="PCIExpress X1"
-        )
-    pcie_x16 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="PCI Express X16"
-        )
-    pci = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество и тип",
-        verbose_name="PCI"
-        )
-    sata = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="SATA"
-        )
-    m2 = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="M2"
-        )
-    vga = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="VGA"
-        )
-    hdmi = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="HDMI"
-        )
-    dvi = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="DVI"
-        )
-    dispayPort = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите количество",
-        verbose_name="DisplayPort"
-        )
-    powerSupply = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите конфигурацию",
-        verbose_name="Питание материнской платы"
-        )
-    powerSupplyCPU = models.TextField(
-        max_length=200,
-        blank=True, null=True,
-        help_text="Введите конфигурацию",
-        verbose_name="Питание CPU"
-        )
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('workstation:motherboard-detail', args=[str(self.id)])
- 
-    class Meta:
-        verbose_name = 'Материнская плата'
-        verbose_name_plural = 'Материнские платы'
-        ordering = ['name']
-
-class Cpu (ModelMixin, models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    manufacturer = models.ForeignKey(
-        Manufacturer,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    serial = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите серийный номер",
-        verbose_name="Серийный номер"
-        )
-    serialImg = models.ImageField(
-        upload_to='cpu/serial/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото серийного номера"
-        )
-    invent = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите инвентарный номер",
-        verbose_name="Инвентарный номер"
-        )
-    inventImg = models.ImageField(
-        upload_to='cpu/invent/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото инвентарного номера"
-        )
-    socket = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите сокет",
-        verbose_name="Сокет"
-        )
-    frequency = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите частоту",
-        verbose_name="Частота"
-        )
-    l1 = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите размер L1 cache",
-        verbose_name="L1 cache"
-        )
-    l2 = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите размер L2 cache",
-        verbose_name="L2 cache"
-        )
-    l3 = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите размер L3 cache",
-        verbose_name="L3 cache"
-        )
-    core = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите количество ядер",
-        verbose_name="Количество ядер"
-        )
-    thread = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите количество потоков",
-        verbose_name="Количество потоков"
-        )
-    memory = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите тип RAM",
-        verbose_name="Тип RAM"
-        )
-    memoryCapacity = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите поддерживаемый обЪем памяти",
-        verbose_name="Поддерживаемый обЪем памяти"
-        )
-    channelsCapacity = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите количество каналов памяти",
-        verbose_name="Количество каналов памяти"
-    )
-    tdp = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите TDP",
-        verbose_name="TDP"
-        )
-    supply = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите тип питания",
-        verbose_name="Питание"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('workstation:cpu-detail', args=[str(self.id)])
-
-    class Meta:
-        verbose_name = 'CPU'
-        verbose_name_plural = 'CPUs'
-        ordering = ['name']
-
-class Gpu (ModelMixin, models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    plug = (
-        ('Интегрированная','Интегрированная'),
-        ('Дискретная','Дискретная')
-    )
-    type = models.CharField(
-        max_length=50,
-        choices=plug,
-        help_text="Укажите тип подключения",
-        verbose_name="Тип подключения"
-        )
-    manufacturer = models.ForeignKey(
-        Manufacturer,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    serial = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите серийный номер",
-        verbose_name="Серийный номер"
-        )
-    serialImg = models.ImageField(
-        upload_to='gpu/serial/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото серийного номера"
-        )
-    invent = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите инвентарный номер",
-        verbose_name="Инвентарный номер"
-        )
-    inventImg = models.ImageField(
-        upload_to='gpu/invent/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото инвентарного номера"
-        )
-    gram = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите объем памяти",
-        verbose_name="Объем памяти"
-        )
-    gramType = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите тип памяти",
-        verbose_name="Тип памяти"
-        )
-    pcie = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите версию PCI Express",
-        verbose_name="Версия PCI Express"
-        )
-    supply = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите тип питания",
-        verbose_name="Питание"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('workstation:gpu-detail', args=[str(self.id)])
-
-    class Meta:
-        verbose_name = 'GPU'
-        verbose_name_plural = 'GPUs'
         ordering = ['name']
 
 class Ram (ModelMixin, models.Model):
@@ -962,100 +568,6 @@ class Hdd (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'HDD'
         verbose_name_plural = 'HDDs'
-        ordering = ['name']
-
-class Dcpower (ModelMixin, models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
-        )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите название модели",
-        verbose_name="Модель"
-        )
-    manufacturer = models.ForeignKey(
-        Manufacturer,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        help_text="Укажите производителя",
-        verbose_name="Производитель"
-        )
-    serial = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите серийный номер",
-        verbose_name="Серийный номер"
-        )
-    serialImg = models.ImageField(
-        upload_to='dcpower/serial/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото серийного номера"
-        )
-    invent = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите инвентарный номер",
-        verbose_name="Инвентарный номер"
-        )
-    inventImg = models.ImageField(
-        upload_to='dcpower/invent/',
-        blank=True, null=True,
-        help_text="прикрепите файл",
-        verbose_name="Фото инвентарного номера"
-        )
-    power = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите мощность",
-        verbose_name="Мощность"
-        )
-    motherboard = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите питание материнской платы",
-        verbose_name="Питание материнской платы"
-        )
-    cpu = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите питание CPU",
-        verbose_name="Питание CPU"
-        )
-    gpu = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите питание GPU",
-        verbose_name="Питание GPU"
-        )
-    sata = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите питание SATA",
-        verbose_name="Питание SATA"
-        )
-    molex = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Укажите питание molex",
-        verbose_name="Питание molex"
-        )
-    score = models.IntegerField(
-        blank=True, null=True,
-        help_text="Введите количество на складе",
-        verbose_name="Остаток на складе"
-        )
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('workstation:dcpower-detail', args=[str(self.id)])
-
-    class Meta:
-        verbose_name = 'Блок питания'
-        verbose_name_plural = 'Блоки питания'
         ordering = ['name']
 
 class KeyBoard (ModelMixin, models.Model):

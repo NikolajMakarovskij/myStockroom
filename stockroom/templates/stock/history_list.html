@@ -21,25 +21,25 @@
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:stock_list' %}active{% endif %}" href="{% url 'stockroom:stock_list' %}">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_list' %}active{% endif %}" href="{% url 'stockroom:history_list' %}">
               Все группы
             </a>
         </li>
         {% for item in menu_categories %}
           <li class="nav-item ">
             <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
-              href="{{ item.get_absolute_url }}">{{item.name}}
+              href="{% url 'stockroom:history_category' item.slug %}">{{item.name}}
             </a>
           </li>
         {% endfor %}
       </ul>
     </nav>
   {% endif %}
-  {% if not stockroom_list%}
+  {% if not history_list%}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Расходники не обнаружены</th>
+          <th scope="col" style="font-size: 32px;">Истории не обнаружено</th>
         </tr>
       </thead>
     </table>
@@ -49,46 +49,28 @@
         <tr>
           <th scope="col">Расходник</th>
           <th scope="col">Группа</th>
-          <th scope="col">Устройство</th>
-          <th scope="col">Стеллаж</th>
-          <th scope="col">Полка</th>
           <th scope="col">Количество</th>
-          <th scope="col">Постановка</th>
-          <th scope="col">Установка</th>
-          <th scope="col">Примечание</th>
-          <th scope="col">Удалить</th>
+          <th scope="col">Дата</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Пользователь</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for each in stockroom_list %}
+      {% for each in history_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.consumables.get_absolute_url }}">{{ each.consumables.name }}</a></td>
+        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumableId %}">{{ each.consumable }}</a></td>
         <td>{{ each.categories}}</td>
-        <td>
-            {% for dev in each.device %}{{ dev }}{% endfor %}
-        </td>
-        <td>{{ each.rack }}</td>
-        <td>{{ each.shelf }}</td>
-        <td>{{ each.consumables.score }}</td>
-        <td>{{ each.dateAddToStock }}</td>
-        {% if each.dateInstall %}  
-          <td>{{ each.dateInstall }}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
-        {% if each.consumables.note %}  
-          <td>{{ each.consumables.note }}</td>
-        {% else %}
-        <td></td>
-        {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_consumable' each.consumables.id %}"> Удалить </a></td>
+        <td>{{ each.score }}</td>
+        <td>{{ each.dateInstall }}</td>
+        <td>{{ each.status }}</td>
+        <td>{{ each.user }}</td>
       </tr>
       {% endfor %}
-  </table>
-{% endif %}
+    </table>
+
+
+    {% endif %}
   </div>
-  <!--block pagination-->  
+<!--block pagination-->  
   {%include 'pagination/pagination.html' %}
-  <!--block history-->
-  {%include 'stock/history_short_list.html' %}
 {% endblock %}

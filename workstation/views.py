@@ -16,7 +16,7 @@ class workstationListView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         work_cat = cache.get('work_cat')
         if not work_cat:
-            work_cat = Categories.objects.all()
+            work_cat = Workstation_cat.objects.all()
             cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
@@ -32,15 +32,15 @@ class workstationListView(DataMixin, generic.ListView):
                 Q(manufacturer__name__icontains=query) |
                 Q(serial__icontains=query) | 
                 Q(invent__icontains=query) | 
-                Q(motherboard__name__icontains=query) | 
+                Q(motherboard__icontains=query) | 
                 Q(monitor__name__icontains=query) | 
-                Q(cpu__name__icontains=query) | 
-                Q(gpu__name__icontains=query) | 
+                Q(cpu__icontains=query) | 
+                Q(gpu__icontains=query) | 
                 Q(ram__name__icontains=query) | 
                 Q(ssd__name__icontains=query) | 
                 Q(hdd__name__icontains=query) | 
                 Q(os__name__icontains=query) | 
-                Q(dcpower__name__icontains=query) | 
+                Q(dcpower__icontains=query) | 
                 Q(keyBoard__name__icontains=query) | 
                 Q(mouse__name__icontains=query) | 
                 Q(ups__name__icontains=query) | 
@@ -66,7 +66,7 @@ class workstationCategoryListView(DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         work_cat = cache.get('work_cat')
         if not work_cat:
-            work_cat = Categories.objects.all()
+            work_cat = Workstation_cat.objects.all()
             cache.set('work_cat', work_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие станции", searchlink='workstation:workstation_search',add='workstation:new-workstation',menu_categories=work_cat)
@@ -92,11 +92,13 @@ class workstationDetailView(DataMixin, generic.DetailView):
         context['detailMenu'] = work_menu
         return context
 
-class workstationCreate(DataMixin, CreateView):
+class workstationCreate(DataMixin, FormMessageMixin, CreateView):
     model = Workstation
     form_class = workstationForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:workstation_list')
+    success_message = 'Рабочая станция %(name)s успешно создана'
+    error_message = 'Рабочую станцию %(name)s не удалось создать'
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,11 +106,13 @@ class workstationCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class workstationUpdate(DataMixin, UpdateView):
+class workstationUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Workstation
     template_name = 'Forms/add.html'
     form_class = workstationForm
     success_url = reverse_lazy('workstation:workstation_list')
+    success_message = 'Рабочая станция %(name)s успешно обновлена'
+    error_message = 'Рабочую станцию %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,10 +120,12 @@ class workstationUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class workstationDelete(DataMixin, DeleteView):
+class workstationDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Workstation
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:workstation_list')
+    success_message = 'Рабочая станция успешно удалена'
+    error_message = 'Рабочую станцию не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -169,11 +175,13 @@ class monitorDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class monitorCreate(DataMixin, CreateView):
+class monitorCreate(DataMixin, FormMessageMixin, CreateView):
     model = Monitor
     form_class = monitorForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:monitor_list')
+    success_message = 'Монитор %(name)s успешно создан'
+    error_message = 'Монитор %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -181,11 +189,13 @@ class monitorCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class monitorUpdate(DataMixin, UpdateView):
+class monitorUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Monitor
     template_name = 'Forms/add.html'
     form_class = monitorForm
     success_url = reverse_lazy('workstation:monitor_list')
+    success_message = 'Монитор %(name)s успешно обновлен'
+    error_message = 'Монитор %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -193,10 +203,12 @@ class monitorUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class monitorDelete(DataMixin, DeleteView):
+class monitorDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Monitor
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:monitor')
+    success_message = 'Монитор успешно удален'
+    error_message = 'Монитор не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -238,11 +250,13 @@ class keyBoardDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class keyBoardCreate(DataMixin, CreateView):
+class keyBoardCreate(DataMixin, FormMessageMixin, CreateView):
     model = KeyBoard
     form_class = keyBoardForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:keyBoard_list')
+    success_message = 'Клавиатура %(name)s успешно создана'
+    error_message = 'Клавиатуру %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -250,11 +264,13 @@ class keyBoardCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class keyBoardUpdate(DataMixin, UpdateView):
+class keyBoardUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = KeyBoard
     template_name = 'Forms/add.html'
     form_class = keyBoardForm
     success_url = reverse_lazy('workstation:keyBoard_list')
+    success_message = 'Клавиатура %(name)s успешно обновлена'
+    error_message = 'Клавиатуру %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -262,10 +278,12 @@ class keyBoardUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class keyBoardDelete(DataMixin, DeleteView):
+class keyBoardDelete(DataMixin, FormMessageMixin, DeleteView):
     model = KeyBoard
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:keyBoard_list')
+    success_message = 'Расходник успешно удален'
+    error_message = 'Расходник не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -307,11 +325,13 @@ class mouseDetailView(DataMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class mouseCreate(DataMixin, CreateView):
+class mouseCreate(DataMixin, FormMessageMixin, CreateView):
     model = Mouse
     form_class = mouseForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workstation:mouse_list')
+    success_message = 'Мышь %(name)s успешно создана'
+    error_message = 'Мышь %(name)s не удалось создать'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -319,11 +339,13 @@ class mouseCreate(DataMixin, CreateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class mouseUpdate(DataMixin, UpdateView):
+class mouseUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Mouse
     template_name = 'Forms/add.html'
     form_class = mouseForm
     success_url = reverse_lazy('workstation:mouse_list')
+    success_message = 'Мышь %(name)s успешно обновлена'
+    error_message = 'Мышь %(name)s не удалось обновить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -331,10 +353,12 @@ class mouseUpdate(DataMixin, UpdateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class mouseDelete(DataMixin, DeleteView):
+class mouseDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Mouse
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workstation:mouse_list')
+    success_message = 'Мышь успешно удалена'
+    error_message = 'Мышь не удалось удалить'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

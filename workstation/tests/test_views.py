@@ -1,7 +1,7 @@
 from django.test import TestCase
 from ..models import *
 from django.urls import reverse
-import warnings
+
 
 class workstationViewTest(TestCase):
 
@@ -64,11 +64,11 @@ class workstationsCategoryViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_of_consumables = 149
-        Categories.objects.create(name="some_category", slug="some_category")
+        Workstation_cat.objects.create(name="some_category", slug="some_category")
         for consumables_num in range(number_of_consumables):
-            Workstation.objects.create(name='Christian %s' % consumables_num, categories=Categories.objects.get(slug="some_category"))
+            Workstation.objects.create(name='Christian %s' % consumables_num, categories=Workstation_cat.objects.get(slug="some_category"))
         assert Workstation.objects.count() == 149
-        assert Categories.objects.count() == 1
+        assert Workstation_cat.objects.count() == 1
 
     def test_context_data_in_category(self):
         context_data = [
@@ -76,21 +76,21 @@ class workstationsCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'workstation:workstation_search'},
             {'data_key': 'add', 'data_value': 'workstation:new-workstation'},
         ]
-        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Workstation_cat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Workstation_cat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
         self.assertTrue( len(resp.context['workstation_list']) == 10)
 
     def test_lists_all_categories(self):
-        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})+'?page=15')
+        resp = self.client.get(reverse('workstation:category', kwargs={"category_slug": Workstation_cat.objects.get(slug="some_category")})+'?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
