@@ -2,6 +2,9 @@ asgiref
 attrs
 diff-match-patch
 Django >=4.1.6,<=5
+djangorestframework
+markdown
+django-filter
 gunicorn
 celery
 django-celery-beat

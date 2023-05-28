@@ -18,6 +18,7 @@ DEBUG = int(os.environ.get("DEBUG", default=1))
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin', 
     'django.contrib.auth', 
     'django.contrib.contenttypes', 
@@ -225,3 +226,10 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
 STOCK_SESSION_ID = 'stock'
+
+REST_FRAMEWORK = {
+    'DATE_INPUT_FORMATS': [
+        '%d.%m.%Y',  # '25.10.2021'
+        '%d.%m.%y',  # '25.10.21'
+    ]
+}
