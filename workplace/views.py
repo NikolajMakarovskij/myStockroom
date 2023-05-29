@@ -5,9 +5,10 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from catalog.utils import DataMixin, FormMessageMixin
-from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from .serializers import *
 
 #Рабочие места
@@ -33,24 +34,21 @@ class WorkplaceListView(DataMixin, generic.ListView):
         ).select_related('room')
         return object_list   
 
-class WorkplaceRestView(DataMixin, APIView):
+class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = Workplace.objects.all()
     serializer_class = WorkplaceModelSerializer
-    model = Workplace
 
-    def get(self, request):
-        queryset = Workplace.objects.all()
-        serializer_for_queryset = WorkplaceModelSerializer(
-            instance=queryset, 
-            many=True
-        )
-        return Response(serializer_for_queryset.data)
+    @action(methods=['get'], detail=False)
+    def get_rooms(self, request):
+        rooms = Room.objects.all()
+        return Response({'room': [c.name for c in rooms]})
     
-    def post(self, request):
-        serializer_for_writing = self.serializer_class(data=request.data)
-        serializer_for_writing.is_valid(raise_exception=True)
-        serializer_for_writing.save()
-        return Response(data=serializer_for_writing.data, status=status.HTTP_201_CREATED)
-    
+    @action(methods=['get'], detail=True)
+    def get_room(self, request, pk=None):
+        room = Workplace.objects.get(pk=pk).room
+        return Response({'room': room.name, 'floor':room.floor, 'building':room.building})
+
+    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочее место")
@@ -131,24 +129,10 @@ class RoomListView(DataMixin, generic.ListView):
         return object_list
     
 
-class RoomRestView(DataMixin,APIView):
+class RoomRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
-    model = Room
 
-    def get(self, request):
-        queryset = Room.objects.all()
-        serializer_for_queryset = RoomModelSerializer(
-            instance=queryset, 
-            many=True
-        )
-        return Response(serializer_for_queryset.data)
-    
-    def post(self, request):
-        serializer_for_writing = self.serializer_class(data=request.data)
-        serializer_for_writing.is_valid(raise_exception=True)
-        serializer_for_writing.save()
-        return Response(data=serializer_for_writing.data, status=status.HTTP_201_CREATED)
-    
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Кабинет")

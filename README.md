@@ -43,6 +43,9 @@
 </p>
 </details>
 
+## Домашка
+  https://habr.com/ru/articles/713490/
+
 ## В разработке
 
  - [X] Рефакторинг старого проекта https://github.com/NikolajMakarovskij/myStockroom/issues/6

@@ -227,9 +227,28 @@ CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
 STOCK_SESSION_ID = 'stock'
 
+#REST
+
+def render_calasses():
+    if DEBUG:
+        return [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        ]
+    return [
+        'rest_framework.renderers.JSONRenderer',
+        ]
+
+
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': render_calasses(),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
     'DATE_INPUT_FORMATS': [
         '%d.%m.%Y',  # '25.10.2021'
         '%d.%m.%y',  # '25.10.21'
-    ]
+    ],
 }

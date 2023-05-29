@@ -2,12 +2,11 @@
 
 """
 from django.contrib import admin
-from django.urls import include
-from django.urls import path 
+from django.urls import include, path
 
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
-    path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     
 ]
