@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'rest_framework',
+    'corsheaders',
     'django.contrib.admin', 
     'django.contrib.auth', 
     'django.contrib.contenttypes', 
@@ -47,7 +48,8 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware', 
-    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware', 
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -227,13 +229,19 @@ CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
 STOCK_SESSION_ID = 'stock'
 
+#cores headers
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
 #REST
 
 def render_calasses():
     if DEBUG:
         return [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        #'rest_framework.renderers.BrowsableAPIRenderer',
         ]
     return [
         'rest_framework.renderers.JSONRenderer',
@@ -243,7 +251,7 @@ def render_calasses():
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': render_calasses(),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,

@@ -12,6 +12,7 @@ media
 static
 .coverage
 env/
-node_modules
+node_moduless/
 
 
+myStockroom/pgadmin-data/_data/pgadmin4.db

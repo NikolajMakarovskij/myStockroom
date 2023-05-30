@@ -13,6 +13,7 @@ hiredis
 flower
 django-adaptors
 django-appconf
+django-cors-headers
 django-crispy-forms
 django-bootstrap5
 crispy-bootstrap5
