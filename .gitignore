@@ -11,3 +11,7 @@ pgadmin-data/_data/pgadmin4.db
 media
 static
 .coverage
+env/
+node_modules
+
+
