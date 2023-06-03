@@ -190,10 +190,10 @@ DATE_FORMAT = 'd.m.Y'
 #start file settings
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+STATIC_ROOT = os.path.join(BASE_DIR, '/static').replace('\\', '/')
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
 
 MEDIA_URL = 'media/'
 

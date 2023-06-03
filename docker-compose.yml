@@ -2,13 +2,13 @@ version: "3.9"
 
 services:
   web:
-    build: ./
+    build: ./myStockroom
     command: gunicorn myStockroom.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
-      - ./:/myStockroom
-      - ./static:/home/myStockroom/web/static
-      - ./media:/home/myStockroom/web/mediafiles 
+      - ./myStockroom:/myStockroom
+      - .myStockroom/static:/home/myStockroom/web/static
+      - .myStockroom/media:/home/myStockroom/web/mediafiles 
     expose:
       - 8010
     env_file:
@@ -32,11 +32,11 @@ services:
       - ./database:/var/lib/postgresql/data
 
   nginx:
-    build: ./nginx
+    build: ./reactfrontendapp
     restart: always
     volumes:
-      - ./static:/home/myStockroom/web/static
-      - ./media:/home/myStockroom/web/mediafiles 
+      - ./myStockroom/static:/home/myStockroom/web/static
+      - ./myStockroom/media:/home/myStockroom/web/mediafiles 
     ports:
       - 80:80
     depends_on:
@@ -49,10 +49,10 @@ services:
   celery:
     restart: always
     build:
-      context: .
+      context: ./myStockroom
     command: celery -A myStockroom worker -l info
     volumes:
-      - ./:/myStockroom
+      - ./myStockroom:/myStockroom
     env_file:
       - ./.env.dev
     depends_on:
@@ -61,11 +61,11 @@ services:
       - web
 
   celery-beat:
-    build: .
+    build: ./myStockroom
     command: celery -A myStockroom beat -l info
     restart: always
     volumes:
-      - .:/myStockroom
+      - ./myStockroom:/myStockroom
     env_file:
       - ./.env.dev
     depends_on:
@@ -73,10 +73,10 @@ services:
       - redis
 
   flower:
-    build: .
+    build: ./myStockroom
     command: celery -A myStockroom flower --port=5555 --broker=redis://redis:6379/0
     volumes:
-      - .:/myStockroom
+      - ./myStockroom:/myStockroom
     env_file:
       - ./.env.dev
     ports:
