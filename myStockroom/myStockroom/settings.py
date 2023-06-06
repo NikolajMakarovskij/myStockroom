@@ -190,10 +190,10 @@ DATE_FORMAT = 'd.m.Y'
 #start file settings
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/static').replace('\\', '/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = 'media/'
 
@@ -241,7 +241,7 @@ def render_calasses():
     if DEBUG:
         return [
         'rest_framework.renderers.JSONRenderer',
-        #'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
         ]
     return [
         'rest_framework.renderers.JSONRenderer',
