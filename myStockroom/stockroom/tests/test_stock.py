@@ -26,16 +26,16 @@ def create_consumable():
         get_consumable = Consumables.objects.get(name='my_consumable')
     return get_consumable
 
-def add_consumables_in_printers(consumable):
+def add_consumables_in_devices(consumable):
     """Служебная функция. Создает категорию и расходник"""
-    from printer.models import Printer
-    Printer.objects.bulk_create([
-        Printer(name='printer 1', consumable = consumable),
-        Printer(name='printer 2', consumable = consumable),
-        Printer(name='printer 3', consumable = consumable),
+    from device.models import Device
+    Device.objects.bulk_create([
+        Device(name='device 1', consumable = consumable),
+        Device(name='device 2', consumable = consumable),
+        Device(name='device 3', consumable = consumable),
     ])
-    get_printers = Printer.objects.all()
-    return get_printers
+    get_devices = Device.objects.all()
+    return get_devices
 
 @pytest.mark.django_db
 def test_stock_no_category():
@@ -86,71 +86,33 @@ def test_stock_if_not_device():
     """Проверяет работу метода get_device класса Stock при отсутствии обратной связи"""
     consumable = create_consumable()
     consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
-    assert test_printer == 'Нет'
+    test_device = Stock.get_device(consumable_id)
+    assert test_device == 'Нет'
 
 @pytest.mark.django_db
 def test_stock_get_device():
     """Проверяет работу метода get_device класса Stock"""
-    from printer.models import Printer
+    from device.models import Device
     consumable = create_consumable()
-    Printer.objects.create(name='printer', consumable = consumable)
+    Device.objects.create(name='device', consumable = consumable)
     consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
+    test_device = Stock.get_device(consumable_id)
 
-    assert Printer.objects.count() == 1
-    assert test_printer == 'printer'
-
-@pytest.mark.django_db
-def test_stock_get_device_ups():
-    """Проверяет работу метода get_device класса Stock"""
-    from ups.models import Ups
-    consumable = create_consumable()
-    Ups.objects.create(name='ups', accumulator = consumable)
-    consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
-
-    assert Ups.objects.count() == 1
-    assert test_printer == 'ups'
-
-@pytest.mark.django_db
-def test_stock_get_device_cassette():
-    """Проверяет работу метода get_device класса Stock"""
-    from ups.models import Cassette
-    consumable = create_consumable()
-    Cassette.objects.create(name='cassette', accumulator = consumable)
-    consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
-
-    assert Cassette.objects.count() == 1
-    assert test_printer == 'cassette'
-
-@pytest.mark.django_db
-def test_stock_get_device_cassette_and_ups():
-    """Проверяет работу метода get_device класса Stock"""
-    from ups.models import Cassette, Ups
-    consumable = create_consumable()
-    Cassette.objects.create(name='cassette', accumulator = consumable)
-    Ups.objects.create(name='ups', accumulator = consumable)
-    consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
-
-    assert Cassette.objects.count() == 1
-    assert Ups.objects.count() == 1
-    assert test_printer == 'ups, cassette'
+    assert Device.objects.count() == 1
+    assert test_device == 'device'
 
 @pytest.mark.django_db
 def test_stock_get_devices():
     """Проверяет работу метода get_device при нескольких связях класса Stock"""
-    from printer.models import Printer
+    from device.models import Device
     consumable = create_consumable()
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
 
     consumable_id = consumable.id
     test_printer = Stock.get_device(consumable_id)
 
-    assert Printer.objects.count() == 3
-    assert test_printer == 'printer 1, printer 2, printer 3'
+    assert Device.objects.count() == 3
+    assert test_printer == 'device 1, device 2, device 3'
 
 
 @pytest.mark.django_db
@@ -162,7 +124,7 @@ def test_stock_add_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
     test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')
     test_get_history = History.objects.get(consumable='my_consumable')
@@ -172,7 +134,7 @@ def test_stock_add_consumable(client):
     assert test_get_stock.categories.name == 'my_category'
     assert test_get_stock.categories.slug == 'my_category'
     assert test_get_stock.consumables.name == 'my_consumable'
-    assert test_get_stock.device == 'printer 1, printer 2, printer 3'
+    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.consumables.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
@@ -196,7 +158,7 @@ def test_stock_add_consumable_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
     test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')
     test_get_history = History.objects.get(consumable='my_consumable')
@@ -205,7 +167,7 @@ def test_stock_add_consumable_not_category(client):
     assert History.objects.count() == 1
     assert test_get_stock.categories == None
     assert test_get_stock.consumables.name == 'my_consumable'
-    assert test_get_stock.device == 'printer 1, printer 2, printer 3'
+    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.consumables.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
@@ -226,7 +188,7 @@ def test_stock_update_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = 2, number_shelf = 2, username = username)
     test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')
@@ -246,7 +208,7 @@ def test_stock_remove_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
     Stock.remove_consumable(self = Stock(client), consumable = consumable, quantity=0, username=username)
     test_history = History.objects.get(status='Удаление')
@@ -264,7 +226,7 @@ def test_stock_device_add_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_printers(consumable)
+    add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
     Stock.device_add_consumable(self = Stock(client), consumable = consumable, quantity=1, username=username)
     test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')

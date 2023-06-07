@@ -10,15 +10,13 @@
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
-    <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'workstation:workstation_list' %}active{% endif %}" href="{% url 'workstation:workstation_list' %}">
-              Все группы
-            </a>
-        </li>
-      </ul>
-    </nav>
+  <table class="table align-middle table-hover" style="text-align:center">
+    <thead> 
+      <tr>
+        <th scope="col" style="font-size: 32px;">Группы расходников не обнаружены</th>
+      </tr>
+    </thead>
+  </table>
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">

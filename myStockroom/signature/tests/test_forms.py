@@ -1,5 +1,5 @@
 import pytest
-from ..forms import signatureForm, Employee, Workstation, Consumables
+from ..forms import signatureForm, Employee, Device, Consumables
 from consumables.models import Categories as con_cat
 
 
@@ -8,7 +8,7 @@ def test_signature_form_valid():
     """Тест на валидность формы"""
     Employee.objects.create(name="some_employee_1")
     Employee.objects.create(name="some_employee_2")
-    Workstation.objects.create(name="Acer C27")
+    Device.objects.create(name="Acer C27")
     Consumables.objects.create(
         name="T7741",
         categories=con_cat.objects.create(
@@ -22,7 +22,7 @@ def test_signature_form_valid():
         "periodClose" : "2022-3-31",
         "employeeRegister": Employee.objects.get(name="some_employee_1"),
         "employeeStorage": Employee.objects.get(name="some_employee_2"),
-        "workstation": Workstation.objects.get(name="Acer C27"),
+        "workstation": Device.objects.get(name="Acer C27"),
         "storage": Consumables.objects.get(name = "T7741") 
     }
     form = signatureForm(data=form_data)

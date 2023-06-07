@@ -14,12 +14,12 @@ def test_list_url_exists_at_desired_location(client):
       assert response.status_code == 200
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_nad_template(client):
+def test_list_uses_correct_url_ad_template(client):
    warnings.filterwarnings(action="ignore")
    links = [
       {'link': 'signature:signature_list','template': 'signature/signature_list.html'},
       {'link': 'signature:signature_search','template': 'signature/signature_list.html'},
-      {'link': 'printer:new-printer','template': 'Forms/add.html'},
+      {'link': 'signature:new-signature','template': 'Forms/add.html'},
    ]
    for each in links:
       url = reverse(each.get('link'))

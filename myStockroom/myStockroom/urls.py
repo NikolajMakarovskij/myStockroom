@@ -1,6 +1,3 @@
-""" URL Configuration
-
-"""
 from django.contrib import admin
 from django.urls import include, path
 
@@ -15,10 +12,8 @@ urlpatterns += [
     path('stockroom/', include(('stockroom.urls','stockroom'), namespace='stockroom'), ),
     path('counterparty/', include(('counterparty.urls','counterparty'), namespace='counterparty'), ),
     path('signature/', include(('signature.urls','signature'), namespace='signature'), ),
-    path('ups/', include(('ups.urls','ups'), namespace='ups'), ),
-    path('printer/', include(('printer.urls','printer'), namespace='printer'), ),
+    path('device/', include(('device.urls','device'), namespace='device'), ),
     path('consumables/', include(('consumables.urls','consumables'), namespace='consumables'), ),
-    path('workstation/', include(('workstation.urls','workstation'), namespace='workstation'), ),
     path('software/', include(('software.urls','software'), namespace='software'), ),
     path('employee/', include(('employee.urls','employee'), namespace='employee'), ),
     path('workplace/', include(('workplace.urls','workplace'), namespace='workplace'), ),

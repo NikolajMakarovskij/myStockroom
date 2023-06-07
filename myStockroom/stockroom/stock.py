@@ -58,23 +58,10 @@ class Stock(object):
     def get_device(consumable_id):
         """Получение устройства"""
         con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
-        con_ups = list(Consumables.objects.get(id=consumable_id).ups.all().distinct())
-        con_cassette = list(Consumables.objects.get(id=consumable_id).cassette.all().distinct())
         list_device = []
         devices = ''
         if con_device:
             for device in con_device:
-                list_device.append(device.name)
-        elif con_ups and con_cassette:
-            for device in con_ups:
-                list_device.append(device.name)
-            for device in con_cassette:
-                list_device.append(device.name)
-        elif con_ups:
-            for device in con_ups:
-                list_device.append(device.name)
-        elif con_cassette:
-            for device in con_cassette:
                 list_device.append(device.name)
         else:
             devices = 'Нет'

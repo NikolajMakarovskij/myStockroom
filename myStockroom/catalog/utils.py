@@ -11,28 +11,19 @@ from django.http import HttpResponse
 menu = [
     {'title':  "Главная страница", 'url_name': 'catalog:index'},
     {'title':  "Раб. места", 'url_name': 'workplace:workplace_list'},
+    {'title':  "Устройства", 'url_name': 'device:device_list'},
     {'title':  "Сотрудники", 'url_name': 'employee:employee_list'},
     {'title':  "Софт", 'url_name': 'software:software_list'},
-    {'title':  "Раб. станции", 'url_name': 'workstation:workstation_list'},
-    {'title':  "Принтеры", 'url_name': 'printer:printer_list'},
     {'title':  "ЭЦП", 'url_name': 'signature:signature_list'},
     {'title':  "Справочники", 'url_name': 'catalog:references_list'},
     {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
     ]
-workstationMenu = [
-    {'title':  "Информация о системе", 'anchor': '#systemInfo'},
-    {'title':  "Информация об ОС", 'anchor': '#OSInfo'},
-    {'title':  "Информация о сотруднике", 'anchor': '#infoEmployee'},
-    {'title':  "Монитор", 'anchor': '#monitor'},
-    {'title':  "Материнская плата", 'anchor': '#motherboard'},
-    ]
-printerMenu = [
-    {'title':  "Информация о принтере", 'anchor': '#printerInfo'},
-    {'title':  "Информация о картридже", 'anchor': '#cartridgeInfo'},
-    {'title':  "Информация о фотовале", 'anchor': '#fotovalInfo'},
-    {'title':  "Информация о тонере", 'anchor': '#tonerInfo'},
+
+deviceMenu = [
+    {'title':  "Информация об устройстве", 'anchor': '#printerInfo'},
+    {'title':  "Информация о расходнике", 'anchor': '#cartridgeInfo'},
     {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
     ]
 

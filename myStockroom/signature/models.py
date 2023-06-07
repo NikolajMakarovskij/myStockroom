@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 from django.urls import reverse
 from employee.models import Employee
-from workstation.models import Workstation
+from device.models import Device
 from consumables.models import Consumables
 from catalog.utils import ModelMixin
 import uuid 
@@ -60,7 +60,7 @@ class Signature (ModelMixin, models.Model):
         verbose_name="Сотрудник у которого хранится ЭЦП"
         )
     workstation = models.ForeignKey(
-        Workstation,
+        Device,
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите рабочую станцию",
