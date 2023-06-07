@@ -1,7 +1,6 @@
 *.DS_Store
-**/migrations/
 node_modules/
-database/pgdata
+database/pgdata/
 pgadmin-data/_data/azurecredentialcache
 pgadmin-data/_data/sessions
 pgadmin-data/_data/storage
@@ -16,3 +15,4 @@ node_moduless/
 
 
 myStockroom/pgadmin-data/_data/pgadmin4.db
+myStockroom/database/
