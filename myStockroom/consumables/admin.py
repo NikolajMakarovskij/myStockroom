@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Consumables, Categories
+from .models import Consumables, Categories, Acc_cat, Accessories
 from catalog.utils import ExportAdmin
 
 class ConsumablesAdmin(ExportAdmin, admin.ModelAdmin):
@@ -20,3 +20,20 @@ class CategoriesAdmin(ExportAdmin, admin.ModelAdmin):
     
 admin.site.register(Categories, CategoriesAdmin)
 
+class AccessoriesAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Accessories
+    list_display = ['name','categories','manufacturer','buhCode','score','serial','invent', 'description', 'note']
+    list_filter = ['categories']
+    search_fields = ['name','categories','manufacturer','buhCode','score', 'serial', 'invent', 'description', 'note']
+    actions = [ExportAdmin.export_to_csv]
+    
+admin.site.register(Accessories, AccessoriesAdmin)
+
+class Acc_catAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Acc_cat
+    list_display = ['name', 'slug']
+    search_fields = ['name']
+    prepopulated_fields = {"slug": ("name", )}
+    actions = [ExportAdmin.export_to_csv]
+    
+admin.site.register(Acc_cat, Acc_catAdmin)

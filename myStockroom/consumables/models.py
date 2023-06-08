@@ -7,7 +7,7 @@ import uuid
 #Расходники
 class Categories(ModelMixin, models.Model):
     """
-    Модель группы для расходников. Связи один ко многим с моделями printer, ups, signature
+    Модель группы для расходников.
     """
     id = models.UUIDField(
         primary_key=True,
@@ -124,3 +124,121 @@ class Consumables (ModelMixin, models.Model):
         ordering = ['name', 'categories']
 
 
+#Комплектующие /// accessories
+class Acc_cat(ModelMixin, models.Model):
+    """
+    Модель группы для комплектующих. 
+    """
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название",
+        verbose_name="Название"
+        )
+    slug = models.SlugField(
+        max_length=50, unique=True, db_index=True,
+        help_text="Введите URL (для работы навигациии в комплектующих)",
+        verbose_name="URL"
+        )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('consumables:category_accessories',kwargs={'category_slug': self.slug})
+
+
+    class Meta:
+        verbose_name = 'Группа комплектующих'
+        verbose_name_plural = 'Группы комплектующих'
+        ordering = ['name']
+
+class Accessories (ModelMixin, models.Model):
+    """
+    Модель комплектующих
+    """
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        db_index=True,
+        help_text="ID"
+        )
+    name = models.CharField(
+        max_length=50,
+        help_text="Введите название",
+        verbose_name="Название"
+        )
+    categories = models.ForeignKey(
+        'Acc_cat',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите группу",
+        verbose_name="Группа"
+        )
+    serial = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите серийный номер",
+        verbose_name="Серийный номер"
+        )
+    serialImg = models.ImageField(
+        upload_to='accessories/serial/',
+        blank=True, null=True,
+        help_text="Прикрепите файл",
+        verbose_name="Фото серийного номера"
+        )
+    invent = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите инвентаризационный номер",
+        verbose_name="Инвентарный номер"
+        )
+    inventImg = models.ImageField(
+        upload_to='accessories/invent/',
+        blank=True, null=True,
+        help_text="Прикрепите файл",
+        verbose_name="Фото инвентарного номера"
+        )
+    manufacturer = models.ForeignKey(
+        Manufacturer,
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите производителя",
+        verbose_name="Производитель"
+        )
+    buhCode = models.CharField(
+        max_length=50,
+        help_text="Введите код по бухгалтерии",
+        verbose_name="Код в бухгалтерии"
+        )
+    score = models.IntegerField(
+        blank=True, default=0,
+        help_text="Введите количество на складе",
+        verbose_name="Остаток на складе",
+        )
+    description = models.TextField(
+        max_length=1000,
+        blank=True, null=True,
+        help_text="Введите описание",
+        verbose_name="Описание"
+        )
+    note = models.TextField(
+        max_length=1000,
+        blank=True, null=True,
+        help_text="Введите примечание",
+        verbose_name="Примечание"
+        )
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('consumables:accessories-detail', args=[str(self.id)])
+
+    class Meta:
+        verbose_name = 'Комплектующее'
+        verbose_name_plural = 'Комплектующие'
+        ordering = ['name', 'categories']

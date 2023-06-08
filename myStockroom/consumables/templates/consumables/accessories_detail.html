@@ -6,17 +6,17 @@
   <h1 style="text-align:center" >{{title}}</h1>
 </div>
   <div class="card-header text-center mt-3">
-    <a name="consumablesInfo" class="btn" data-bs-toggle="collapse" href="#consumablesInfoContent" role="button"
-      aria-expanded="false" aria-controls="consumablesInfoContent">
+    <a name="accessoriesInfo" class="btn" data-bs-toggle="collapse" href="#accessoriesInfoContent" role="button"
+      aria-expanded="false" aria-controls="accessoriesInfoContent">
       <h1 class="card-title">
         <img src="{% static 'images/consumables.svg' %}" class="iconHeader">
-        Информация о расходнике
+        Информация о комплектующем
       </h1>
     </a>
   </div>
-  <div class="collapse" id="consumablesInfoContent">
+  <div class="collapse" id="accessoriesInfoContent">
     <div class="row row-cols-3 row-cols-md-3">
-      {% for f in consumables.get_all_fields %}
+      {% for f in accessories.get_all_fields %}
       <div class="col mt-3">
         <div class="card border-dark  h-100">
           <div class="card-header">
@@ -38,9 +38,9 @@
       {% endfor %}
     </div>
   </div>
-  {% if consumables %}
+  {% if accessories %}
   <div class="d-flex justify-content-center input-group mt-3 ">
-    <form action="{% url 'stockroom:stock_add_consumable' consumables.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+    <form action="{% url 'stockroom:stock_add_consumable' accessories.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
       {% csrf_token %}
       <div class="input-group mb-3">
         <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
@@ -60,11 +60,11 @@
             Добавить
         </a>
         <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-          href="{% url update consumables.id%}">
+          href="{% url update accessories.id%}">
             Редактировать
         </a>
         <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-          href="{% url delete consumables.id%}">
+          href="{% url delete accessories.id%}">
             Удалить
         </a>      
   </div>

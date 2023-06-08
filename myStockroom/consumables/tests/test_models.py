@@ -1,13 +1,13 @@
 from django.db.utils import IntegrityError
 import pytest
 from myStockroom.wsgi import *
-from ..models import Consumables, Categories
+from ..models import Consumables, Categories, Acc_cat, Accessories
 from counterparty.models import Manufacturer
 from django.urls import reverse
 
 
 
-
+#Расходники
 @pytest.mark.django_db  
 def test_category_create():
         """Тестирует создание записи в базе данных для модели Categories приложения Consumables"""
@@ -56,7 +56,6 @@ def test_consumable_create():
             serial = "123",
             invent = "321",
             buhCode = "code",
-            score = 0,
             description = "my_description",
             note = "my_note",
         )
@@ -78,3 +77,71 @@ def test_consumable_create():
         assert consumable.get_absolute_url() == reverse('consumables:consumables-detail',kwargs={'pk': consumable.pk})
 
 
+#Комплектующие
+@pytest.mark.django_db  
+def test_acc_cat_create():
+        """Тестирует создание записи в базе данных для модели Acc_cat приложения Consumables"""
+        Acc_cat.objects.create(
+            name = "my_category_name",
+            slug = "my_category_slug"
+        )
+        category = Acc_cat.objects.get(name = "my_category_name")
+        assert Acc_cat.objects.count() == 1
+        assert category.name == "my_category_name"
+        assert category.slug == "my_category_slug"
+        assert category.__str__() == 'my_category_name'
+        assert category.get_absolute_url() == reverse('consumables:category_accessories',kwargs={'category_slug': category.slug})
+
+@pytest.mark.django_db  
+def test_acc_cat_unique_slug():
+        """Тестирует наличие дублирования в поле slug"""
+        with pytest.raises(IntegrityError):
+            Acc_cat.objects.create(
+                name = "my_category_1",
+                slug = "my_category"
+            )
+
+            assert  (Acc_cat.objects.create(
+                name = "my_category_2",
+                slug = "my_category"
+            )
+            )
+
+@pytest.mark.django_db  
+def test_consumable_create():
+        """Тестирует создание записи в базе данных для модели Consumables"""
+        Acc_cat.objects.create(
+            name = "my_category",
+            slug = "my_category"
+        )
+        Manufacturer.objects.create(
+            name = "name_manufacturer",
+            country = "country",
+            production = "production_country"
+        ) 
+        Accessories.objects.create(  
+            name = "my_consumable",  
+            categories = Acc_cat.objects.get(name="my_category"),
+            manufacturer = Manufacturer.objects.get(name="name_manufacturer"),  
+            serial = "123",
+            invent = "321",
+            buhCode = "code",
+            description = "my_description",
+            note = "my_note",
+        )
+        accessories = Accessories.objects.get(name = "my_consumable")
+        assert Accessories.objects.count() == 1
+        assert accessories.name == "my_consumable"
+        assert accessories.categories.name == "my_category"
+        assert accessories.categories.slug == "my_category" 
+        assert accessories.manufacturer.name == "name_manufacturer"
+        assert accessories.manufacturer.country == "country"
+        assert accessories.manufacturer.production == "production_country"
+        assert accessories.serial == "123"
+        assert accessories.invent == "321"
+        assert accessories.buhCode == "code"
+        assert accessories.score == 0
+        assert accessories.description == "my_description"
+        assert accessories.note == "my_note"
+        assert accessories.__str__() == 'my_consumable'
+        assert accessories.get_absolute_url() == reverse('consumables:accessories-detail',kwargs={'pk': accessories.pk})

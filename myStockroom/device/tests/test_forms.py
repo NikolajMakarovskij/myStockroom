@@ -30,21 +30,7 @@ def test_device_form_valid():
         "description": "some_description",
         "workplace": Workplace.objects.get(name="device_workplace"),
         "consumable": Consumables.objects.get(name="T7741"),
-        "score": "0",
         "note": "some_note"
     }
     form = deviceForm(data=form_data)
     assert form.is_valid() is True
-
-
-@pytest.mark.django_db
-def test_device_form_score_invalid():
-    """Тест на правильность данных в поле количества"""
-    err_mes = "Введите целое число."
-    form_data = {
-        "name": "my_consumable",
-        "score": "qwerty",
-    }
-    form = deviceForm(data=form_data)
-    assert form.is_valid() is False
-    assert [err_mes] == form.errors['score']

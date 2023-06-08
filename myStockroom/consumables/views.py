@@ -92,7 +92,7 @@ class consumablesUpdate(DataMixin, FormMessageMixin, UpdateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать расходник",)
+        c_def = self.get_user_context(title="Редактировать расходник")
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -110,7 +110,108 @@ class consumablesDelete(DataMixin, FormMessageMixin, DeleteView):
         return context
 
 
+#Комплектующие
+class accessoriesView(DataMixin, generic.ListView):
+    template_name = 'consumables/accessories_list.html'
+    model = Accessories
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        acc_cat = cache.get('acc_cat')
+        if not acc_cat:
+            acc_cat = Acc_cat.objects.all()
+            cache.set('acc_cat', acc_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Комплектующие", searchlink='consumables:accessories_search',add='consumables:new-accessories', menu_categories=acc_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = Accessories.objects.filter(
+                Q(name__icontains=query) | 
+                Q(manufacturer__name__icontains=query) |
+                Q(categories__name__icontains=query) |
+                Q(buhCode__icontains=query) |
+                Q(score__icontains=query) |
+                Q(serial__icontains=query) |
+                Q(invent__icontains=query)    
+        ).select_related('categories', 'manufacturer')
+        return object_list
+
+class accessoriesCategoriesView(DataMixin, generic.ListView):
+    template_name = 'consumables/accessories_list.html'
+    model = Accessories.objects
+    
+    def get_context_data(self, *, object_list=None, **kwargs ):
+        acc_cat = cache.get('acc_cat')
+        if not acc_cat:
+            acc_cat = Acc_cat.objects.all()
+            cache.set('acc_cat', acc_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Комплектующие", searchlink='consumables:accessories_search',add='consumables:new-accessories', menu_categories=acc_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = Accessories.objects.filter(categories__slug=self.kwargs['category_slug']).select_related('categories', 'manufacturer')
+        return object_list        
+
+        
+
+class accessoriesDetailView(DataMixin, FormMixin, generic.DetailView):
+    model = Accessories
+    template_name = 'consumables/accessories_detail.html'
+    #Добавить форму склада комплектующих
+    form_class = StockAddForm 
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Комплектующее",add='consumables:new-accessories',update='consumables:accessories-update',delete='consumables:accessories-delete',)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context 
+
+class accessoriesCreate(DataMixin, FormMessageMixin, CreateView):
+    model = Accessories
+    form_class = accessoriesForm
+    template_name = 'Forms/add.html'
+    success_url = reverse_lazy('consumables:accessories_list')
+    success_message = 'Комплектующее %(name)s успешно создано'
+    error_message = 'Комплектующее %(name)s не удалось создать'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавить комплектующее",)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class accessoriesUpdate(DataMixin, FormMessageMixin, UpdateView):
+    model = Accessories
+    template_name = 'Forms/add.html'
+    form_class = accessoriesForm
+    success_url = reverse_lazy('consumables:accessories_list')
+    success_message = 'Комплектующее %(name)s успешно обновлен'
+    error_message = 'Комплектующее %(name)s не удалось обновить'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Редактировать комплектующее")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class accessoriesDelete(DataMixin, FormMessageMixin, DeleteView):
+    model = Accessories
+    template_name = 'Forms/delete.html'
+    success_url = reverse_lazy('consumables:accessories_list')
+    success_message = 'Комплектующее успешно удален'
+    error_message = 'Комплектующее не удалось удалить'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Удалить комплектующее",selflink='consumables:accessories_list')
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
 
 
 

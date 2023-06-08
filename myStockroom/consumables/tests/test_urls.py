@@ -1,13 +1,15 @@
 import pytest, warnings
 from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
-from ..models import Categories, Consumables
+from ..models import Categories, Consumables, Accessories, Acc_cat
 
+
+#Расходники
 #list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
    warnings.filterwarnings(action="ignore")
-   links = ['/consumables/','/consumables/search']
+   links = ['/consumables/','/consumables/search','/consumables/accessories/','/consumables/accessories/search']
    for link in links:
       url = (link)
       response = client.get(url)
@@ -20,6 +22,9 @@ def test_list_uses_correct_url_nad_template(client):
       {'link': 'consumables:consumables_list','template': 'consumables/consumables_list.html'},
       {'link': 'consumables:consumables_search','template': 'consumables/consumables_list.html'},
       {'link': 'consumables:new-consumables','template': 'Forms/add.html'},
+      {'link': 'consumables:accessories_list','template': 'consumables/accessories_list.html'},
+      {'link': 'consumables:accessories_search','template': 'consumables/accessories_list.html'},
+      {'link': 'consumables:new-accessories','template': 'Forms/add.html'},
    ]
    for each in links:
       url = reverse(each.get('link'))
@@ -35,6 +40,9 @@ def test_details_url(client):
       {'model': Consumables,'link': 'consumables:consumables-detail', 'template': 'consumables/consumables_detail.html'},
       {'model': Consumables,'link': 'consumables:consumables-update', 'template': 'Forms/add.html'},
       {'model': Consumables,'link': 'consumables:consumables-delete', 'template': 'Forms/delete.html'},
+      {'model': Accessories,'link': 'consumables:accessories-detail', 'template': 'consumables/accessories_detail.html'},
+      {'model': Accessories,'link': 'consumables:accessories-update', 'template': 'Forms/add.html'},
+      {'model': Accessories,'link': 'consumables:accessories-delete', 'template': 'Forms/delete.html'},
    ]
    for each in links:
       model = each.get('model').objects.create(name="some_model")
@@ -52,3 +60,16 @@ def test_consumable_category_url(client):
    response = client.get(url)
    assert response.status_code == 200
    assertTemplateUsed(response, 'consumables/consumables_list.html')
+
+#category
+@pytest.mark.django_db
+def test_consumable_category_url(client):
+   warnings.filterwarnings(action="ignore")
+   Acc_cat.objects.create(name="some_category",slug="some_category")
+   url = reverse('consumables:category_accessories', kwargs={"category_slug": Acc_cat.objects.get(slug="some_category")})
+   response = client.get(url)
+   assert response.status_code == 200
+   assertTemplateUsed(response, 'consumables/accessories_list.html')
+
+
+
