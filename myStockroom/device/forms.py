@@ -9,7 +9,7 @@ from .models import *
 class deviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['name','description','categories','manufacturer','serial','serialImg','inventImg','invent','workplace','consumable','score','note']
+        fields = ['name','categories','consumable','manufacturer','serial','serialImg','invent','inventImg','description','note', 'workplace']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'categories': WidgetCanAdd(Device_cat, attrs={'class': 'form-select form-select-lg'}),
@@ -21,6 +21,5 @@ class deviceForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
             'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace", attrs={'class': 'form-select form-select-lg'}),
             'consumable': WidgetCanAdd(Consumables, related_url="consumables:new-consumables", attrs={'class': 'form-select form-select-lg'}),
-            'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
             'note': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
         } 

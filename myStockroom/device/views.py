@@ -134,7 +134,7 @@ class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
             device_cat = Device_cat.objects.all()
             cache.set('device_cat', device_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete',)
+        c_def = self.get_user_context(title="Устройство "+Device.objects.get().categories.name+' '+Device.objects.get().name,add='device:new-device',update='device:device-update',delete='device:device-delete',)
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
         return context
@@ -163,7 +163,7 @@ class deviceUpdate(DataMixin, FormMessageMixin, UpdateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать %(categories)s %(name)s",)
+        c_def = self.get_user_context(title="Редактировать "+Device.objects.get().categories.name+' '+Device.objects.get().name,)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -176,7 +176,7 @@ class deviceDelete(DataMixin, DeleteView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить %(categories)s %(name)s",selflink='device:device_list')
+        c_def = self.get_user_context(title="Удалить "+Device.objects.get().categories.name+' '+Device.objects.get().name,selflink='device:device_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
