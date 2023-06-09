@@ -2,14 +2,15 @@ from django.urls import path, re_path
 from .views import *
 
 urlpatterns = [
+    path('', consumableIndexView.as_view(), name='consumables_index'),
     #Расходники
-    path('', consumablesView.as_view(), name='consumables_list'),
-    re_path(r'^search$', consumablesView.as_view(), name='consumables_search'),
-    path('category/<slug:category_slug>', consumablesCategoriesView.as_view(), name='category'),
-    re_path(r'^(?P<pk>[-\w]+)$', consumablesDetailView.as_view(), name='consumables-detail'),
-    path(r'^create$', consumablesCreate.as_view(), name='new-consumables'),
-    re_path(r'^(?P<pk>[-\w]+)/update$', consumablesUpdate.as_view(), name='consumables-update'),
-    re_path(r'^(?P<pk>[-\w]+)/delete$', consumablesDelete.as_view(), name='consumables-delete'),
+    path('consumables/', consumablesView.as_view(), name='consumables_list'),
+    re_path(r'^consumables/search$', consumablesView.as_view(), name='consumables_search'),
+    path('consumables/category/<slug:category_slug>', consumablesCategoriesView.as_view(), name='category'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)$', consumablesDetailView.as_view(), name='consumables-detail'),
+    path(r'^consumables/create$', consumablesCreate.as_view(), name='new-consumables'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)/update$', consumablesUpdate.as_view(), name='consumables-update'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)/delete$', consumablesDelete.as_view(), name='consumables-delete'),
     #Комплектующие
     path('accessories/', accessoriesView.as_view(), name='accessories_list'),
     re_path(r'^accessories/search$', accessoriesView.as_view(), name='accessories_search'),

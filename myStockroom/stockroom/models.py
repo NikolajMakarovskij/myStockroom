@@ -104,6 +104,16 @@ class History(models.Model):
             max_length=50,
             verbose_name="ID Расходникa"
         )
+        device = models.CharField(
+            blank=True, null=True,
+            max_length=50,
+            verbose_name="Устройства"
+        )
+        deviceId = models.CharField(
+            blank=True, null=True,
+            max_length=50,
+            verbose_name="ID Устройства"
+        )
         categories = models.ForeignKey(
             'Stock_cat',
             on_delete=models.SET_NULL,

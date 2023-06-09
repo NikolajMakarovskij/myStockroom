@@ -131,6 +131,7 @@
       <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
         {% csrf_token %}
         <div class="input-group mb-3">
+          {{form.device_id|default:device.id}}
           <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
           <div class="">{{ form.quantity }}</div>
           <input type="submit" value="Установить картридж" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
@@ -145,11 +146,11 @@
       Добавить
   </a>
   <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update device.id%}">
+    href="{% url update device.id %}">
       Редактировать
   </a>
   <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete device.id%}">
+    href="{% url delete device.id %}">
       Удалить
   </a>
 </div>

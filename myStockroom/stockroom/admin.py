@@ -4,7 +4,7 @@ from catalog.utils import ExportAdmin
 
 class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     model = History
-    list_display = ['consumable','consumableId','categories','score','dateInstall', 'user']
+    list_display = ['consumable','consumableId','device','categories','score','dateInstall', 'user']
     list_filter = ['categories']
     search_fields = ['consumable','categories','score','dateInstall']
     actions = [ExportAdmin.export_to_csv]

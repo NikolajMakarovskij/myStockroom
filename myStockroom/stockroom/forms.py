@@ -1,4 +1,5 @@
 from django import forms
+
 consumable_score = 11
 CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
 rack_score = 10
@@ -7,7 +8,6 @@ shelf_score = 20
 SHELF_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, shelf_score)]
 device_score = 5
 DEVICE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, device_score)]
-
 
 class StockAddForm(forms.Form):
     """
@@ -24,5 +24,6 @@ class ConsumableInstallForm(forms.Form):
     """
     Форма использования расходника в технике. Добавляется в template и DetailView техники
     """
+    device_id = forms.CharField( widget=forms.TextInput())
     quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))

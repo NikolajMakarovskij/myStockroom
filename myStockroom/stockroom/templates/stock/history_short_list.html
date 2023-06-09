@@ -25,7 +25,14 @@
                 <td>{{ each.categories}}</td>
                 <td>{{ each.score }}</td>
                 <td>{{ each.dateInstall }}</td>
-                <td>{{ each.status }}</td>
+                <td>
+                    {% if not each.device %}
+                        {{ each.status }}
+                    {% else %}
+                        {{ each.status }} на устройство 
+                        <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
+                    {% endif %}
+                </td>
                 <td>{{ each.user }}</td>
                 </tr>
                 {% endfor %}

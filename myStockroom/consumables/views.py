@@ -7,6 +7,22 @@ from catalog.utils import *
 from stockroom.forms import StockAddForm
 from django.core.cache import cache
 
+
+#Расходники главная
+class consumableIndexView(generic.ListView):
+    """
+    Главная
+    """
+    template_name = 'consumables/consumables_index.html'
+    model = Consumables
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Расходники и комплектующие'
+        context['menu'] = menu
+        context['searchlink'] = 'consumables:consumables_search'
+        return context
+
 #Расходники
 class consumablesView(DataMixin, generic.ListView):
     template_name = 'consumables/consumables_list.html'

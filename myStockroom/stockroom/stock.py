@@ -1,6 +1,7 @@
 import datetime
 from django.conf import settings
-from consumables.models import Consumables 
+from device.models import Device
+from consumables.models import Consumables, Accessories
 from .models import Stockroom, Stock_cat, History
 
 
@@ -33,11 +34,31 @@ class Stock(object):
                     )
         return consumable_category
 
-    def create_history(consumable_id, quantity, username, status_choise):
-        if Stock.add_category(consumable_id) == 'None':
+    def create_history(consumable_id, device_id, quantity, username, status_choise):
+        if Stock.add_category(consumable_id) == 'None' and not device_id:
             history = History.objects.create(
                 consumable=Consumables.objects.get(id = consumable_id).name, 
                 consumableId=Consumables.objects.get(id = consumable_id).id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        elif Stock.add_category(consumable_id) == 'None':
+            history = History.objects.create(
+                consumable=Consumables.objects.get(id = consumable_id).name, 
+                consumableId=Consumables.objects.get(id = consumable_id).id,
+                device=Device.objects.filter(id = device_id).get().name, 
+                deviceId=Device.objects.filter(id = device_id).get().id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        elif not device_id:
+            history = History.objects.create(
+                consumable=Consumables.objects.get(id = consumable_id).name, 
+                consumableId=Consumables.objects.get(id = consumable_id).id,
                 score = quantity,
                 dateInstall = datetime.date.today(),
                 user = username,
@@ -47,6 +68,8 @@ class Stock(object):
             history = History.objects.create(
                 consumable=Consumables.objects.get(id = consumable_id).name, 
                 consumableId=Consumables.objects.get(id = consumable_id).id, 
+                device=Device.objects.filter(id = device_id).get().name, 
+                deviceId=Device.objects.filter(id = device_id).get().id, 
                 score = quantity,
                 dateInstall = datetime.date.today(),
                 categories = Stock.add_category(consumable_id),
@@ -59,10 +82,12 @@ class Stock(object):
         """Получение устройства"""
         con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
         list_device = []
+        list_id = []
         devices = ''
         if con_device:
             for device in con_device:
                 list_device.append(device.name)
+                list_id.append(device.id)
         else:
             devices = 'Нет'
         for devices in list_device:
@@ -78,6 +103,7 @@ class Stock(object):
         consumable_id = str(consumable.id)
         consumable_score = int(str(consumable.score))
         consumable_add = Consumables.objects.get(id = consumable_id)
+        device_id = None
         if Stockroom.objects.filter(consumables = consumable_id):
             consumable_score += quantity 
             Consumables.objects.filter(id = consumable_id).update(score = consumable_score)
@@ -105,7 +131,7 @@ class Stock(object):
                                         device = Stock.get_device(consumable_id)
                 )
                 Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
-        Stock.create_history(consumable_id, quantity, username, status_choise='Приход')
+        Stock.create_history(consumable_id, device_id, quantity, username, status_choise='Приход')
         
         
         self.save()
@@ -119,22 +145,24 @@ class Stock(object):
         """
         Удаление картриджа со склада
         """
+        device_id = None
         consumable_id = str(consumable.id)
         if Stockroom.objects.filter(consumables = consumable_id):
             Stockroom.objects.filter(consumables = consumable_id).delete()
-            Stock.create_history(consumable_id, quantity, username, status_choise='Удаление')
+            Stock.create_history(consumable_id,device_id, quantity, username, status_choise='Удаление')
         self.save()
 
-    def device_add_consumable(self, consumable, quantity=1, username=None):
+    def device_add_consumable(self, consumable, device, quantity=1, username=None):
         """
         Установка расходника в устройство
         """
+        device_id = str(device)
         consumable_id = str(consumable.id)
         consumable_score = int(str(consumable.score))
         consumable_score -= quantity 
 
         Consumables.objects.filter(id = consumable_id).update(score = consumable_score)
         Stockroom.objects.filter(consumables = consumable_id).update(dateInstall = datetime.date.today())
-        Stock.create_history(consumable_id, quantity, username, status_choise='Расход')
+        Stock.create_history(consumable_id, device_id, quantity, username, status_choise='Расход')
 
         self.save()

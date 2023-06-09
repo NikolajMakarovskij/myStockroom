@@ -6,6 +6,7 @@ from django.db.models import Q
 from .stock import Stock, History
 from .forms import StockAddForm, ConsumableInstallForm
 from .models import Stockroom, Stock_cat
+from device.models import Device
 from django.core.cache import cache
 from catalog.utils import DataMixin
 from django.contrib import messages
@@ -155,9 +156,10 @@ def device_add_consumable(request, consumable_id):
     if form.is_valid():
         cd = form.cleaned_data
         stock.device_add_consumable(consumable=consumable,
-                quantity=cd['quantity'],
-                username = username,
-                )
+                                    device=cd['device_id'],
+                                    quantity=cd['quantity'],
+                                    username = username,
+                                    )
         messages.add_message(request,
                             level = messages.SUCCESS,
                             message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
