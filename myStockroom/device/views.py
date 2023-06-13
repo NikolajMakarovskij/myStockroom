@@ -1,5 +1,6 @@
 from .forms import deviceForm
 from stockroom.forms import ConsumableInstallForm
+from stockroom.models import History
 from .models import Device, Device_cat
 from django.views import generic
 from django.db.models import Q
@@ -128,17 +129,21 @@ class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
     template_name = 'device/device_detail.html'
     form_class = ConsumableInstallForm
     
+    
     def get_context_data(self, *, object_list=None, **kwargs):
+        self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
+        cons_his = History.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
         device_cat = cache.get('device_cat')
         if not device_cat:
             device_cat = Device_cat.objects.all()
             cache.set('device_cat', device_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete',)
+        c_def = self.get_user_context(title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete', device_history_list=cons_his)
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
+        context['get_device_id'] = self.request.session['get_device_id']
         return context
-
+    
 class deviceCreate(DataMixin, FormMessageMixin, CreateView):
     model = Device
     form_class = deviceForm

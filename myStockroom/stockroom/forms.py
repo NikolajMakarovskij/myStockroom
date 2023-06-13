@@ -24,6 +24,5 @@ class ConsumableInstallForm(forms.Form):
     """
     Форма использования расходника в технике. Добавляется в template и DetailView техники
     """
-    device_id = forms.CharField( widget=forms.TextInput())
     quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество', 
                                             widget=forms.Select(attrs={'class':'form-select form-select-lg btn-outline-dark'}))

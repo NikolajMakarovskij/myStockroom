@@ -2,7 +2,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            История действий
+            История замены расходников
         </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse" data-bs-parent="#accordionExample">
@@ -14,35 +14,20 @@
                     <th scope="col">Группа</th>
                     <th scope="col">Количество</th>
                     <th scope="col">Дата</th>
-                    <th scope="col">Статус</th>
                     <th scope="col">Пользователь</th>
                 </tr>
                 </thead>
             <tbody style="text-align:center">
-                {% for each in history_list %}
+                {% for each in device_history_list %}
                 <tr>
                 <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumableId %}">{{ each.consumable }}</a></td>
                 <td>{{ each.categories}}</td>
                 <td>{{ each.score }}</td>
                 <td>{{ each.dateInstall }}</td>
-                <td>
-                    {% if not each.device %}
-                        {{ each.status }}
-                    {% else %}
-                        {{ each.status }} на устройство 
-                        <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-                    {% endif %}
-                </td>
                 <td>{{ each.user }}</td>
                 </tr>
                 {% endfor %}
             </table>
-            <div class="d-flex justify-content-center input-group mt-3 ">
-                <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-                href="{% url 'stockroom:history_list' %}">
-                    Больше
-                </a>
-            </div>
         </div>
       </div>
     </div>

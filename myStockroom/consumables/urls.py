@@ -1,7 +1,9 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
+from .routers import *
 from .views import *
 
 urlpatterns = [
+    path('api/v1/', include(router.urls)),
     path('', consumableIndexView.as_view(), name='consumables_index'),
     #Расходники
     path('consumables/', consumablesView.as_view(), name='consumables_list'),

@@ -35,7 +35,7 @@ class Stock(object):
         return consumable_category
 
     def create_history(consumable_id, device_id, quantity, username, status_choise):
-        if Stock.add_category(consumable_id) == 'None' and not device_id:
+        if not (Stock.add_category(consumable_id)) and (not device_id):
             history = History.objects.create(
                 consumable=Consumables.objects.get(id = consumable_id).name, 
                 consumableId=Consumables.objects.get(id = consumable_id).id, 
@@ -44,7 +44,7 @@ class Stock(object):
                 user = username,
                 status = status_choise
             )
-        elif Stock.add_category(consumable_id) == 'None':
+        elif not (Stock.add_category(consumable_id)):
             history = History.objects.create(
                 consumable=Consumables.objects.get(id = consumable_id).name, 
                 consumableId=Consumables.objects.get(id = consumable_id).id,
@@ -61,6 +61,7 @@ class Stock(object):
                 consumableId=Consumables.objects.get(id = consumable_id).id,
                 score = quantity,
                 dateInstall = datetime.date.today(),
+                categories = Stock.add_category(consumable_id),
                 user = username,
                 status = status_choise
             )

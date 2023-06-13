@@ -150,13 +150,14 @@ def stock_remove_consumable(request, consumable_id):
 @require_POST
 def device_add_consumable(request, consumable_id):
     username = request.user.username
+    get_device_id = request.session['get_device_id']
     stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         stock.device_add_consumable(consumable=consumable,
-                                    device=cd['device_id'],
+                                    device=get_device_id,
                                     quantity=cd['quantity'],
                                     username = username,
                                     )

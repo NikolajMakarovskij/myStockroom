@@ -6,6 +6,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMi
 from catalog.utils import *
 from stockroom.forms import StockAddForm
 from django.core.cache import cache
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .serializers import *
 
 
 #Расходники главная
@@ -72,6 +77,64 @@ class consumablesCategoriesView(DataMixin, generic.ListView):
         return object_list        
 
         
+class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    queryset = Consumables.objects.all()
+    serializer_class = ConsumablesModelSerializer
+    success_message = '%(categories)s %(name)s успешно создано'
+    error_message = '%(categories)s %(name)s не удалось создать'
+
+    @action(methods=['get'], detail=False)
+    def get_consumables(self, request):
+        consumables = Consumables.objects.all()
+        return Response({'consumables': [c.name for c in consumables]})
+    
+    @action(methods=['get'], detail=True)
+    def get_consumable(self, request, pk=None):
+        consumable = Consumables.objects.get(pk=pk).consumable
+        return Response({
+            'consumable': consumable.name, 
+            'categories':consumable.categories,
+            'manufacturer':consumable.manufacturer, 
+            'buhCode':consumable.buhCode,
+            'serial':consumable.serial,
+            'serialImg':consumable.serialImg,
+            'invent':consumable.invent,
+            'inventImg':consumable.inventImg,
+            'description':consumable.description,
+            'score':consumable.score,
+            'note':consumable.note
+            })
+
+    @action(methods=['get'], detail=False)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Расходник")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    queryset = Categories.objects.all()
+    serializer_class = CategoriesModelSerializer
+    success_message = 'Категория %(name)s успешно создана'
+    error_message = 'Категория %(name)s не удалось создать'
+
+    @action(methods=['get'], detail=False)
+    def get_categories(self, request):
+        categories = Categories.objects.all()
+        return Response({'categories': [c.name for c in categories]})
+    
+    @action(methods=['get'], detail=True)
+    def get_category(self, request, pk=None):
+        category = Categories.objects.get(pk=pk).category
+        return Response({'category': category.name, 'slug':category.slug})
+
+    @action(methods=['get'], detail=False)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Категории")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
 
 class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Consumables
@@ -174,7 +237,63 @@ class accessoriesCategoriesView(DataMixin, generic.ListView):
         object_list = Accessories.objects.filter(categories__slug=self.kwargs['category_slug']).select_related('categories', 'manufacturer')
         return object_list        
 
-        
+class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    queryset = Accessories.objects.all()
+    serializer_class = AccessoriesModelSerializer
+    success_message = '%(categories)s %(name)s успешно создано'
+    error_message = '%(categories)s %(name)s не удалось создать'
+
+    @action(methods=['get'], detail=False)
+    def get_accessories(self, request):
+        accessories = Accessories.objects.all()
+        return Response({'accessories': [c.name for c in accessories]})
+    
+    @action(methods=['get'], detail=True)
+    def get_accessory(self, request, pk=None):
+        accessory = Accessories.objects.get(pk=pk).accessory
+        return Response({
+            'accessory': accessory.name, 
+            'categories':accessory.categories,
+            'manufacturer':accessory.manufacturer, 
+            'buhCode':accessory.buhCode,
+            'serial':accessory.serial,
+            'serialImg':accessory.serialImg,
+            'invent':accessory.invent,
+            'inventImg':accessory.inventImg,
+            'description':accessory.description,
+            'score':accessory.score,
+            'note':accessory.note
+            })
+
+    @action(methods=['get'], detail=False)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Комплектующие")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+class Acc_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    queryset = Acc_cat.objects.all()
+    serializer_class = Acc_catModelSerializer
+    success_message = 'Категория %(name)s успешно создана'
+    error_message = 'Категория %(name)s не удалось создать'
+
+    @action(methods=['get'], detail=False)
+    def get_acc_cat(self, request):
+        acc_cat = Acc_cat.objects.all()
+        return Response({'acc_cat': [c.name for c in acc_cat]})
+    
+    @action(methods=['get'], detail=True)
+    def get_acc_cat(self, request, pk=None):
+        acc_cat = Acc_cat.objects.get(pk=pk).acc_cat
+        return Response({'acc_cat': acc_cat.name, 'slug':acc_cat.slug})
+
+    @action(methods=['get'], detail=False)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Категории")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context        
 
 class accessoriesDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Accessories
