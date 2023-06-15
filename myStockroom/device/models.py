@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from workplace.models import Workplace
-from consumables.models import Consumables
+from consumables.models import Consumables, Accessories
 from counterparty.models import Manufacturer
 from catalog.utils import ModelMixin
 import uuid 
@@ -113,6 +113,14 @@ class Device(ModelMixin, models.Model):
         related_name='device',
         help_text="Укажите расходник",
         verbose_name="Расходник"
+        )
+    accessories = models.ForeignKey(
+        Accessories, 
+        blank=True, null=True,
+        on_delete=models.CASCADE,
+        related_name='device',
+        help_text="Укажите комплектующее",
+        verbose_name="Комплектующее"
         )
     score = models.IntegerField(
         blank=True, null=True,

@@ -16,7 +16,7 @@ menu = [
     {'title':  "Софт", 'url_name': 'software:software_list'},
     {'title':  "ЭЦП", 'url_name': 'signature:signature_list'},
     {'title':  "Справочники", 'url_name': 'catalog:references_list'},
-    {'title':  "Склад", 'url_name': 'stockroom:stock_list'},
+    {'title':  "Склад", 'url_name': 'stockroom:stock_index'},
     {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title':  "Комплектующие", 'url_name': 'consumables:accessories_list'},
     {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},

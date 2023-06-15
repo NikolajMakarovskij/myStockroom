@@ -145,18 +145,33 @@
   <div class="col-sm-6">
     {% if device.consumable.id %}
       <div class="d-flex justify-content-center input-group mt-3">
-          <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
-            {% csrf_token %}
-            <div class="input-group mb-3">
-              <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-              <div class="">{{ form.quantity }}</div>
-              <input type="submit" value="Установить картридж" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-            </div>
-          </form>
+        <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
+            <div class="">{{ form.quantity }}</div>
+            <input type="submit" value="Установить расходник" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+          </div>
+        </form>
       </div>
     {%endif%}
-    {%include 'stock/device_history_list.html' %}</div>
-  <div class="col-sm-6">{%include 'stock/history_short_list.html' %}</div>
+    {%include 'stock/device_con_history_list.html' %}
+  </div>
+  <div class="col-sm-6">
+    {% if device.accessories.id %}
+      <div class="d-flex justify-content-center input-group mt-3">
+        <form action="{% url 'stockroom:device_add_accessories' device.accessories.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
+            <div class="">{{ form.quantity }}</div>
+            <input type="submit" value="Установить комплектующее" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+          </div>
+        </form>
+      </div>
+    {%endif%}
+    {%include 'stock/device_acc_history_list.html' %}
+  </div>
 </div>
 
 

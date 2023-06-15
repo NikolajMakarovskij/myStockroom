@@ -1,6 +1,6 @@
 from django import forms
 from catalog.utils import WidgetCanAdd
-from consumables.models import Consumables
+from consumables.models import Consumables, Accessories
 from django.utils.translation import gettext_lazy as _
 from counterparty.models import Manufacturer
 from .models import *
@@ -9,7 +9,7 @@ from .models import *
 class deviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['name','categories','consumable','manufacturer','serial','serialImg','invent','inventImg','description','note', 'workplace']
+        fields = ['name','categories','workplace','manufacturer','serial','serialImg','invent','inventImg','description','note','accessories','consumable']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'categories': WidgetCanAdd(Device_cat, attrs={'class': 'form-select form-select-lg'}),
@@ -21,5 +21,6 @@ class deviceForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
             'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace", attrs={'class': 'form-select form-select-lg'}),
             'consumable': WidgetCanAdd(Consumables, related_url="consumables:new-consumables", attrs={'class': 'form-select form-select-lg'}),
+            'accessories': WidgetCanAdd(Accessories, related_url="consumables:new-accessories", attrs={'class': 'form-select form-select-lg'}),
             'note': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
         } 

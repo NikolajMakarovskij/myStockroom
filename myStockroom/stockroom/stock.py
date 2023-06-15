@@ -2,12 +2,14 @@ import datetime
 from django.conf import settings
 from device.models import Device
 from consumables.models import Consumables, Accessories
-from .models import Stockroom, Stock_cat, History
+from .models import *
 
 
 
 class Stock(object):
 
+
+    #Общие
     def __init__(self, request):
         """
         Инициализирует склад
@@ -19,11 +21,32 @@ class Stock(object):
             stock = self.session[settings.STOCK_SESSION_ID] = {}
         self.stock = stock
 
+    def save(self):
+        # Обновление сессии 
+        self.session[settings.STOCK_SESSION_ID] = self.stock
+        self.session.modified = True
+
+    def get_device(consumable_id):
+        """Получение устройства"""
+        con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
+        list_device = []
+        list_id = []
+        devices = ''
+        if con_device:
+            for device in con_device:
+                list_device.append(device.name)
+                list_id.append(device.id)
+        else:
+            devices = 'Нет'
+        for devices in list_device:
+                devices = ', '.join(list_device)
+        return devices
+
     def add_category(consumable_id):
-        """Получение категории из расходников"""
+        """Получение категории"""
         if not Consumables.objects.get(id = consumable_id).categories:
             consumable_category = 'None'
-        else:
+        else: 
             consumable_category = Consumables.objects.get(id = consumable_id).categories.name
             if Stock_cat.objects.filter(name=consumable_category):
                 consumable_category = Stock_cat.objects.get(name=consumable_category)
@@ -34,7 +57,9 @@ class Stock(object):
                     )
         return consumable_category
 
+    #Расходники
     def create_history(consumable_id, device_id, quantity, username, status_choise):
+        """Создание записи в истории расходников"""
         if not (Stock.add_category(consumable_id)) and (not device_id):
             history = History.objects.create(
                 consumable=Consumables.objects.get(id = consumable_id).name, 
@@ -79,24 +104,6 @@ class Stock(object):
             )
         return history
 
-    def get_device(consumable_id):
-        """Получение устройства"""
-        con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
-        list_device = []
-        list_id = []
-        devices = ''
-        if con_device:
-            for device in con_device:
-                list_device.append(device.name)
-                list_id.append(device.id)
-        else:
-            devices = 'Нет'
-        for devices in list_device:
-                devices = ', '.join(list_device)
-        return devices
-
-
-
     def add_consumable(self, consumable, quantity=1, number_rack=1, number_shelf=1, username=None):
         """
         Добавить расходник на склад или обновить его количество.
@@ -133,18 +140,11 @@ class Stock(object):
                 )
                 Consumables.objects.filter(id = consumable_id).update(score = int(quantity))
         Stock.create_history(consumable_id, device_id, quantity, username, status_choise='Приход')
-        
-        
         self.save()
-
-    def save(self):
-        # Обновление сессии 
-        self.session[settings.STOCK_SESSION_ID] = self.stock
-        self.session.modified = True
 
     def remove_consumable(self, consumable, quantity=0, username=None):
         """
-        Удаление картриджа со склада
+        Удаление расходника со склада
         """
         device_id = None
         consumable_id = str(consumable.id)
@@ -165,5 +165,150 @@ class Stock(object):
         Consumables.objects.filter(id = consumable_id).update(score = consumable_score)
         Stockroom.objects.filter(consumables = consumable_id).update(dateInstall = datetime.date.today())
         Stock.create_history(consumable_id, device_id, quantity, username, status_choise='Расход')
+        self.save()
+
+
+    #Комплектующие
+    def get_device_acc(consumable_id):
+        """Получение устройства"""
+        acc_device = list(Accessories.objects.get(id=consumable_id).device.all().distinct())
+        list_device = []
+        list_id = []
+        devices = ''
+        if acc_device:
+            for device in acc_device:
+                list_device.append(device.name)
+                list_id.append(device.id)
+        else:
+            devices = 'Нет'
+        for devices in list_device:
+                devices = ', '.join(list_device)
+        return devices
+
+    def add_category_acc(accessories_id):
+        """Получение категории"""
+        if not Accessories.objects.get(id = accessories_id).categories:
+            consumable_category = 'None'
+        else:
+            consumable_category = Accessories.objects.get(id = accessories_id).categories.name
+            if CategoryAcc.objects.filter(name=consumable_category):
+                consumable_category = CategoryAcc.objects.get(name=consumable_category)
+            else:
+                consumable_category = CategoryAcc.objects.create(
+                    name=Accessories.objects.get(id = accessories_id).categories.name,
+                    slug=Accessories.objects.get(id = accessories_id).categories.slug
+                    )
+        return consumable_category
+
+
+    def create_history_acc(accessories_id, device_id, quantity, username, status_choise):
+        """Создание записи в истории комплектующих"""
+        if not (Stock.add_category_acc(accessories_id)) and (not device_id):
+            history = HistoryAcc.objects.create(
+                accessories=Accessories.objects.get(id = accessories_id).name, 
+                accessoriesId=Accessories.objects.get(id = accessories_id).id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        elif not (Stock.add_category_acc(accessories_id)):
+            history = HistoryAcc.objects.create(
+                accessories=Accessories.objects.get(id = accessories_id).name, 
+                accessoriesId=Accessories.objects.get(id = accessories_id).id,
+                device=Device.objects.filter(id = device_id).get().name, 
+                deviceId=Device.objects.filter(id = device_id).get().id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        elif not device_id:
+            history = HistoryAcc.objects.create(
+                accessories=Accessories.objects.get(id = accessories_id).name, 
+                accessoriesId=Accessories.objects.get(id = accessories_id).id,
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                categories = Stock.add_category_acc(accessories_id),
+                user = username,
+                status = status_choise
+            )
+        else:
+            history = HistoryAcc.objects.create(
+                accessories=Accessories.objects.get(id = accessories_id).name, 
+                accessoriesId=Accessories.objects.get(id = accessories_id).id, 
+                device=Device.objects.filter(id = device_id).get().name, 
+                deviceId=Device.objects.filter(id = device_id).get().id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                categories = Stock.add_category_acc(accessories_id),
+                user = username,
+                status = status_choise
+            )
+        return history
+
+    def add_accessories(self, accessories, quantity=1, number_rack=1, number_shelf=1, username=None):
+        """
+        Добавить комплектующее на склад или обновить его количество.
+        """
+        accessories_id = str(accessories.id)
+        accessories_score = int(str(accessories.score))
+        accessories_add = Accessories.objects.get(id = accessories_id)
+        device_id = None
+        if StockAcc.objects.filter(accessories = accessories_id):
+            accessories_score += quantity 
+            Accessories.objects.filter(id = accessories_id).update(score = accessories_score)
+            StockAcc.objects.filter(accessories = accessories_id).update(
+                dateAddToStock = datetime.date.today(),
+                device = Stock.get_device_acc(accessories_id)
+            )
+        else:
+            if Stock.add_category_acc(accessories_id) == 'None':
+                StockAcc.objects.create(
+                                        accessories = accessories_add,
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                                        device = Stock.get_device_acc(accessories_id)
+                )
+                Accessories.objects.filter(id = accessories_id).update(score = int(quantity))
+            else:
+                StockAcc.objects.create(
+                                        accessories = accessories_add,
+                                        categories = Stock.add_category_acc(accessories_id),
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                                        device = Stock.get_device_acc(accessories_id)
+                )
+                Accessories.objects.filter(id = accessories_id).update(score = int(quantity))
+        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Приход')
+        self.save()
+
+
+
+    def remove_accessories(self, accessories, quantity=0, username=None):
+        """
+        Удаление комплектующего со склада
+        """
+        device_id = None
+        accessories_id = str(accessories.id)
+        if StockAcc.objects.filter(accessories = accessories_id):
+            StockAcc.objects.filter(accessories = accessories_id).delete()
+            Stock.create_history_acc(accessories_id,device_id, quantity, username, status_choise='Удаление')
+        self.save()
+
+    def device_add_accessories(self, accessories, device, quantity=1, username=None):
+        """
+        Установка расходника в устройство
+        """
+        device_id = str(device)
+        accessories_id = str(accessories.id)
+        accessories_score = int(str(accessories.score))
+        accessories_score -= quantity 
+
+        Accessories.objects.filter(id = accessories_id).update(score = accessories_score)
+        StockAcc.objects.filter(accessories = accessories_id).update(dateInstall = datetime.date.today())
+        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Расход')
 
         self.save()

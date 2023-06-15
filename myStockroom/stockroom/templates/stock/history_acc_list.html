@@ -21,21 +21,21 @@
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_list' %}active{% endif %}" href="{% url 'stockroom:history_list' %}">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_acc_list' %}active{% endif %}" href="{% url 'stockroom:history_acc_list' %}">
               Все группы
             </a>
         </li>
         {% for item in menu_categories %}
           <li class="nav-item ">
             <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
-              href="{% url 'stockroom:history_category' item.slug %}">{{item.name}}
+              href="{% url 'stockroom:history_acc_category' item.slug %}">{{item.name}}
             </a>
           </li>
         {% endfor %}
       </ul>
     </nav>
   {% endif %}
-  {% if not history_list%}
+  {% if not historyacc_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
@@ -47,7 +47,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
-          <th scope="col">Расходник</th>
+          <th scope="col">Комплектующее</th>
           <th scope="col">Группа</th>
           <th scope="col">Количество</th>
           <th scope="col">Дата</th>
@@ -56,9 +56,9 @@
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for each in history_list %}
+      {% for each in historyacc_list %}
       <tr>
-        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumableId %}">{{ each.consumable }}</a></td>
+        <td><a class="noDecoration" href="{% url 'consumables:accessories-detail' each.accessoriesId %}">{{ each.accessories }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.score }}</td>
         <td>{{ each.dateInstall }}</td>
@@ -68,8 +68,8 @@
           {% else %}
               {{ each.status }} на устройство 
               <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-          {% endif %}
-      </td>
+            {% endif %}
+        </td>
         <td>{{ each.user }}</td>
       </tr>
       {% endfor %}

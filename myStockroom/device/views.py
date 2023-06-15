@@ -1,6 +1,6 @@
 from .forms import deviceForm
 from stockroom.forms import ConsumableInstallForm
-from stockroom.models import History
+from stockroom.models import History, HistoryAcc
 from .models import Device, Device_cat
 from django.views import generic
 from django.db.models import Q
@@ -71,30 +71,6 @@ class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = '%(categories)s %(name)s успешно создано'
     error_message = '%(categories)s %(name)s не удалось создать'
 
-    @action(methods=['get'], detail=False)
-    def get_devices(self, request):
-        devices = Device.objects.all()
-        return Response({'devices': [c.name for c in devices]})
-    
-    @action(methods=['get'], detail=True)
-    def get_device(self, request, pk=None):
-        device = Device.objects.get(pk=pk).device
-        return Response({
-            'device': device.name, 
-            'categories':device.categories,
-            'manufacturer':device.manufacturer, 
-            'serial':device.serial,
-            'serialImg':device.serialImg,
-            'invent':device.invent,
-            'inventImg':device.inventImg,
-            'description':device.description,
-            'workplace':device.workplace,
-            'consumable':device.consumable,
-            'score':device.score,
-            'note':device.note
-            })
-
-    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Устройство")
@@ -107,17 +83,7 @@ class Device_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = 'Категория %(name)s успешно создано'
     error_message = 'Категория %(name)s не удалось создать'
 
-    @action(methods=['get'], detail=False)
-    def get_device_cats(self, request):
-        device_cats = Device_cat.objects.all()
-        return Response({'device_cats': [c.name for c in device_cats]})
-    
-    @action(methods=['get'], detail=True)
-    def get_device_cat(self, request, pk=None):
-        device_cat = Device_cat.objects.get(pk=pk).device_cat
-        return Response({'device_cat': device_cat.name, 'slug':device_cat.slug})
 
-    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Категории")
@@ -133,12 +99,15 @@ class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
         cons_his = History.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
+        acc_his = HistoryAcc.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
         device_cat = cache.get('device_cat')
         if not device_cat:
             device_cat = Device_cat.objects.all()
             cache.set('device_cat', device_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete', device_history_list=cons_his)
+        c_def = self.get_user_context(
+            title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete',
+            device_con_history_list=cons_his, device_acc_history_list=acc_his)
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
         context['get_device_id'] = self.request.session['get_device_id']

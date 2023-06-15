@@ -1,5 +1,6 @@
 from .forms import *
 from .models import Consumables, Categories
+from stockroom.models import History, HistoryAcc
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
@@ -83,29 +84,6 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = '%(categories)s %(name)s успешно создано'
     error_message = '%(categories)s %(name)s не удалось создать'
 
-    @action(methods=['get'], detail=False)
-    def get_consumables(self, request):
-        consumables = Consumables.objects.all()
-        return Response({'consumables': [c.name for c in consumables]})
-    
-    @action(methods=['get'], detail=True)
-    def get_consumable(self, request, pk=None):
-        consumable = Consumables.objects.get(pk=pk).consumable
-        return Response({
-            'consumable': consumable.name, 
-            'categories':consumable.categories,
-            'manufacturer':consumable.manufacturer, 
-            'buhCode':consumable.buhCode,
-            'serial':consumable.serial,
-            'serialImg':consumable.serialImg,
-            'invent':consumable.invent,
-            'inventImg':consumable.inventImg,
-            'description':consumable.description,
-            'score':consumable.score,
-            'note':consumable.note
-            })
-
-    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Расходник")
@@ -116,25 +94,12 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
     success_message = 'Категория %(name)s успешно создана'
-    error_message = 'Категория %(name)s не удалось создать'
+    error_message = 'Категория %(name)s не удалось создать' 
 
-    @action(methods=['get'], detail=False)
-    def get_categories(self, request):
-        categories = Categories.objects.all()
-        return Response({'categories': [c.name for c in categories]})
-    
-    @action(methods=['get'], detail=True)
-    def get_category(self, request, pk=None):
-        category = Categories.objects.get(pk=pk).category
-        return Response({'category': category.name, 'slug':category.slug})
-
-    @action(methods=['get'], detail=False)
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Категории")
-        context = dict(list(context.items()) + list(c_def.items()))
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
         return context
-
 
 class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Consumables
@@ -142,8 +107,9 @@ class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
     form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        cons_his = History.objects.filter(consumableId=Consumables.objects.filter(pk=self.kwargs['pk']).get().id)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходник",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete',)
+        c_def = self.get_user_context(title="Расходник",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete',history_con_list=cons_his)
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 
@@ -243,29 +209,6 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = '%(categories)s %(name)s успешно создано'
     error_message = '%(categories)s %(name)s не удалось создать'
 
-    @action(methods=['get'], detail=False)
-    def get_accessories(self, request):
-        accessories = Accessories.objects.all()
-        return Response({'accessories': [c.name for c in accessories]})
-    
-    @action(methods=['get'], detail=True)
-    def get_accessory(self, request, pk=None):
-        accessory = Accessories.objects.get(pk=pk).accessory
-        return Response({
-            'accessory': accessory.name, 
-            'categories':accessory.categories,
-            'manufacturer':accessory.manufacturer, 
-            'buhCode':accessory.buhCode,
-            'serial':accessory.serial,
-            'serialImg':accessory.serialImg,
-            'invent':accessory.invent,
-            'inventImg':accessory.inventImg,
-            'description':accessory.description,
-            'score':accessory.score,
-            'note':accessory.note
-            })
-
-    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Комплектующие")
@@ -278,17 +221,6 @@ class Acc_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = 'Категория %(name)s успешно создана'
     error_message = 'Категория %(name)s не удалось создать'
 
-    @action(methods=['get'], detail=False)
-    def get_acc_cat(self, request):
-        acc_cat = Acc_cat.objects.all()
-        return Response({'acc_cat': [c.name for c in acc_cat]})
-    
-    @action(methods=['get'], detail=True)
-    def get_acc_cat(self, request, pk=None):
-        acc_cat = Acc_cat.objects.get(pk=pk).acc_cat
-        return Response({'acc_cat': acc_cat.name, 'slug':acc_cat.slug})
-
-    @action(methods=['get'], detail=False)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Категории")
@@ -298,12 +230,12 @@ class Acc_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class accessoriesDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Accessories
     template_name = 'consumables/accessories_detail.html'
-    #Добавить форму склада комплектующих
     form_class = StockAddForm 
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        cons_his = HistoryAcc.objects.filter(accessoriesId=Accessories.objects.filter(pk=self.kwargs['pk']).get().id)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Комплектующее",add='consumables:new-accessories',update='consumables:accessories-update',delete='consumables:accessories-delete',)
+        c_def = self.get_user_context(title="Комплектующее",add='consumables:new-accessories',update='consumables:accessories-update',delete='consumables:accessories-delete',history_con_list=cons_his)
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 

@@ -7,7 +7,7 @@
       </h2>
       <div id="collapseOne" class="accordion-collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-            {% if not history_list%}
+            {% if not history_con_list%}
                 <table class="table align-middle table-hover" style="text-align:center">
                 <thead> 
                     <tr>
@@ -19,7 +19,7 @@
                 <table class="table align-middle table-hover" style="text-align:center">
                 <thead>
                     <tr>
-                    <th scope="col">Расходник</th>
+                    <th scope="col">Устройство</th>
                     <th scope="col">Группа</th>
                     <th scope="col">Количество</th>
                     <th scope="col">Дата</th>
@@ -28,31 +28,30 @@
                     </tr>
                 </thead>
                 <tbody style="text-align:center">
-                {% for each in history_list %}
+                {% for each in history_con_list %}
                 <tr>
-                    <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.consumableId %}">{{ each.consumable }}</a></td>
-                    <td>{{ each.categories}}</td>
+                    <td>
+                        {% if not each.deviceId %}
+                            <div>Нет устроства</div>
+                        {% else %}
+                            <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not each.categories %}
+                            <div>Нет группы</div>
+                        {% else %}
+                            {{ each.categories }}
+                        {% endif %}
+                    </td>
                     <td>{{ each.score }}</td>
                     <td>{{ each.dateInstall }}</td>
-                    <td>
-                    {% if not each.device %}
-                        {{ each.status }}
-                    {% else %}
-                        {{ each.status }} на устройство 
-                        <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-                    {% endif %}
-                </td>
+                    <td>{{ each.status }}</td>
                     <td>{{ each.user }}</td>
                 </tr>
                 {% endfor %}
                 </table>
             {% endif %}
-            <div class="d-flex justify-content-center input-group mt-3 ">
-                <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-                href="{% url 'stockroom:history_list' %}">
-                    Больше
-                </a>
-            </div>
         </div>
       </div>
     </div>
