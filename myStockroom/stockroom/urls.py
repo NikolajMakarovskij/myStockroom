@@ -14,7 +14,7 @@ urlpatterns = [
     path(r'^stockroom/consumable/remove/(?P<consumable_id>\d+)/$', device_add_consumable, name='device_add_consumable'),
 
         
-    re_path(r'^history$', HistoryView.as_view(), name='history_list'),
+    re_path(r'^history/$', HistoryView.as_view(), name='history_list'),
     re_path(r'^history/search$', HistoryView.as_view(), name='history_search'),
     path('history/category/<slug:category_slug>', HistoryCategoriesView.as_view(), name='history_category'),
 
@@ -28,7 +28,7 @@ urlpatterns = [
     path(r'^accessories/stockroom/accessories/remove/(?P<accessories_id>\d+)/$', device_add_accessories, name='device_add_accessories'),
 
         
-    re_path(r'^accessories/history$', HistoryAccView.as_view(), name='history_acc_list'),
+    re_path(r'^accessories/history/$', HistoryAccView.as_view(), name='history_acc_list'),
     re_path(r'^accessories/history/search$', HistoryAccView.as_view(), name='history_acc_search'),
     path('accessories/history/category/<slug:category_slug>', HistoryAccCategoriesView.as_view(), name='history_acc_category'),
 

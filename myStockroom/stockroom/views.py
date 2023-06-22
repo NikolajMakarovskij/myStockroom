@@ -100,7 +100,6 @@ class HistoryView(DataMixin, generic.ListView):
                 Q(consumable__icontains=query) | 
                 Q(categories__name__icontains=query) |
                 Q(device__icontains=query) |
-                Q(categories__icontains=query) |
                 Q(status__icontains=query) |
                 Q(dateInstall__icontains=query) |
                 Q(user__icontains=query) 

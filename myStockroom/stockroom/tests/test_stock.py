@@ -66,10 +66,11 @@ def test_stock_create_history():
     """Проверяет работу метода add_history класса Stock"""
     consumable = create_consumable()
     consumable_id = consumable.id
+    device_id = None
     quantity = 1
     username = 'admin'
     status_choise = 'Приход'
-    Stock.create_history(consumable_id, quantity, username, status_choise)
+    Stock.create_history(consumable_id, device_id, quantity, username, status_choise)
     test_history = History.objects.get(consumable = 'my_consumable')
 
     assert History.objects.count() == 1
