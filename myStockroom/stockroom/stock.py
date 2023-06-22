@@ -45,7 +45,7 @@ class Stock(object):
     def add_category(consumable_id):
         """Получение категории"""
         if not Consumables.objects.get(id = consumable_id).categories:
-            consumable_category = 'None'
+            consumable_category = None
         else: 
             consumable_category = Consumables.objects.get(id = consumable_id).categories.name
             if Stock_cat.objects.filter(name=consumable_category):

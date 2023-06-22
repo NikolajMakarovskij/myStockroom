@@ -221,15 +221,18 @@ def test_stock_remove_consumable(client):
 @pytest.mark.django_db
 def test_stock_device_add_consumable(client):
     """Проверяет работу метода add_consumable класса Stock"""
+    from device.models import Device
     create_session(client)
     consumable = create_consumable()
+    Device.objects.create(name='device', consumable = consumable)
+    device = Device.objects.get(name='device').id
     quantity = 5
     number_rack = 3
     number_shelf = 13
     username = 'admin'
     add_consumables_in_devices(consumable)
     Stock.add_consumable(self = Stock(client), consumable = consumable, quantity = quantity, number_rack = number_rack, number_shelf = number_shelf, username = username)
-    Stock.device_add_consumable(self = Stock(client), consumable = consumable, quantity=1, username=username)
+    Stock.device_add_consumable(self = Stock(client), consumable = consumable, device=device, quantity=1, username=username)
     test_get_stock = Stockroom.objects.get(consumables__name='my_consumable')
     test_history = History.objects.get(status='Расход')
 

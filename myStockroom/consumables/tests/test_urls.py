@@ -9,7 +9,7 @@ from ..models import Categories, Consumables, Accessories, Acc_cat
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
    warnings.filterwarnings(action="ignore")
-   links = ['/consumables/consumables/','/consumables/consumables/search','/consumables/accessories/','/consumables/accessories/search']
+   links = ['/consumables/','/consumables/consumables/','/consumables/consumables/search','/consumables/accessories/','/consumables/accessories/search']
    for link in links:
       url = (link)
       response = client.get(url)
@@ -19,6 +19,7 @@ def test_list_url_exists_at_desired_location(client):
 def test_list_uses_correct_url_nad_template(client):
    warnings.filterwarnings(action="ignore")
    links = [
+      {'link': 'consumables:consumables_index','template': 'consumables/consumables_index.html'},
       {'link': 'consumables:consumables_list','template': 'consumables/consumables_list.html'},
       {'link': 'consumables:consumables_search','template': 'consumables/consumables_list.html'},
       {'link': 'consumables:new-consumables','template': 'Forms/add.html'},

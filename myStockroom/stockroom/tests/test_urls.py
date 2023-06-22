@@ -27,6 +27,7 @@ def test_list_url_exists_at_desired_location(client):
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
    links = [
+      {'link': 'stockroom:stock_index','template': 'stock/stock_index.html'},
       {'link': 'stockroom:stock_list','template': 'stock/stock_list.html'},
       {'link': 'stockroom:stock_search','template': 'stock/stock_list.html'},
       {'link': 'stockroom:history_list','template': 'stock/history_list.html'},
