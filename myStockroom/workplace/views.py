@@ -38,23 +38,6 @@ class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceModelSerializer
 
-    @action(methods=['get'], detail=False)
-    def get_rooms(self, request):
-        rooms = Room.objects.all()
-        return Response({'room': [c.name for c in rooms]})
-    
-    @action(methods=['get'], detail=True)
-    def get_room(self, request, pk=None):
-        room = Workplace.objects.get(pk=pk).room
-        return Response({'room': room.name, 'floor':room.floor, 'building':room.building})
-
-    @action(methods=['get'], detail=False)
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочее место")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
 class WorkplaceDetailView(DataMixin, generic.DetailView):
     model = Workplace
     template_name = 'workplace/workplace_detail.html'
@@ -132,12 +115,6 @@ class RoomListView(DataMixin, generic.ListView):
 class RoomRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кабинет")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
 class RoomDetailView(DataMixin, generic.DetailView):
     model = Room

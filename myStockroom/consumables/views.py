@@ -84,10 +84,8 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = '%(categories)s %(name)s успешно создано'
     error_message = '%(categories)s %(name)s не удалось создать'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходник")
-        context = dict(list(context.items()) + list(c_def.items()))
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
         return context
 
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
@@ -99,6 +97,7 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context.update({"request": self.request})
+        context.update({"menu": menu})
         return context
 
 class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):

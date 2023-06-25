@@ -1,9 +1,8 @@
 from .forms import *
 from .models import References
 from django.views import generic
-from .utils import *
+from .utils import DataMixin, menu 
 from signature.models import Signature
-
 
 #Главная
 class indexView(generic.ListView):

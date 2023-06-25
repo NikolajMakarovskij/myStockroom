@@ -1,5 +1,5 @@
-from django.urls import path, re_path
-from .views import *
+from django.urls import path, re_path, include
+from .views import indexView, referencesView
 
 urlpatterns = [
     #главная

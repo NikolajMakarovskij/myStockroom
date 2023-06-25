@@ -10,6 +10,9 @@ then
     echo "Старт!"
 fi
 # Выполняем миграции
-python manage.py makemigrations
-python manage.py migrate
+python3 manage.py makemigrations
+sleep 1
+python3 manage.py migrate
+sleep 1
+python3 manage.py collectstatic
 exec "$@"
