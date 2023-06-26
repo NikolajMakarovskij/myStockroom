@@ -397,7 +397,7 @@ class CategoryDev(ModelMixin, models.Model):
 
 class HistoryDev(models.Model):
         """
-        Модель для хранения истории использования комплектующих
+        Модель для хранения истории использования устройств
         """
         id = models.UUIDField(
             primary_key=True, db_index=True,
