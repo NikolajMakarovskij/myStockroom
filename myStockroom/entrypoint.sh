@@ -15,4 +15,6 @@ sleep 1
 python3 manage.py migrate
 sleep 1
 python3 manage.py collectstatic
+sleep 1
+pytest --cov
 exec "$@"
