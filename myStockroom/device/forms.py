@@ -9,7 +9,7 @@ from .models import *
 class deviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['name','categories','workplace','manufacturer','serial','serialImg','invent','inventImg','description','note','accessories','consumable']
+        fields = ['name','categories','manufacturer','serial','serialImg','invent','inventImg','description','note','accessories','consumable']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'categories': WidgetCanAdd(Device_cat, attrs={'class': 'form-select form-select-lg'}),
@@ -19,7 +19,6 @@ class deviceForm(forms.ModelForm):
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput( attrs={'class': 'form-control form-control-lg'}),
             'description': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
-            'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace", attrs={'class': 'form-select form-select-lg'}),
             'consumable': WidgetCanAdd(Consumables, related_url="consumables:new-consumables", attrs={'class': 'form-select form-select-lg'}),
             'accessories': WidgetCanAdd(Accessories, related_url="consumables:new-accessories", attrs={'class': 'form-select form-select-lg'}),
             'note': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
