@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Stock_cat, History, HistoryAcc, CategoryAcc
+from .models import Stock_cat, History, HistoryAcc, CategoryAcc, HistoryDev, CategoryDev
 from catalog.utils import ExportAdmin
 
 
@@ -41,3 +41,22 @@ class CategoryAccAdmin(ExportAdmin, admin.ModelAdmin):
     actions = [ExportAdmin.export_to_csv]
     
 admin.site.register(CategoryAcc, CategoryAccAdmin)
+
+#Устройства
+class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
+    model = HistoryDev
+    list_display = ['devicies','deviciesId','categories','score','dateInstall', 'user']
+    list_filter = ['categories']
+    search_fields = ['devicies','categories','score','dateInstall']
+    actions = [ExportAdmin.export_to_csv]
+    
+admin.site.register(HistoryDev, HistoryDevAdmin)
+
+class CategoryDevAdmin(ExportAdmin, admin.ModelAdmin):
+    model = CategoryDev
+    list_display = ['name', 'slug']
+    search_fields = ['name']
+    prepopulated_fields = {"slug": ("name", )}
+    actions = [ExportAdmin.export_to_csv]
+    
+admin.site.register(CategoryDev, CategoryDevAdmin)

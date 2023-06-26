@@ -391,8 +391,8 @@ class CategoryDev(ModelMixin, models.Model):
 
 
     class Meta:
-        verbose_name = 'Группа комплектующих'
-        verbose_name_plural = 'Группы комплектующих'
+        verbose_name = 'Группа устройств'
+        verbose_name_plural = 'Группы устройств'
         ordering = ['name']
 
 class HistoryDev(models.Model):
