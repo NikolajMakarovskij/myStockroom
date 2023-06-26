@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ "$DATABASE" = "postgres" ]
+if [ "$DATABASE" = "buildAndTech" ]
 then
     # если база еще не запущена
     echo "Ожидание..."
