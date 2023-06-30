@@ -49,8 +49,8 @@ class EmployeeCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = employeeForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:employee_list')
-    success_message = 'Сотрудник %(name)s успешно создан'
-    error_message = 'Сотрудника %(name)s не удалось создать'
+    success_message = f"Сотрудник %(name)s успешно создан"
+    error_message = f"Сотрудника %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,8 +63,8 @@ class EmployeeUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = employeeForm
     success_url = reverse_lazy('employee:employee_list')
-    success_message = 'Сотрудник %(name)s успешно обновлен'
-    error_message = 'Сотрудника %(name)s не удалось обновить'
+    success_message = f"Сотрудник %(name)s успешно обновлен"
+    error_message = f"Сотрудника %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -76,8 +76,8 @@ class EmployeeDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Employee
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:employee_list')
-    success_message = 'Сотрудник успешно удален'
-    error_message = 'Сотрудника не удалось удалить'
+    success_message = f"Сотрудник успешно удален"
+    error_message = f"Сотрудника не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -121,8 +121,8 @@ class postCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = postForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:post_list')
-    success_message = 'Должность %(name)s успешно создана'
-    error_message = 'Должность %(name)s не удалось создать'
+    success_message = f"Должность %(name)s успешно создана"
+    error_message = f"Должность %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,8 +135,8 @@ class postUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = postForm
     success_url = reverse_lazy('employee:post_list')
-    success_message = 'Должность %(name)s успешно обновлена'
-    error_message = 'Должность %(name)s не удалось обновить'
+    success_message = f"Должность %(name)s успешно обновлена"
+    error_message = f"Должность %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -148,8 +148,8 @@ class postDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Post
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:post_list')
-    success_message = 'Должность успешно удалена'
-    error_message = 'Должность не удалось удалить'
+    success_message = f"Должность успешно удалена"
+    error_message = f"Должность не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,8 +192,8 @@ class departamentCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = departamentForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('employee:departament_list')
-    success_message = 'Отдел %(name)s успешно создана'
-    error_message = 'Отдел %(name)s не удалось создать'
+    success_message = f"Отдел %(name)s успешно создана"
+    error_message = f"Отдел %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -206,8 +206,8 @@ class departamentUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = departamentForm
     success_url = reverse_lazy('employee:departament_list')
-    success_message = 'Отдел %(name)s успешно обновлен'
-    error_message = 'Отдел %(name)s не удалось обновить'
+    success_message = f"Отдел %(name)s успешно обновлен"
+    error_message = f"Отдел %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -219,8 +219,8 @@ class departamentDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Departament
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:departament_list')
-    success_message = 'Отдел успешно удален'
-    error_message = 'Отдел не удалось удалить'
+    success_message = f"Отдел успешно удален"
+    error_message = f"Отдел не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

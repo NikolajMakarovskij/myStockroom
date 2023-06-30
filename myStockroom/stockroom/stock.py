@@ -120,7 +120,7 @@ class Stock(object):
                 device = Stock.get_device(consumable_id)
             )
         else:
-            if Stock.add_category(consumable_id) == 'None':
+            if Stock.add_category(consumable_id) is None:
                 Stockroom.objects.create(
                                         consumables = consumable_add,
                                         dateAddToStock = datetime.date.today(),
@@ -263,7 +263,7 @@ class Stock(object):
                 device = Stock.get_device_acc(accessories_id)
             )
         else:
-            if Stock.add_category_acc(accessories_id) == 'None':
+            if Stock.add_category_acc(accessories_id) is None:
                 StockAcc.objects.create(
                                         accessories = accessories_add,
                                         dateAddToStock = datetime.date.today(),
@@ -368,7 +368,7 @@ class Stock(object):
                 dateAddToStock = datetime.date.today(),
             )
         else:
-            if Stock.add_category_dev(device_id) == 'None':
+            if Stock.add_category_dev(device_id) is None:
                 StockDev.objects.create(
                                         devicies = device_add,
                                         dateAddToStock = datetime.date.today(),

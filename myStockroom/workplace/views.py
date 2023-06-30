@@ -53,8 +53,8 @@ class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = workplaceForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:workplace_list')
-    success_message = 'Рабочее место %(name)s успешно создано'
-    error_message = 'Рабочее место %(name)s не удалось создать'
+    success_message = f"Рабочее место %(name)s успешно создано"
+    error_message = f"Рабочее место %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,8 +67,8 @@ class WorkplaceUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = workplaceForm
     success_url = reverse_lazy('workplace:workplace_list')
-    success_message = 'Рабочее место %(name)s успешно обновлено'
-    error_message = 'Рабочее место %(name)s не удалось обновить'
+    success_message = f"Рабочее место %(name)s успешно обновлено"
+    error_message = f"Рабочее место %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,8 +80,8 @@ class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Workplace
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:workplace_list')
-    success_message = 'Рабочее место успешно удалено'
-    error_message = 'Рабочее место не удалось удалить'
+    success_message = f"Рабочее место успешно удалено"
+    error_message = f"Рабочее место не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -131,8 +131,8 @@ class RoomCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = roomForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:room_list')
-    success_message = 'Кабинет %(name)s успешно создан'
-    error_message = 'Кабинет %(name)s не удалось создать'
+    success_message = f"Кабинет %(name)s успешно создан"
+    error_message = f"Кабинет %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,8 +145,8 @@ class RoomUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = roomForm
     success_url = reverse_lazy('workplace:room_list')
-    success_message = 'Кабинет %(name)s успешно обновлен'
-    error_message = 'Кабинет %(name)s не удалось обновить'
+    success_message = f"Кабинет %(name)s успешно обновлен"
+    error_message = f"Кабинет %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -158,8 +158,8 @@ class RoomDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room_list')
-    success_message = 'Кабинет успешно удален'
-    error_message = 'Кабинет не удалось удалить'
+    success_message = f"Кабинет успешно удален"
+    error_message = f"Кабинет не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

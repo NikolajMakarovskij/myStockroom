@@ -54,8 +54,8 @@ class manufacturerCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = manufacturerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = 'Производитель %(name)s успешно создан'
-    error_message = 'Производителя %(name)s не удалось создать'
+    success_message = f"Производитель %(name)s успешно создан"
+    error_message = f"Производителя %(name)s не удалось создать"
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,8 +68,8 @@ class manufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = manufacturerForm
     success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = 'Производитель %(name)s успешно обновлен'
-    error_message = 'Производителя %(name)s не удалось обновить'
+    success_message = f"Производитель %(name)s успешно обновлен"
+    error_message = f"Производителя %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,8 +81,8 @@ class manufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = 'Производитель успешно удален'
-    error_message = 'Производителя не удалось удалить'
+    success_message = f"Производитель успешно удален"
+    error_message = f"Производителя не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -43,8 +43,8 @@ class softwareCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = softwareForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:software_list')
-    success_message = 'ПО %(name)s успешно создано'
-    error_message = 'ПО %(name)s не удалось создать'
+    success_message = f"ПО %(name)s успешно создано"
+    error_message = f"ПО %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -57,8 +57,8 @@ class softwareUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = softwareForm
     success_url = reverse_lazy('software:software_list')
-    success_message = 'ПО %(name)s успешно обновлено'
-    error_message = 'ПО %(name)s не удалось обновить'
+    success_message = f"ПО %(name)s успешно обновлено"
+    error_message = f"ПО %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,8 +70,8 @@ class softwareDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Software
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:software_list')
-    success_message = 'ПО успешно удалено'
-    error_message = 'ПО не удалось удалить'
+    success_message = f"ПО успешно удалено"
+    error_message = f"ПО не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,8 +116,8 @@ class OSCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = OSForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('software:OS_list')
-    success_message = 'ОС %(name)s успешно создана'
-    error_message = 'ОС %(name)s не удалось создать'
+    success_message = f"ОС %(name)s успешно создана"
+    error_message = f"ОС %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -130,8 +130,8 @@ class OSUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = OSForm
     success_url = reverse_lazy('software:OS_list')
-    success_message = 'ОС %(name)s успешно обновлена'
-    error_message = 'ОС %(name)s не удалось обновить'
+    success_message = f"ОС %(name)s успешно обновлена"
+    error_message = f"ОС %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -143,8 +143,8 @@ class OSDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Os
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:OS_list')
-    success_message = 'ОС успешно удалена'
-    error_message = 'ОС не удалось удалить'
+    success_message = f"ОС успешно удалена"
+    error_message = f"ОС не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

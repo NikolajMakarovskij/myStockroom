@@ -81,8 +81,8 @@ class consumablesCategoriesView(DataMixin, generic.ListView):
 class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Consumables.objects.all()
     serializer_class = ConsumablesModelSerializer
-    success_message = '%(categories)s %(name)s успешно создано'
-    error_message = '%(categories)s %(name)s не удалось создать'
+    success_message = f"%(categories)s %(name)s успешно создано"
+    error_message = f"%(categories)s %(name)s не удалось создать"
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -91,8 +91,8 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
-    success_message = 'Категория %(name)s успешно создана'
-    error_message = 'Категория %(name)s не удалось создать' 
+    success_message = f"Категория %(name)s успешно создана"
+    error_message = f"Категория %(name)s не удалось создать" 
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -117,8 +117,8 @@ class consumablesCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = consumablesForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:consumables_list')
-    success_message = 'Расходник %(name)s успешно создан'
-    error_message = 'Расходник %(name)s не удалось создать'
+    success_message = f"Расходник %(name)s успешно создан"
+    error_message = f"Расходник %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -131,8 +131,8 @@ class consumablesUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = consumablesForm
     success_url = reverse_lazy('consumables:consumables_list')
-    success_message = 'Расходник %(name)s успешно обновлен'
-    error_message = 'Расходник %(name)s не удалось обновить'
+    success_message = f"Расходник %(name)s успешно обновлен"
+    error_message = f"Расходник %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -144,8 +144,8 @@ class consumablesDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Consumables
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:consumables_list')
-    success_message = 'Расходник успешно удален'
-    error_message = 'Расходник не удалось удалить'
+    success_message = f"Расходник успешно удален"
+    error_message = f"Расходник не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,8 +205,8 @@ class accessoriesCategoriesView(DataMixin, generic.ListView):
 class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Accessories.objects.all()
     serializer_class = AccessoriesModelSerializer
-    success_message = '%(categories)s %(name)s успешно создано'
-    error_message = '%(categories)s %(name)s не удалось создать'
+    success_message = f"%(categories)s %(name)s успешно создано"
+    error_message = f"%(categories)s %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -217,8 +217,8 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class Acc_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Acc_cat.objects.all()
     serializer_class = Acc_catModelSerializer
-    success_message = 'Категория %(name)s успешно создана'
-    error_message = 'Категория %(name)s не удалось создать'
+    success_message = f"Категория %(name)s успешно создана"
+    error_message = f"Категория %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -243,8 +243,8 @@ class accessoriesCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = accessoriesForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('consumables:accessories_list')
-    success_message = 'Комплектующее %(name)s успешно создано'
-    error_message = 'Комплектующее %(name)s не удалось создать'
+    success_message = f"Комплектующее %(name)s успешно создано"
+    error_message = f"Комплектующее %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -257,8 +257,8 @@ class accessoriesUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = accessoriesForm
     success_url = reverse_lazy('consumables:accessories_list')
-    success_message = 'Комплектующее %(name)s успешно обновлен'
-    error_message = 'Комплектующее %(name)s не удалось обновить'
+    success_message = f"Комплектующее %(name)s успешно обновлен"
+    error_message = f"Комплектующее %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -270,8 +270,8 @@ class accessoriesDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Accessories
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:accessories_list')
-    success_message = 'Комплектующее успешно удален'
-    error_message = 'Комплектующее не удалось удалить'
+    success_message = f"Комплектующее успешно удален"
+    error_message = f"Комплектующее не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

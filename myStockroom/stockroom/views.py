@@ -141,13 +141,13 @@ def stock_add_consumable(request, consumable_id):
                 )
         messages.add_message(request,
                             level = messages.SUCCESS,
-                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлен на склад',
+                            message = f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт. успешно добавлен на склад",
                             extra_tags = 'Успешно добавлен'
                             )
     else:
         messages.add_message(request,
                             level = messages.ERROR,
-                            message = 'Не удалось добавить ' + consumable.name + ' на склад',
+                            message = f"Не удалось добавить {consumable.name} на склад",
                             extra_tags = 'Ошибка формы'
                             )
     return redirect('stockroom:stock_list')
@@ -159,7 +159,7 @@ def stock_remove_consumable(request, consumable_id):
     stock.remove_consumable(consumable, username = username,)
     messages.add_message(request,
                         level = messages.SUCCESS,
-                        message = consumable.name + ' успешно удален со склада',
+                        message = f"{consumable.name} успешно удален со склада",
                         extra_tags = 'Успешно удален'
                         )
     return redirect('stockroom:stock_list')
@@ -180,13 +180,13 @@ def device_add_consumable(request, consumable_id):
                                     )
         messages.add_message(request,
                             level = messages.SUCCESS,
-                            message = 'Расходник ' + consumable.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
+                            message = f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт. успешно списан со склада",
                             extra_tags = 'Успешное списание'
                             )
     else:
         messages.add_message(request,
                             level = messages.ERROR,
-                            message = 'Не удалось списать ' + consumable.name +  ' со склада',
+                            message = f"Не удалось списать {consumable.name} со склада",
                             extra_tags = 'Ошибка формы'
                             )
     return redirect('stockroom:stock_list')
@@ -307,13 +307,13 @@ def stock_add_accessories(request, accessories_id):
                 )
         messages.add_message(request,
                             level = messages.SUCCESS,
-                            message = 'Комплектующее ' + accessories.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлен на склад',
+                            message = f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт. успешно добавлен на склад",
                             extra_tags = 'Успешно добавлен'
                             )
     else:
         messages.add_message(request,
                             level = messages.ERROR,
-                            message = 'Не удалось добавить ' + accessories.name + ' на склад',
+                            message = f"Не удалось добавить {accessories.name} на склад",
                             extra_tags = 'Ошибка формы'
                             )
     return redirect('stockroom:stock_acc_list')
@@ -325,7 +325,7 @@ def stock_remove_accessories(request, accessories_id):
     stock.remove_accessories(accessories, username = username,)
     messages.add_message(request,
                         level = messages.SUCCESS,
-                        message = accessories.name + ' успешно удален со склада',
+                        message = f"{accessories.name} успешно удален со склада",
                         extra_tags = 'Успешно удален'
                         )
     return redirect('stockroom:stock_acc_list')
@@ -346,13 +346,13 @@ def device_add_accessories(request, accessories_id):
                                     )
         messages.add_message(request,
                             level = messages.SUCCESS,
-                            message = 'Комплектующее ' + accessories.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
+                            message = f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт. успешно списан со склада",
                             extra_tags = 'Успешное списание'
                             )
     else:
         messages.add_message(request,
                             level = messages.ERROR,
-                            message = 'Не удалось списать ' + accessories.name +  ' со склада',
+                            message = f"Не удалось списать {accessories.name} со склада",
                             extra_tags = 'Ошибка формы'
                             )
     return redirect('stockroom:stock_acc_list')
@@ -472,13 +472,13 @@ def stock_add_device(request, device_id):
                 )
         messages.add_message(request,
                             level = messages.SUCCESS,
-                            message = 'Устройство ' + device.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлено на склад',
+                            message = f"Устройство {device.name} в количестве {str(cd['quantity'])} шт. успешно добавлено на склад",
                             extra_tags = 'Успешно добавлен'
                             )
     else:
         messages.add_message(request,
                             level = messages.ERROR,
-                            message = 'Не удалось добавить ' + device.name + ' на склад',
+                            message = f"Не удалось добавить {device.name} на склад",
                             extra_tags = 'Ошибка формы'
                             )
     return redirect('stockroom:stock_dev_list')
@@ -490,7 +490,7 @@ def stock_remove_device(request, device_id):
     stock.remove_device(devicies, username = username,)
     messages.add_message(request,
                         level = messages.SUCCESS,
-                        message = devicies.name + ' успешно удален со склада',
+                        message = f"{devicies.name} успешно удален со склада",
                         extra_tags = 'Успешно удален'
                         )
     return redirect('stockroom:stock_dev_list')

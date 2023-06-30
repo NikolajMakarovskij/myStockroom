@@ -68,8 +68,8 @@ class deviceCategoryListView(DataMixin, generic.ListView):
 class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceModelSerializer
-    success_message = '%(categories)s %(name)s успешно создано'
-    error_message = '%(categories)s %(name)s не удалось создать'
+    success_message = f"%(categories)s %(name)s успешно создано"
+    error_message = f"%(categories)s %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,8 +80,8 @@ class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class Device_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Device_cat.objects.all()
     serializer_class = Device_catModelSerializer
-    success_message = 'Категория %(name)s успешно создано'
-    error_message = 'Категория %(name)s не удалось создать'
+    success_message = f"Категория %(name)s успешно создано"
+    error_message = f"Категория %(name)s не удалось создать"
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -118,8 +118,8 @@ class deviceCreate(DataMixin, FormMessageMixin, CreateView):
     form_class = deviceForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('device:device_list')
-    success_message = '%(categories)s %(name)s успешно создано'
-    error_message = '%(categories)s %(name)s не удалось создать'
+    success_message = f"%(categories)s %(name)s успешно создано"
+    error_message = f"%(categories)s %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -132,8 +132,8 @@ class deviceUpdate(DataMixin, FormMessageMixin, UpdateView):
     template_name = 'Forms/add.html'
     form_class = deviceForm
     success_url = reverse_lazy('device:device_list')
-    success_message = '%(categories)s %(name)s успешно обновлено'
-    error_message = '%(categories)s %(name)s не удалось обновить'
+    success_message = f"%(categories)s %(name)s успешно обновлено"
+    error_message = f"%(categories)s %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,8 +145,8 @@ class deviceDelete(DataMixin, DeleteView):
     model = Device
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('device:device_list')
-    success_message = '%(categories)s успешно удален'
-    error_message = '%(categories)s не удалось удалить'
+    success_message = f"%(categories)s успешно удален"
+    error_message = f"%(categories)s не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
