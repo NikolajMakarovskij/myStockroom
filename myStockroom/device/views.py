@@ -1,5 +1,5 @@
 from .forms import deviceForm
-from stockroom.forms import ConsumableInstallForm
+from stockroom.forms import ConsumableInstallForm, StockAddForm
 from stockroom.models import History, HistoryAcc
 from .models import Device, Device_cat
 from django.views import generic
@@ -93,7 +93,6 @@ class Device_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
     model = Device
     template_name = 'device/device_detail.html'
-    form_class = ConsumableInstallForm
     
     
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -111,6 +110,7 @@ class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
         context['get_device_id'] = self.request.session['get_device_id']
+        context['consumable_form'] = ConsumableInstallForm
         return context
     
 class deviceCreate(DataMixin, FormMessageMixin, CreateView):

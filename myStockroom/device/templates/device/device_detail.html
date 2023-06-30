@@ -141,6 +141,22 @@
       Удалить
   </a>
 </div>
+<div class="d-flex justify-content-center input-group mt-3 ">
+  <form action="{% url 'stockroom:stock_add_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.quantity.label }}</div>
+      <div class="">{{ stock_form.quantity }}</div>
+      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.room.label }}</div>
+      <div class=""></div>
+      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_rack.label }}</div>
+      <div class="">{{ stock_form.number_rack }}</div>
+      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_shelf.label }}</div>
+      <div class="">{{ stock_form.number_shelf }}</div>
+      <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">      
+    </div>
+  </form>
+</div>
 <div class="row g-2">
   <div class="col-sm-6">
     {% if device.consumable.id %}
@@ -148,8 +164,8 @@
         <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-            <div class="">{{ form.quantity }}</div>
+            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.consumable_form.quantity.label }}</div>
+            <div class="">{{ form.consumable_form.quantity }}</div>
             <input type="submit" value="Установить расходник" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
           </div>
         </form>
@@ -163,8 +179,8 @@
         <form action="{% url 'stockroom:device_add_accessories' device.accessories.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-            <div class="">{{ form.quantity }}</div>
+            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
+            <div class="">{{ consumable_form.quantity }}</div>
             <input type="submit" value="Установить комплектующее" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
           </div>
         </form>
