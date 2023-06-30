@@ -2,7 +2,7 @@ import datetime
 from django.conf import settings
 from device.models import Device
 from consumables.models import Consumables, Accessories
-from .models import *
+from .models import Stockroom, Stock_cat, History, StockAcc,CategoryAcc, HistoryAcc, StockDev, CategoryDev, HistoryDev 
 
 
 
@@ -26,6 +26,7 @@ class Stock(object):
         self.session[settings.STOCK_SESSION_ID] = self.stock
         self.session.modified = True
 
+    #Расходники
     def get_device(consumable_id):
         """Получение устройства"""
         con_device = list(Consumables.objects.get(id=consumable_id).device.all().distinct())
@@ -57,7 +58,6 @@ class Stock(object):
                     )
         return consumable_category
 
-    #Расходники
     def create_history(consumable_id, device_id, quantity, username, status_choise):
         """Создание записи в истории расходников"""
         if not (Stock.add_category(consumable_id)) and (not device_id):
@@ -188,17 +188,17 @@ class Stock(object):
     def add_category_acc(accessories_id):
         """Получение категории"""
         if not Accessories.objects.get(id = accessories_id).categories:
-            consumable_category = 'None'
+            accessories_category = 'None'
         else:
-            consumable_category = Accessories.objects.get(id = accessories_id).categories.name
-            if CategoryAcc.objects.filter(name=consumable_category):
-                consumable_category = CategoryAcc.objects.get(name=consumable_category)
+            accessories_category = Accessories.objects.get(id = accessories_id).categories.name
+            if CategoryAcc.objects.filter(name=accessories_category):
+                accessories_category = CategoryAcc.objects.get(name=accessories_category)
             else:
-                consumable_category = CategoryAcc.objects.create(
+                accessories_category = CategoryAcc.objects.create(
                     name=Accessories.objects.get(id = accessories_id).categories.name,
                     slug=Accessories.objects.get(id = accessories_id).categories.slug
                     )
-        return consumable_category
+        return accessories_category
 
 
     def create_history_acc(accessories_id, device_id, quantity, username, status_choise):
@@ -310,5 +310,106 @@ class Stock(object):
         Accessories.objects.filter(id = accessories_id).update(score = accessories_score)
         StockAcc.objects.filter(accessories = accessories_id).update(dateInstall = datetime.date.today())
         Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Расход')
+
+        self.save()
+
+
+    #устройства
+    def add_category_dev(device_id):
+        """Получение категории"""
+        if not Device.objects.get(id = device_id).categories:
+            device_category = 'None'
+        else:
+            device_category = Device.objects.get(id = device_id).categories.name
+            if CategoryDev.objects.filter(name=device_category):
+                device_category = CategoryDev.objects.get(name=device_category)
+            else:
+                device_category = CategoryDev.objects.create(
+                    name=Device.objects.get(id = device_id).categories.name,
+                    slug=Device.objects.get(id = device_id).categories.slug
+                    )
+        return device_category
+
+
+    def create_history_dev(device_id, quantity, username, status_choise):
+        """Создание записи в истории устройств"""
+        if not (Stock.add_category_dev(device_id)):
+            history = HistoryDev.objects.create(
+                device=Device.objects.get(id = device_id).name, 
+                deviceId=Device.objects.get(id = device_id).id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                user = username,
+                status = status_choise
+            )
+        else:
+            history = HistoryDev.objects.create(
+                device=Device.objects.filter(id = device_id).get().name, 
+                deviceId=Device.objects.filter(id = device_id).get().id, 
+                score = quantity,
+                dateInstall = datetime.date.today(),
+                categories = Stock.add_category_acc(device_id),
+                user = username,
+                status = status_choise
+            )
+        return history
+
+    def add_device(self, device, quantity=1, number_rack=1, number_shelf=1, username=None):
+        """
+        Добавить устройство на склад или обновить его количество.
+        """
+        device_id = str(device.id)
+        device_score = int(str(device.score))
+        device_add = Device.objects.get(id = device_id)
+        if StockDev.objects.filter(devicies = device_id):
+            device_score += quantity 
+            Device.objects.filter(id = device_id).update(score = device_score)
+            StockDev.objects.filter(devicies = device_id).update(
+                dateAddToStock = datetime.date.today(),
+            )
+        else:
+            if Stock.add_category_dev(device_id) == 'None':
+                StockDev.objects.create(
+                                        devicies = device_add,
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                )
+                Device.objects.filter(id = device_id).update(score = int(quantity))
+            else:
+                StockDev.objects.create(
+                                        devicies = device_add,
+                                        categories = Stock.add_category_dev(device_id),
+                                        dateAddToStock = datetime.date.today(),
+                                        rack=int(number_rack),
+                                        shelf=int(number_shelf),
+                )
+                Device.objects.filter(id = device_id).update(score = int(quantity))
+        Stock.create_history_dev(device_id, quantity, username, status_choise='Приход')
+        self.save()
+
+
+
+    def remove_device(self, device, quantity=0, username=None):
+        """
+        Удаление устройства со склада
+        """
+        device_id = str(device.id)
+        if StockDev.objects.filter(devicies = device_id):
+            StockDev.objects.filter(devicies = device_id).delete()
+            Stock.create_history_dev(device_id, quantity, username, status_choise='Удаление')
+        self.save()
+
+    def move_device(self, device, quantity=1, username=None):
+        """
+        Перемещение устройства
+        """
+        device_id = str(device)
+        device_score = int(str(device.score))
+        device_score -= quantity 
+
+        Device.objects.filter(id = device_id).update(score = device_score)
+        StockDev.objects.filter(devicies = device_id).update(dateInstall = datetime.date.today())
+        Stock.create_history_dev(device_id, quantity, username, status_choise='Перемещение')
 
         self.save()

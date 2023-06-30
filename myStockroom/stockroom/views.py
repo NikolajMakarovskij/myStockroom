@@ -287,7 +287,7 @@ class HistoryAccCategoriesView(DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = History.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list     
 
 
@@ -358,3 +358,166 @@ def device_add_accessories(request, accessories_id):
     return redirect('stockroom:stock_acc_list')
 
 
+
+#Склад устройств
+class stockDevView(DataMixin, generic.ListView):
+    template_name = 'stock/stock_dev_list.html'
+    model = StockDev
+    def get_context_data(self, *, object_list=None, **kwargs):
+        history = HistoryDev.objects.all()[:5]
+        cat_dev = cache.get('cat_dev')
+        if not cat_dev:
+            cat_dev = CategoryDev.objects.all()
+            cache.set('cat_dev', cat_dev, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search', menu_categories=cat_dev, historydev_list=history)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = StockDev.objects.filter(
+                Q(devicies__name__icontains=query) | 
+                Q(devicies__manufacturer__name__icontains=query) |
+                Q(devicies__categories__name__icontains=query) |
+                Q(devicies__score__icontains=query) |
+                Q(devicies__serial__icontains=query) |
+                Q(devicies__invent__icontains=query) |
+                Q(dateInstall__icontains=query) |
+                Q(dateAddToStock__icontains=query) 
+        ).select_related('devicies', 'devicies__manufacturer', 'devicies__categories')
+        return object_list
+
+class stockDevCategoriesView(DataMixin, generic.ListView):
+    template_name = 'stock/stock_dev_list.html'
+    model = StockDev
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        history = HistoryDev.objects.all()[:5]
+        cat_dev = cache.get('cat_dev')
+        if not cat_dev:
+            cat_dev = CategoryDev.objects.all()
+            cache.set('cat_dev', cat_dev, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search', menu_categories=cat_dev, historydev_list=history)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = StockDev.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list        
+
+
+#История склада устройств
+class HistoryDevView(DataMixin, generic.ListView):
+    template_name = 'stock/history_dev_list.html'
+    model = HistoryDev
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_dev = cache.get('cat_dev')
+        if not cat_dev:
+            cat_dev = CategoryDev.objects.all()
+            cache.set('cat_dev', cat_dev, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История устройств", searchlink='stockroom:history_dev_search', menu_categories=cat_dev)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query :
+            query = '' 
+        object_list = HistoryDev.objects.filter(
+                Q(devicies__icontains=query) |
+                Q(categories__name__icontains=query) |
+                Q(status__icontains=query) |
+                Q(dateInstall__icontains=query) |
+                Q(user__icontains=query) 
+        )
+        return object_list
+
+class HistoryDevCategoriesView(DataMixin, generic.ListView):
+    template_name = 'stock/history_dev_list.html'
+    model = HistoryDev
+    
+    def get_context_data(self, *, object_list=None, **kwargs ):
+        cat_dev = cache.get('cat_dev')
+        if not cat_dev:
+            cat_dev = CategoryDev.objects.all()
+            cache.set('cat_dev', cat_dev, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="История устройств", searchlink='stockroom:history_dev_search', menu_categories=cat_dev)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = HistoryDev.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list     
+
+
+@require_POST
+def stock_add_device(request, device_id):
+    username = request.user.username
+    stock = Stock(request)
+    device = get_object_or_404(Device, id=device_id)
+    form = StockAddForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        stock.add_device(devicies=device,
+                quantity=cd['quantity'],
+                number_rack=cd['number_rack'],
+                number_shelf=cd['number_shelf'],
+                username = username,
+                )
+        messages.add_message(request,
+                            level = messages.SUCCESS,
+                            message = 'Устройство ' + device.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно добавлено на склад',
+                            extra_tags = 'Успешно добавлен'
+                            )
+    else:
+        messages.add_message(request,
+                            level = messages.ERROR,
+                            message = 'Не удалось добавить ' + device.name + ' на склад',
+                            extra_tags = 'Ошибка формы'
+                            )
+    return redirect('stockroom:stock_dev_list')
+
+def stock_remove_device(request, device_id):
+    username = request.user.username
+    stock = Stock(request)
+    devicies = get_object_or_404(Device, id=device_id)
+    stock.remove_device(devicies, username = username,)
+    messages.add_message(request,
+                        level = messages.SUCCESS,
+                        message = devicies.name + ' успешно удален со склада',
+                        extra_tags = 'Успешно удален'
+                        )
+    return redirect('stockroom:stock_dev_list')
+
+#@require_POST
+#def move_device(request, device_id):
+#    username = request.user.username
+#    get_device_id = request.session['get_device_id']
+#    stock = Stock(request)
+#    accessories = get_object_or_404(Accessories, id=accessories_id)
+#    form = ConsumableInstallForm(request.POST)
+#    if form.is_valid():
+#        cd = form.cleaned_data
+#        stock.device_add_accessories(accessories=accessories,
+#                                    device=get_device_id,
+#                                    quantity=cd['quantity'],
+#                                    username = username,
+#                                    )
+#        messages.add_message(request,
+#                            level = messages.SUCCESS,
+#                            message = 'Комплектующее ' + accessories.name + ' в количестве ' + str(cd['quantity']) + ' шт. успешно списан со склада',
+#                            extra_tags = 'Успешное списание'
+#                            )
+#    else:
+#        messages.add_message(request,
+#                            level = messages.ERROR,
+#                            message = 'Не удалось списать ' + accessories.name +  ' со склада',
+#                            extra_tags = 'Ошибка формы'
+#                            )
+#    return redirect('stockroom:stock_acc_list')

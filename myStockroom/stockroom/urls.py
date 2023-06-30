@@ -32,4 +32,19 @@ urlpatterns = [
     re_path(r'^accessories/history/search$', HistoryAccView.as_view(), name='history_acc_search'),
     path('accessories/history/category/<slug:category_slug>', HistoryAccCategoriesView.as_view(), name='history_acc_category'),
 
+    #Склад устройств
+    re_path(r'^devicies/$', stockDevView.as_view(), name='stock_dev_list'),
+    re_path(r'^devicies/search$', stockDevView.as_view(), name='stock_dev_search'),
+    path('devicies/category/<slug:category_slug>', stockDevCategoriesView.as_view(), name='devicies_category'),
+
+    path(r'^devicies/stockroom/add/(?P<device_id>\d+)/$', stock_add_device, name='stock_add_device'),
+    path(r'^devicies/stockroom/remove/(?P<device_id>\d+)/$', stock_remove_device, name='stock_remove_device'),
+    #path(r'^devicies/stockroom/move/(?P<device_id>\d+)/$', move_device, name='move_device'),
+
+        
+    re_path(r'^devicies/history/$', HistoryDevView.as_view(), name='history_dev_list'),
+    re_path(r'^devicies/history/search$', HistoryDevView.as_view(), name='history_dev_search'),
+    path('devicies/history/category/<slug:category_slug>', HistoryDevCategoriesView.as_view(), name='history_dev_category'),
+
+
 ]
