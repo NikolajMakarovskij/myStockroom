@@ -335,8 +335,8 @@ class Stock(object):
         """Создание записи в истории устройств"""
         if not (Stock.add_category_dev(device_id)):
             history = HistoryDev.objects.create(
-                device=Device.objects.get(id = device_id).name, 
-                deviceId=Device.objects.get(id = device_id).id, 
+                devicies=Device.objects.get(id = device_id).name, 
+                deviciesId=Device.objects.get(id = device_id).id, 
                 score = quantity,
                 dateInstall = datetime.date.today(),
                 user = username,
@@ -344,11 +344,11 @@ class Stock(object):
             )
         else:
             history = HistoryDev.objects.create(
-                device=Device.objects.filter(id = device_id).get().name, 
-                deviceId=Device.objects.filter(id = device_id).get().id, 
+                devicies=Device.objects.filter(id = device_id).get().name, 
+                deviciesId=Device.objects.filter(id = device_id).get().id, 
                 score = quantity,
                 dateInstall = datetime.date.today(),
-                categories = Stock.add_category_acc(device_id),
+                categories = Stock.add_category_dev(device_id),
                 user = username,
                 status = status_choise
             )

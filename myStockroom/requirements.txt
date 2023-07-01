@@ -1,3 +1,4 @@
+ipython
 asgiref
 attrs
 diff-match-patch

@@ -4,7 +4,7 @@ from stockroom.models import History, HistoryAcc
 from .models import Device, Device_cat
 from django.views import generic
 from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin, FormView
 from catalog.utils import *
 from django.core.cache import cache
 from rest_framework import viewsets
@@ -90,12 +90,14 @@ class Device_catRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
+class deviceDetailView(DataMixin, generic.DetailView):
     model = Device
     template_name = 'device/device_detail.html'
-    
+
     
     def get_context_data(self, *, object_list=None, **kwargs):
+        consumable_form =ConsumableInstallForm(self.request.GET or None)
+        stock_form = StockAddForm(self.request.GET or None)
         self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
         cons_his = History.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
         acc_his = HistoryAcc.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
@@ -110,7 +112,8 @@ class deviceDetailView(DataMixin, FormMixin, generic.DetailView):
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
         context['get_device_id'] = self.request.session['get_device_id']
-        context['consumable_form'] = ConsumableInstallForm
+        context['stock_form'] = stock_form
+        context['consumable_form'] = consumable_form
         return context
     
 class deviceCreate(DataMixin, FormMessageMixin, CreateView):
@@ -154,4 +157,48 @@ class deviceDelete(DataMixin, DeleteView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
+#form views
+class ConsumableInstallFormView(FormView):
+    form_class = ConsumableInstallForm
+    template_name = 'device/device_detail.html'
+    success_url = '/'
 
+    def post(self, request, *args, **kwargs):
+        consumable_form = self.form_class(request.POST)
+        stock_form = StockAddForm()
+        if consumable_form.is_valid():
+            consumable_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                success=True
+            )
+        )
+        else:
+            return self.render_to_response(
+                self.get_context_data(
+                    consumable_form=consumable_form,
+                )
+        )
+
+class StockAddFormView(FormView):
+    form_class = StockAddForm
+    template_name = 'device/device_detail.html'
+    success_url = '/'
+
+    def post(self, request, *args, **kwargs):
+        stock_form = self.form_class(request.POST)
+        consumable_form = ConsumableInstallForm()
+        if stock_form.is_valid():
+            stock_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                success=True
+            )
+        )
+        else:
+            return self.render_to_response(
+            self.get_context_data(
+                stock_form=stock_form,
+                consumable_form=consumable_form
+            )
+        )

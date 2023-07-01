@@ -38,7 +38,7 @@ urlpatterns = [
     path('devicies/category/<slug:category_slug>', stockDevCategoriesView.as_view(), name='devicies_category'),
 
     path(r'^devicies/stockroom/add/(?P<device_id>\d+)/$', stock_add_device, name='stock_add_device'),
-    path(r'^devicies/stockroom/remove/(?P<device_id>\d+)/$', stock_remove_device, name='stock_remove_device'),
+    path(r'^devicies/stockroom/remove/(?P<devicies_id>\d+)/$', stock_remove_device, name='stock_remove_device'),
     #path(r'^devicies/stockroom/move/(?P<device_id>\d+)/$', move_device, name='move_device'),
 
         

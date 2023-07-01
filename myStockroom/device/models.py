@@ -123,7 +123,7 @@ class Device(ModelMixin, models.Model):
         verbose_name="Комплектующее"
         )
     score = models.IntegerField(
-        blank=True, null=True,
+        blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
         )

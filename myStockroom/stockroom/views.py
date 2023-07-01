@@ -464,7 +464,7 @@ def stock_add_device(request, device_id):
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_device(devicies=device,
+        stock.add_device(device=device,
                 quantity=cd['quantity'],
                 number_rack=cd['number_rack'],
                 number_shelf=cd['number_shelf'],
@@ -483,14 +483,14 @@ def stock_add_device(request, device_id):
                             )
     return redirect('stockroom:stock_dev_list')
 
-def stock_remove_device(request, device_id):
+def stock_remove_device(request, devicies_id):
     username = request.user.username
     stock = Stock(request)
-    devicies = get_object_or_404(Device, id=device_id)
-    stock.remove_device(devicies, username = username,)
+    device= get_object_or_404(Device, id=devicies_id)
+    stock.remove_device(device, username = username,)
     messages.add_message(request,
                         level = messages.SUCCESS,
-                        message = f"{devicies.name} успешно удален со склада",
+                        message = f"{device.name} успешно удален со склада",
                         extra_tags = 'Успешно удален'
                         )
     return redirect('stockroom:stock_dev_list')

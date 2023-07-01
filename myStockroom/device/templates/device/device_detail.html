@@ -164,8 +164,8 @@
         <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.consumable_form.quantity.label }}</div>
-            <div class="">{{ form.consumable_form.quantity }}</div>
+            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
+            <div class="">{{ consumable_form.quantity }}</div>
             <input type="submit" value="Установить расходник" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
           </div>
         </form>
