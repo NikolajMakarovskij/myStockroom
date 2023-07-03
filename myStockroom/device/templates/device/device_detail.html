@@ -141,6 +141,7 @@
       Удалить
   </a>
 </div>
+{% load history_tags %}
 <div class="row g-1">
   <div class="col-sm-12">
     <div class="d-flex justify-content-center input-group mt-3 ">
@@ -159,7 +160,7 @@
     </div>
   </div>
   <div class="col-sm-12">
-    {%include 'stock/device_move_history_list.html' %}
+    {% this_device_history device.id %}
   </div>
 </div>
 <div class="row g-2">
@@ -176,7 +177,7 @@
         </form>
       </div>
     {%endif%}
-    {%include 'stock/device_con_history_list.html' %}
+    {% this_device_con_history device.id %}
   </div>
   <div class="col-sm-6">
     {% if device.accessories.id %}
@@ -191,7 +192,7 @@
         </form>
       </div>
     {%endif%}
-    {%include 'stock/device_acc_history_list.html' %}
+    {% this_device_acc_history device.id %}
   </div>
 </div>
 
