@@ -90,5 +90,6 @@
   <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
   <!--block history-->
-  {%include 'stock/history_short_list.html' %}
+  {% load history_tags %}
+  {% consumables_history %}
 {% endblock %}

@@ -69,7 +69,8 @@
         </a>      
   </div>
   <div >
-    {%include 'stock/con_history_list.html' %}
+    {% load history_tags%}
+    {% this_con_history consumables.id%}
   </div>
 </div>
 

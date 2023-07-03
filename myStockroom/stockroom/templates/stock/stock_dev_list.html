@@ -86,5 +86,6 @@
   <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
   <!--block history-->
-  {%include 'stock/history_dev_short_list.html' %}
+  {% load history_tags %}
+  {% dev_history_short  %}
 {% endblock %}
