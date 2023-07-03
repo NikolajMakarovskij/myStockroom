@@ -141,19 +141,26 @@
       Удалить
   </a>
 </div>
-<div class="d-flex justify-content-center input-group mt-3 ">
-  <form action="{% url 'stockroom:stock_add_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
-    {% csrf_token %}
-    <div class="input-group mb-3">
-      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.quantity.label }}</div>
-      <div class="">{{ stock_form.quantity }}</div>
-      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_rack.label }}</div>
-      <div class="">{{ stock_form.number_rack }}</div>
-      <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_shelf.label }}</div>
-      <div class="">{{ stock_form.number_shelf }}</div>
-      <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">      
+<div class="row g-1">
+  <div class="col-sm-12">
+    <div class="d-flex justify-content-center input-group mt-3 ">
+      <form action="{% url 'stockroom:stock_add_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.quantity.label }}</div>
+          <div class="">{{ stock_form.quantity }}</div>
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_rack.label }}</div>
+          <div class="">{{ stock_form.number_rack }}</div>
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_shelf.label }}</div>
+          <div class="">{{ stock_form.number_shelf }}</div>
+          <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">      
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
+  <div class="col-sm-12">
+    {%include 'stock/device_move_history_list.html' %}
+  </div>
 </div>
 <div class="row g-2">
   <div class="col-sm-6">

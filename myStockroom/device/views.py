@@ -1,6 +1,6 @@
 from .forms import deviceForm
 from stockroom.forms import ConsumableInstallForm, StockAddForm
-from stockroom.models import History, HistoryAcc
+from stockroom.models import History, HistoryAcc, HistoryDev
 from .models import Device, Device_cat
 from django.views import generic
 from django.db.models import Q
@@ -101,6 +101,7 @@ class deviceDetailView(DataMixin, generic.DetailView):
         self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
         cons_his = History.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
         acc_his = HistoryAcc.objects.filter(deviceId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
+        dev_his = HistoryDev.objects.filter(deviciesId=Device.objects.filter(pk=self.kwargs['pk']).get().id)
         device_cat = cache.get('device_cat')
         if not device_cat:
             device_cat = Device_cat.objects.all()
@@ -108,7 +109,8 @@ class deviceDetailView(DataMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Устройство",add='device:new-device',update='device:device-update',delete='device:device-delete',
-            device_con_history_list=cons_his, device_acc_history_list=acc_his)
+            device_con_history_list=cons_his, device_acc_history_list=acc_his, device_move_list=dev_his
+            )
         context = dict(list(context.items()) + list(c_def.items()))
         context['detailMenu'] = deviceMenu
         context['get_device_id'] = self.request.session['get_device_id']
