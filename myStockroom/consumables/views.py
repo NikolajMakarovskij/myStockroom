@@ -1,6 +1,5 @@
 from .forms import *
 from .models import Consumables, Categories
-from stockroom.models import History, HistoryAcc
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
@@ -106,9 +105,8 @@ class consumablesDetailView(DataMixin, FormMixin, generic.DetailView):
     form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        cons_his = History.objects.filter(consumableId=Consumables.objects.filter(pk=self.kwargs['pk']).get().id)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходник",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete',history_con_list=cons_his)
+        c_def = self.get_user_context(title="Расходник",add='consumables:new-consumables',update='consumables:consumables-update',delete='consumables:consumables-delete')
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 
@@ -232,9 +230,8 @@ class accessoriesDetailView(DataMixin, FormMixin, generic.DetailView):
     form_class = StockAddForm 
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        cons_his = HistoryAcc.objects.filter(accessoriesId=Accessories.objects.filter(pk=self.kwargs['pk']).get().id)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Комплектующее",add='consumables:new-accessories',update='consumables:accessories-update',delete='consumables:accessories-delete',history_con_list=cons_his)
+        c_def = self.get_user_context(title="Комплектующее",add='consumables:new-accessories',update='consumables:accessories-update',delete='consumables:accessories-delete')
         context = dict(list(context.items()) + list(c_def.items()))
         return context 
 

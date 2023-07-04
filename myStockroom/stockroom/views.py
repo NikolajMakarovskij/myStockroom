@@ -63,13 +63,12 @@ class stockroomCategoriesView(DataMixin, generic.ListView):
     model = Stockroom
     
     def get_context_data(self, *, object_list=None, **kwargs ):
-        history = History.objects.all()[:5]
         stock_cat = cache.get('stock_cat')
         if not stock_cat:
             stock_cat = Stock_cat.objects.all()
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat, history_list=history)
+        c_def = self.get_user_context(title="Склад", searchlink='stockroom:stock_search', menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -228,13 +227,12 @@ class stockAccCategoriesView(DataMixin, generic.ListView):
     model = StockAcc
     
     def get_context_data(self, *, object_list=None, **kwargs ):
-        history = HistoryAcc.objects.all()[:5]
         cat_acc = cache.get('cat_acc')
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set('cat_acc', cat_acc, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад комплектующих", searchlink='stockroom:stock_acc_search', menu_categories=cat_acc, historyacc_list=history)
+        c_def = self.get_user_context(title="Склад комплектующих", searchlink='stockroom:stock_acc_search', menu_categories=cat_acc)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -363,13 +361,12 @@ class stockDevView(DataMixin, generic.ListView):
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
     def get_context_data(self, *, object_list=None, **kwargs):
-        history = HistoryDev.objects.all()[:5]
         cat_dev = cache.get('cat_dev')
         if not cat_dev:
             cat_dev = CategoryDev.objects.all()
             cache.set('cat_dev', cat_dev, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search', menu_categories=cat_dev, historydev_list=history)
+        c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search', menu_categories=cat_dev)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
