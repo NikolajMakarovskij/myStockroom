@@ -12,18 +12,16 @@ from django.contrib import messages
 
 
 #Склад главная
-class stockroomIndexView(generic.ListView):
+class stockroomIndexView(generic.TemplateView):
     """
     Главная
     """
     template_name = 'stock/stock_index.html'
-    model = Stockroom
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Расходники и комплектующие'
         context['menu'] = menu
-        context['searchlink'] = 'stockroom:stock_search'
         return context
 
 #Склад расходников
