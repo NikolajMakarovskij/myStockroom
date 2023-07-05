@@ -1,27 +1,28 @@
 from unittest import mock
 from django.core.files import File
 import pytest
-from ..forms import deviceForm ,Manufacturer, Workplace
-from ..models import Device_cat
-from consumables.models import Consumables, Categories as con_cat
+from workplace.models import Workplace
+from ..forms import DeviceForm, Manufacturer
+from ..models import DeviceCat
+from consumables.models import Consumables, Categories as ConCat
 
 
 @pytest.mark.django_db
 def test_device_form_valid():
     """Тест на валидность формы приложения Device"""
-    Device_cat.objects.create(name="device_category")
+    DeviceCat.objects.create(name="device_category")
     Manufacturer.objects.create(name="epson")
     Workplace.objects.create(name="device_workplace")
     Consumables.objects.create(
-            name="T7741",
-            categories=con_cat.objects.create(
-                name="Картриджы",
-                slug="cartridges"
-            )
-        ) 
+        name="T7741",
+        categories=ConCat.objects.create(
+            name="Картриджы",
+            slug="cartridges"
+        )
+    )
     form_data = {
-        "name": "device_name", 
-        "categories": Device_cat.objects.get(name="device_category"),
+        "name": "device_name",
+        "categories": DeviceCat.objects.get(name="device_category"),
         "manufacturer": Manufacturer.objects.get(name="epson"),
         "serial": "some_serial",
         "invent": "some_number_124",
@@ -32,5 +33,5 @@ def test_device_form_valid():
         "consumable": Consumables.objects.get(name="T7741"),
         "note": "some_note"
     }
-    form = deviceForm(data=form_data)
+    form = DeviceForm(data=form_data)
     assert form.is_valid() is True

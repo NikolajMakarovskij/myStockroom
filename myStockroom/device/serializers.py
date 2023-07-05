@@ -1,21 +1,20 @@
 from rest_framework import serializers
-from .models import *
+from .models import DeviceCat, Device
 
 
-class Device_catModelSerializer(serializers.ModelSerializer):
-
+class DeviceCatModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Device_cat
+        model = DeviceCat
         fields = '__all__'
         extra_kwargs = {
-            'id':{'read_only': True}
+            'id': {'read_only': True}
         }
 
-class DeviceModelSerializer(serializers.ModelSerializer):
 
+class DeviceModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = '__all__'
         extra_kwargs = {
-            'id':{'read_only': True}
+            'id': {'read_only': True}
         }
