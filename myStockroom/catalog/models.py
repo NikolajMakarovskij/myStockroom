@@ -1,7 +1,7 @@
 from django.db import models
 from .utils import ModelMixin
-import uuid 
-    
+import uuid
+
 
 class References(ModelMixin, models.Model):
     """
@@ -16,12 +16,12 @@ class References(ModelMixin, models.Model):
         max_length=50,
         help_text="Введите название",
         verbose_name="Название"
-        )
+    )
     linkname = models.CharField(
         max_length=50,
         help_text="Введите ссылку",
         verbose_name="Ссылка"
-        )
+    )
 
     def __str__(self):
         return self.name
@@ -29,4 +29,4 @@ class References(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Справочники'
         verbose_name_plural = 'Справочники'
-        ordering = ["name", ]
+        ordering = ["name"]

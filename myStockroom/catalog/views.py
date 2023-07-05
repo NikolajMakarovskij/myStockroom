@@ -1,16 +1,15 @@
-from django.shortcuts import render
 from .models import References
 from django.views import generic
-from .utils import DataMixin, menu 
+from .utils import DataMixin, menu
 
 
-#Главная
-class indexView(generic.TemplateView):
+# Главная
+class IndexView(generic.TemplateView):
     """
     Главная
     """
     template_name = 'index.html'
-    
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная страница'
@@ -18,8 +17,8 @@ class indexView(generic.TemplateView):
         return context
 
 
-#Справочники
-class referencesView(DataMixin, generic.ListView):
+# Справочники
+class ReferencesView(DataMixin, generic.ListView):
     """
     Список ссылок на справочники
     """
@@ -28,21 +27,6 @@ class referencesView(DataMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Справочники", searchlink='catalog:references_search',)
+        c_def = self.get_user_context(title="Справочники", searchlink='catalog:references_search', )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

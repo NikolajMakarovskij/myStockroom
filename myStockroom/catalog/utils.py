@@ -1,41 +1,40 @@
-from django.core.cache import cache
-from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
-from django import forms
-from django.forms import widgets
-from django.conf import settings
-from django.contrib import messages
 import csv
 import datetime
-from django.http import HttpResponse, HttpResponseForbidden
+from django.conf import settings
+from django.contrib import messages
+from django.core.cache import cache
+from django.forms import widgets
+from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
 
 menu = [
-    {'title':  "Главная страница", 'url_name': 'catalog:index'},
-    {'title':  "Раб. места", 'url_name': 'workplace:workplace_list'},
-    {'title':  "Устройства", 'url_name': 'device:device_list'},
-    {'title':  "Сотрудники", 'url_name': 'employee:employee_list'},
-    {'title':  "Софт", 'url_name': 'software:software_list'},
-    {'title':  "ЭЦП", 'url_name': 'signature:signature_list'},
-    {'title':  "Справочники", 'url_name': 'catalog:references_list'},
-    {'title':  "Склад", 'url_name': 'stockroom:stock_index'},
-    {'title':  "Расходники", 'url_name': 'consumables:consumables_list'},
-    {'title':  "Комплектующие", 'url_name': 'consumables:accessories_list'},
-    {'title':  "Контрагенты", 'url_name': 'counterparty:counterparty'},
-    ]
+    {'title': "Главная страница", 'url_name': 'catalog:index'},
+    {'title': "Раб. места", 'url_name': 'workplace:workplace_list'},
+    {'title': "Устройства", 'url_name': 'device:device_list'},
+    {'title': "Сотрудники", 'url_name': 'employee:employee_list'},
+    {'title': "Софт", 'url_name': 'software:software_list'},
+    {'title': "ЭЦП", 'url_name': 'signature:signature_list'},
+    {'title': "Справочники", 'url_name': 'catalog:references_list'},
+    {'title': "Склад", 'url_name': 'stockroom:stock_index'},
+    {'title': "Расходники", 'url_name': 'consumables:consumables_list'},
+    {'title': "Комплектующие", 'url_name': 'consumables:accessories_list'},
+    {'title': "Контрагенты", 'url_name': 'counterparty:counterparty'},
+]
 
 deviceMenu = [
-    {'title':  "Информация об устройстве", 'anchor': '#printerInfo'},
-    {'title':  "Информация о расходнике", 'anchor': '#cartridgeInfo'},
-    {'title':  "Местоположение", 'anchor': '#workplaceInfo'},
-    ]
+    {'title': "Информация об устройстве", 'anchor': '#printerInfo'},
+    {'title': "Информация о расходнике", 'anchor': '#cartridgeInfo'},
+    {'title': "Местоположение", 'anchor': '#workplaceInfo'},
+]
 
 
 class DataMixin:
     """
     Миксин с пагинацией, меню, поиском
     """
-    paginate_by =  10
-    
+    paginate_by = 10
+
     def get_user_context(self, **kwargs):
         side_menu = cache.get('side_menu')
         if not side_menu:
@@ -44,7 +43,6 @@ class DataMixin:
         context = kwargs
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
-  
         return context
 
 
@@ -52,8 +50,8 @@ class WidgetCanAdd(widgets.Select):
     """
     Кнопка добавить в форме для связанных моделей
     """
-    def __init__(self, related_model, related_url=None, *args, **kw):
 
+    def __init__(self, related_model, related_url=None, *args, **kw):
         super(WidgetCanAdd, self).__init__(*args, **kw)
 
         if not related_url:
@@ -66,10 +64,10 @@ class WidgetCanAdd(widgets.Select):
 
     def render(self, name, value, *args, **kwargs):
         self.related_url = reverse_lazy(self.related_url)
-        output = [super(WidgetCanAdd, self).render(name, value, *args, **kwargs)]
-        output.append('<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> ' % \
-            (self.related_url, name))
-        output.append('<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+'))
+        output = [super(WidgetCanAdd, self).render(name, value, *args, **kwargs),
+                  '<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> '
+                  % (self.related_url, name),
+                  '<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+')]
         return mark_safe(''.join(output))
 
 
@@ -77,6 +75,7 @@ class ExportAdmin:
     """
     Функция экспорта в админке
     """
+
     def export_to_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         response = HttpResponse(content_type='text/csv')
@@ -95,7 +94,9 @@ class ExportAdmin:
                 data_row.append(value)
             writer.writerow(data_row)
         return response
+
     export_to_csv.short_description = 'экспорт CSV'
+
     class Meta:
         verbose_name = 'экспорт CSV'
         verbose_name_plural = 'экспорт CSV'
@@ -105,6 +106,7 @@ class ModelMixin:
     """
     Миксин с функциями для моделей
     """
+
     def get_all_fields(self):
         """
         Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView
@@ -113,9 +115,9 @@ class ModelMixin:
         expose_fields = ['id', 'slug']
         for f in self._meta.fields:
 
-            fname = f.name        
+            fname = f.name
             # Разрешает списки выбора с помощью get_xyz_display() 
-            get_choice = 'get_'+fname+'_display'
+            get_choice = 'get_' + fname + '_display'
             if hasattr(self, get_choice):
                 value = getattr(self, get_choice)()
             else:
@@ -125,16 +127,16 @@ class ModelMixin:
                     value = None
 
             # Отображение полей всех полей, кроме исключенных
-            if f.editable and value and f.name not in (expose_fields) :
-
+            if f.editable and value and f.name not in expose_fields:
                 fields.append(
                     {
-                    'label':f.verbose_name, 
-                    'name':f.name, 
-                    'value':value,
+                        'label': f.verbose_name,
+                        'name': f.name,
+                        'value': value,
                     }
                 )
         return fields
+
 
 class FormMessageMixin:
     """
@@ -166,20 +168,19 @@ class FormMessageMixin:
                 messages.success(self.request, success_message)
             if warning_message:
                 messages.warning(self.request, warning_message)
-        return response 
+        return response
 
     def get_success_message(self, cleaned_data):
         return self.success_message % cleaned_data
-    
+
     def get_debug_message(self, cleaned_data):
         return self.debug_message % cleaned_data
-    
+
     def get_info_message(self, cleaned_data):
         return self.info_message % cleaned_data
-    
+
     def get_warning_message(self, cleaned_data):
         return self.warning_message % cleaned_data
-    
+
     def get_error_message(self, cleaned_data):
         return self.error_message % cleaned_data
-    

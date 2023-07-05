@@ -1,16 +1,14 @@
 from django.test import TestCase
-from ..models import References
 from django.urls import reverse
-import warnings
+from ..models import References
 
 
-
-class referencesViewTest(TestCase):
+class ReferencesViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_of_references = 149
         for references_num in range(number_of_references):
-            References.objects.create(name='Christian %s' % references_num,)
+            References.objects.create(name='Christian %s' % references_num, )
         assert References.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -32,14 +30,14 @@ class referencesViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['references_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['references_list']) == 10)
 
     def test_lists_all_references(self):
         links = ['catalog:references_list', 'catalog:references_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['references_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['references_list']) == 9)
