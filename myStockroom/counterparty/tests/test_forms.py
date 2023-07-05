@@ -1,5 +1,5 @@
 import pytest
-from ..forms import manufacturerForm
+from ..forms import ManufacturerForm
 
 
 @pytest.mark.django_db
@@ -10,8 +10,9 @@ def test_manufacturer_form_valid():
         "country": "manufacturer_country",
         "production": "manufacturer_production",
     }
-    form = manufacturerForm(data=form_data)
+    form = ManufacturerForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_manufacturer_form_name_invalid():
@@ -20,6 +21,6 @@ def test_manufacturer_form_name_invalid():
     form_data = {
         'name': "",
     }
-    form = manufacturerForm(data=form_data)
+    form = ManufacturerForm(data=form_data)
     assert form.is_valid() is False
     assert [err_mes] == form.errors['name']

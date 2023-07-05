@@ -1,12 +1,13 @@
-from .forms import manufacturerForm
+from .forms import ManufacturerForm
 from .models import Manufacturer
-from catalog.models import References
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from catalog.utils import *
+from catalog.utils import DataMixin, FormMessageMixin
+from django.urls import reverse_lazy
 
-#Контрагенты
+
+# Контрагенты
 class CounterpartyView(DataMixin, generic.TemplateView):
     template_name = 'counterparty/counterparty.html'
 
@@ -16,67 +17,75 @@ class CounterpartyView(DataMixin, generic.TemplateView):
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-#Производитель
-class manufacturerListView(DataMixin, generic.ListView):
+
+# Производитель
+class ManufacturerListView(DataMixin, generic.ListView):
     model = Manufacturer
     template_name = 'counterparty/manufacturer_list.html'
-    
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Список производителей", searchlink='counterparty:manufacturer_search',add='counterparty:new-manufacturer',)
+        c_def = self.get_user_context(title="Список производителей", searchlink='counterparty:manufacturer_search',
+                                      add='counterparty:new-manufacturer', )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        if not query :
-            query = '' 
+        if not query:
+            query = ''
         object_list = Manufacturer.objects.filter(
-                Q(name__icontains=query) |
-                Q(country__icontains=query) |
-                Q(production__icontains=query) 
+            Q(name__icontains=query) |
+            Q(country__icontains=query) |
+            Q(production__icontains=query)
         )
         return object_list
 
-class manufacturerDetailView(DataMixin, generic.DetailView):
+
+class ManufacturerDetailView(DataMixin, generic.DetailView):
     model = Manufacturer
     template_name = 'counterparty/manufacturer_detail.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Производитель",add='counterparty:new-manufacturer',update='counterparty:manufacturer-update',delete='counterparty:manufacturer-delete')
+        c_def = self.get_user_context(title="Производитель", add='counterparty:new-manufacturer',
+                                      update='counterparty:manufacturer-update',
+                                      delete='counterparty:manufacturer-delete')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerCreate(DataMixin, FormMessageMixin, CreateView):
+
+class ManufacturerCreate(DataMixin, FormMessageMixin, CreateView):
     model = Manufacturer
-    form_class = manufacturerForm
+    form_class = ManufacturerForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
     success_message = f"Производитель %(name)s успешно создан"
     error_message = f"Производителя %(name)s не удалось создать"
-    
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить производителя",)
+        c_def = self.get_user_context(title="Добавить производителя", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
+
+class ManufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Manufacturer
     template_name = 'Forms/add.html'
-    form_class = manufacturerForm
+    form_class = ManufacturerForm
     success_url = reverse_lazy('counterparty:manufacturer_list')
     success_message = f"Производитель %(name)s успешно обновлен"
     error_message = f"Производителя %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать производителя",)
+        c_def = self.get_user_context(title="Редактировать производителя", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-class manufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
+
+class ManufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')
@@ -85,6 +94,6 @@ class manufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить производителя",selflink='counterparty:manufacturer_list')
+        c_def = self.get_user_context(title="Удалить производителя", selflink='counterparty:manufacturer_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context

@@ -1,16 +1,15 @@
 from django.test import TestCase
 from ..models import Manufacturer
 from django.urls import reverse
-import warnings
 
 
-class manufacturerViewTest(TestCase):
+class ManufacturerViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_manufacturer = 149
         for manufacturer_num in range(number_of_manufacturer):
-            Manufacturer.objects.create(name='Christian %s' % manufacturer_num,)
+            Manufacturer.objects.create(name='Christian %s' % manufacturer_num, )
         assert Manufacturer.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -34,8 +33,8 @@ class manufacturerViewTest(TestCase):
             {'data_key': 'update', 'data_value': 'counterparty:manufacturer-update'},
             {'data_key': 'delete', 'data_value': 'counterparty:manufacturer-delete'},
         ]
-        Manufacturer.objects.create(name='Christian_detail',)
-        model = Manufacturer.objects.get(name='Christian_detail',)
+        Manufacturer.objects.create(name='Christian_detail', )
+        model = Manufacturer.objects.get(name='Christian_detail', )
         resp = self.client.get(reverse('counterparty:manufacturer-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -47,14 +46,14 @@ class manufacturerViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['manufacturer_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['manufacturer_list']) == 10)
 
     def test_lists_all_manufacturer(self):
         links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['manufacturer_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['manufacturer_list']) == 9)

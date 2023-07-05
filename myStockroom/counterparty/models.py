@@ -1,9 +1,10 @@
 from django.db import models
 from django.urls import reverse
-import uuid 
+import uuid
 from catalog.utils import ModelMixin
 
-class Manufacturer (ModelMixin, models.Model):
+
+class Manufacturer(ModelMixin, models.Model):
     """
     Модель поизводителей. Связи один ко многим с моделями consumables, printer, os, software, ups, workstation
     """
@@ -12,29 +13,30 @@ class Manufacturer (ModelMixin, models.Model):
         default=uuid.uuid4,
         db_index=True,
         help_text="ID"
-        )
+    )
     name = models.CharField(
         max_length=150,
         help_text="Введите наименование производителя",
         verbose_name="Производитель"
-        )
+    )
     country = models.CharField(
         max_length=150,
         help_text="Введите название страны",
         verbose_name="Страна"
-        )
+    )
     production = models.CharField(
         max_length=150,
         help_text="Введите страну производства",
         verbose_name="Страна производства"
-        )
+    )
+
     def __str__(self):
         return self.name
-        
+
     def get_absolute_url(self):
         return reverse('counterparty:manufacturer-detail', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Производитель'
         verbose_name_plural = 'Производители'
-        ordering = [ "name", ]
+        ordering = ["name", ]
