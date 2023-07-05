@@ -20,9 +20,9 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
-    'django.contrib.admin', 
-    'django.contrib.auth', 
-    'django.contrib.contenttypes', 
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -45,16 +45,16 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware', 
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#start debug toolbar
+# start debug toolbar
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.history.HistoryPanel',
@@ -75,23 +75,25 @@ DEBUG_TOOLBAR_PANELS = [
 
 import socket
 
+
 def show_toolbar(request):
     if DEBUG:
         return True
     return False
 
+
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
 }
 
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'x.x.x.x','x.x.x.x']
+INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'x.x.x.x', 'x.x.x.x']
 
-#end debug toolbar
+# end debug toolbar
 
-#start celery
+# start celery
 
-#from celery.schedules import crontab
+# from celery.schedules import crontab
 from datetime import timedelta
 
 CELERY_BROKER_URL = 'redis://redis:6379'
@@ -101,22 +103,21 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
-#    'hello': {
-#        'task': 'shop.tasks.hello',
-#        'schedule':  timedelta(seconds=15)  # execute every minute
-#    }
-#    'order_created': {
-#        'task': 'orders.tasks.order_created',
-#        
-#    }
-
+    #    'hello': {
+    #        'task': 'shop.tasks.hello',
+    #        'schedule':  timedelta(seconds=15)  # execute every minute
+    #    }
+    #    'order_created': {
+    #        'task': 'orders.tasks.order_created',
+    #
+    #    }
 
 }
 
-#end celery
+# end celery
 
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'project','templates')
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'project', 'templates')
 
 TEMPLATES = [
     {
@@ -131,7 +132,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'stockroom.context_processors.stock',
-                
+
             ],
         },
     },
@@ -151,7 +152,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("SQL_PASSWORD", "zx23SA21"),
         "HOST": os.environ.get("SQL_HOST", "db"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
-        'CONN_MAX_AGE': 60 * 10,  
+        'CONN_MAX_AGE': 60 * 10,
     }
 }
 
@@ -170,9 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
-#start region settings
+# start region settings
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -184,12 +183,11 @@ USE_TZ = True
 
 DATE_FORMAT = 'd.m.Y'
 
-#end region settings
-#start file settings
+# end region settings
+# start file settings
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
-
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -197,13 +195,13 @@ MEDIA_URL = 'media/'
 
 MAX_UPLOAD_SIZE = "104857600"
 
-#end file settings
-#start caches
+# end file settings
+# start caches
 
 
 CACHES = {
     'default': {
-        #'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': 'redis://redis:6379',
         'db': '16',
@@ -211,7 +209,7 @@ CACHES = {
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-#end caches
+# end caches
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -221,35 +219,36 @@ ROOT_URLCONF = 'myStockroom.urls'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
 CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
 STOCK_SESSION_ID = 'stock'
 
-#cores headers
+# cores headers
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
 
-#REST
+
+# REST
 
 def render_calasses():
     if DEBUG:
         return [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+            'rest_framework.renderers.JSONRenderer',
+            'rest_framework.renderers.BrowsableAPIRenderer',
         ]
     return [
         'rest_framework.renderers.JSONRenderer',
-        ]
+    ]
 
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': render_calasses(),
     'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,

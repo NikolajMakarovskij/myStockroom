@@ -87,7 +87,7 @@ def test_stock_if_not_device():
     """Проверяет работу метода get_device класса Stock при отсутствии обратной связи"""
     consumable = create_consumable()
     consumable_id = consumable.id
-    test_device = Stock.get_device(consumable_id)
+    test_device = Stock.get_device()
     assert test_device == 'Нет'
 
 @pytest.mark.django_db
@@ -97,7 +97,7 @@ def test_stock_get_device():
     consumable = create_consumable()
     Device.objects.create(name='device', consumable = consumable)
     consumable_id = consumable.id
-    test_device = Stock.get_device(consumable_id)
+    test_device = Stock.get_device()
 
     assert Device.objects.count() == 1
     assert test_device == 'device'
@@ -110,7 +110,7 @@ def test_stock_get_devices():
     add_consumables_in_devices(consumable)
 
     consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
+    test_printer = Stock.get_device()
 
     assert Device.objects.count() == 3
     assert test_printer == 'device 1, device 2, device 3'

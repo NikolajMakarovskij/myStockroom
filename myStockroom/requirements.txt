@@ -1,4 +1,5 @@
-ipython
+Pylint
+pre-commit
 asgiref
 attrs
 diff-match-patch

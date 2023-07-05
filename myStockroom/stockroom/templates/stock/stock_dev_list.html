@@ -61,11 +61,11 @@
     <tbody style="text-align:center">
       {% for each in stockdev_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.devicies.get_absolute_url }}">{{ each.devicies.name }}</a></td>
+        <td><a class="noDecoration" href="{{ each.devices.get_absolute_url }}">{{ each.devices.name }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.devicies.score }}</td>
+        <td>{{ each.devices.score }}</td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
@@ -77,7 +77,7 @@
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.devicies.id %}"> Удалить </a></td>
+        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.devices.id %}"> Удалить </a></td>
       </tr>
       {% endfor %}
   </table>

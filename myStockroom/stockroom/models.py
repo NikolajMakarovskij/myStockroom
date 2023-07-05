@@ -7,21 +7,23 @@ from consumables.models import Consumables, Accessories
 from catalog.utils import ModelMixin
 
 
-#Расходники
+# Расходники
 class Stockroom (ModelMixin, models.Model):
     """
-    Расширение модели расходников для склада. Номенклатура расходников склада и справочника может различаться, однако количество каждого расходника должно совпадать
+    Расширение модели расходников для склада.
+    Номенклатура расходников склада и справочника может различаться,
+    однако количество каждого расходника должно совпадать
     """
     consumables = models.OneToOneField(
         Consumables,
-        on_delete = models.CASCADE,
-        primary_key = True,
+        on_delete=models.CASCADE,
+        primary_key=True,
         db_index=True,
         help_text="Введите название расходника",
         verbose_name="Расходники"
         )
     categories = models.ForeignKey(
-        'Stock_cat',
+        'StockCat',
         on_delete=models.SET_NULL,
         blank=True, null=True,
         help_text="Укажите группу",
@@ -42,7 +44,7 @@ class Stockroom (ModelMixin, models.Model):
         )
     room = models.ForeignKey(
         Room,
-        on_delete = models.SET_NULL,
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         related_name='StockroomRoom',
         help_text="Укажите помещение",
@@ -64,7 +66,8 @@ class Stockroom (ModelMixin, models.Model):
         verbose_name_plural = 'Склад Расходников'
         ordering = ['consumables']
 
-class Stock_cat(ModelMixin, models.Model):
+
+class StockCat(ModelMixin, models.Model):
     """
     Модель группы для расходников
     """
@@ -88,90 +91,95 @@ class Stock_cat(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('stockroom:category', kwargs={'category_slug': self.slug})
-
+        return reverse(
+            'stockroom:category',
+            kwargs={'category_slug': self.slug}
+            )
 
     class Meta:
         verbose_name = 'Группа расходников'
         verbose_name_plural = 'Группы расходников'
         ordering = ['name']
 
+
 class History(models.Model):
-        """
-        Модель для хранения истории использования расходников
-        """
-        id = models.UUIDField(
-            primary_key=True, db_index=True,
-            default=uuid.uuid4,
-            help_text="ID"
+    """
+    Модель для хранения истории использования расходников
+    """
+    id = models.UUIDField(
+        primary_key=True, db_index=True,
+        default=uuid.uuid4,
+        help_text="ID"
         )
-        consumable = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="Расходники"
+    consumable = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="Расходники"
         )
-        consumableId = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="ID Расходникa"
+    consumableId = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="ID Расходникa"
         )
-        device = models.CharField(
-            blank=True, null=True,
-            max_length=50,
-            verbose_name="Устройства"
+    device = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        verbose_name="Устройства"
         )
-        deviceId = models.CharField(
-            blank=True, null=True,
-            max_length=50,
-            verbose_name="ID Устройства"
+    deviceId = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        verbose_name="ID Устройства"
         )
-        categories = models.ForeignKey(
-            'Stock_cat',
-            on_delete=models.SET_NULL,
-            blank=True, null=True,
-            help_text="Укажите группу",
-            verbose_name="группа"
+    categories = models.ForeignKey(
+        'StockCat',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите группу",
+        verbose_name="группа"
         )
-        score = models.IntegerField(
-            blank=True, default=0,
-            verbose_name="Количество",
+    score = models.IntegerField(
+        blank=True, default=0,
+        verbose_name="Количество",
         )
-        dateInstall = models.DateField(
-            null=True, blank=True,
-            verbose_name="Дата установки"
+    dateInstall = models.DateField(
+        null=True, blank=True,
+        verbose_name="Дата установки"
         )
-        user = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            help_text="Укажите пользователя",
-            verbose_name="Пользователь"
+    user = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        help_text="Укажите пользователя",
+        verbose_name="Пользователь"
         )
-        STATUS_CHOISES=[
-            ('Приход', 'Приход'),
-            ('Расход', 'Расход'),
-            ('Удаление', 'Удаление'),
+    STATUS_CHOISES = [
+        ('Приход', 'Приход'),
+        ('Расход', 'Расход'),
+        ('Удаление', 'Удаление'),
         ]
-        status = models.CharField(
-            max_length=10,
-            choices=STATUS_CHOISES,
-            default='Расход',
-    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOISES,
+        default='Расход',
+        )
 
-        class Meta:
-            verbose_name = 'История расходников'
-            verbose_name_plural = 'История расходников'
-            ordering = ['-dateInstall','consumable']
+    class Meta:
+        verbose_name = 'История расходников'
+        verbose_name_plural = 'История расходников'
+        ordering = ['-dateInstall', 'consumable']
 
 
-#Комплектующие
+# Комплектующие
 class StockAcc (ModelMixin, models.Model):
     """
-    Расширение модели комплектующих для склада. Номенклатура комплектующих склада и справочника может различаться, однако количество каждого комплектующего должно совпадать
+    Расширение модели комплектующих для склада.
+    Номенклатура комплектующих склада и справочника может различаться,
+    однако количество каждого комплектующего должно совпадать
     """
     accessories = models.OneToOneField(
         Accessories,
-        on_delete = models.CASCADE,
-        primary_key = True,
+        on_delete=models.CASCADE,
+        primary_key=True,
         db_index=True,
         help_text="Введите название комплектующего",
         verbose_name="Комплектующие"
@@ -198,7 +206,7 @@ class StockAcc (ModelMixin, models.Model):
         )
     room = models.ForeignKey(
         Room,
-        on_delete = models.SET_NULL,
+        on_delete=models.SET_NULL,
         blank=True, null=True,
         related_name='StockAccRoom',
         help_text="Укажите помещение",
@@ -217,8 +225,9 @@ class StockAcc (ModelMixin, models.Model):
 
     class Meta:
         verbose_name = 'Склад комплектующих'
-        verbose_name_plural ='Склад комплектующих'
+        verbose_name_plural = 'Склад комплектующих'
         ordering = ['accessories']
+
 
 class CategoryAcc(ModelMixin, models.Model):
     """
@@ -244,90 +253,95 @@ class CategoryAcc(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('stockroom:accessories_category', kwargs={'category_slug': self.slug})
-
+        return reverse(
+            'stockroom:accessories_category',
+            kwargs={'category_slug': self.slug}
+            )
 
     class Meta:
         verbose_name = 'Группа комплектующих'
         verbose_name_plural = 'Группы комплектующих'
         ordering = ['name']
 
+
 class HistoryAcc(models.Model):
-        """
-        Модель для хранения истории использования комплектующих
-        """
-        id = models.UUIDField(
-            primary_key=True, db_index=True,
-            default=uuid.uuid4,
-            help_text="ID"
+    """
+    Модель для хранения истории использования комплектующих
+    """
+    id = models.UUIDField(
+        primary_key=True, db_index=True,
+        default=uuid.uuid4,
+        help_text="ID"
         )
-        accessories = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="Комплектующие"
+    accessories = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="Комплектующие"
         )
-        accessoriesId = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="ID комплектующего"
+    accessoriesId = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="ID комплектующего"
         )
-        device = models.CharField(
-            blank=True, null=True,
-            max_length=50,
-            verbose_name="Устройства"
+    device = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        verbose_name="Устройства"
         )
-        deviceId = models.CharField(
-            blank=True, null=True,
-            max_length=50,
-            verbose_name="ID Устройства"
+    deviceId = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        verbose_name="ID Устройства"
         )
-        categories = models.ForeignKey(
-            'CategoryAcc',
-            on_delete=models.SET_NULL,
-            blank=True, null=True,
-            help_text="Укажите группу",
-            verbose_name="группа"
+    categories = models.ForeignKey(
+        'CategoryAcc',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите группу",
+        verbose_name="группа"
         )
-        score = models.IntegerField(
-            blank=True, default=0,
-            verbose_name="Количество",
+    score = models.IntegerField(
+        blank=True, default=0,
+        verbose_name="Количество",
         )
-        dateInstall = models.DateField(
-            null=True, blank=True,
-            verbose_name="Дата установки"
+    dateInstall = models.DateField(
+        null=True, blank=True,
+        verbose_name="Дата установки"
         )
-        user = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            help_text="Укажите пользователя",
-            verbose_name="Пользователь"
+    user = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        help_text="Укажите пользователя",
+        verbose_name="Пользователь"
         )
-        STATUS_CHOISES=[
-            ('Приход', 'Приход'),
-            ('Расход', 'Расход'),
-            ('Удаление', 'Удаление'),
+    STATUS_CHOISES = [
+        ('Приход', 'Приход'),
+        ('Расход', 'Расход'),
+        ('Удаление', 'Удаление'),
         ]
-        status = models.CharField(
-            max_length=10,
-            choices=STATUS_CHOISES,
-            default='Расход',
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOISES,
+        default='Расход',
     )
 
-        class Meta:
-            verbose_name = 'История комплектующих'
-            verbose_name_plural = 'История комплектующих' 
-            ordering = ['-dateInstall','accessories']
+    class Meta:
+        verbose_name = 'История комплектующих'
+        verbose_name_plural = 'История комплектующих'
+        ordering = ['-dateInstall', 'accessories']
 
 
-#Устройства
+# Устройства
 class StockDev (ModelMixin, models.Model):
     """
-    Расширение модели устройств для склада. Номенклатура устройств склада и справочника может различаться, однако количество и и размещение каждого устройства должно совпадать
+    Расширение модели устройств для склада.
+    Номенклатура устройств склада и справочника может различаться,
+    однако количество и и размещение каждого устройства должно совпадать
     """
-    devicies = models.OneToOneField(
+    devices = models.OneToOneField(
         Device,
-        on_delete = models.CASCADE,
-        primary_key = True,
+        on_delete=models.CASCADE,
+        primary_key=True,
         db_index=True,
         help_text="Введите название устройства",
         verbose_name="Устройство"
@@ -360,8 +374,9 @@ class StockDev (ModelMixin, models.Model):
 
     class Meta:
         verbose_name = 'Склад устройств'
-        verbose_name_plural ='Склад устройств'
-        ordering = ['devicies']
+        verbose_name_plural = 'Склад устройств'
+        ordering = ['devices']
+
 
 class CategoryDev(ModelMixin, models.Model):
     """
@@ -387,66 +402,69 @@ class CategoryDev(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('stockroom:devicies_category', kwargs={'category_slug': self.slug})
-
+        return reverse(
+            'stockroom:devices_category',
+            kwargs={'category_slug': self.slug}
+            )
 
     class Meta:
         verbose_name = 'Группа устройств'
         verbose_name_plural = 'Группы устройств'
         ordering = ['name']
 
+
 class HistoryDev(models.Model):
-        """
-        Модель для хранения истории использования устройств
-        """
-        id = models.UUIDField(
-            primary_key=True, db_index=True,
-            default=uuid.uuid4,
-            help_text="ID"
+    """
+    Модель для хранения истории использования устройств
+    """
+    id = models.UUIDField(
+        primary_key=True, db_index=True,
+        default=uuid.uuid4,
+        help_text="ID"
         )
-        devicies = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="Устройства"
+    devices = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="Устройства"
         )
-        deviciesId = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            verbose_name="ID устройства"
+    devicesId = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="ID устройства"
         )
-        categories = models.ForeignKey(
-            'CategoryDev',
-            on_delete=models.SET_NULL,
-            blank=True, null=True,
-            help_text="Укажите группу",
-            verbose_name="группа"
+    categories = models.ForeignKey(
+        'CategoryDev',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        help_text="Укажите группу",
+        verbose_name="группа"
         )
-        score = models.IntegerField(
-            blank=True, default=0,
-            verbose_name="Количество",
+    score = models.IntegerField(
+        blank=True, default=0,
+        verbose_name="Количество",
         )
-        dateInstall = models.DateField(
-            null=True, blank=True,
-            verbose_name="Дата установки"
+    dateInstall = models.DateField(
+        null=True, blank=True,
+        verbose_name="Дата установки"
         )
-        user = models.CharField(
-            blank=True, default=0,
-            max_length=50,
-            help_text="Укажите пользователя",
-            verbose_name="Пользователь"
+    user = models.CharField(
+        blank=True, default=0,
+        max_length=50,
+        help_text="Укажите пользователя",
+        verbose_name="Пользователь"
         )
-        STATUS_CHOISES=[
-            ('Приход', 'Приход'),
-            ('Перемещение', 'Перемещение'),
-            ('Удаление', 'Удаление'),
+    STATUS_CHOISES = [
+        ('Приход', 'Приход'),
+        ('Перемещение', 'Перемещение'),
+        ('Удаление', 'Удаление'),
         ]
-        status = models.CharField(
-            max_length=20,
-            choices=STATUS_CHOISES,
-            default='Перемещение',
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOISES,
+        default='Перемещение',
     )
 
-        class Meta:
-            verbose_name = 'История устройств'
-            verbose_name_plural = 'История устройств' 
-            ordering = ['-dateInstall','devicies']
+    class Meta:
+        verbose_name = 'История устройств'
+        verbose_name_plural = 'История устройств'
+        ordering = ['-dateInstall', 'devices']
