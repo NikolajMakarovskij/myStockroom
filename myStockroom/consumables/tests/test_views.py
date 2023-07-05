@@ -1,18 +1,18 @@
 from django.test import TestCase
-from ..models import *
+from ..models import Categories, Consumables, AccCat, Accessories
 from django.urls import reverse
-import warnings
 
 
-#Расходники
-class consumablesViewTest(TestCase):
+# Расходники
+class ConsumablesViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_consumables = 149
         Categories.objects.create(name="some_category", slug="some_category")
         for consumables_num in range(number_of_consumables):
-            Consumables.objects.create(name='Christian %s' % consumables_num, categories=Categories.objects.get(slug="some_category"))
+            Consumables.objects.create(name='Christian %s' % consumables_num,
+                                       categories=Categories.objects.get(slug="some_category"))
         assert Consumables.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -36,8 +36,8 @@ class consumablesViewTest(TestCase):
             {'data_key': 'update', 'data_value': 'consumables:consumables-update'},
             {'data_key': 'delete', 'data_value': 'consumables:consumables-delete'},
         ]
-        Consumables.objects.create(name='Christian_detail',)
-        model = Consumables.objects.get(name='Christian_detail',)
+        Consumables.objects.create(name='Christian_detail', )
+        model = Consumables.objects.get(name='Christian_detail', )
         resp = self.client.get(reverse('consumables:consumables-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -50,26 +50,28 @@ class consumablesViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['consumables_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['consumables_list']) == 10)
 
     def test_lists_all_consumables(self):
         links = ['consumables:consumables_list', 'consumables:consumables_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['consumables_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['consumables_list']) == 9)
 
-class consumablesCategoryViewTest(TestCase):
+
+class ConsumablesCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_consumables = 149
         Categories.objects.create(name="some_category", slug="some_category")
         for consumables_num in range(number_of_consumables):
-            Consumables.objects.create(name='Christian %s' % consumables_num, categories=Categories.objects.get(slug="some_category"))
+            Consumables.objects.create(name='Christian %s' % consumables_num,
+                                       categories=Categories.objects.get(slug="some_category"))
         assert Consumables.objects.count() == 149
         assert Categories.objects.count() == 1
 
@@ -79,36 +81,40 @@ class consumablesCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'consumables:consumables_search'},
             {'data_key': 'add', 'data_value': 'consumables:new-consumables'},
         ]
-        resp = self.client.get(reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
+        resp = self.client.get(
+            reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
+        resp = self.client.get(
+            reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['consumables_list']) == 10)
+        self.assertTrue(resp.context['is_paginated'] is True)
+        self.assertTrue(len(resp.context['consumables_list']) == 10)
 
     def test_lists_all_categories(self):
-        resp = self.client.get(reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})+'?page=15')
+        resp = self.client.get(reverse('consumables:category', kwargs={
+            "category_slug": Categories.objects.get(slug="some_category")}) + '?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['consumables_list']) == 9)
+        self.assertTrue(resp.context['is_paginated'] is True)
+        self.assertTrue(len(resp.context['consumables_list']) == 9)
 
 
-#Комплектующие
-class accessoriesViewTest(TestCase):
+# Комплектующие
+class AccessoriesViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_accessories = 149
-        Acc_cat.objects.create(name="some_category", slug="some_category")
+        AccCat.objects.create(name="some_category", slug="some_category")
         for accessories_num in range(number_of_accessories):
-            Accessories.objects.create(name='Christian %s' % accessories_num, categories=Acc_cat.objects.get(slug="some_category"))
+            Accessories.objects.create(name='Christian %s' % accessories_num,
+                                       categories=AccCat.objects.get(slug="some_category"))
         assert Accessories.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -132,7 +138,7 @@ class accessoriesViewTest(TestCase):
             {'data_key': 'delete', 'data_value': 'consumables:accessories-delete'},
         ]
         Accessories.objects.create(name='Christian-detail')
-        model = Accessories.objects.get(name='Christian-detail',)
+        model = Accessories.objects.get(name='Christian-detail', )
         resp = self.client.get(reverse('consumables:accessories-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -145,28 +151,30 @@ class accessoriesViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['accessories_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['accessories_list']) == 10)
 
     def test_lists_all_accessories(self):
         links = ['consumables:accessories_list', 'consumables:accessories_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['accessories_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['accessories_list']) == 9)
 
-class accessoriesCategoryViewTest(TestCase):
+
+class AccessoriesCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_accessories = 149
-        Acc_cat.objects.create(name="some_category", slug="some_category")
+        AccCat.objects.create(name="some_category", slug="some_category")
         for accessories_num in range(number_of_accessories):
-            Accessories.objects.create(name='Christian %s' % accessories_num, categories=Acc_cat.objects.get(slug="some_category"))
+            Accessories.objects.create(name='Christian %s' % accessories_num,
+                                       categories=AccCat.objects.get(slug="some_category"))
         assert Accessories.objects.count() == 149
-        assert Acc_cat.objects.count() == 1
+        assert AccCat.objects.count() == 1
 
     def test_context_data_in_category(self):
         context_data = [
@@ -174,22 +182,25 @@ class accessoriesCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'consumables:accessories_search'},
             {'data_key': 'add', 'data_value': 'consumables:new-accessories'},
         ]
-        resp = self.client.get(reverse('consumables:category_accessories', kwargs={"category_slug": Acc_cat.objects.get(slug="some_category")}))
+        resp = self.client.get(reverse('consumables:category_accessories',
+                                       kwargs={"category_slug": AccCat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
     def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('consumables:category_accessories', kwargs={"category_slug": Acc_cat.objects.get(slug="some_category")}))
+        resp = self.client.get(reverse('consumables:category_accessories',
+                                       kwargs={"category_slug": AccCat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['accessories_list']) == 10)
+        self.assertTrue(resp.context['is_paginated'] is True)
+        self.assertTrue(len(resp.context['accessories_list']) == 10)
 
     def test_lists_all_categories(self):
-        resp = self.client.get(reverse('consumables:category_accessories', kwargs={"category_slug": Acc_cat.objects.get(slug="some_category")})+'?page=15')
+        resp = self.client.get(reverse('consumables:category_accessories', kwargs={
+            "category_slug": AccCat.objects.get(slug="some_category")}) + '?page=15')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] == True)
-        self.assertTrue( len(resp.context['accessories_list']) == 9)
+        self.assertTrue(resp.context['is_paginated'] is True)
+        self.assertTrue(len(resp.context['accessories_list']) == 9)

@@ -1,25 +1,27 @@
 from django.urls import path, re_path, include
-from .routers import *
-from .views import *
+from .routers import router
+from .views import ConsumableIndexView, ConsumablesView, ConsumablesCategoriesView, ConsumablesDetailView, \
+    ConsumablesCreate, ConsumablesUpdate, ConsumablesDelete, AccessoriesView, AccessoriesCategoriesView, \
+    AccessoriesDetailView, AccessoriesCreate, AccessoriesUpdate, AccessoriesDelete
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
-    path('', consumableIndexView.as_view(), name='consumables_index'),
-    #Расходники
-    path('consumables/', consumablesView.as_view(), name='consumables_list'),
-    re_path(r'^consumables/search$', consumablesView.as_view(), name='consumables_search'),
-    path('consumables/category/<slug:category_slug>', consumablesCategoriesView.as_view(), name='category'),
-    re_path(r'^consumables/(?P<pk>[-\w]+)$', consumablesDetailView.as_view(), name='consumables-detail'),
-    path(r'^consumables/create$', consumablesCreate.as_view(), name='new-consumables'),
-    re_path(r'^consumables/(?P<pk>[-\w]+)/update$', consumablesUpdate.as_view(), name='consumables-update'),
-    re_path(r'^consumables/(?P<pk>[-\w]+)/delete$', consumablesDelete.as_view(), name='consumables-delete'),
-    #Комплектующие
-    path('accessories/', accessoriesView.as_view(), name='accessories_list'),
-    re_path(r'^accessories/search$', accessoriesView.as_view(), name='accessories_search'),
-    path('accessories/category/<slug:category_slug>', accessoriesCategoriesView.as_view(), name='category_accessories'),
-    re_path(r'^accessories/(?P<pk>[-\w]+)$', accessoriesDetailView.as_view(), name='accessories-detail'),
-    path(r'^accessories/create$', accessoriesCreate.as_view(), name='new-accessories'),
-    re_path(r'^accessories/(?P<pk>[-\w]+)/update$', accessoriesUpdate.as_view(), name='accessories-update'),
-    re_path(r'^accessories/(?P<pk>[-\w]+)/delete$', accessoriesDelete.as_view(), name='accessories-delete'),
+    path('', ConsumableIndexView.as_view(), name='consumables_index'),
+    # Расходники
+    path('consumables/', ConsumablesView.as_view(), name='consumables_list'),
+    re_path(r'^consumables/search$', ConsumablesView.as_view(), name='consumables_search'),
+    path('consumables/category/<slug:category_slug>', ConsumablesCategoriesView.as_view(), name='category'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)$', ConsumablesDetailView.as_view(), name='consumables-detail'),
+    path(r'^consumables/create$', ConsumablesCreate.as_view(), name='new-consumables'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)/update$', ConsumablesUpdate.as_view(), name='consumables-update'),
+    re_path(r'^consumables/(?P<pk>[-\w]+)/delete$', ConsumablesDelete.as_view(), name='consumables-delete'),
+    # Комплектующие
+    path('accessories/', AccessoriesView.as_view(), name='accessories_list'),
+    re_path(r'^accessories/search$', AccessoriesView.as_view(), name='accessories_search'),
+    path('accessories/category/<slug:category_slug>', AccessoriesCategoriesView.as_view(), name='category_accessories'),
+    re_path(r'^accessories/(?P<pk>[-\w]+)$', AccessoriesDetailView.as_view(), name='accessories-detail'),
+    path(r'^accessories/create$', AccessoriesCreate.as_view(), name='new-accessories'),
+    re_path(r'^accessories/(?P<pk>[-\w]+)/update$', AccessoriesUpdate.as_view(), name='accessories-update'),
+    re_path(r'^accessories/(?P<pk>[-\w]+)/delete$', AccessoriesDelete.as_view(), name='accessories-delete'),
 
 ]
