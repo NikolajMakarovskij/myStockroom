@@ -9,7 +9,7 @@ from stockroom.forms import ConsumableInstallForm, StockAddForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
 from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
-
+#test_commit
 
 # Устройства
 class DeviceListView(DataMixin, generic.ListView):
