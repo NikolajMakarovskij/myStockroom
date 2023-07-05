@@ -13,6 +13,7 @@ static
 .coverage
 env/
 node_moduless/
+**/__pycache__/
 
 
 myStockroom/pgadmin-data/_data/pgadmin4.db

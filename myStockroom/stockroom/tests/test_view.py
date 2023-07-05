@@ -1,20 +1,17 @@
-import pytest
 from django.test import TestCase
-from ..models import *
-from ..views import *
+from consumables.models import Consumables
+from ..models import Stockroom, History
 from django.urls import reverse
 
 
-
-
-class stockroomViewTest(TestCase):
+class StockroomViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
-            cons = Consumables.objects.create(name='Christian %s' % stocks_num,)
-            Stockroom.objects.create(consumables = cons)
+            cons = Consumables.objects.create(name='Christian %s' % stocks_num)
+            Stockroom.objects.create(consumables=cons)
         assert Consumables.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -36,26 +33,26 @@ class stockroomViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['stockroom_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['stockroom_list']) == 10)
 
     def test_lists_all_stockroom(self):
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['stockroom_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['stockroom_list']) == 9)
 
 
-class historystockViewTest(TestCase):
+class HistorystockViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_in_history = 149
         for history_num in range(number_in_history):
-            History.objects.create(consumable='Christian %s' % history_num,)    
+            History.objects.create(consumable='Christian %s' % history_num, )
         assert History.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -77,15 +74,14 @@ class historystockViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['history_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['history_list']) == 10)
 
     def test_lists_all_stockroom(self):
         links = ['stockroom:history_list', 'stockroom:history_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['history_list']) == 9)
-
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['history_list']) == 9)
