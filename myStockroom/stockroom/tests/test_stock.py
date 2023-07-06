@@ -74,8 +74,8 @@ def test_stock_create_history():
     device_id = None
     quantity = 1
     username = 'admin'
-    status_choise = 'Приход'
-    Stock.create_history(consumable_id, device_id, quantity, username, status_choise)
+    status_choice = 'Приход'
+    Stock.create_history(consumable_id, device_id, quantity, username, status_choice)
     test_history = History.objects.get(consumable='my_consumable')
 
     assert History.objects.count() == 1

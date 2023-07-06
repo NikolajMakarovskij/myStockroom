@@ -19,7 +19,7 @@ def test_list_url_exists_at_desired_location(client):
         '/stockroom/accessories/history/search',
     ]
     for link in links:
-        url = (link)
+        url = link
         response = client.get(url)
         assert response.status_code == 200
 

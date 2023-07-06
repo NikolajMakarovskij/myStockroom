@@ -46,7 +46,7 @@ class StockroomViewTest(TestCase):
             self.assertTrue(len(resp.context['stockroom_list']) == 9)
 
 
-class HistorystockViewTest(TestCase):
+class HistoryStockViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):

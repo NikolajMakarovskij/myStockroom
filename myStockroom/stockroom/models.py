@@ -83,7 +83,7 @@ class StockCat(ModelMixin, models.Model):
         )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии)",
+        help_text="Введите URL (для работы навигации)",
         verbose_name="URL"
         )
 
@@ -152,14 +152,14 @@ class History(models.Model):
         help_text="Укажите пользователя",
         verbose_name="Пользователь"
         )
-    STATUS_CHOISES = [
+    STATUS_CHOICES = [
         ('Приход', 'Приход'),
         ('Расход', 'Расход'),
         ('Удаление', 'Удаление'),
         ]
     status = models.CharField(
         max_length=10,
-        choices=STATUS_CHOISES,
+        choices=STATUS_CHOICES,
         default='Расход',
         )
 
@@ -231,7 +231,7 @@ class StockAcc (ModelMixin, models.Model):
 
 class CategoryAcc(ModelMixin, models.Model):
     """
-    Модель группы для комплкеующих
+    Модель группы для комплектующих
     """
     id = models.UUIDField(
         primary_key=True,
@@ -245,7 +245,7 @@ class CategoryAcc(ModelMixin, models.Model):
         )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии)",
+        help_text="Введите URL (для работы навигации)",
         verbose_name="URL"
         )
 
@@ -314,14 +314,14 @@ class HistoryAcc(models.Model):
         help_text="Укажите пользователя",
         verbose_name="Пользователь"
         )
-    STATUS_CHOISES = [
+    STATUS_CHOICES = [
         ('Приход', 'Приход'),
         ('Расход', 'Расход'),
         ('Удаление', 'Удаление'),
         ]
     status = models.CharField(
         max_length=10,
-        choices=STATUS_CHOISES,
+        choices=STATUS_CHOICES,
         default='Расход',
     )
 
@@ -336,7 +336,7 @@ class StockDev (ModelMixin, models.Model):
     """
     Расширение модели устройств для склада.
     Номенклатура устройств склада и справочника может различаться,
-    однако количество и и размещение каждого устройства должно совпадать
+    однако количество и размещение каждого устройства должно совпадать
     """
     devices = models.OneToOneField(
         Device,
@@ -394,7 +394,7 @@ class CategoryDev(ModelMixin, models.Model):
         )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии)",
+        help_text="Введите URL (для работы навигации)",
         verbose_name="URL"
         )
 
@@ -453,14 +453,14 @@ class HistoryDev(models.Model):
         help_text="Укажите пользователя",
         verbose_name="Пользователь"
         )
-    STATUS_CHOISES = [
+    STATUS_CHOICES = [
         ('Приход', 'Приход'),
         ('Перемещение', 'Перемещение'),
         ('Удаление', 'Удаление'),
         ]
     status = models.CharField(
         max_length=20,
-        choices=STATUS_CHOISES,
+        choices=STATUS_CHOICES,
         default='Перемещение',
     )
 

@@ -70,11 +70,8 @@ def test_stockroom_create():
     assert stockroom.device == 'epson'
 
 
-assert isinstance(pytest.mark.django_db, object)
-
-
 @pytest.mark.django_db
-def test_hysrory_create():
+def test_history_create():
     """Тестирует создание записи в базе данных для модели Consumables"""
     StockCat.objects.create(name="my_category", slug="my_category")
     History.objects.create(

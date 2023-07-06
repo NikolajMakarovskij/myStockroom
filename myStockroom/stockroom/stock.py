@@ -1,5 +1,4 @@
 import datetime
-import uuid
 from django.conf import settings
 from device.models import Device
 from consumables.models import Consumables, Accessories
@@ -30,7 +29,7 @@ class Stock(object):
 
     # Расходники
 
-    def get_device(consumable_id: uuid.uuid4) -> list:
+    def get_device(consumable_id: str) -> str:
         """Получение устройства"""
         con_device = list(
             Consumables.objects.get(id=consumable_id).device.all().distinct()
@@ -48,7 +47,7 @@ class Stock(object):
             devices = ', '.join(list_device)
         return devices
 
-    def add_category(consumable_id: uuid.uuid4) -> dict:
+    def add_category(consumable_id: str) -> dict:
         """Получение категории"""
         if not Consumables.objects.get(id=consumable_id).categories:
             consumable_category = None
@@ -69,8 +68,8 @@ class Stock(object):
                 )
         return consumable_category
 
-    def create_history(consumable_id: uuid.uuid4, device_id: uuid.uuid4,
-                       quantity: int, username: str, status_choise: str
+    def create_history(consumable_id: str, device_id: str,
+                       quantity: int, username: str, status_choice: str
                        ) -> dict:
         """Создание записи в истории расходников"""
         if not (Stock.add_category(consumable_id)) and (not device_id):
@@ -80,7 +79,7 @@ class Stock(object):
                 score=quantity,
                 dateInstall=datetime.date.today(),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         elif not (Stock.add_category(consumable_id)):
             history = History.objects.create(
@@ -91,7 +90,7 @@ class Stock(object):
                 score=quantity,
                 dateInstall=datetime.date.today(),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         elif not device_id:
             history = History.objects.create(
@@ -101,7 +100,7 @@ class Stock(object):
                 dateInstall=datetime.date.today(),
                 categories=Stock.add_category(consumable_id),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         else:
             history = History.objects.create(
@@ -113,7 +112,7 @@ class Stock(object):
                 dateInstall=datetime.date.today(),
                 categories=Stock.add_category(consumable_id),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         return history
 
@@ -160,7 +159,7 @@ class Stock(object):
                 Consumables.objects.filter(
                     id=consumable_id).update(score=int(quantity))
         Stock.create_history(consumable_id, device_id, quantity,
-                             username, status_choise='Приход')
+                             username, status_choice='Приход')
         self.save()
 
     def remove_consumable(self, consumable: dict, quantity=0,
@@ -173,7 +172,7 @@ class Stock(object):
         if Stockroom.objects.filter(consumables=consumable_id):
             Stockroom.objects.filter(consumables=consumable_id).delete()
             Stock.create_history(consumable_id, device_id, quantity,
-                                 username, status_choise='Удаление')
+                                 username, status_choice='Удаление')
         self.save()
 
     def device_add_consumable(self, consumable, device, quantity=1, username=None):
@@ -187,12 +186,12 @@ class Stock(object):
 
         Consumables.objects.filter(id=consumable_id).update(score=consumable_score)
         Stockroom.objects.filter(consumables=consumable_id).update(dateInstall=datetime.date.today())
-        Stock.create_history(consumable_id, device_id, quantity, username, status_choise='Расход')
+        Stock.create_history(consumable_id, device_id, quantity, username, status_choice='Расход')
         self.save()
 
     # Комплектующие
 
-    def get_device_acc(accessories_id):
+    def get_device_acc(accessories_id: str) -> str:
         """Получение устройства"""
         acc_device = list(Accessories.objects.get(id=accessories_id).device.all().distinct())
         list_device = []
@@ -223,7 +222,7 @@ class Stock(object):
                 )
         return accessories_category
 
-    def create_history_acc(accessories_id, device_id, quantity, username, status_choise):
+    def create_history_acc(accessories_id, device_id, quantity, username, status_choice):
         """Создание записи в истории комплектующих"""
         if not (Stock.add_category_acc(accessories_id)) and (not device_id):
             history = HistoryAcc.objects.create(
@@ -232,7 +231,7 @@ class Stock(object):
                 score=quantity,
                 dateInstall=datetime.date.today(),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         elif not (Stock.add_category_acc(accessories_id)):
             history = HistoryAcc.objects.create(
@@ -243,7 +242,7 @@ class Stock(object):
                 score=quantity,
                 dateInstall=datetime.date.today(),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         elif not device_id:
             history = HistoryAcc.objects.create(
@@ -253,7 +252,7 @@ class Stock(object):
                 dateInstall=datetime.date.today(),
                 categories=Stock.add_category_acc(accessories_id),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         else:
             history = HistoryAcc.objects.create(
@@ -265,7 +264,7 @@ class Stock(object):
                 dateInstall=datetime.date.today(),
                 categories=Stock.add_category_acc(accessories_id),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         return history
 
@@ -304,7 +303,7 @@ class Stock(object):
                     device=Stock.get_device_acc(accessories_id)
                 )
                 Accessories.objects.filter(id=accessories_id).update(score=int(quantity))
-        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Приход')
+        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Приход')
         self.save()
 
     def remove_accessories(self, accessories, quantity=0, username=None):
@@ -315,7 +314,7 @@ class Stock(object):
         accessories_id = str(accessories.id)
         if StockAcc.objects.filter(accessories=accessories_id):
             StockAcc.objects.filter(accessories=accessories_id).delete()
-            Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Удаление')
+            Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Удаление')
         self.save()
 
     def device_add_accessories(self, accessories, device, quantity=1, username=None):
@@ -329,7 +328,7 @@ class Stock(object):
 
         Accessories.objects.filter(id=accessories_id).update(score=accessories_score)
         StockAcc.objects.filter(accessories=accessories_id).update(dateInstall=datetime.date.today())
-        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choise='Расход')
+        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Расход')
 
         self.save()
 
@@ -349,7 +348,7 @@ class Stock(object):
                 )
         return device_category
 
-    def create_history_dev(device_id, quantity, username, status_choise):
+    def create_history_dev(device_id, quantity, username, status_choice):
         """Создание записи в истории устройств"""
         if not (Stock.add_category_dev(device_id)):
             history = HistoryDev.objects.create(
@@ -358,7 +357,7 @@ class Stock(object):
                 score=quantity,
                 dateInstall=datetime.date.today(),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         else:
             history = HistoryDev.objects.create(
@@ -368,7 +367,7 @@ class Stock(object):
                 dateInstall=datetime.date.today(),
                 categories=Stock.add_category_dev(device_id),
                 user=username,
-                status=status_choise
+                status=status_choice
             )
         return history
 
@@ -403,7 +402,7 @@ class Stock(object):
                     shelf=int(number_shelf),
                 )
                 Device.objects.filter(id=device_id).update(score=int(quantity))
-        Stock.create_history_dev(device_id, quantity, username, status_choise='Приход')
+        Stock.create_history_dev(device_id, quantity, username, status_choice='Приход')
         self.save()
 
     def remove_device(self, device, quantity=0, username=None):
@@ -413,7 +412,7 @@ class Stock(object):
         device_id = str(device.id)
         if StockDev.objects.filter(devices=device_id):
             StockDev.objects.filter(devices=device_id).delete()
-            Stock.create_history_dev(device_id, quantity, username, status_choise='Удаление')
+            Stock.create_history_dev(device_id, quantity, username, status_choice='Удаление')
         self.save()
 
     def move_device(self, device, quantity=1, username=None):
@@ -426,6 +425,6 @@ class Stock(object):
 
         Device.objects.filter(id=device_id).update(score=device_score)
         StockDev.objects.filter(devices=device_id).update(dateInstall=datetime.date.today())
-        Stock.create_history_dev(device_id, quantity, username, status_choise='Перемещение')
+        Stock.create_history_dev(device_id, quantity, username, status_choice='Перемещение')
 
         self.save()
