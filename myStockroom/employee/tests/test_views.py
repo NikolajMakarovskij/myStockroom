@@ -1,7 +1,6 @@
 from django.test import TestCase
 from employee.models import Employee, Post, Departament
 from django.urls import reverse
-import warnings
 
 
 class EmployeeListViewTest(TestCase):
@@ -10,7 +9,7 @@ class EmployeeListViewTest(TestCase):
     def setUpTestData(cls):
         number_of_employees = 149
         for employee_num in range(number_of_employees):
-            Employee.objects.create(name='Christian %s' % employee_num,)
+            Employee.objects.create(name='Christian %s' % employee_num, )
         assert Employee.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -34,8 +33,8 @@ class EmployeeListViewTest(TestCase):
             {'data_key': 'update', 'data_value': 'employee:employee-update'},
             {'data_key': 'delete', 'data_value': 'employee:employee-delete'},
         ]
-        Employee.objects.create(name='Christian_detail',)
-        model = Employee.objects.get(name='Christian_detail',)
+        Employee.objects.create(name='Christian_detail', )
+        model = Employee.objects.get(name='Christian_detail', )
         resp = self.client.get(reverse('employee:employee-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -48,25 +47,26 @@ class EmployeeListViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['employee_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['employee_list']) == 10)
 
     def test_lists_all_employee(self):
         links = ['employee:employee_list', 'employee:employee_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['employee_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['employee_list']) == 9)
 
-class postViewTest(TestCase):
+
+class PostViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_post = 149
         for post_num in range(number_of_post):
-            Post.objects.create(name='Christian %s' % post_num,)
+            Post.objects.create(name='Christian %s' % post_num, )
         assert Post.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -90,8 +90,8 @@ class postViewTest(TestCase):
             {'data_key': 'update', 'data_value': 'employee:post-update'},
             {'data_key': 'delete', 'data_value': 'employee:post-delete'},
         ]
-        Post.objects.create(name='Christian_detail',)
-        model = Post.objects.get(name='Christian_detail',)
+        Post.objects.create(name='Christian_detail', )
+        model = Post.objects.get(name='Christian_detail', )
         resp = self.client.get(reverse('employee:post-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -104,25 +104,26 @@ class postViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['post_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['post_list']) == 10)
 
     def test_lists_all_signature(self):
         links = ['employee:post_list', 'employee:post_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['post_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['post_list']) == 9)
 
-class departamentViewTest(TestCase):
+
+class DepartamentViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_departament = 149
         for departament_num in range(number_of_departament):
-            Departament.objects.create(name='Christian %s' % departament_num,)
+            Departament.objects.create(name='Christian %s' % departament_num, )
         assert Departament.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -146,8 +147,8 @@ class departamentViewTest(TestCase):
             {'data_key': 'update', 'data_value': 'employee:departament-update'},
             {'data_key': 'delete', 'data_value': 'employee:departament-delete'},
         ]
-        Departament.objects.create(name='Christian_detail',)
-        model = Departament.objects.get(name='Christian_detail',)
+        Departament.objects.create(name='Christian_detail', )
+        model = Departament.objects.get(name='Christian_detail', )
         resp = self.client.get(reverse('employee:departament-detail', kwargs={"pk": model.pk}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
@@ -160,14 +161,14 @@ class departamentViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['departament_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['departament_list']) == 10)
 
     def test_lists_all_signature(self):
         links = ['employee:departament_list', 'employee:departament_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['departament_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['departament_list']) == 9)

@@ -1,5 +1,5 @@
 import pytest
-from ..forms import employeeForm ,departamentForm, postForm, Post, Departament
+from ..forms import EmployeeForm, DepartamentForm, PostForm, Post, Departament
 from workplace.models import Workplace
 
 
@@ -8,10 +8,11 @@ def test_departament_form_valid():
     """Тест на валидность формы"""
 
     form_data = {
-        "name": "departament_name",  
+        "name": "departament_name",
     }
-    form = departamentForm(data=form_data)
+    form = DepartamentForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_departament_form_name_invalid():
@@ -20,9 +21,10 @@ def test_departament_form_name_invalid():
     form_data = {
         'name': "",
     }
-    form = departamentForm(data=form_data)
+    form = DepartamentForm(data=form_data)
     assert form.is_valid() is False
     assert [err_name] == form.errors['name']
+
 
 @pytest.mark.django_db
 def test_post_form_valid():
@@ -30,10 +32,11 @@ def test_post_form_valid():
     Departament.objects.create(name="dep_name")
     form_data = {
         "name": "departament_name",
-        "departament": Departament.objects.get(name="dep_name")  
+        "departament": Departament.objects.get(name="dep_name")
     }
-    form = postForm(data=form_data)
+    form = PostForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_post_form_name_invalid():
@@ -42,26 +45,28 @@ def test_post_form_name_invalid():
     form_data = {
         'name': "",
     }
-    form = postForm(data=form_data)
+    form = PostForm(data=form_data)
     assert form.is_valid() is False
     assert [err_name] == form.errors['name']
+
 
 @pytest.mark.django_db
 def test_employee_form_valid():
     """Тест на валидность формы"""
-    Post.objects.create(name = "employee_post")
-    Workplace.objects.create(name = "my_workplace")
+    Post.objects.create(name="employee_post")
+    Workplace.objects.create(name="my_workplace")
 
     form_data = {
-        "name": "employee_name",  
-        "sername": "employee_sername",
-        "family": "employee_family",  
+        "name": "employee_name",
+        "surname": "employee_surname",
+        "family": "employee_family",
         "workplace": Workplace.objects.get(name="my_workplace"),
-        "post": Post.objects.get(name = "employee_post"),
+        "post": Post.objects.get(name="employee_post"),
         "employeeEmail": "admin@admin.com",
     }
-    form = employeeForm(data=form_data)
+    form = EmployeeForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_employee_form_name_invalid():
@@ -70,18 +75,19 @@ def test_employee_form_name_invalid():
     form_data = {
         'name': "",
     }
-    form = employeeForm(data=form_data)
+    form = EmployeeForm(data=form_data)
     assert form.is_valid() is False
     assert [err_name] == form.errors['name']
 
+
 @pytest.mark.django_db
-def test_employye_form_email_invalid():
+def test_employee_form_email_invalid():
     """Тест на проверку адреса электронной почты"""
     err_mes = "Введите правильный адрес электронной почты."
     form_data = {
         "name": "my_consumable",
         "employeeEmail": "123adb",
     }
-    form = employeeForm(data=form_data)
+    form = EmployeeForm(data=form_data)
     assert form.is_valid() is False
     assert [err_mes] == form.errors['employeeEmail']
