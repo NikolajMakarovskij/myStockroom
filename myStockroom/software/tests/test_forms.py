@@ -1,10 +1,11 @@
 from unittest import mock
 from django.core.files import File
 import pytest
-from ..forms import softwareForm, OSForm, Manufacturer
+from ..forms import SoftwareForm, OSForm, Manufacturer
+
 
 @pytest.mark.django_db
-def test_sofrware_form_valid():
+def test_software_form_valid():
     """Тест на валидность формы"""
     Manufacturer.objects.create(name="soft_manufacturer")
 
@@ -17,8 +18,9 @@ def test_sofrware_form_valid():
         "licenseKeyImg": mock.MagicMock(spec=File, name='serial_Img'),
         "licenseKeyFile": mock.MagicMock(spec=File, name='serial_Img')
     }
-    form = softwareForm(data=form_data)
+    form = SoftwareForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_software_form_name_invalid():
@@ -27,9 +29,10 @@ def test_software_form_name_invalid():
     form_data = {
         'name': "",
     }
-    form = softwareForm(data=form_data)
+    form = SoftwareForm(data=form_data)
     assert form.is_valid() is False
     assert [err_name] == form.errors['name']
+
 
 @pytest.mark.django_db
 def test_OS_form_valid():
@@ -45,6 +48,7 @@ def test_OS_form_valid():
     }
     form = OSForm(data=form_data)
     assert form.is_valid() is True
+
 
 @pytest.mark.django_db
 def test_OS_form_name_invalid():

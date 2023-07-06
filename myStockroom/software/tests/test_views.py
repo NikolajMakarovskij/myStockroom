@@ -1,15 +1,15 @@
 from django.test import TestCase
 from software.models import Software, Os
 from django.urls import reverse
-import warnings
 
-class softwareViewTest(TestCase):
+
+class SoftwareViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         number_of_software = 149
         for software_num in range(number_of_software):
-            Software.objects.create(name='Christian %s' % software_num,)
+            Software.objects.create(name='Christian %s' % software_num, )
         assert Software.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -28,7 +28,7 @@ class softwareViewTest(TestCase):
 
     def test_context_data_in_detail(self):
         context_data = [
-            {'data_key': 'title', 'data_value': 'Програмное обеспечение'},
+            {'data_key': 'title', 'data_value': 'Программное обеспечение'},
             {'data_key': 'add', 'data_value': 'software:new-software'},
             {'data_key': 'update', 'data_value': 'software:software-update'},
             {'data_key': 'delete', 'data_value': 'software:software-delete'},
@@ -47,25 +47,26 @@ class softwareViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['software_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['software_list']) == 10)
 
     def test_lists_all_software(self):
         links = ['software:software_list', 'software:software_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['software_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['software_list']) == 9)
+
 
 class OSViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_OS = 149
-        for OS_num in range(number_of_OS):
-            Os.objects.create(name='Christian %s' % OS_num,)
+        number_of_os = 149
+        for OS_num in range(number_of_os):
+            Os.objects.create(name='Christian %s' % OS_num, )
         assert Os.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -103,14 +104,14 @@ class OSViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['os_list']) == 10)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['os_list']) == 10)
 
     def test_lists_all_OS(self):
         links = ['software:OS_list', 'software:OS_search']
         for link in links:
-            resp = self.client.get(reverse(link)+'?page=15')
+            resp = self.client.get(reverse(link) + '?page=15')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] == True)
-            self.assertTrue( len(resp.context['os_list']) == 9)
+            self.assertTrue(resp.context['is_paginated'] is True)
+            self.assertTrue(len(resp.context['os_list']) == 9)
