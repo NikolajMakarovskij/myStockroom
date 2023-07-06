@@ -1,6 +1,6 @@
 import pytest
-from ..forms import signatureForm, Employee, Device, Consumables
-from consumables.models import Categories as con_cat
+from ..forms import SignatureForm, Employee, Device, Consumables
+from consumables.models import Categories as ConCat
 
 
 @pytest.mark.django_db
@@ -11,21 +11,21 @@ def test_signature_form_valid():
     Device.objects.create(name="Acer C27")
     Consumables.objects.create(
         name="T7741",
-        categories=con_cat.objects.create(
+        categories=ConCat.objects.create(
             name="Накопители",
             slug="storages"
         )
-    ) 
+    )
     form_data = {
-        "name": "signature_name", 
+        "name": "signature_name",
         "periodOpen": "2018-9-12",
-        "periodClose" : "2022-3-31",
+        "periodClose": "2022-3-31",
         "employeeRegister": Employee.objects.get(name="some_employee_1"),
         "employeeStorage": Employee.objects.get(name="some_employee_2"),
         "workstation": Device.objects.get(name="Acer C27"),
-        "storage": Consumables.objects.get(name = "T7741") 
+        "storage": Consumables.objects.get(name="T7741")
     }
-    form = signatureForm(data=form_data)
+    form = SignatureForm(data=form_data)
     assert form.is_valid() is True
 
 
@@ -37,9 +37,10 @@ def test_signature_form_date_open_incorrect():
         "name": "my_consumable",
         "periodOpen": "12-12-2018",
     }
-    form = signatureForm(data=form_data)
+    form = SignatureForm(data=form_data)
     assert form.is_valid() is False
     assert [err_mes] == form.errors['periodOpen']
+
 
 @pytest.mark.django_db
 def test_signature_form_date_close_incorrect():
@@ -47,8 +48,8 @@ def test_signature_form_date_close_incorrect():
     err_mes = "Введите правильную дату."
     form_data = {
         "name": "my_consumable",
-        "periodClose" : "2022-13-42",
+        "periodClose": "2022-13-42",
     }
-    form = signatureForm(data=form_data)
+    form = SignatureForm(data=form_data)
     assert form.is_valid() is False
     assert [err_mes] == form.errors['periodClose']
