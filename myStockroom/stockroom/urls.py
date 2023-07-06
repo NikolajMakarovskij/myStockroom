@@ -27,7 +27,7 @@ urlpatterns = [
     path('accessories/search', StockAccView.as_view(), name='stock_acc_search'),
     path('accessories/category/<slug:category_slug>', StockAccCategoriesView.as_view(), name='accessories_category'),
 
-    path('accessories/stockroom/add/<uuid:accessories_id/', stock_add_accessories, name='stock_add_accessories'),
+    path('accessories/stockroom/add/<uuid:accessories_id>/', stock_add_accessories, name='stock_add_accessories'),
     path('accessories/stockroom/remove/<uuid:accessories_id>/', stock_remove_accessories,
          name='stock_remove_accessories'),
     path('accessories/stockroom/accessories/remove/<uuid:accessories_id>/', device_add_accessories,
