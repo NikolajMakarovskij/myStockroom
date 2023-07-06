@@ -1,42 +1,43 @@
 from django.urls import reverse_lazy
-from .forms import roomForm, workplaceForm
+from .forms import RoomForm, WorkplaceForm
 from .models import Room, Workplace
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from catalog.utils import DataMixin, FormMessageMixin
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from .serializers import *
+from .serializers import WorkplaceModelSerializer, RoomModelSerializer
 
-#Рабочие места
+
+# Рабочие места
 class WorkplaceListView(DataMixin, generic.ListView):
     model = Workplace
     template_name = 'workplace/workplace_list.html'
-  
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace:workplace_search',add='workplace:new-workplace')
+        c_def = self.get_user_context(title="Рабочие места", searchlink='workplace:workplace_search',
+                                      add='workplace:new-workplace')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        if not query :
-            query = '' 
+        if not query:
+            query = ''
         object_list = Workplace.objects.filter(
-                Q(name__icontains=query) |
-                Q(room__name__icontains=query) |
-                Q(room__floor__icontains=query) |
-                Q(room__building__icontains=query) 
+            Q(name__icontains=query) |
+            Q(room__name__icontains=query) |
+            Q(room__floor__icontains=query) |
+            Q(room__building__icontains=query)
         ).select_related('room')
-        return object_list   
+        return object_list
+
 
 class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceModelSerializer
+
 
 class WorkplaceDetailView(DataMixin, generic.DetailView):
     model = Workplace
@@ -44,13 +45,15 @@ class WorkplaceDetailView(DataMixin, generic.DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Рабочее место",add='workplace:new-workplace',update='workplace:workplace-update',delete='workplace:workplace-delete',)
+        c_def = self.get_user_context(title="Рабочее место", add='workplace:new-workplace',
+                                      update='workplace:workplace-update', delete='workplace:workplace-delete', )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
+
 class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
     model = Workplace
-    form_class = workplaceForm
+    form_class = WorkplaceForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:workplace_list')
     success_message = f"Рабочее место %(name)s успешно создано"
@@ -58,23 +61,25 @@ class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить рабочее место",)
+        c_def = self.get_user_context(title="Добавить рабочее место", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
 
 class WorkplaceUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Workplace
     template_name = 'Forms/add.html'
-    form_class = workplaceForm
+    form_class = WorkplaceForm
     success_url = reverse_lazy('workplace:workplace_list')
     success_message = f"Рабочее место %(name)s успешно обновлено"
     error_message = f"Рабочее место %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать рабочее место",)
+        c_def = self.get_user_context(title="Редактировать рабочее место", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
 
 class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Workplace
@@ -85,36 +90,38 @@ class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить рабочее место",selflink='workplace:workplace_list')
+        c_def = self.get_user_context(title="Удалить рабочее место", selflink='workplace:workplace_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
-#Кабинеты
+
+# Кабинеты
 class RoomListView(DataMixin, generic.ListView):
     model = Room
     template_name = 'workplace/room_list.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room_search',add='workplace:new-room',)
+        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room_search', add='workplace:new-room', )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        if not query :
-            query = '' 
+        if not query:
+            query = ''
         object_list = Room.objects.filter(
-                Q(name__icontains=query) |
-                Q(floor__icontains=query) |
-                Q(building__icontains=query) 
+            Q(name__icontains=query) |
+            Q(floor__icontains=query) |
+            Q(building__icontains=query)
         )
         return object_list
-    
+
 
 class RoomRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
+
 
 class RoomDetailView(DataMixin, generic.DetailView):
     model = Room
@@ -122,13 +129,15 @@ class RoomDetailView(DataMixin, generic.DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кабинет",add='workplace:new-room',update='workplace:room-update',delete='workplace:room-delete')
+        c_def = self.get_user_context(title="Кабинет", add='workplace:new-room', update='workplace:room-update',
+                                      delete='workplace:room-delete')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
+
 class RoomCreate(DataMixin, FormMessageMixin, CreateView):
     model = Room
-    form_class = roomForm
+    form_class = RoomForm
     template_name = 'Forms/add.html'
     success_url = reverse_lazy('workplace:room_list')
     success_message = f"Кабинет %(name)s успешно создан"
@@ -136,23 +145,25 @@ class RoomCreate(DataMixin, FormMessageMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить кабинет",)
+        c_def = self.get_user_context(title="Добавить кабинет", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
 
 class RoomUpdate(DataMixin, FormMessageMixin, UpdateView):
     model = Room
     template_name = 'Forms/add.html'
-    form_class = roomForm
+    form_class = RoomForm
     success_url = reverse_lazy('workplace:room_list')
     success_message = f"Кабинет %(name)s успешно обновлен"
     error_message = f"Кабинет %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать кабинет",)
+        c_def = self.get_user_context(title="Редактировать кабинет", )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
 
 class RoomDelete(DataMixin, FormMessageMixin, DeleteView):
     model = Room
@@ -163,6 +174,6 @@ class RoomDelete(DataMixin, FormMessageMixin, DeleteView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить кабинет",selflink='workplace:room_list')
+        c_def = self.get_user_context(title="Удалить кабинет", selflink='workplace:room_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
