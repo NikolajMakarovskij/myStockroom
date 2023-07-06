@@ -163,7 +163,7 @@ class Stock(object):
         self.save()
 
     def remove_consumable(self, consumable: dict, quantity=0,
-                          username=None):
+                          username=None) -> None:
         """
         Удаление расходника со склада
         """
@@ -175,7 +175,7 @@ class Stock(object):
                                  username, status_choice='Удаление')
         self.save()
 
-    def device_add_consumable(self, consumable, device, quantity=1, username=None):
+    def device_add_consumable(self, consumable: dict, device: dict, quantity=1, username=None) -> None:
         """
         Установка расходника в устройство
         """
@@ -207,7 +207,7 @@ class Stock(object):
             devices = ', '.join(list_device)
         return devices
 
-    def add_category_acc(accessories_id):
+    def add_category_acc(accessories_id: str) -> dict:
         """Получение категории"""
         if not Accessories.objects.get(id=accessories_id).categories:
             accessories_category = 'None'
@@ -222,7 +222,8 @@ class Stock(object):
                 )
         return accessories_category
 
-    def create_history_acc(accessories_id, device_id, quantity, username, status_choice):
+    def create_history_acc(accessories_id: str, device_id: str, quantity: int, username: str,
+                           status_choice: str) -> dict:
         """Создание записи в истории комплектующих"""
         if not (Stock.add_category_acc(accessories_id)) and (not device_id):
             history = HistoryAcc.objects.create(
@@ -306,7 +307,7 @@ class Stock(object):
         Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Приход')
         self.save()
 
-    def remove_accessories(self, accessories, quantity=0, username=None):
+    def remove_accessories(self, accessories: dict, quantity=0, username=None) -> None:
         """
         Удаление комплектующего со склада
         """
@@ -317,7 +318,7 @@ class Stock(object):
             Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Удаление')
         self.save()
 
-    def device_add_accessories(self, accessories, device, quantity=1, username=None):
+    def device_add_accessories(self, accessories: dict, device: dict, quantity=1, username=None) -> None:
         """
         Установка расходника в устройство
         """
@@ -333,7 +334,7 @@ class Stock(object):
         self.save()
 
     # устройства
-    def add_category_dev(device_id):
+    def add_category_dev(device_id: str) -> dict:
         """Получение категории"""
         if not Device.objects.get(id=device_id).categories:
             device_category = 'None'
@@ -348,7 +349,7 @@ class Stock(object):
                 )
         return device_category
 
-    def create_history_dev(device_id, quantity, username, status_choice):
+    def create_history_dev(device_id: str, quantity: int, username: int, status_choice: str) -> None:
         """Создание записи в истории устройств"""
         if not (Stock.add_category_dev(device_id)):
             history = HistoryDev.objects.create(
@@ -371,7 +372,7 @@ class Stock(object):
             )
         return history
 
-    def add_device(self, device, quantity=1, number_rack=1, number_shelf=1, username=None):
+    def add_device(self, device: dict, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
         """
         Добавить устройство на склад или обновить его количество.
         """
@@ -405,7 +406,7 @@ class Stock(object):
         Stock.create_history_dev(device_id, quantity, username, status_choice='Приход')
         self.save()
 
-    def remove_device(self, device, quantity=0, username=None):
+    def remove_device(self, device: dict, quantity=0, username=None) -> None:
         """
         Удаление устройства со склада
         """
@@ -415,15 +416,15 @@ class Stock(object):
             Stock.create_history_dev(device_id, quantity, username, status_choice='Удаление')
         self.save()
 
-    def move_device(self, device, quantity=1, username=None):
+    def move_device(self, device: dict, workplace=1, username=None) -> None:
         """
         Перемещение устройства
         """
         device_id = str(device)
-        device_score = int(str(device.score))
-        device_score -= quantity
+        device_workplace = workplace
+        quantity = None
 
-        Device.objects.filter(id=device_id).update(score=device_score)
+        Device.objects.filter(id=device_id).update(workplace=device_workplace)
         StockDev.objects.filter(devices=device_id).update(dateInstall=datetime.date.today())
         Stock.create_history_dev(device_id, quantity, username, status_choice='Перемещение')
 
