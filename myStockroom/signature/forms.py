@@ -24,7 +24,7 @@ class SignatureForm(forms.ModelForm):
                                              attrs={'class': 'form-select form-select-lg'}),
             'employeeStorage': WidgetCanAdd(Employee, related_url="employee:new-employee",
                                             attrs={'class': 'form-select form-select-lg'}),
-            'workstation': WidgetCanAdd(Device, related_url="workstation:new-workstation",
+            'workstation': WidgetCanAdd(Device, related_url="device:new-device",
                                         attrs={'class': 'form-select form-select-lg'}),
             'storage': WidgetCanAdd(Consumables, related_url="consumables:new-consumables",
                                     attrs={'class': 'form-select form-select-lg'}),

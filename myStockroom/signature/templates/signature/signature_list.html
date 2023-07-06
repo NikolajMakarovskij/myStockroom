@@ -6,7 +6,8 @@
     <div class="table-responsive"> 
       <caption>
         <h1 style="text-align:center" >Раздел в разработке</h1>
-      </caption> 
+      </caption>
+    </div>
 <!--search block
       {%include 'search/search.html' %}-->
 <!--content block
@@ -34,12 +35,12 @@
         <td><a class="noDecoration" href="{{ signature.get_absolute_url }}">{{ signature.name }}</a></td>  
         <td>
           <a class="noDecoration" href="{{ signature.employeeRegister.get_absolute_url }}">
-            {{ signature.employeeRegister.name }} {{ signature.employeeRegister.sername }} {{ signature.employeeRegister.family }}
+            {{ signature.employeeRegister.name }} {{ signature.employeeRegister.surname }} {{ signature.employeeRegister.family }}
           </a>
         </td>
         <td>
           <a class="noDecoration" href="{{ signature.employeeStorage.get_absolute_url }}">
-            {{ signature.employeeStorage.name }} {{ signature.employeeStorage.sername }} {{ signature.employeeStorage.family }}
+            {{ signature.employeeStorage.name }} {{ signature.employeeStorage.surname }} {{ signature.employeeStorage.family }}
           </a>
         </td>
         <td><a class="noDecoration" href="{{ signature.storage.get_absolute_url }}">{{ signature.storage.name }}</a></td>  

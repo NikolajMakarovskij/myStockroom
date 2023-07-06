@@ -94,6 +94,9 @@
   {% endfor %}
   </div>
 </div>
+{% if not signature.storage.id %}
+
+{% else %}
 <div class="d-flex justify-content-center input-group mt-3 ">
   <form action="{% url 'stockroom:device_add_consumable' signature.storage.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
     {% csrf_token %}
@@ -104,6 +107,7 @@
     </div>
   </form>
 </div>
+{% endif %}
 <div class="d-flex justify-content-center input-group mt-3 ">
   <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
     href="{% url add %}">
