@@ -1,11 +1,11 @@
-from django.urls import re_path
+from django.urls import path
 from .views import IndexView, ReferencesView
 
 urlpatterns = [
     # главная
-    re_path(r'^$', IndexView.as_view(), name='index'),
+    path('', IndexView.as_view(), name='index'),
     # справочники
-    re_path(r'^references/$', ReferencesView.as_view(), name='references_list'),
-    re_path(r'^references/search$', ReferencesView.as_view(), name='references_search')
+    path('references/', ReferencesView.as_view(), name='references_list'),
+    path('references/search', ReferencesView.as_view(), name='references_search')
 
 ]
