@@ -1,5 +1,4 @@
 import pytest
-import warnings
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
@@ -9,7 +8,6 @@ from ..models import Signature
 # list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-    warnings.filterwarnings(action="ignore")
     links = ['/signature/', '/signature/search']
     for link in links:
         url = link
@@ -19,7 +17,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_ad_template(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'link': 'signature:signature_list', 'template': 'signature/signature_list.html'},
         {'link': 'signature:signature_search', 'template': 'signature/signature_list.html'},
@@ -35,7 +32,6 @@ def test_list_uses_correct_url_ad_template(client):
 # detail_update_delete
 @pytest.mark.django_db
 def test_details_url(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'model': Signature, 'link': 'signature:signature-detail', 'template': 'signature/signature_detail.html'},
         {'model': Signature, 'link': 'signature:signature-update', 'template': 'Forms/add.html'},

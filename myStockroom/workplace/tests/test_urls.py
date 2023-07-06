@@ -1,5 +1,4 @@
 import pytest
-import warnings
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
@@ -9,7 +8,6 @@ from ..models import Workplace, Room
 # list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-    warnings.filterwarnings(action="ignore")
     links = ['/workplace/', '/workplace/search', '/workplace/room/', '/workplace/room/search']
     for link in links:
         url = link
@@ -19,7 +17,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'link': 'workplace:workplace_list', 'template': 'workplace/workplace_list.html'},
         {'link': 'workplace:workplace_search', 'template': 'workplace/workplace_list.html'},
@@ -38,7 +35,6 @@ def test_list_uses_correct_url_nad_template(client):
 # detail_update_delete
 @pytest.mark.django_db
 def test_ups_detail_url(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'model': Workplace, 'link': 'workplace:workplace-detail', 'template': 'workplace/workplace_detail.html'},
         {'model': Workplace, 'link': 'workplace:workplace-update', 'template': 'Forms/add.html'},

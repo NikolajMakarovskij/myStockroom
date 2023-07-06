@@ -1,15 +1,12 @@
 import pytest
-import warnings
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
-
 from ..models import Manufacturer
 
 
 # list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-    warnings.filterwarnings(action="ignore")
     links = ['/counterparty/', '/counterparty/manufacturer/', '/counterparty/manufacturer/search']
     for link in links:
         url = link
@@ -19,7 +16,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'link': 'counterparty:counterparty', 'template': 'counterparty/counterparty.html'},
         {'link': 'counterparty:manufacturer_list', 'template': 'counterparty/manufacturer_list.html'},
@@ -35,7 +31,6 @@ def test_list_uses_correct_url_nad_template(client):
 # detail_update_delete
 @pytest.mark.django_db
 def test_details_url(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'model': Manufacturer, 'link': 'counterparty:manufacturer-detail',
          'template': 'counterparty/manufacturer_detail.html'},

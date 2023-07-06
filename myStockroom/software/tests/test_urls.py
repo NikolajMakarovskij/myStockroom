@@ -1,5 +1,4 @@
 import pytest
-import warnings
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 from ..models import Software, Os
@@ -8,7 +7,6 @@ from ..models import Software, Os
 # list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-    warnings.filterwarnings(action="ignore")
     links = ['/software/', '/software/search', '/software/OS/', '/software/OS/search']
     for link in links:
         url = link
@@ -18,7 +16,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'link': 'software:software_list', 'template': 'software/software_list.html'},
         {'link': 'software:software_search', 'template': 'software/software_list.html'},
@@ -37,7 +34,6 @@ def test_list_uses_correct_url_nad_template(client):
 # detail_update_delete
 @pytest.mark.django_db
 def test_details_url(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'model': Software, 'link': 'software:software-detail', 'template': 'software/software_detail.html'},
         {'model': Software, 'link': 'software:software-update', 'template': 'Forms/add.html'},

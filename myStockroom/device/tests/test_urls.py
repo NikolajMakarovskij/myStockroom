@@ -1,5 +1,4 @@
 import pytest
-import warnings
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 from ..models import Device, DeviceCat
@@ -8,7 +7,6 @@ from ..models import Device, DeviceCat
 # list and create
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(client):
-    warnings.filterwarnings(action="ignore")
     links = ['/device/', '/device/search']
     for link in links:
         url = link
@@ -18,7 +16,6 @@ def test_list_url_exists_at_desired_location(client):
 
 @pytest.mark.django_db
 def test_list_uses_correct_url_nad_template(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'link': 'device:device_list', 'template': 'device/device_list.html'},
         {'link': 'device:device_search', 'template': 'device/device_list.html'},
@@ -34,7 +31,6 @@ def test_list_uses_correct_url_nad_template(client):
 # detail_update_delete
 @pytest.mark.django_db
 def test_details_url(client):
-    warnings.filterwarnings(action="ignore")
     links = [
         {'model': Device, 'link': 'device:device-detail', 'template': 'device/device_detail.html'},
         {'model': Device, 'link': 'device:device-update', 'template': 'Forms/add.html'},
@@ -51,7 +47,6 @@ def test_details_url(client):
 # category
 @pytest.mark.django_db
 def test_device_category_url(client):
-    warnings.filterwarnings(action="ignore")
     DeviceCat.objects.create(name="some_category", slug="some_category")
     url = reverse('device:category', kwargs={"category_slug": DeviceCat.objects.get(slug="some_category")})
     response = client.get(url)

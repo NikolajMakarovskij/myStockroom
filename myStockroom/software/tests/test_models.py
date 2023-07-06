@@ -27,7 +27,7 @@ def test_software_create():
 
 
 @pytest.mark.django_db
-def test_OS_create():
+def test_os_create():
     """Тестирует создание записи в базе данных для модели OS"""
     Manufacturer.objects.create(name="soft_manufacturer")
     Os.objects.create(

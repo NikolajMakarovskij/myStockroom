@@ -1,5 +1,4 @@
 import pytest
-from myStockroom.wsgi import *
 from ..models import References
 
 
