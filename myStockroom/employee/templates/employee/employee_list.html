@@ -25,7 +25,7 @@
       <tbody style="text-align:center">
         {% for employee in employee_list %}
         <tr>
-          <td><a class="noDecoration" href="{{ employee.get_absolute_url }}">{{ employee.name }} {{ employee.sername }} {{ employee.family }}</a></td>
+          <td><a class="noDecoration" href="{{ employee.get_absolute_url }}">{{ employee.name }} {{ employee.surname }} {{ employee.family }}</a></td>
           <td><a class="noDecoration" href="{{ employee.workplace.get_absolute_url }}">{{ employee.workplace.name }}</a></td>
           <td><a class="noDecoration" href="{{ employee.post.get_absolute_url }}">{{ employee.post.name }}</a></td>
           <td><a class="noDecoration" href="{{ employee.post.departament.get_absolute_url }}">{{ employee.post.departament.name }}</a></td>
