@@ -18,6 +18,7 @@ jobs:
       - uses: isbang/compose-action@v1.4.1
         with:
           compose-file: "./backend/docker-compose.yaml"
+          env_file: "./backend/.env.dev"
       - name: Run tests
         run: docker-compose exec -T web pytest --cov
       - name: Stop conteiners
