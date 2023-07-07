@@ -2,7 +2,7 @@ name: Django Actions
 
 on: 
   push:
-    branch: [work-branch, backend]
+    branch: [backend]
   pull_request:
     branch: [master]
 
