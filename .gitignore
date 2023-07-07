@@ -8,8 +8,8 @@ pgadmin-data/_data/storage
 pgadmin-data/_data/pgadmin4.db
 .vscode/settings.json
 .pytest_cache
-media
-static
+/backend/media
+/backend/static
 .coverage
 env/
 node_moduless/
