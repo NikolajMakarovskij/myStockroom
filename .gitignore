@@ -16,6 +16,4 @@ node_moduless/
 **/__pycache__/
 
 
-myStockroom/pgadmin-data/_data/pgadmin4.db
-
-myStockroom/celerybeat-schedule
+backend/celerybeat-schedule
