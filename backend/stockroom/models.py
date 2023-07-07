@@ -7,12 +7,12 @@ from consumables.models import Consumables, Accessories
 from catalog.utils import ModelMixin
 
 
-# Расходники
+# Consumables
 class Stockroom (ModelMixin, models.Model):
     """
-    Расширение модели расходников для склада.
-    Номенклатура расходников склада и справочника может различаться,
-    однако количество каждого расходника должно совпадать
+    Expansion of the consumables model for the warehouse.
+    The nomenclature of the consumables of the warehouse and the directory may differ,
+    however, the quantity of each consumable must match
     """
     consumables = models.OneToOneField(
         Consumables,
@@ -69,7 +69,7 @@ class Stockroom (ModelMixin, models.Model):
 
 class StockCat(ModelMixin, models.Model):
     """
-    Модель группы для расходников
+    Group model for consumables
     """
     id = models.UUIDField(
         primary_key=True,
@@ -104,7 +104,7 @@ class StockCat(ModelMixin, models.Model):
 
 class History(models.Model):
     """
-    Модель для хранения истории использования расходников
+    Model for storing the history of the use of consumables
     """
     id = models.UUIDField(
         primary_key=True, db_index=True,
@@ -169,12 +169,12 @@ class History(models.Model):
         ordering = ['-dateInstall', 'consumable']
 
 
-# Комплектующие
+# Accessories
 class StockAcc (ModelMixin, models.Model):
     """
-    Расширение модели комплектующих для склада.
-    Номенклатура комплектующих склада и справочника может различаться,
-    однако количество каждого комплектующего должно совпадать
+    Expansion of the model of components for the warehouse.
+    The nomenclature of components of the warehouse and the directory may differ,
+    however, the quantity of each component must match
     """
     accessories = models.OneToOneField(
         Accessories,
@@ -231,7 +231,7 @@ class StockAcc (ModelMixin, models.Model):
 
 class CategoryAcc(ModelMixin, models.Model):
     """
-    Модель группы для комплектующих
+    Group model for components
     """
     id = models.UUIDField(
         primary_key=True,
@@ -266,7 +266,7 @@ class CategoryAcc(ModelMixin, models.Model):
 
 class HistoryAcc(models.Model):
     """
-    Модель для хранения истории использования комплектующих
+    Model for storing the history of the use of components
     """
     id = models.UUIDField(
         primary_key=True, db_index=True,
@@ -331,12 +331,12 @@ class HistoryAcc(models.Model):
         ordering = ['-dateInstall', 'accessories']
 
 
-# Устройства
+# Devices
 class StockDev (ModelMixin, models.Model):
     """
-    Расширение модели устройств для склада.
-    Номенклатура устройств склада и справочника может различаться,
-    однако количество и размещение каждого устройства должно совпадать
+    Extension of the device model for the warehouse.
+    The nomenclature of warehouse and directory devices may differ,
+    however, the number and placement of each device must match
     """
     devices = models.OneToOneField(
         Device,
@@ -380,7 +380,7 @@ class StockDev (ModelMixin, models.Model):
 
 class CategoryDev(ModelMixin, models.Model):
     """
-    Модель группы для устройств
+    Group model for devices
     """
     id = models.UUIDField(
         primary_key=True,
@@ -415,7 +415,7 @@ class CategoryDev(ModelMixin, models.Model):
 
 class HistoryDev(models.Model):
     """
-    Модель для хранения истории использования устройств
+    Model for storing device usage history
     """
     id = models.UUIDField(
         primary_key=True, db_index=True,

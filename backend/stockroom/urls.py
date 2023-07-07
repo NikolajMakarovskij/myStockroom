@@ -9,7 +9,7 @@ from .views import (
 urlpatterns = [
     path('', StockroomIndexView.as_view(), name='stock_index'),
 
-    # Склад расходников
+    # Consumables warehouse
     path('stockroom/', StockroomView.as_view(), name='stock_list'),
     path('stockroom/search', StockroomView.as_view(), name='stock_search'),
     path('category/<slug:category_slug>', StockroomCategoriesView.as_view(), name='category'),
@@ -22,7 +22,7 @@ urlpatterns = [
     path('history/search', HistoryView.as_view(), name='history_search'),
     path('history/category/<slug:category_slug>', HistoryCategoriesView.as_view(), name='history_category'),
 
-    # Склад комплектующих
+    # Components warehouse
     path('accessories/', StockAccView.as_view(), name='stock_acc_list'),
     path('accessories/search', StockAccView.as_view(), name='stock_acc_search'),
     path('accessories/category/<slug:category_slug>', StockAccCategoriesView.as_view(), name='accessories_category'),
@@ -38,7 +38,7 @@ urlpatterns = [
     path('accessories/history/category/<slug:category_slug>', HistoryAccCategoriesView.as_view(),
          name='history_acc_category'),
 
-    # Склад устройств
+    # Device Warehouse
     path('devices/', StockDevView.as_view(), name='stock_dev_list'),
     path('devices/search', StockDevView.as_view(), name='stock_dev_search'),
     path('devices/category/<slug:category_slug>', StockDevCategoriesView.as_view(), name='devices_category'),

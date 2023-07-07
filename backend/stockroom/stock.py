@@ -210,7 +210,7 @@ class Stock(object):
     def add_category_acc(accessories_id: str) -> dict:
         """Получение категории"""
         if not Accessories.objects.get(id=accessories_id).categories:
-            accessories_category = 'None'
+            accessories_category = None
         else:
             accessories_category = Accessories.objects.get(id=accessories_id).categories.name
             if CategoryAcc.objects.filter(name=accessories_category):
@@ -337,7 +337,7 @@ class Stock(object):
     def add_category_dev(device_id: str) -> dict:
         """Получение категории"""
         if not Device.objects.get(id=device_id).categories:
-            device_category = 'None'
+            device_category = None
         else:
             device_category = Device.objects.get(id=device_id).categories.name
             if CategoryDev.objects.filter(name=device_category):

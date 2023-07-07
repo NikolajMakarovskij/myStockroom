@@ -108,7 +108,7 @@ class HistoryView(DataMixin, generic.ListView):
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
-            title="История",
+            title="История расходников",
             searchlink='stockroom:history_search',
             menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items())
@@ -437,7 +437,7 @@ class StockDevView(DataMixin, generic.ListView):
             Q(devices__invent__icontains=query) |
             Q(dateInstall__icontains=query) |
             Q(dateAddToStock__icontains=query)
-        ).select_related('devices', 'devices__manufacturer', 'devices__categories')
+        ).select_related('devices__manufacturer', 'devices__categories')
         return object_list
 
 
@@ -483,7 +483,7 @@ class HistoryDevView(DataMixin, generic.ListView):
         if not query:
             query = ''
         object_list = HistoryDev.objects.filter(
-            Q(devicies__icontains=query) |
+            Q(devices__icontains=query) |
             Q(categories__name__icontains=query) |
             Q(status__icontains=query) |
             Q(dateInstall__icontains=query) |
