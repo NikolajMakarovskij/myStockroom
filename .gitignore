@@ -15,10 +15,6 @@ env/
 node_moduless/
 **/__pycache__/
 
-
-
-myStockroom/pgadmin-data/_data/pgadmin4.db
-
-myStockroom/celerybeat-schedule
 /reactfrontendapp/
 /backend/celerybeat-schedule
+/venv/
