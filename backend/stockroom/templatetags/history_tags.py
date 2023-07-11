@@ -66,7 +66,7 @@ def this_device_acc_history(device_id):
     history_list = HistoryAcc.objects.filter(deviceId=device_id)
 
     return {
-        "history_list": history_list,
+        "history_acc_list": history_list,
         "table_head": "История использования комплектующих",
         "no_history": "Комплектующие не использовались"
         }
@@ -77,9 +77,9 @@ def this_acc_history(accessories_id):
     history_list = HistoryAcc.objects.filter(accessoriesId=accessories_id)
 
     return {
-        "history_list ": history_list,
+        "history_acc_list": history_list,
         "table_head": "История использования комплектующего",
-        "no_history": "Комплектующее не использовался"
+        "no_history": "Комплектующее не использовалось"
         }
 
 
@@ -88,7 +88,7 @@ def accessories_history():
     history_list = HistoryAcc.objects.all()[:5]
 
     return {
-        "history_list": history_list,
+        "history_acc_list": history_list,
         "table_head": "История комплектующих",
         "no_history": "Комплектующее не использовались"
         }
