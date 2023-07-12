@@ -36,9 +36,9 @@ class DataMixin:
 
     def get_user_context(self, **kwargs):
         side_menu = cache.get('side_menu')
-#        if not side_menu:
-#            side_menu = menu
-#            cache.set('side_menu', side_menu, 3000)
+        if not side_menu:
+            side_menu = menu
+            cache.set('side_menu', side_menu, 3000)
         context = kwargs
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
