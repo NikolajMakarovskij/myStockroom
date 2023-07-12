@@ -1,9 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
 from ..models import Signature
 from django.urls import reverse
 
 
 class SignatureViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):

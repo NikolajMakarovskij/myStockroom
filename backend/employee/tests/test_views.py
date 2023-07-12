@@ -1,9 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
 from employee.models import Employee, Post, Departament
 from django.urls import reverse
 
 
 class EmployeeListViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -61,6 +65,9 @@ class EmployeeListViewTest(TestCase):
 
 
 class PostViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -118,6 +125,9 @@ class PostViewTest(TestCase):
 
 
 class DepartamentViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):

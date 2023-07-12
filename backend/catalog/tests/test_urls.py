@@ -1,12 +1,14 @@
 import pytest
-from pytest_django.asserts import assertTemplateUsed
 from django.urls import reverse
+from pytest_django.asserts import assertTemplateUsed
+from .test_login import auto_login_user
 
 
 # index
 @pytest.mark.django_db
-def test_url_exists_at_desired_location(client):
-    links = ['', '/references/', '/references/search']
+def test_url_exists_at_desired_location(auto_login_user):
+    client, user = auto_login_user()
+    links = ['/catalog/']
     for link in links:
         url = link
         response = client.get(url)
@@ -14,11 +16,10 @@ def test_url_exists_at_desired_location(client):
 
 
 @pytest.mark.django_db
-def test_urls(client):
+def test_urls(auto_login_user):
+    client, user = auto_login_user()
     links = [
-        {'link': 'catalog:index', 'template': 'index.html'},
-        {'link': 'catalog:references_list', 'template': 'catalog/references.html'},
-        {'link': 'catalog:references_search', 'template': 'catalog/references.html'},
+        {'link': 'catalog:index', 'template': 'index.html'}
     ]
     for each in links:
         url = reverse(each.get('link'))

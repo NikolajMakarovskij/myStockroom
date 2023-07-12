@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% block content %}
+<div class="col ">
+  <div class="row row-cols-3 row-cols-md-3">
+    <div class="col nodecorationIndex">
+      <a href="{% url 'employee:employee_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Сотрудники</h5>
+          </div>
+          <img src="{% static 'images/employee.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+    <div class="col nodecorationIndex">
+      <a href="{% url 'employee:post_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Должность</h5>
+          </div>
+          <img src="{% static 'images/post.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+    <div class="col nodecorationIndex">
+      <a href="{% url 'employee:departament_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Отдел</h5>
+          </div>
+          <img src="{% static 'images/departament.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<!--toast messages-->
+  {% include 'toast.html'%}
+
+{% endblock %}

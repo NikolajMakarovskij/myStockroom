@@ -3,14 +3,28 @@ from .forms import RoomForm, WorkplaceForm
 from .models import Room, Workplace
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from catalog.utils import DataMixin, FormMessageMixin
+from catalog.utils import DataMixin, FormMessageMixin, menu
 from rest_framework import viewsets
 from .serializers import WorkplaceModelSerializer, RoomModelSerializer
 
 
+class IndexView(LoginRequiredMixin, generic.TemplateView):
+    """
+    Главная
+    """
+    template_name = 'workplace/workplace_index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Рабочие места, Помещения'
+        context['menu'] = menu
+        return context
+
+
 # Рабочие места
-class WorkplaceListView(DataMixin, generic.ListView):
+class WorkplaceListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Workplace
     template_name = 'workplace/workplace_list.html'
 
@@ -39,7 +53,7 @@ class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     serializer_class = WorkplaceModelSerializer
 
 
-class WorkplaceDetailView(DataMixin, generic.DetailView):
+class WorkplaceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Workplace
     template_name = 'workplace/workplace_detail.html'
 
@@ -51,7 +65,7 @@ class WorkplaceDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
+class WorkplaceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Workplace
     form_class = WorkplaceForm
     template_name = 'Forms/add.html'
@@ -66,7 +80,7 @@ class WorkplaceCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class WorkplaceUpdate(DataMixin, FormMessageMixin, UpdateView):
+class WorkplaceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Workplace
     template_name = 'Forms/add.html'
     form_class = WorkplaceForm
@@ -81,7 +95,7 @@ class WorkplaceUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
+class WorkplaceDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Workplace
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:workplace_list')
@@ -96,7 +110,7 @@ class WorkplaceDelete(DataMixin, FormMessageMixin, DeleteView):
 
 
 # Кабинеты
-class RoomListView(DataMixin, generic.ListView):
+class RoomListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Room
     template_name = 'workplace/room_list.html'
 
@@ -123,7 +137,7 @@ class RoomRestView(DataMixin, viewsets.ModelViewSet):
     serializer_class = RoomModelSerializer
 
 
-class RoomDetailView(DataMixin, generic.DetailView):
+class RoomDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Room
     template_name = 'workplace/room_detail.html'
 
@@ -135,7 +149,7 @@ class RoomDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class RoomCreate(DataMixin, FormMessageMixin, CreateView):
+class RoomCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Room
     form_class = RoomForm
     template_name = 'Forms/add.html'
@@ -150,7 +164,7 @@ class RoomCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class RoomUpdate(DataMixin, FormMessageMixin, UpdateView):
+class RoomUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Room
     template_name = 'Forms/add.html'
     form_class = RoomForm
@@ -165,7 +179,7 @@ class RoomUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class RoomDelete(DataMixin, FormMessageMixin, DeleteView):
+class RoomDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room_list')

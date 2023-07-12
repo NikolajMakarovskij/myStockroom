@@ -1,12 +1,14 @@
 import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
+from catalog.tests.test_login import auto_login_user
 from ..models import Manufacturer
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(client):
+def test_list_url_exists_at_desired_location(auto_login_user):
+    client, user = auto_login_user()
     links = ['/counterparty/', '/counterparty/manufacturer/', '/counterparty/manufacturer/search']
     for link in links:
         url = link
@@ -15,7 +17,8 @@ def test_list_url_exists_at_desired_location(client):
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_nad_template(client):
+def test_list_uses_correct_url_nad_template(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'link': 'counterparty:counterparty', 'template': 'counterparty/counterparty.html'},
         {'link': 'counterparty:manufacturer_list', 'template': 'counterparty/manufacturer_list.html'},
@@ -30,7 +33,8 @@ def test_list_uses_correct_url_nad_template(client):
 
 # detail_update_delete
 @pytest.mark.django_db
-def test_details_url(client):
+def test_details_url(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'model': Manufacturer, 'link': 'counterparty:manufacturer-detail',
          'template': 'counterparty/manufacturer_detail.html'},

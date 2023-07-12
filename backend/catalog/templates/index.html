@@ -28,19 +28,19 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'catalog:references_list' %}">
+      <a href="{% url 'counterparty:counterparty' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
-            <h5 class="card-title">Справочники</h5>
+            <h5 class="card-title">Контрагенты</h5>
           </div>
-          <img src="{% static 'images/references.svg' %}" class="card-img-top iconIndex">
+          <img src="{% static 'images/post.svg' %}" class="card-img-top iconIndex">
         </div>
       </a>
     </div>
   </div>
   <div class="row row-cols-3 row-cols-md-3">
     <div class="col nodecorationIndex justify-content-center">
-      <a href="{% url 'workplace:workplace_list' %}">
+      <a href="{% url 'workplace:workplace_index' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Рабочие места</h5>
@@ -60,7 +60,7 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'software:software_list' %}">
+      <a href="{% url 'software:software_index' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Софт</h5>
@@ -82,22 +82,12 @@
       </a>
     </div>
     <div class="col nodecorationIndex">
-      <a href="{% url 'employee:employee_list' %}">
+      <a href="{% url 'employee:employee_index' %}">
         <div class="card text-white text-center bg-dark square justify-content-center">
           <div class="card-header">
             <h5 class="card-title">Сотрудники</h5>
           </div>
           <img src="{% static 'images/employee.svg' %}" class="card-img-top iconIndex">
-        </div>
-      </a>
-    </div>
-    <div class="col nodecorationIndex">
-      <a href="{% url 'counterparty:counterparty' %}">
-        <div class="card text-white text-center bg-dark square justify-content-center">
-          <div class="card-header">
-            <h5 class="card-title">Контрагенты</h5>
-          </div>
-          <img src="{% static 'images/post.svg' %}" class="card-img-top iconIndex">
         </div>
       </a>
     </div>

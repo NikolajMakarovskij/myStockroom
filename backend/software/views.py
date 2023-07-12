@@ -3,11 +3,22 @@ from .forms import SoftwareForm, OSForm
 from .models import Software, Os
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from catalog.utils import DataMixin, FormMessageMixin
 
 
-class SoftwareListView(DataMixin, generic.ListView):
+class IndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
+    template_name = 'software/soft_index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="СОФТ, ОС")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+
+class SoftwareListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Software
     template_name = 'software/software_list.html'
 
@@ -31,7 +42,7 @@ class SoftwareListView(DataMixin, generic.ListView):
         return object_list
 
 
-class SoftwareDetailView(DataMixin, generic.DetailView):
+class SoftwareDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Software
     template_name = 'software/software_detail.html'
 
@@ -43,7 +54,7 @@ class SoftwareDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class SoftwareCreate(DataMixin, FormMessageMixin, CreateView):
+class SoftwareCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Software
     form_class = SoftwareForm
     template_name = 'Forms/add.html'
@@ -58,7 +69,7 @@ class SoftwareCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class SoftwareUpdate(DataMixin, FormMessageMixin, UpdateView):
+class SoftwareUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Software
     template_name = 'Forms/add.html'
     form_class = SoftwareForm
@@ -73,7 +84,7 @@ class SoftwareUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class SoftwareDelete(DataMixin, FormMessageMixin, DeleteView):
+class SoftwareDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Software
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:software_list')
@@ -88,7 +99,7 @@ class SoftwareDelete(DataMixin, FormMessageMixin, DeleteView):
 
 
 # ОС
-class OSListView(DataMixin, generic.ListView):
+class OSListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Os
     template_name = 'software/OS_list.html'
 
@@ -111,7 +122,7 @@ class OSListView(DataMixin, generic.ListView):
         return object_list
 
 
-class OSDetailView(DataMixin, generic.DetailView):
+class OSDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Os
     template_name = 'software/OS_detail.html'
 
@@ -123,7 +134,7 @@ class OSDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class OSCreate(DataMixin, FormMessageMixin, CreateView):
+class OSCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Os
     form_class = OSForm
     template_name = 'Forms/add.html'
@@ -138,7 +149,7 @@ class OSCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class OSUpdate(DataMixin, FormMessageMixin, UpdateView):
+class OSUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Os
     template_name = 'Forms/add.html'
     form_class = OSForm
@@ -153,7 +164,7 @@ class OSUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class OSDelete(DataMixin, FormMessageMixin, DeleteView):
+class OSDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Os
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('software:OS_list')

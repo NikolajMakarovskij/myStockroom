@@ -1,9 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
 from ..models import Device, DeviceCat
 from django.urls import reverse
 
 
 class DeviceViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -61,6 +65,9 @@ class DeviceViewTest(TestCase):
 
 
 class DeviceCategoryViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):

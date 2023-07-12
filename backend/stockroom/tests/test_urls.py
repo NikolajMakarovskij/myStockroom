@@ -1,12 +1,14 @@
 import pytest
 from pytest_django.asserts import assertTemplateUsed
+from catalog.tests.test_login import auto_login_user
 from django.urls import reverse
 from ..models import StockCat
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(client):
+def test_list_url_exists_at_desired_location(auto_login_user):
+    client, user = auto_login_user()
     links = [
         '/stockroom/',
         '/stockroom/stockroom/',
@@ -29,7 +31,8 @@ def test_list_url_exists_at_desired_location(client):
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_nad_template(client):
+def test_list_uses_correct_url_nad_template(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'link': 'stockroom:stock_index', 'template': 'stock/stock_index.html'},
         {'link': 'stockroom:stock_list', 'template': 'stock/stock_list.html'},
@@ -54,7 +57,8 @@ def test_list_uses_correct_url_nad_template(client):
 
 # category
 @pytest.mark.django_db
-def test_stockroom_category_url(client):
+def test_stockroom_category_url(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'link': 'stockroom:category', 'template': 'stock/stock_list.html'},
         {'link': 'stockroom:history_category', 'template': 'stock/history_list.html'},

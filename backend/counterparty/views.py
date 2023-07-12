@@ -3,12 +3,13 @@ from .models import Manufacturer
 from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from catalog.utils import DataMixin, FormMessageMixin
 from django.urls import reverse_lazy
 
 
 # Контрагенты
-class CounterpartyView(DataMixin, generic.TemplateView):
+class CounterpartyView(LoginRequiredMixin, DataMixin, generic.TemplateView):
     template_name = 'counterparty/counterparty.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -19,7 +20,7 @@ class CounterpartyView(DataMixin, generic.TemplateView):
 
 
 # Производитель
-class ManufacturerListView(DataMixin, generic.ListView):
+class ManufacturerListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Manufacturer
     template_name = 'counterparty/manufacturer_list.html'
 
@@ -42,7 +43,7 @@ class ManufacturerListView(DataMixin, generic.ListView):
         return object_list
 
 
-class ManufacturerDetailView(DataMixin, generic.DetailView):
+class ManufacturerDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Manufacturer
     template_name = 'counterparty/manufacturer_detail.html'
 
@@ -55,7 +56,7 @@ class ManufacturerDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class ManufacturerCreate(DataMixin, FormMessageMixin, CreateView):
+class ManufacturerCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Manufacturer
     form_class = ManufacturerForm
     template_name = 'Forms/add.html'
@@ -70,7 +71,7 @@ class ManufacturerCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class ManufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
+class ManufacturerUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Manufacturer
     template_name = 'Forms/add.html'
     form_class = ManufacturerForm
@@ -85,7 +86,7 @@ class ManufacturerUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class ManufacturerDelete(DataMixin, FormMessageMixin, DeleteView):
+class ManufacturerDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')

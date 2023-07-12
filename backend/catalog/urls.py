@@ -1,11 +1,8 @@
 from django.urls import path
-from .views import IndexView, ReferencesView
+from .views import IndexView
 
 urlpatterns = [
     # главная
-    path('', IndexView.as_view(), name='index'),
-    # справочники
-    path('references/', ReferencesView.as_view(), name='references_list'),
-    path('references/search', ReferencesView.as_view(), name='references_search')
+    path('', IndexView.as_view(), name='index')
 
 ]

@@ -1,10 +1,15 @@
-from django.test import TestCase
+
+from django.test import TestCase, Client
 from ..models import Categories, Consumables, AccCat, Accessories
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Расходники
 class ConsumablesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -64,6 +69,9 @@ class ConsumablesViewTest(TestCase):
 
 
 class ConsumablesCategoryViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -107,6 +115,9 @@ class ConsumablesCategoryViewTest(TestCase):
 
 # Комплектующие
 class AccessoriesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -165,6 +176,9 @@ class AccessoriesViewTest(TestCase):
 
 
 class AccessoriesCategoryViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client.force_login(User.objects.get_or_create(username='user')[0])
 
     @classmethod
     def setUpTestData(cls):

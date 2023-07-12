@@ -15,8 +15,6 @@
 
 <body class="bodybackground">
   <!--top navigation-->
-  {% if user.is_authenticated %}
-  
   <nav class="navbar sticky-top justify-content-start navbar-dark bg-dark bg-gradient">
     <div class="container-fluid">
       <div class="col-8">
@@ -24,7 +22,6 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      {% if user.is_authenticated %}
         {% if user.is_superuser %}  
         <div class="nav-item  col-1 text-light">
           <a class="noDecorationMenu" href="/admin/">
@@ -47,7 +44,6 @@
             Выход
           </a>
         </div>
-      {% endif %} 
     </div> 
   </nav>
 <!-- side navigation -->
@@ -91,8 +87,5 @@
     </div>
   </div>
 </div>
-  {% else %}
-      <meta http-equiv="refresh" content="0; URL={% url 'login' %}">
-  {% endif %} 
 </body>
 </html>

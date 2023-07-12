@@ -1,16 +1,17 @@
 from django.urls import path, re_path
 from .views import EmployeeListView, EmployeeDetailView, EmployeeCreate, EmployeeUpdate, EmployeeDelete, PostListView, \
     PostDetailView, PostCreate, PostUpdate, PostDelete, DepartamentListView, DepartamentDetailView, DepartamentCreate, \
-    DepartamentUpdate, DepartamentDelete
+    DepartamentUpdate, DepartamentDelete, IndexView
 
 urlpatterns = [
+    path('', IndexView.as_view(), name='employee_index'),
     # сотрудники
-    path('', EmployeeListView.as_view(), name='employee_list'),
-    path('search', EmployeeListView.as_view(), name='employee_search'),
-    re_path(r'^(?P<pk>[-\w]+)$', EmployeeDetailView.as_view(), name='employee-detail'),
-    re_path(r'^create/$', EmployeeCreate.as_view(), name='new-employee'),
-    re_path(r'^(?P<pk>[-\w]+)/update$', EmployeeUpdate.as_view(), name='employee-update'),
-    re_path(r'^(?P<pk>[-\w]+)/delete$', EmployeeDelete.as_view(), name='employee-delete'),
+    path('employee/', EmployeeListView.as_view(), name='employee_list'),
+    path('employee/search', EmployeeListView.as_view(), name='employee_search'),
+    re_path(r'^employee/(?P<pk>[-\w]+)$', EmployeeDetailView.as_view(), name='employee-detail'),
+    re_path(r'^employee/create/$', EmployeeCreate.as_view(), name='new-employee'),
+    re_path(r'^employee/(?P<pk>[-\w]+)/update$', EmployeeUpdate.as_view(), name='employee-update'),
+    re_path(r'^employee/(?P<pk>[-\w]+)/delete$', EmployeeDelete.as_view(), name='employee-delete'),
 
     # Должность
     path('post/', PostListView.as_view(), name='post_list'),

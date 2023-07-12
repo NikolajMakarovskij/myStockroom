@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from consumables.models import Consumables, Accessories
 from device.models import Device
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from .stock import Stock
 from .forms import StockAddForm, ConsumableInstallForm
@@ -17,7 +18,7 @@ from django.contrib import messages
 
 
 # Склад главная
-class StockroomIndexView(generic.TemplateView):
+class StockroomIndexView(LoginRequiredMixin, generic.TemplateView):
     """
     Главная
     """
@@ -31,7 +32,7 @@ class StockroomIndexView(generic.TemplateView):
 
 
 # Склад расходников
-class StockroomView(DataMixin, generic.ListView):
+class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
 
@@ -72,7 +73,7 @@ class StockroomView(DataMixin, generic.ListView):
         return object_list
 
 
-class StockroomCategoriesView(DataMixin, generic.ListView):
+class StockroomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
 
@@ -83,7 +84,7 @@ class StockroomCategoriesView(DataMixin, generic.ListView):
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
-            title="Склад",
+            title="Склад расходников",
             searchlink='stockroom:stock_search',
             menu_categories=stock_cat
         )
@@ -97,7 +98,7 @@ class StockroomCategoriesView(DataMixin, generic.ListView):
 
 
 # История склада расходников
-class HistoryView(DataMixin, generic.ListView):
+class HistoryView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_list.html'
     model = History
 
@@ -130,7 +131,7 @@ class HistoryView(DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryCategoriesView(DataMixin, generic.ListView):
+class HistoryCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_list.html'
     model = History
 
@@ -141,7 +142,7 @@ class HistoryCategoriesView(DataMixin, generic.ListView):
             cache.set('stock_cat', stock_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
-            title="История",
+            title="История расходников",
             searchlink='stockroom:history_search',
             menu_categories=stock_cat
         )
@@ -230,7 +231,7 @@ def device_add_consumable(request, consumable_id):
 
 
 # Склад комплектующих
-class StockAccView(DataMixin, generic.ListView):
+class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_acc_list.html'
     model = StockAcc
 
@@ -265,7 +266,7 @@ class StockAccView(DataMixin, generic.ListView):
         return object_list
 
 
-class StockAccCategoriesView(DataMixin, generic.ListView):
+class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_acc_list.html'
     model = StockAcc
 
@@ -287,7 +288,7 @@ class StockAccCategoriesView(DataMixin, generic.ListView):
     # История склада комплектующих
 
 
-class HistoryAccView(DataMixin, generic.ListView):
+class HistoryAccView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_acc_list.html'
     model = HistoryAcc
 
@@ -317,7 +318,7 @@ class HistoryAccView(DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryAccCategoriesView(DataMixin, generic.ListView):
+class HistoryAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_acc_list.html'
     model = HistoryAcc
 
@@ -409,7 +410,7 @@ def device_add_accessories(request, accessories_id):
 
 
 # Склад устройств
-class StockDevView(DataMixin, generic.ListView):
+class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
 
@@ -441,7 +442,7 @@ class StockDevView(DataMixin, generic.ListView):
         return object_list
 
 
-class StockDevCategoriesView(DataMixin, generic.ListView):
+class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
 
@@ -463,7 +464,7 @@ class StockDevCategoriesView(DataMixin, generic.ListView):
     # История склада устройств
 
 
-class HistoryDevView(DataMixin, generic.ListView):
+class HistoryDevView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_dev_list.html'
     model = HistoryDev
 
@@ -492,7 +493,7 @@ class HistoryDevView(DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryDevCategoriesView(DataMixin, generic.ListView):
+class HistoryDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_dev_list.html'
     model = HistoryDev
 

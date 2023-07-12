@@ -3,12 +3,23 @@ from .forms import EmployeeForm, PostForm, DepartamentForm
 from .models import Employee, Departament, Post
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from catalog.utils import DataMixin, FormMessageMixin
 
 
+class IndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
+    template_name = 'employee/employee_index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Сотрудники, Должности, Отделы")
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+
 # Сотрудники
-class EmployeeListView(DataMixin, generic.ListView):
+class EmployeeListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Employee
     template_name = 'employee/employee_list.html'
 
@@ -37,7 +48,7 @@ class EmployeeListView(DataMixin, generic.ListView):
         return object_list
 
 
-class EmployeeDetailView(DataMixin, generic.DetailView):
+class EmployeeDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Employee
     template_name = 'employee/employee_detail.html'
 
@@ -49,7 +60,7 @@ class EmployeeDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class EmployeeCreate(DataMixin, FormMessageMixin, CreateView):
+class EmployeeCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Employee
     form_class = EmployeeForm
     template_name = 'Forms/add.html'
@@ -64,7 +75,7 @@ class EmployeeCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class EmployeeUpdate(DataMixin, FormMessageMixin, UpdateView):
+class EmployeeUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Employee
     template_name = 'Forms/add.html'
     form_class = EmployeeForm
@@ -79,7 +90,7 @@ class EmployeeUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class EmployeeDelete(DataMixin, FormMessageMixin, DeleteView):
+class EmployeeDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Employee
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:employee_list')
@@ -94,7 +105,7 @@ class EmployeeDelete(DataMixin, FormMessageMixin, DeleteView):
 
 
 # Должность
-class PostListView(DataMixin, generic.ListView):
+class PostListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Post
     template_name = 'employee/post_list.html'
 
@@ -116,7 +127,7 @@ class PostListView(DataMixin, generic.ListView):
         return object_list
 
 
-class PostDetailView(DataMixin, generic.DetailView):
+class PostDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Post
     template_name = 'employee/post_detail.html'
 
@@ -128,7 +139,7 @@ class PostDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class PostCreate(DataMixin, FormMessageMixin, CreateView):
+class PostCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'Forms/add.html'
@@ -143,7 +154,7 @@ class PostCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class PostUpdate(DataMixin, FormMessageMixin, UpdateView):
+class PostUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Post
     template_name = 'Forms/add.html'
     form_class = PostForm
@@ -158,7 +169,7 @@ class PostUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class PostDelete(DataMixin, FormMessageMixin, DeleteView):
+class PostDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Post
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:post_list')
@@ -173,7 +184,7 @@ class PostDelete(DataMixin, FormMessageMixin, DeleteView):
 
 
 # Отдел
-class DepartamentListView(DataMixin, generic.ListView):
+class DepartamentListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Departament
     template_name = 'employee/departament_list.html'
 
@@ -194,7 +205,7 @@ class DepartamentListView(DataMixin, generic.ListView):
         return object_list
 
 
-class DepartamentDetailView(DataMixin, generic.DetailView):
+class DepartamentDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Departament
     template_name = 'employee/departament_detail.html'
 
@@ -206,7 +217,7 @@ class DepartamentDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class DepartamentCreate(DataMixin, FormMessageMixin, CreateView):
+class DepartamentCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Departament
     form_class = DepartamentForm
     template_name = 'Forms/add.html'
@@ -221,7 +232,7 @@ class DepartamentCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class DepartamentUpdate(DataMixin, FormMessageMixin, UpdateView):
+class DepartamentUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Departament
     template_name = 'Forms/add.html'
     form_class = DepartamentForm
@@ -236,7 +247,7 @@ class DepartamentUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class DepartamentDelete(DataMixin, FormMessageMixin, DeleteView):
+class DepartamentDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Departament
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:departament_list')

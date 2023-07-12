@@ -1,10 +1,10 @@
-from .models import References
 from django.views import generic
-from .utils import DataMixin, menu
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .utils import menu
 
 
 # Главная
-class IndexView(generic.TemplateView):
+class IndexView(LoginRequiredMixin, generic.TemplateView):
     """
     Главная
     """
@@ -14,19 +14,4 @@ class IndexView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная страница'
         context['menu'] = menu
-        return context
-
-
-# Справочники
-class ReferencesView(DataMixin, generic.ListView):
-    """
-    Список ссылок на справочники
-    """
-    model = References
-    template_name = 'catalog/references.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Справочники", searchlink='catalog:references_search', )
-        context = dict(list(context.items()) + list(c_def.items()))
         return context

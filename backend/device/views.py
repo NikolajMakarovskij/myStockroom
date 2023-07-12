@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from catalog.utils import DataMixin, FormMessageMixin, deviceMenu
 from stockroom.forms import ConsumableInstallForm, StockAddForm
@@ -12,7 +13,7 @@ from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
 
 # Устройства
-class DeviceListView(DataMixin, generic.ListView):
+class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Device
     template_name = 'device/device_list.html'
 
@@ -45,7 +46,7 @@ class DeviceListView(DataMixin, generic.ListView):
         return object_list
 
 
-class DeviceCategoryListView(DataMixin, generic.ListView):
+class DeviceCategoryListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Device.objects
     template_name = 'device/device_list.html'
 
@@ -92,7 +93,7 @@ class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class DeviceDetailView(DataMixin, generic.DetailView):
+class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     model = Device
     template_name = 'device/device_detail.html'
 
@@ -116,7 +117,7 @@ class DeviceDetailView(DataMixin, generic.DetailView):
         return context
 
 
-class DeviceCreate(DataMixin, FormMessageMixin, CreateView):
+class DeviceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Device
     form_class = DeviceForm
     template_name = 'Forms/add.html'
@@ -131,7 +132,7 @@ class DeviceCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class DeviceUpdate(DataMixin, FormMessageMixin, UpdateView):
+class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Device
     template_name = 'Forms/add.html'
     form_class = DeviceForm
@@ -146,7 +147,7 @@ class DeviceUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class DeviceDelete(DataMixin, DeleteView):
+class DeviceDelete(LoginRequiredMixin, DataMixin, DeleteView):
     model = Device
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('device:device_list')

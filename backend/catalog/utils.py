@@ -10,12 +10,11 @@ from django.utils.safestring import mark_safe
 
 menu = [
     {'title': "Главная страница", 'url_name': 'catalog:index'},
-    {'title': "Раб. места", 'url_name': 'workplace:workplace_list'},
+    {'title': "Раб. места", 'url_name': 'workplace:workplace_index'},
     {'title': "Устройства", 'url_name': 'device:device_list'},
-    {'title': "Сотрудники", 'url_name': 'employee:employee_list'},
-    {'title': "Софт", 'url_name': 'software:software_list'},
+    {'title': "Сотрудники", 'url_name': 'employee:employee_index'},
+    {'title': "Софт", 'url_name': 'software:software_index'},
     {'title': "ЭЦП", 'url_name': 'signature:signature_list'},
-    {'title': "Справочники", 'url_name': 'catalog:references_list'},
     {'title': "Склад", 'url_name': 'stockroom:stock_index'},
     {'title': "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title': "Комплектующие", 'url_name': 'consumables:accessories_list'},
@@ -37,9 +36,9 @@ class DataMixin:
 
     def get_user_context(self, **kwargs):
         side_menu = cache.get('side_menu')
-        if not side_menu:
-            side_menu = menu
-            cache.set('side_menu', side_menu, 3000)
+#        if not side_menu:
+#            side_menu = menu
+#            cache.set('side_menu', side_menu, 3000)
         context = kwargs
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')

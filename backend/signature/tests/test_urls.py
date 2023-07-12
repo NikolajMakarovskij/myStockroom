@@ -1,13 +1,14 @@
 import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
-
+from catalog.tests.test_login import auto_login_user
 from ..models import Signature
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(client):
+def test_list_url_exists_at_desired_location(auto_login_user):
+    client, user = auto_login_user()
     links = ['/signature/', '/signature/search']
     for link in links:
         url = link
@@ -16,7 +17,8 @@ def test_list_url_exists_at_desired_location(client):
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_ad_template(client):
+def test_list_uses_correct_url_ad_template(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'link': 'signature:signature_list', 'template': 'signature/signature_list.html'},
         {'link': 'signature:signature_search', 'template': 'signature/signature_list.html'},
@@ -31,7 +33,8 @@ def test_list_uses_correct_url_ad_template(client):
 
 # detail_update_delete
 @pytest.mark.django_db
-def test_details_url(client):
+def test_details_url(auto_login_user):
+    client, user = auto_login_user()
     links = [
         {'model': Signature, 'link': 'signature:signature-detail', 'template': 'signature/signature_detail.html'},
         {'model': Signature, 'link': 'signature:signature-update', 'template': 'Forms/add.html'},

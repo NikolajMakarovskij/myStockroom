@@ -4,11 +4,12 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from catalog.utils import DataMixin, FormMessageMixin
 from stockroom.forms import ConsumableInstallForm
 
 
-class SignatureListView(DataMixin, generic.ListView):
+class SignatureListView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Signature
     template_name = 'signature/signature_list.html'
 
@@ -40,7 +41,7 @@ class SignatureListView(DataMixin, generic.ListView):
         return object_list
 
 
-class SignatureDetailView(DataMixin, FormMixin, generic.DetailView):
+class SignatureDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.DetailView):
     model = Signature
     template_name = 'signature/signature_detail.html'
     form_class = ConsumableInstallForm
@@ -53,7 +54,7 @@ class SignatureDetailView(DataMixin, FormMixin, generic.DetailView):
         return context
 
 
-class SignatureCreate(DataMixin, FormMessageMixin, CreateView):
+class SignatureCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Signature
     form_class = SignatureForm
     template_name = 'Forms/add.html'
@@ -68,7 +69,7 @@ class SignatureCreate(DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class SignatureUpdate(DataMixin, FormMessageMixin, UpdateView):
+class SignatureUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Signature
     template_name = 'Forms/add.html'
     form_class = SignatureForm
@@ -83,7 +84,7 @@ class SignatureUpdate(DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class SignatureDelete(DataMixin, FormMessageMixin, DeleteView):
+class SignatureDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
     model = Signature
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('signature:signature_list')
