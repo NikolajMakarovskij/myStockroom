@@ -2,6 +2,7 @@ import datetime
 from django.conf import settings
 from device.models import Device
 from consumables.models import Consumables, Accessories
+from workplace.models import Workplace
 from .models import (
     Stockroom, StockCat, History, StockAcc, CategoryAcc, HistoryAcc,
     StockDev, CategoryDev, HistoryDev)
@@ -416,16 +417,15 @@ class Stock(object):
             Stock.create_history_dev(device_id, quantity, username, status_choice='Удаление')
         self.save()
 
-    def move_device(self, device: dict, workplace=1, username=None) -> None:
+    def move_device(self, device: dict, workplace: dict, username=None) -> None:
         """
         Перемещение устройства
         """
-        device_id = str(device)
-        device_workplace = workplace
-        quantity = None
-
-        Device.objects.filter(id=device_id).update(workplace=device_workplace)
+        device_id = str(device.id)
+        quantity = 1
+        Device.objects.filter(id=device_id).update(workplace=Workplace.objects.filter(name=workplace).get())
         StockDev.objects.filter(devices=device_id).update(dateInstall=datetime.date.today())
-        Stock.create_history_dev(device_id, quantity, username, status_choice='Перемещение')
+        Stock.create_history_dev(device_id, quantity, username,
+                                 status_choice=f"Перемещение на рабочее место {workplace}")
 
         self.save()

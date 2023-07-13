@@ -453,15 +453,10 @@ class HistoryDev(models.Model):
         help_text="Укажите пользователя",
         verbose_name="Пользователь"
         )
-    STATUS_CHOICES = [
-        ('Приход', 'Приход'),
-        ('Перемещение', 'Перемещение'),
-        ('Удаление', 'Удаление'),
-        ]
     status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='Перемещение',
+        blank=True, default=0,
+        max_length=50,
+        verbose_name="Статус"
     )
 
     class Meta:

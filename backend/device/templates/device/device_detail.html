@@ -160,6 +160,18 @@
     </div>
   </div>
   <div class="col-sm-12">
+    <div class="d-flex justify-content-center input-group mt-3 ">
+      <form action="{% url 'stockroom:move_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ move_form.workplace.label }}</div>
+          <div class="">{{ move_form.workplace }}</div>
+          <input type="submit" value="Перемещение" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-12">
     {% this_device_history device.id %}
   </div>
 </div>

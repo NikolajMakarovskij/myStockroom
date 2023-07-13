@@ -45,7 +45,7 @@ def this_con_history(consumable_id):
     return {
         "history_list": history_list,
         "table_head": "История использования расходника",
-        "no_history": "Расходники не использовался"
+        "no_history": "Расходники не использовались"
         }
 
 

@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from catalog.utils import DataMixin, FormMessageMixin, deviceMenu
-from stockroom.forms import ConsumableInstallForm, StockAddForm
+from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
 from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
@@ -100,6 +100,7 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         consumable_form = ConsumableInstallForm(self.request.GET or None)
         stock_form = StockAddForm(self.request.GET or None)
+        move_form = MoveDeviceForm(self.request.GET or None)
         self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
         device_cat = cache.get('device_cat')
         if not device_cat:
@@ -114,6 +115,7 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         context['get_device_id'] = self.request.session['get_device_id']
         context['stock_form'] = stock_form
         context['consumable_form'] = consumable_form
+        context['move_form'] = move_form
         return context
 
 
@@ -165,7 +167,7 @@ class DeviceDelete(LoginRequiredMixin, DataMixin, DeleteView):
 class ConsumableInstallFormView(FormView):
     form_class = ConsumableInstallForm
     template_name = 'device/device_detail.html'
-    success_url = '/'
+    success_url = reverse_lazy('device:device_list')
 
     def post(self, request, *args, **kwargs):
         consumable_form = self.form_class(request.POST)
@@ -187,7 +189,7 @@ class ConsumableInstallFormView(FormView):
 class StockAddFormView(FormView):
     form_class = StockAddForm
     template_name = 'device/device_detail.html'
-    success_url = '/'
+    success_url = reverse_lazy('device:device_list')
 
     def post(self, request, *args, **kwargs):
         stock_form = self.form_class(request.POST)
@@ -204,5 +206,32 @@ class StockAddFormView(FormView):
                 self.get_context_data(
                     stock_form=stock_form,
                     consumable_form=consumable_form
+                )
+            )
+
+
+class MoveFormView(FormView):
+    form_class = MoveDeviceForm
+    template_name = 'device/device_detail.html'
+    success_url = reverse_lazy('device:device_list')
+
+    def post(self, request, *args, **kwargs):
+        move_form = self.form_class(request.POST)
+        consumable_form = ConsumableInstallForm()
+        stock_form = StockAddForm()
+
+        if move_form.is_valid():
+            move_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                    success=True
+                )
+            )
+        else:
+            return self.render_to_response(
+                self.get_context_data(
+                    stock_form=stock_form,
+                    consumable_form=consumable_form,
+                    move_form=move_form
                 )
             )

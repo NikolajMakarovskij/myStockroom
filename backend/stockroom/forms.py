@@ -1,5 +1,7 @@
 from django import forms
-
+from device.models import Device
+from workplace.models import Workplace
+from catalog.utils import WidgetCanAdd
 consumable_score = 11
 CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
 rack_score = 10
@@ -32,3 +34,14 @@ class ConsumableInstallForm(forms.Form):
     quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество',
                                       widget=forms.Select(
                                           attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
+
+
+class MoveDeviceForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = ['workplace']
+        widgets = {
+            'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace",
+                                      attrs={'class': 'form-select form-select-lg'}),
+
+        }

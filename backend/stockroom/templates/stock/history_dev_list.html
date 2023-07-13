@@ -35,7 +35,7 @@
       </ul>
     </nav>
   {% endif %}
-  {% if not history_dev_list %}
+  {% if not historydev_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
@@ -56,7 +56,7 @@
         </tr>
       </thead>
     <tbody style="text-align:center">
-      {% for each in history_dev_list %}
+      {% for each in historydev_list %}
       <tr>
         <td><a class="noDecoration" href="{% url 'device:device-detail' each.devicesId %}">{{ each.devices }}</a></td>
         <td>{{ each.categories}}</td>

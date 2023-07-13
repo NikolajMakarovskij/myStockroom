@@ -1,24 +1,26 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
+from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
+from django.views import generic
 from django.views.decorators.http import require_POST
+from django.views.generic.edit import FormMixin
+
+from catalog.utils import DataMixin
 from consumables.models import Consumables, Accessories
 from device.models import Device
-from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
-from .stock import Stock
-from .forms import StockAddForm, ConsumableInstallForm
+from .forms import StockAddForm, ConsumableInstallForm, MoveDeviceForm
 from .models import (
     Stockroom, StockDev, StockAcc,
     History, HistoryAcc, HistoryDev,
     StockCat, CategoryAcc, CategoryDev
 )
-from django.core.cache import cache
-from catalog.utils import DataMixin, menu
-from django.contrib import messages
+from .stock import Stock
 
 
 # Склад главная
-class StockroomIndexView(LoginRequiredMixin, generic.TemplateView):
+class StockroomIndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
     """
     Главная
     """
@@ -26,8 +28,11 @@ class StockroomIndexView(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Расходники и комплектующие'
-        context['menu'] = menu
+        c_def = self.get_user_context(
+            title="Расходники и комплектующие",
+            searchlink='stockroom:stock_search',
+        )
+        context = dict(list(context.items()) + list(c_def.items()))
         return context
 
 
@@ -554,30 +559,28 @@ def stock_remove_device(request, devices_id):
                          )
     return redirect('stockroom:stock_dev_list')
 
-# @require_POST
-# def move_device(request, device_id):
-#    username = request.user.username
-#    get_device_id = request.session['get_device_id']
-#    stock = Stock(request)
-#    accessories = get_object_or_404(Accessories, id=accessories_id)
-#    form = ConsumableInstallForm(request.POST)
-#    if form.is_valid():
-#        cd = form.cleaned_data
-#        stock.device_add_accessories(accessories=accessories,
-#                                    device=get_device_id,
-#                                    quantity=cd['quantity'],
-#                                    username = username,
-#                                    )
-#        messages.add_message(request,
-#                            level = messages.SUCCESS,
-#                            message = f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт."
-#                            f"успешно списан со склада",
-#                            extra_tags = 'Успешное списание'
-#                            )
-#    else:
-#        messages.add_message(request,
-#                            level = messages.ERROR,
-#                            message = 'Не удалось списать ' + accessories.name +  ' со склада',
-#                            extra_tags = 'Ошибка формы'
-#                            )
-#    return redirect('stockroom:stock_acc_list')
+
+@require_POST
+def move_device_from_stock(request, device_id):
+    username = request.user.username
+    stock = Stock(request)
+    device = get_object_or_404(Device, id=device_id) #Device.objects.filter(id=devices_id).get()
+    form = MoveDeviceForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        stock.move_device(device=device,
+                          workplace=cd['workplace'],
+                          username=username,
+                          )
+        messages.add_message(request,
+                             level=messages.SUCCESS,
+                             message=f"Устройство {device.name} перемещено на рабочее место {device.workplace.name}.",
+                             extra_tags='Успешное списание'
+                             )
+    else:
+        messages.add_message(request,
+                             level=messages.ERROR,
+                             message=f"Не удалось переместить устройство {device.name}.",
+                             extra_tags='Ошибка формы'
+                             )
+    return redirect('stockroom:stock_dev_list')
