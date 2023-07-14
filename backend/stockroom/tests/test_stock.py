@@ -2,7 +2,6 @@ import datetime
 import pytest
 from django.conf import settings
 from django.contrib.auth.models import User
-
 from ..models import StockCat, History, Stockroom, StockAcc, CategoryAcc, HistoryAcc, CategoryDev, HistoryDev, StockDev
 from ..stock import Stock
 
@@ -47,10 +46,10 @@ def create_devices() -> dict:
     if Device.objects.filter(name='my_consumable').aexists():
         DeviceCat.objects.create(name='my_category', slug='my_category')
         Device.objects.create(name='my_consumable', categories=DeviceCat.objects.get(name='my_category'))
-        get_accessories = Device.objects.get(name='my_consumable')
+        get_device = Device.objects.get(name='my_consumable')
     else:
-        get_accessories = Device.objects.get(name='my_consumable')
-    return get_accessories
+        get_device = Device.objects.get(name='my_consumable')
+    return get_device
 
 
 def add_consumables_in_devices(consumable: dict, accessories: dict) -> dict:
@@ -660,3 +659,26 @@ def test_stock_dev_remove_device(client):
     assert StockDev.objects.count() == 0
     assert HistoryDev.objects.count() == 2
     assert test_history.status == 'Удаление'
+
+
+@pytest.mark.django_db
+def test_stock_move_device(client):
+    """Checks the operation of the remove_accessories method of the Stock class"""
+    create_session(client)
+    from workplace.models import Workplace
+    workplace = Workplace.objects.create(name="pc-004-r")
+    devices = create_devices()
+    quantity = 5
+    number_rack = 3
+    number_shelf = 13
+    username = 'admin'
+    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
+                     number_shelf=number_shelf, username=username)
+    Stock.move_device(self=Stock(client), device=devices, workplace=workplace, username=username)
+    test_history = HistoryDev.objects.get(status='Перемещение на рабочее место pc-004-r')
+    test_stock = StockDev.objects.get(devices__name='my_consumable')
+
+    assert StockDev.objects.count() == 1
+    assert HistoryDev.objects.count() == 2
+    assert test_stock.devices.workplace.name == 'pc-004-r'
+    assert test_history.status == 'Перемещение на рабочее место pc-004-r'

@@ -1,6 +1,17 @@
 from django import forms
-from catalog.utils import WidgetCanAdd
+from catalog.utils import BaseModelSelect2WidgetMixin
 from .models import Room, Workplace
+
+
+class RoomWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Room
+    queryset = Room.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "floor__icontains",
+        "building__icontains",
+    ]
 
 
 class WorkplaceForm(forms.ModelForm):
@@ -9,8 +20,7 @@ class WorkplaceForm(forms.ModelForm):
         fields = ['name', 'room', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'room': WidgetCanAdd(Room, related_url="workplace:new-room",
-                                 attrs={'class': 'input-group form-select form-select-lg'}),
+            'room': RoomWidget
         }
 
 

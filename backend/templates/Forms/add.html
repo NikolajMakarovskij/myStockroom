@@ -2,8 +2,7 @@
 
 {% block content %}
 {%load static%}
-
-<div clas="FormsBase">
+<div class="FormsBase">
     <h1 class="text-center mt-3">{{title}}</h1>
         <form method="POST" class="post-form row g-2 mt-3" enctype="multipart/form-data">
         {% csrf_token %}
@@ -19,7 +18,8 @@
                 </div>
                 <div class="col-1"></div>
             {% endfor %}
-            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            {{ form.media.js }}
         <div class="row">   
         <div class="d-flex justify-content-center input-group mt-3 mr-1">
             {%if selflink%}

@@ -73,24 +73,12 @@ class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = f"%(categories)s %(name)s успешно создано"
     error_message = f"%(categories)s %(name)s не удалось создать"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Устройство")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
 
 class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = DeviceCat.objects.all()
     serializer_class = DeviceCatModelSerializer
     success_message = f"Категория %(name)s успешно создано"
     error_message = f"Категория %(name)s не удалось создать"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Категории")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
 
 class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):

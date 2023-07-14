@@ -213,3 +213,19 @@ a.button_link:hover {
     width:  100vw; /* For 100% screen width */
 }
 
+/* select2 widget */
+.select2-selection__rendered {
+    line-height: 50px !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+.select2-container .select2-selection--single {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    height: 54px !important;
+}
+.select2-selection__arrow {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    height: 53px !important;
+}

@@ -1,7 +1,8 @@
 from django import forms
 from device.models import Device
 from workplace.models import Workplace
-from catalog.utils import WidgetCanAdd
+from catalog.utils import WidgetCanAdd, BaseModelSelect2WidgetMixin
+
 consumable_score = 11
 CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
 rack_score = 10
@@ -36,6 +37,18 @@ class ConsumableInstallForm(forms.Form):
                                           attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
 
 
+class WorkplaceWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Workplace
+    queryset = Workplace.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "room__name__icontains",
+        "room__floor__icontains",
+        "room__building__icontains",
+    ]
+
+
 class MoveDeviceForm(forms.ModelForm):
     class Meta:
         model = Device
@@ -45,3 +58,5 @@ class MoveDeviceForm(forms.ModelForm):
                                       attrs={'class': 'form-select form-select-lg'}),
 
         }
+
+

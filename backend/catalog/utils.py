@@ -7,6 +7,7 @@ from django.forms import widgets
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
+from django_select2.forms import ModelSelect2Widget
 
 menu = [
     {'title': "Главная страница", 'url_name': 'catalog:index'},
@@ -68,6 +69,23 @@ class WidgetCanAdd(widgets.Select):
                   % (self.related_url, name),
                   '<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+')]
         return mark_safe(''.join(output))
+
+
+class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.attrs = {'class': 'js-example-placeholder-single js-states form-control form-control-lg',
+                      'style': 'width:100%'}
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        base_attrs = super().build_attrs(base_attrs, extra_attrs)
+        base_attrs.update(
+            {"data-minimum-input-length": 0,
+             "data-placeholder": self.empty_label,
+
+             }
+        )
+        return base_attrs
 
 
 class ExportAdmin:

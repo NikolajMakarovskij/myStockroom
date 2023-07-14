@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'debug_toolbar',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -200,13 +201,19 @@ MAX_UPLOAD_SIZE = "104857600"
 CACHES = {
     'default': {
         # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://redis:6379',
-        'db': '16',
-    }
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "db": "16",
+    },
+#    'select2': {
+#        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#        "LOCATION": "redis://redis:6379/2",
+#        "db": "16",
+#    }
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
+#SELECT2_CACHE_BACKEND = "select2"
 # end caches
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
