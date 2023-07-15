@@ -1,7 +1,7 @@
 from django import forms
 from device.models import Device
 from workplace.models import Workplace
-from catalog.utils import WidgetCanAdd, BaseModelSelect2WidgetMixin
+from catalog.utils import BaseModelSelect2WidgetMixin, WidgetCanAdd
 
 consumable_score = 11
 CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
@@ -58,5 +58,3 @@ class MoveDeviceForm(forms.ModelForm):
                                       attrs={'class': 'form-select form-select-lg'}),
 
         }
-
-

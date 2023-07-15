@@ -1,7 +1,38 @@
 from django import forms
-from catalog.utils import WidgetCanAdd
+from catalog.utils import BaseModelSelect2WidgetMixin
 from workplace.models import Workplace
 from .models import Employee, Post, Departament
+
+
+class WorkplaceWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Workplace
+    queryset = Workplace.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "room__name__icontains",
+        "room__floor__icontains",
+        "room__building__icontains",
+    ]
+
+
+class PostWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Post
+    queryset = Post.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "departament__name__icontains",
+    ]
+
+
+class DepartamentWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Departament
+    queryset = Departament.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+    ]
 
 
 # Сотрудники
@@ -13,10 +44,8 @@ class EmployeeForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'surname': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'family': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace",
-                                      attrs={'class': 'input-group form-select form-select-lg'}),
-            'post': WidgetCanAdd(Post, related_url="employee:new-post",
-                                 attrs={'class': 'input-group form-select form-select-lg'}),
+            'workplace': WorkplaceWidget,
+            'post': PostWidget,
             'employeeEmail': forms.EmailInput(attrs={'class': 'form-control form-control-lg'}),
         }
         error_messages = {
@@ -32,8 +61,7 @@ class PostForm(forms.ModelForm):
         fields = ['name', 'departament', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'departament': WidgetCanAdd(Departament, related_url="employee:new-departament",
-                                        attrs={'class': 'input-group form-select form-select-lg'}),
+            'departament': DepartamentWidget,
         }
 
 

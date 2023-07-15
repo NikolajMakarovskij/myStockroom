@@ -1,17 +1,59 @@
 from django import forms
-from catalog.utils import WidgetCanAdd, BaseModelSelect2WidgetMixin
+from catalog.utils import BaseModelSelect2WidgetMixin
 from consumables.models import Consumables, Accessories
 from counterparty.models import Manufacturer
-from workplace.models import Workplace
 from .models import Device, DeviceCat
 
 
-class WorkplaceWidget(BaseModelSelect2WidgetMixin):
+class ManufacturerWidget(BaseModelSelect2WidgetMixin):
     empty_label = "--выбрать--"
-    model = Workplace
-    queryset = Workplace.objects.all().order_by("name")
+    model = Manufacturer
+    queryset = Manufacturer.objects.all().order_by("name")
     search_fields = [
         "name__icontains",
+        "country__icontains",
+        "production__icontains",
+    ]
+
+
+class CategoryWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = DeviceCat
+    queryset = DeviceCat.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+    ]
+
+
+class ConWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Consumables
+    queryset = Consumables.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "categories__name__icontains",
+        "description__icontains",
+        "note__icontains",
+        "buhCode__icontains",
+        "manufacturer__name__icontains",
+        "manufacturer__country__icontains",
+        "manufacturer__production__icontains",
+    ]
+
+
+class AccWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Accessories
+    queryset = Accessories.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "categories__name__icontains",
+        "description__icontains",
+        "note__icontains",
+        "buhCode__icontains",
+        "manufacturer__name__icontains",
+        "manufacturer__country__icontains",
+        "manufacturer__production__icontains",
     ]
 
 
@@ -19,21 +61,18 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ['name', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg', 'description',
-                  'note', 'accessories', 'consumable', 'workplace']
+                  'note', 'accessories', 'consumable']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'categories': WidgetCanAdd(DeviceCat, attrs={'class': 'form-select form-select-lg'}),
-            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer",
-                                         attrs={'class': 'form-select form-select-lg'}),
+            'categories': CategoryWidget,
+            'manufacturer': ManufacturerWidget,
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
             'description': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
-            'consumable': WidgetCanAdd(Consumables, related_url="consumables:new-consumables",
-                                       attrs={'class': 'form-select form-select-lg'}),
-            'accessories': WidgetCanAdd(Accessories, related_url="consumables:new-accessories",
-                                        attrs={'class': 'form-select form-select-lg'}),
+            'consumable': ConWidget,
+            'accessories': AccWidget,
             'note': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
 
         }

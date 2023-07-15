@@ -216,16 +216,13 @@ a.button_link:hover {
 /* select2 widget */
 .select2-selection__rendered {
     line-height: 50px !important;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20px;
+    font-size: 24px;
 }
 .select2-container .select2-selection--single {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20px;
+    font-size: 24px;
     height: 54px !important;
 }
 .select2-selection__arrow {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20px;
+    font-size: 24px;
     height: 53px !important;
 }

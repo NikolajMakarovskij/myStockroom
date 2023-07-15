@@ -1,7 +1,18 @@
 from django import forms
-from catalog.utils import WidgetCanAdd
+from catalog.utils import BaseModelSelect2WidgetMixin
 from counterparty.models import Manufacturer
 from .models import Software, Os
+
+
+class ManufacturerWidget(BaseModelSelect2WidgetMixin):
+    empty_label = "--выбрать--"
+    model = Manufacturer
+    queryset = Manufacturer.objects.all().order_by("name")
+    search_fields = [
+        "name__icontains",
+        "country__icontains",
+        "production__icontains",
+    ]
 
 
 class SoftwareForm(forms.ModelForm):
@@ -10,8 +21,7 @@ class SoftwareForm(forms.ModelForm):
         fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer",
-                                         attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': ManufacturerWidget,
             'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -26,8 +36,7 @@ class OSForm(forms.ModelForm):
         fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': WidgetCanAdd(Manufacturer, related_url="counterparty:new-manufacturer",
-                                         attrs={'class': 'input-group form-select form-select-lg'}),
+            'manufacturer': ManufacturerWidget,
             'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
