@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     StockCat, History, HistoryAcc, CategoryAcc, HistoryDev, CategoryDev
     )
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 # Расходники

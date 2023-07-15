@@ -1,5 +1,5 @@
 from django import forms
-from catalog.utils import BaseModelSelect2WidgetMixin
+from core.utils import BaseModelSelect2WidgetMixin
 from counterparty.models import Manufacturer
 from .models import Software, Os
 

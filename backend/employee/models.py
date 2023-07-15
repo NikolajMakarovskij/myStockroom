@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from workplace.models import Workplace
 import uuid
-from catalog.utils import ModelMixin
+from core.utils import ModelMixin
 
 
 class Employee(ModelMixin, models.Model):

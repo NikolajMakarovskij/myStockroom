@@ -1,6 +1,6 @@
 import pytest
 from pytest_django.asserts import assertTemplateUsed
-from catalog.tests.test_login import auto_login_user
+from core.tests.test_login import auto_login_user
 from django.urls import reverse
 from ..models import StockCat
 

@@ -3,7 +3,7 @@ from django.urls import reverse
 from employee.models import Employee
 from device.models import Device
 from consumables.models import Consumables
-from catalog.utils import ModelMixin
+from core.utils import ModelMixin
 import uuid
 
 

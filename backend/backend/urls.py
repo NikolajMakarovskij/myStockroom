@@ -18,7 +18,7 @@ urlpatterns += [
     path('software/', include(('software.urls', 'software'), namespace='software'), ),
     path('employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
     path('workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),
-    path('catalog/', include(('catalog.urls', 'catalog'), namespace='catalog'), ),
+    path('home/', include(('core.urls', 'core'), namespace='core'), ),
 
     path('accounts/', include('django.contrib.auth.urls')),
 ]

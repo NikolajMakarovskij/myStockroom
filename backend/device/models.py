@@ -3,7 +3,7 @@ from django.urls import reverse
 from workplace.models import Workplace
 from consumables.models import Consumables, Accessories
 from counterparty.models import Manufacturer
-from catalog.utils import ModelMixin
+from core.utils import ModelMixin
 import uuid
 
 

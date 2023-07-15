@@ -1,5 +1,5 @@
 from django import forms
-from catalog.utils import BaseModelSelect2WidgetMixin
+from core.utils import BaseModelSelect2WidgetMixin
 from workplace.models import Workplace
 from .models import Employee, Post, Departament
 

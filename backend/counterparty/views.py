@@ -4,7 +4,7 @@ from django.views import generic
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.utils import DataMixin, FormMessageMixin
+from core.utils import DataMixin, FormMessageMixin
 from django.urls import reverse_lazy
 
 

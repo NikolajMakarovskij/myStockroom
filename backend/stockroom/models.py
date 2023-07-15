@@ -4,7 +4,7 @@ from django.urls import reverse
 from workplace.models import Room
 from device.models import Device
 from consumables.models import Consumables, Accessories
-from catalog.utils import ModelMixin
+from core.utils import ModelMixin
 
 
 # Consumables

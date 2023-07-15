@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog.apps.CatalogConfig',
+    'core.apps.CoreConfig',
     'workplace.apps.WorkplaceConfig',
     'employee.apps.EmployeeConfig',
     'software.apps.SoftwareConfig',
@@ -72,6 +72,7 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
+
 
 import socket
 
@@ -145,7 +146,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE",),
+        "ENGINE": os.environ.get("SQL_ENGINE", ),
         "NAME": os.environ.get("SQL_DATABASE"),
         "USER": os.environ.get("SQL_USER"),
         "PASSWORD": os.environ.get("SQL_PASSWORD"),
@@ -205,20 +206,20 @@ CACHES = {
         "LOCATION": "redis://redis:6379/1",
         "db": "16",
     },
-#    'select2': {
-#        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#        "LOCATION": "redis://redis:6379/2",
-#        "db": "16",
-#    }
+    'select2': {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/2",
+        "db": "16",
+    }
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-#SELECT2_CACHE_BACKEND = "select2"
+SELECT2_CACHE_BACKEND = "select2"
 # end caches
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/catalog/'
+LOGIN_REDIRECT_URL = '/home/'
 
 ROOT_URLCONF = 'backend.urls'
 

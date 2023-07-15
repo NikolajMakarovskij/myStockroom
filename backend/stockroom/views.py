@@ -5,9 +5,7 @@ from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from django.views.decorators.http import require_POST
-from django.views.generic.edit import FormMixin
-
-from catalog.utils import DataMixin
+from core.utils import DataMixin
 from consumables.models import Consumables, Accessories
 from device.models import Device
 from .forms import StockAddForm, ConsumableInstallForm, MoveDeviceForm

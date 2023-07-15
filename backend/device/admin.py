@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Device, DeviceCat
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class DeviceAdmin(ExportAdmin, admin.ModelAdmin):

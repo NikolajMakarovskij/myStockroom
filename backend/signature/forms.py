@@ -1,5 +1,5 @@
 from django import forms
-from catalog.utils import BaseModelSelect2WidgetMixin
+from core.utils import BaseModelSelect2WidgetMixin
 from consumables.models import Consumables
 from device.models import Device
 from employee.models import Employee

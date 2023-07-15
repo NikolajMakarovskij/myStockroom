@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Signature
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class SignatureAdmin(ExportAdmin, admin.ModelAdmin):

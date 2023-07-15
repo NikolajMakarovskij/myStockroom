@@ -5,7 +5,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from catalog.utils import DataMixin, FormMessageMixin
+from core.utils import DataMixin, FormMessageMixin
 
 
 class IndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):

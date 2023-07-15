@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Room, Workplace
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class RoomAdmin(ExportAdmin, admin.ModelAdmin):

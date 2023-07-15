@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Software, Os
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class SoftwareAdmin(ExportAdmin, admin.ModelAdmin):

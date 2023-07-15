@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Consumables, Categories, AccCat, Accessories
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class ConsumablesAdmin(ExportAdmin, admin.ModelAdmin):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Employee, Post, Departament
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class EmployeeAdmin(ExportAdmin, admin.ModelAdmin):

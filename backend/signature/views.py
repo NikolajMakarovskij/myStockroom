@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.utils import DataMixin, FormMessageMixin
+from core.utils import DataMixin, FormMessageMixin
 from stockroom.forms import ConsumableInstallForm
 
 

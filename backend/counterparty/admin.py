@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Manufacturer
-from catalog.utils import ExportAdmin
+from core.utils import ExportAdmin
 
 
 class ManufacturerAdmin(ExportAdmin, admin.ModelAdmin):

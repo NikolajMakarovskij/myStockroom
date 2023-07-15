@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from counterparty.models import Manufacturer
-from catalog.utils import ModelMixin
+from core.utils import ModelMixin
 import uuid
 
 

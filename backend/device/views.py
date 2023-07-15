@@ -5,7 +5,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
-from catalog.utils import DataMixin, FormMessageMixin, deviceMenu
+from core.utils import DataMixin, FormMessageMixin, deviceMenu
 from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
