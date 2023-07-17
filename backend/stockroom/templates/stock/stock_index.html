@@ -3,11 +3,7 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 {% block content %}
-<div class="col ">
-
-
-  </div>
-
+<div class="col "></div>
 <div class="col ">
   <div class="row row-cols-3 row-cols-md-3">
     <div class="col nodecorationIndex">
@@ -26,7 +22,7 @@
           <div class="card-header">
             <h5 class="card-title">Комплектующие</h5>
           </div>
-          <img src="{% static 'images/motherboard.svg' %}" class="card-img-top iconIndex">
+          <img src="{% static 'images/accessories.svg' %}" class="card-img-top iconIndex">
         </div>
       </a>
     </div>
@@ -36,7 +32,29 @@
           <div class="card-header">
             <h5 class="card-title">Устройства</h5>
           </div>
-          <img src="{% static 'images/workstation.svg' %}" class="card-img-top iconIndex">
+          <img src="{% static 'images/device.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row row-cols-3 row-cols-md-3">
+    <div class="col nodecorationIndex">
+      <a href="{% url 'decommission:decom_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Списание</h5>
+          </div>
+          <img src="{% static 'images/decommission.png' %}" class="card-img-top iconIndex", style="width: 100px; height:100px">
+        </div>
+      </a>
+    </div>
+    <div class="col nodecorationIndex">
+      <a href="{% url 'decommission:disp_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Утилизация</h5>
+          </div>
+          <img src="{% static 'images/disposal.png' %}" class="card-img-top iconIndex", style="width: 100px; height:100px">
         </div>
       </a>
     </div>

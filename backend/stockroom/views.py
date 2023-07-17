@@ -66,8 +66,7 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(consumables__serial__icontains=query) |
             Q(consumables__invent__icontains=query) |
             Q(dateInstall__icontains=query) |
-            Q(dateAddToStock__icontains=query) |
-            Q(room__name__icontains=query)
+            Q(dateAddToStock__icontains=query)
         ).select_related(
             'consumables',
             'consumables__manufacturer',
@@ -263,8 +262,7 @@ class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(accessories__serial__icontains=query) |
             Q(accessories__invent__icontains=query) |
             Q(dateInstall__icontains=query) |
-            Q(dateAddToStock__icontains=query) |
-            Q(room__name__icontains=query)
+            Q(dateAddToStock__icontains=query)
         ).select_related('accessories', 'accessories__manufacturer', 'accessories__categories')
         return object_list
 

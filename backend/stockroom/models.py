@@ -42,14 +42,6 @@ class Stockroom (ModelMixin, models.Model):
         null=True, blank=True,
         verbose_name="Дата установки"
         )
-    room = models.ForeignKey(
-        Room,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        related_name='StockroomRoom',
-        help_text="Укажите помещение",
-        verbose_name="помещение"
-    )
     rack = models.IntegerField(
         blank=True, null=True,
         help_text="Введите номер стеллажа",
@@ -204,14 +196,6 @@ class StockAcc (ModelMixin, models.Model):
         null=True, blank=True,
         verbose_name="Дата установки"
         )
-    room = models.ForeignKey(
-        Room,
-        on_delete=models.SET_NULL,
-        blank=True, null=True,
-        related_name='StockAccRoom',
-        help_text="Укажите помещение",
-        verbose_name="помещение"
-    )
     rack = models.IntegerField(
         blank=True, null=True,
         help_text="Введите номер стеллажа",

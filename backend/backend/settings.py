@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'signature.apps.SignatureConfig',
     'counterparty.apps.CounterpartyConfig',
     'stockroom.apps.StockroomConfig',
-    'decommision.apps.DecommisionConfig',
+    'decommission.apps.DecommissionConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
@@ -230,6 +230,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', ]
 
 STOCK_SESSION_ID = 'stock'
+DECOM_SESSION_ID = 'decom'
 
 # cores headers
 

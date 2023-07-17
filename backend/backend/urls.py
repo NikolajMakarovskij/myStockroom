@@ -10,6 +10,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('decommission/', include(('decommission.urls', 'decommission'), namespace='decommission'), ),
     path('stockroom/', include(('stockroom.urls', 'stockroom'), namespace='stockroom'), ),
     path('counterparty/', include(('counterparty.urls', 'counterparty'), namespace='counterparty'), ),
     path('signature/', include(('signature.urls', 'signature'), namespace='signature'), ),
