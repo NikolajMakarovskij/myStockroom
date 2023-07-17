@@ -60,8 +60,8 @@ class AccWidget(BaseModelSelect2WidgetMixin):
 class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['name', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg', 'description',
-                  'note', 'accessories', 'consumable']
+        fields = ['name', 'categories',  'serial', 'serialImg', 'invent', 'inventImg',
+                  'accessories', 'consumable', 'manufacturer', 'description', 'note']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'categories': CategoryWidget,

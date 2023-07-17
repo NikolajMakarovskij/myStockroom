@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'signature.apps.SignatureConfig',
     'counterparty.apps.CounterpartyConfig',
     'stockroom.apps.StockroomConfig',
+    'decommision.apps.DecommisionConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',
@@ -72,7 +73,6 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
-
 
 import socket
 
