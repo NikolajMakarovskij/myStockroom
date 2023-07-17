@@ -178,7 +178,7 @@ class HistoryDisView(LoginRequiredMixin, DataMixin, generic.ListView):
             cache.set('cat_disp', cat_disp, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История утилизации устройств",
-                                      searchlink='decommission:history_disp_search', menu_categories=cat_disp)
+                                      searchlink='decommission:history_dis_search', menu_categories=cat_disp)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -206,7 +206,7 @@ class HistoryDisCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             cache.set('cat_disp', cat_disp, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История утилизации устройств",
-                                      searchlink='decommission:history_disp_search', menu_categories=cat_disp)
+                                      searchlink='decommission:history_dis_search', menu_categories=cat_disp)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

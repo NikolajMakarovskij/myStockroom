@@ -7,7 +7,7 @@
       </h2>
       <div id="acc_history" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-            {% if not history_acc_list %}
+            {% if not history_list %}
                 <table class="table align-middle table-hover" style="text-align:center">
                 <thead> 
                     <tr>
@@ -21,35 +21,24 @@
                         <tr>
                         <th scope="col">Комплектующее</th>
                         <th scope="col">Группа</th>
-                        <th scope="col">Количество</th>
                         <th scope="col">Дата</th>
-                        <th scope="col">Статус</th>
                         <th scope="col">Пользователь</th>
                         </tr>
                     </thead>
                     <tbody style="text-align:center">
-                    {% for each in history_acc_list %}
+                    {% for each in history_list %}
                     <tr>
-                        <td><a class="noDecoration" href="{% url 'consumables:accessories-detail' each.accessoriesId %}">{{ each.accessories }}</a></td>
+                        <td><a class="noDecoration" href="{% url 'device:device-detail' each.devicesId %}">{{ each.devices }}</a></td>
                         <td>{{ each.categories}}</td>
-                        <td>{{ each.score }}</td>
-                        <td>{{ each.dateInstall }}</td>
-                        <td>
-                        {% if not each.device %}
-                            {{ each.status }}
-                        {% else %}
-                            {{ each.status }} на устройство 
-                            <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-                        {% endif %}
-                        </td>
-                            <td>{{ each.user }}</td>
+                        <td>{{ each.date }}</td>
+                        <td>{{ each.user }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             {% endif %}
             <div class="d-flex justify-content-center input-group mt-3 ">
                 <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-                href="{% url 'stockroom:history_acc_list' %}">
+                href="{% url 'decommission:history_dec_list' %}">
                     Больше
                 </a>
             </div>

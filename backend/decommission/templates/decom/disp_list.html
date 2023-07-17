@@ -21,7 +21,8 @@
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:stock_acc_list' %}active{% endif %}" href="{% url 'stockroom:stock_acc_list' %}">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'decommission:disp_list' %}active{% endif %}"
+               href="{% url 'decommission:disp_list' %}">
               Все группы
             </a>
         </li>
@@ -35,7 +36,7 @@
       </ul>
     </nav>
   {% endif %}
-  {% if not stockdev_list %}
+  {% if not disposal_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
@@ -49,11 +50,8 @@
         <tr>
           <th scope="col">Устройства</th>
           <th scope="col">Группа</th>
-          <th scope="col">Стеллаж</th>
-          <th scope="col">Полка</th>
           <th scope="col">Количество</th>
-          <th scope="col">Постановка</th>
-          <th scope="col">Перемещение</th>
+          <th scope="col">Дата утилизации</th>
           <th scope="col">Примечание</th>
           <th scope="col">Удалить</th>
         </tr>
@@ -63,17 +61,10 @@
       <tr>
         <td><a class="noDecoration" href="{{ each.devices.get_absolute_url }}">{{ each.devices.name }}</a></td>
         <td>{{ each.categories}}</td>
-        <td>{{ each.rack }}</td>
-        <td>{{ each.shelf }}</td>
         <td>{{ each.devices.score }}</td>
-        <td>{{ each.dateAddToStock }}</td>
-        {% if each.dateInstall %}  
-          <td>{{ each.dateInstall }}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
-        {% if each.accessories.note %}  
-          <td>{{ each.accessories.note }}</td>
+        <td>{{ each.date }}</td>
+        {% if each.devices.note %}
+          <td>{{ each.devices.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
@@ -86,6 +77,6 @@
   <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
   <!--block history-->
-  {% load history_tags %}
-  {% dev_history_short  %}
+  {% load decommission_tags %}
+  {% disp_history_short  %}
 {% endblock %}
