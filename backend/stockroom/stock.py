@@ -407,14 +407,14 @@ class Stock(object):
         Stock.create_history_dev(device_id, quantity, username, status_choice='Приход')
         self.save()
 
-    def remove_device(self, device: dict, quantity=0, username=None) -> None:
+    def remove_device(self, device: dict, quantity=0, username=None, status_choice=None) -> None:
         """
         Удаление устройства со склада
         """
         device_id = str(device.id)
         if StockDev.objects.filter(devices=device_id):
             StockDev.objects.filter(devices=device_id).delete()
-            Stock.create_history_dev(device_id, quantity, username, status_choice='Удаление')
+            Stock.create_history_dev(device_id, quantity, username, status_choice=status_choice)
         self.save()
 
     def move_device(self, device: dict, workplace: dict, username=None) -> None:

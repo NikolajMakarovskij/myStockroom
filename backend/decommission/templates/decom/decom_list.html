@@ -53,7 +53,8 @@
           <th scope="col">Количество</th>
           <th scope="col">Дата cписания</th>
           <th scope="col">Примечание</th>
-          <th scope="col">Удалить</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
     <tbody style="text-align:center">
@@ -73,7 +74,16 @@
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.devices.id %}"> Удалить </a></td>
+        <td>
+          <a class="noDecoration" href="{% url 'decommission:add_disp' each.devices.id %}">
+            Утилизировать
+          </a>
+        </td>
+        <td>
+          <a class="noDecoration" href="{% url 'decommission:remove_decom' each.devices.id %}">
+            Удалить
+          </a>
+        </td>
       </tr>
       {% endfor %}
   </table>

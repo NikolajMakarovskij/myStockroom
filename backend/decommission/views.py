@@ -7,12 +7,11 @@ from django.views import generic
 from django.views.decorators.http import require_POST
 from core.utils import DataMixin
 from device.models import Device
-#from .forms import StockAddForm, ConsumableInstallForm, MoveDeviceForm
 from .models import Decommission, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
-#from .stock import Stock
+from .decom import Decom
 
 
-# Списания устройств
+# Decommission
 class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/decom_list.html'
     model = Decommission
@@ -21,7 +20,7 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
         cat_decom = cache.get('cat_decom')
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
-            cache.set('cat_dev', cat_decom, 300)
+            cache.set('cat_decom', cat_decom, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Списание устройств", searchlink='decommission:decom_search',
                                       menu_categories=cat_decom)
@@ -52,7 +51,7 @@ class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         cat_decom = cache.get('cat_decom')
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
-            cache.set('cat_dev', cat_decom, 300)
+            cache.set('cat_decom', cat_decom, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Списание устройств", searchlink='decommission:decom_search',
                                       menu_categories=cat_decom, )
@@ -64,7 +63,7 @@ class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-# История списания устройств
+# Decommission history
 class HistoryDecView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/history_decom_list.html'
     model = HistoryDec
@@ -73,7 +72,7 @@ class HistoryDecView(LoginRequiredMixin, DataMixin, generic.ListView):
         cat_decom = cache.get('cat_decom')
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
-            cache.set('cat_dev', cat_decom, 300)
+            cache.set('cat_decom', cat_decom, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История списания устройств",
                                       searchlink='decommission:history_decom_search', menu_categories=cat_decom)
@@ -101,7 +100,7 @@ class HistoryDecCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         cat_decom = cache.get('cat_decom')
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
-            cache.set('cat_dev', cat_decom, 300)
+            cache.set('cat_decom', cat_decom, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="История списания устройств",
                                       searchlink='decommission:history_decom_search', menu_categories=cat_decom)
@@ -113,7 +112,33 @@ class HistoryDecCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-# Утилизация устройств
+def add_decommission(request, device_id):
+    username = request.user.username
+    decom = Decom(request)
+    device = get_object_or_404(Device, id=device_id)
+    decom.add_device_decom(device, username=username, status_choice="Списание")
+    messages.add_message(request,
+                         level=messages.SUCCESS,
+                         message=f"{device.name} успешно списан со склада",
+                         extra_tags='Успешно списан'
+                         )
+    return redirect('decommission:decom_list')
+
+
+def remove_decommission(request, devices_id):
+    username = request.user.username
+    decom = Decom(request)
+    device = get_object_or_404(Device, id=devices_id)
+    decom.remove_decom(device, username=username, status_choise="Удаление")
+    messages.add_message(request,
+                         level=messages.SUCCESS,
+                         message=f"{device.name} успешно удален из списания",
+                         extra_tags='Успешно удален'
+                         )
+    return redirect('decommission:decom_list')
+
+
+# Disposal
 class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/disp_list.html'
     model = Disposal
@@ -164,9 +189,34 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = Disposal.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list
 
-    # История списания устройств
+
+def add_disposal(request, devices_id):
+    username = request.user.username
+    decom = Decom(request)
+    device = get_object_or_404(Device, id=devices_id)
+    decom.add_device_disp(device, username=username, status_choice="Утилизация")
+    messages.add_message(request,
+                         level=messages.SUCCESS,
+                         message=f"{device.name} отправлен на утилизацию",
+                         extra_tags='Успешно отправлен'
+                         )
+    return redirect('decommission:disp_list')
 
 
+def remove_disposal(request, devices_id):
+    username = request.user.username
+    decom = Decom(request)
+    device = get_object_or_404(Device, id=devices_id)
+    decom.remove_disp(device, username=username, status_choice="Удален")
+    messages.add_message(request,
+                         level=messages.SUCCESS,
+                         message=f"{device.name} успешно удален из утилизации",
+                         extra_tags='Успешно удален'
+                         )
+    return redirect('decommission:disp_list')
+
+
+# Disposal history
 class HistoryDisView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/history_disp_list.html'
     model = HistoryDis

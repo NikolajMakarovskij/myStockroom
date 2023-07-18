@@ -68,7 +68,7 @@
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.devices.id %}"> Удалить </a></td>
+        <td><a class="noDecoration" href="{% url 'decommission:remove_disp' each.devices.id %}"> Удалить </a></td>
       </tr>
       {% endfor %}
   </table>
