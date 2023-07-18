@@ -84,7 +84,7 @@ class CategoryAccAdmin(ExportAdmin, admin.ModelAdmin):
 admin.site.register(CategoryAcc, CategoryAccAdmin)
 
 
-# Devices
+# Devices1
 class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryDev
     list_display = [
