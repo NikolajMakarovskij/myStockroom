@@ -5,8 +5,8 @@ from device.models import Device
 from core.utils import ModelMixin
 
 
-# Decommision
-class Decommision (ModelMixin, models.Model):
+# Decommission
+class Decommission (ModelMixin, models.Model):
     """
     Extension of the device model for the decommission.
     The nomenclature of warehouse and decommision and directory devices may differ,
@@ -68,8 +68,8 @@ class CategoryDec(ModelMixin, models.Model):
             )
 
     class Meta:
-        verbose_name = 'Группа устройств'
-        verbose_name_plural = 'Группы устройств'
+        verbose_name = 'Группа списания устройств'
+        verbose_name_plural = 'Группы списания устройств'
         ordering = ['name']
 
 
@@ -183,8 +183,8 @@ class CategoryDis(ModelMixin, models.Model):
             )
 
     class Meta:
-        verbose_name = 'Группа устройств'
-        verbose_name_plural = 'Группы устройств'
+        verbose_name = 'Группа утилизации устройств'
+        verbose_name_plural = 'Группы утилизации устройств'
         ordering = ['name']
 
 
@@ -226,6 +226,6 @@ class HistoryDis(models.Model):
         )
 
     class Meta:
-        verbose_name = 'История списания'
-        verbose_name_plural = 'История списания'
+        verbose_name = 'История утилизации'
+        verbose_name_plural = 'История утилизации'
         ordering = ['-date', 'devices']

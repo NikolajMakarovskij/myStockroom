@@ -8,14 +8,14 @@ from django.views.decorators.http import require_POST
 from core.utils import DataMixin
 from device.models import Device
 #from .forms import StockAddForm, ConsumableInstallForm, MoveDeviceForm
-from .models import Decommision, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
+from .models import Decommission, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
 #from .stock import Stock
 
 
 # Списания устройств
 class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/decom_list.html'
-    model = Decommision
+    model = Decommission
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cat_decom = cache.get('cat_decom')
@@ -32,7 +32,7 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query:
             query = ''
-        object_list = Decommision.objects.filter(
+        object_list = Decommission.objects.filter(
             Q(devices__name__icontains=query) |
             Q(devices__manufacturer__name__icontains=query) |
             Q(devices__categories__name__icontains=query) |
@@ -46,7 +46,7 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'decom/decom_list.html'
-    model = Decommision
+    model = Decommission
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cat_decom = cache.get('cat_decom')
@@ -60,7 +60,7 @@ class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = CategoryDec.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Decommission.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list
 
 
@@ -94,7 +94,7 @@ class HistoryDecView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 
 class HistoryDecCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
-    template_name = 'stock/history_decom_list.html'
+    template_name = 'decom/history_decom_list.html'
     model = HistoryDec
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -133,7 +133,7 @@ class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query:
             query = ''
-        object_list = Decommision.objects.filter(
+        object_list = Disposal.objects.filter(
             Q(devices__name__icontains=query) |
             Q(devices__manufacturer__name__icontains=query) |
             Q(devices__categories__name__icontains=query) |
@@ -161,7 +161,7 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = CategoryDis.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Disposal.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list
 
     # История списания устройств
@@ -186,7 +186,7 @@ class HistoryDisView(LoginRequiredMixin, DataMixin, generic.ListView):
         query = self.request.GET.get('q')
         if not query:
             query = ''
-        object_list = HistoryDec.objects.filter(
+        object_list = HistoryDis.objects.filter(
             Q(devices__icontains=query) |
             Q(categories__name__icontains=query) |
             Q(date__icontains=query) |
