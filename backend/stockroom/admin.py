@@ -5,7 +5,7 @@ from .models import (
 from core.utils import ExportAdmin
 
 
-# Расходники
+# Consumables
 class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     model = History
     list_display = [
@@ -45,7 +45,7 @@ class StockCatAdmin(ExportAdmin, admin.ModelAdmin):
 admin.site.register(StockCat, StockCatAdmin)
 
 
-# Комплектующие
+# Accessories
 class HistoryAccAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryAcc
     list_display = [
@@ -84,7 +84,7 @@ class CategoryAccAdmin(ExportAdmin, admin.ModelAdmin):
 admin.site.register(CategoryAcc, CategoryAccAdmin)
 
 
-# Устройства
+# Devices
 class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryDev
     list_display = [
