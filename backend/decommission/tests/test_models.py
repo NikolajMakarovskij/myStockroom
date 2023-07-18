@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 from django.urls import reverse
 from counterparty.models import Manufacturer
 from device.models import Device
-from decommission.models import Decommision, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
+from decommission.models import Decommission, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
 
 
 # Decommission
@@ -50,13 +50,13 @@ def test_decommission_dev_create():
         manufacturer=Manufacturer.objects.get(name="name_manufacturer"),
         score=10
     )
-    Decommision.objects.create(
+    Decommission.objects.create(
         devices=Device.objects.get(name="my_device"),
         categories=CategoryDec.objects.get(name="my_category"),
         date=datetime.date.today(),
     )
-    decom = Decommision.objects.get(devices__name="my_device")
-    assert Decommision.objects.count() == 1
+    decom = Decommission.objects.get(devices__name="my_device")
+    assert Decommission.objects.count() == 1
     assert decom.devices.name == "my_device"
     assert decom.devices.manufacturer.name == "name_manufacturer"
     assert decom.devices.score == 10

@@ -651,9 +651,10 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
+    status_choice="Удаление"
     Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
                      number_shelf=number_shelf, username=username)
-    Stock.remove_device(self=Stock(client), device=devices, quantity=0, username=username)
+    Stock.remove_device(self=Stock(client), device=devices, quantity=0, username=username, status_choice=status_choice)
     test_history = HistoryDev.objects.get(status='Удаление')
 
     assert StockDev.objects.count() == 0
