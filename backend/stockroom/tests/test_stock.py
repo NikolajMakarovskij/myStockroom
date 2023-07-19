@@ -519,7 +519,7 @@ def test_stock_dev_no_category():
     device_id = device.id
     Stock.add_category_dev(device_id)
 
-    assert CategoryAcc.objects.count() == 0
+    assert CategoryDev.objects.count() == 0
 
 
 @pytest.mark.django_db

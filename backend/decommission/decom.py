@@ -43,7 +43,7 @@ class Decom(object):
         return device_category
 
     # Decommission
-    def create_history_decom(device_id: str, username: int) -> None:
+    def create_history_decom(device_id: str, username: str) -> None:
         """Creating an entry in the decommission history"""
         if not (Decom.add_category_decom(device_id)):
             history = HistoryDec.objects.create(

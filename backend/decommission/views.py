@@ -4,7 +4,6 @@ from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
-from django.views.decorators.http import require_POST
 from core.utils import DataMixin
 from device.models import Device
 from .models import Decommission, CategoryDec, HistoryDec, Disposal, CategoryDis, HistoryDis
