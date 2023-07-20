@@ -1,11 +1,8 @@
-import datetime
 import pytest
 from django.conf import settings
 from django.contrib.auth.models import User
-from decommission.models import Decommission, CategoryDec, Disposal, CategoryDis
+from decommission.models import CategoryDec, CategoryDis
 from decommission.decom import Decom
-from stockroom.models import StockDev, HistoryDev
-from stockroom.stock import Stock
 
 
 def create_session(client):

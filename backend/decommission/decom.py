@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from device.models import Device
 from decommission.models import CategoryDec, CategoryDis

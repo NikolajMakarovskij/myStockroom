@@ -2,7 +2,7 @@ from .decom import Decom
 from django.contrib import messages
 import datetime
 from celery import shared_task
-from decommission.models import Decommission, CategoryDec, Disposal, CategoryDis
+from decommission.models import Decommission, Disposal
 from device.models import Device
 from stockroom.stock import Stock, StockDev
 
