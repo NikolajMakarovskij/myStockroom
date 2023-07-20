@@ -26,6 +26,28 @@ def dev_history_short():
         "no_history": "Устройства не использовались"}
 
 
+@register.inclusion_tag('stock/history_dev_short_list.html')
+def device_decom_history():
+    history_dev_list = HistoryDev.objects.filter(status="Списание")
+
+    return {
+        "history_dev_list": history_dev_list,
+        "table_head": "История использования устройства",
+        "no_history": "Устройство не использовались"
+        }
+
+
+@register.inclusion_tag('stock/history_dev_short_list.html')
+def device_disp_history():
+    history_dev_list = HistoryDev.objects.filter(status="Утилизация")
+
+    return {
+        "history_dev_list": history_dev_list,
+        "table_head": "История использования устройства",
+        "no_history": "Устройство не использовались"
+        }
+
+
 # consumables
 @register.inclusion_tag('stock/history_short_list.html')
 def this_device_con_history(device_id):

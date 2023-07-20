@@ -103,14 +103,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
-    #    'hello': {
-    #        'task': 'shop.tasks.hello',
-    #        'schedule':  timedelta(seconds=15)  # execute every minute
-    #    }
-    #    'order_created': {
-    #        'task': 'orders.tasks.order_created',
-    #
-    #    }
 
 }
 

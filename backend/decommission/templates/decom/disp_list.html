@@ -77,6 +77,6 @@
   <!--block pagination-->  
   {%include 'pagination/pagination.html' %}
   <!--block history-->
-  {% load decommission_tags %}
-  {% disp_history_short  %}
+  {% load history_tags %}
+  {% device_disp_history  %}
 {% endblock %}
