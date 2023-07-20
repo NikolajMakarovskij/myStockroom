@@ -54,4 +54,3 @@ class Decom(object):
                     slug=Device.objects.get(id=device_id).categories.slug
                 )
         return device_category
-

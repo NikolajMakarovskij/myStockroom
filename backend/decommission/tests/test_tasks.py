@@ -5,6 +5,7 @@ from decommission.tasks import DecomTasks
 from decommission.tests.test_decom import create_devices, create_session
 from stockroom.models import StockDev, HistoryDev
 from stockroom.stock import Stock
+from stockroom.tasks import StockTasks
 
 
 # Decommission
@@ -17,8 +18,8 @@ def test_decom_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     test_get_decom = Decommission.objects.get(devices__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на списание")
@@ -46,8 +47,8 @@ def test_decom_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     test_get_decom = Decommission.objects.get(devices__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на списание")
@@ -71,8 +72,8 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.remove_decom(device_id=devices.id, username=username, status_choice="Удаление")
     test_history = HistoryDev.objects.get(status='Удаление')
@@ -93,8 +94,8 @@ def test_disp_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
     test_get_disp = Disposal.objects.get(devices__name='my_consumable')
@@ -124,8 +125,8 @@ def test_disp_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
     test_get_disp = Disposal.objects.get(devices__name='my_consumable')
@@ -151,8 +152,8 @@ def test_disp_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    Stock.add_device(self=Stock(client), device=devices, quantity=quantity, number_rack=number_rack,
-                     number_shelf=number_shelf, username=username)
+    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+                          number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
     DecomTasks.remove_disp(device_id=devices.id, username=username, status_choice="Удаление")

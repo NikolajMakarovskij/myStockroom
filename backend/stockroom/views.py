@@ -14,13 +14,13 @@ from .models import (
     History, HistoryAcc, HistoryDev,
     StockCat, CategoryAcc, CategoryDev
 )
-from .stock import Stock
+from .tasks import StockTasks
 
 
-# Склад главная
+# Stock index
 class StockroomIndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
     """
-    Главная
+    Index
     """
     template_name = 'stock/stock_index.html'
 
@@ -34,7 +34,7 @@ class StockroomIndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
         return context
 
 
-# Склад расходников
+# Stock consumables
 class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_list.html'
     model = Stockroom
@@ -99,7 +99,7 @@ class StockroomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-# История склада расходников
+# History of consumables stock
 class HistoryView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_list.html'
     model = History
@@ -160,13 +160,12 @@ class HistoryCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 @require_POST
 def stock_add_consumable(request, consumable_id):
     username = request.user.username
-    stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_consumable(
-            consumable=consumable,
+        StockTasks.add_consumable.delay(
+            consumable=consumable.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
             number_shelf=cd['number_shelf'],
@@ -191,9 +190,8 @@ def stock_add_consumable(request, consumable_id):
 
 def stock_remove_consumable(request, consumable_id):
     username = request.user.username
-    stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock.remove_consumable(consumable, username=username)
+    StockTasks.remove_consumable.delay(consumable=consumable.id, username=username)
     messages.add_message(
         request,
         level=messages.SUCCESS,
@@ -207,12 +205,11 @@ def stock_remove_consumable(request, consumable_id):
 def device_add_consumable(request, consumable_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']
-    stock = Stock(request)
     consumable = get_object_or_404(Consumables, id=consumable_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.device_add_consumable(consumable=consumable,
+        StockTasks.device_add_consumable.delay(consumable=consumable.id,
                                     device=get_device_id,
                                     quantity=cd['quantity'],
                                     username=username,
@@ -232,7 +229,7 @@ def device_add_consumable(request, consumable_id):
     return redirect('stockroom:stock_list')
 
 
-# Склад комплектующих
+# Stock accessories
 class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_acc_list.html'
     model = StockAcc
@@ -286,9 +283,8 @@ class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = StockAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list
 
-    # История склада комплектующих
 
-
+# History of accessories stock
 class HistoryAccView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_acc_list.html'
     model = HistoryAcc
@@ -342,12 +338,11 @@ class HistoryAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 @require_POST
 def stock_add_accessories(request, accessories_id):
     username = request.user.username
-    stock = Stock(request)
     accessories = get_object_or_404(Accessories, id=accessories_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_accessories(accessories=accessories,
+        StockTasks.add_accessories.delay(accessories=accessories.id,
                               quantity=cd['quantity'],
                               number_rack=cd['number_rack'],
                               number_shelf=cd['number_shelf'],
@@ -370,9 +365,8 @@ def stock_add_accessories(request, accessories_id):
 
 def stock_remove_accessories(request, accessories_id):
     username = request.user.username
-    stock = Stock(request)
     accessories = get_object_or_404(Accessories, id=accessories_id)
-    stock.remove_accessories(accessories, username=username, )
+    StockTasks.remove_accessories.delay(accessories=accessories.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{accessories.name} успешно удален со склада",
@@ -385,12 +379,11 @@ def stock_remove_accessories(request, accessories_id):
 def device_add_accessories(request, accessories_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']
-    stock = Stock(request)
     accessories = get_object_or_404(Accessories, id=accessories_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.device_add_accessories(accessories=accessories,
+        StockTasks.device_add_accessories.delay(accessories=accessories.id,
                                      device=get_device_id,
                                      quantity=cd['quantity'],
                                      username=username,
@@ -410,7 +403,7 @@ def device_add_accessories(request, accessories_id):
     return redirect('stockroom:stock_acc_list')
 
 
-# Склад устройств
+# Device stock
 class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
@@ -462,9 +455,8 @@ class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = StockDev.objects.filter(categories__slug=self.kwargs['category_slug'])
         return object_list
 
-    # История склада устройств
 
-
+# History of device stock
 class HistoryDevView(LoginRequiredMixin, DataMixin, generic.ListView):
     template_name = 'stock/history_dev_list.html'
     model = HistoryDev
@@ -517,12 +509,11 @@ class HistoryDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 @require_POST
 def stock_add_device(request, device_id):
     username = request.user.username
-    stock = Stock(request)
     device = get_object_or_404(Device, id=device_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_device(device=device,
+        StockTasks.add_device.delay(device_id=device.id,
                          quantity=cd['quantity'],
                          number_rack=cd['number_rack'],
                          number_shelf=cd['number_shelf'],
@@ -545,9 +536,8 @@ def stock_add_device(request, device_id):
 
 def stock_remove_device(request, devices_id):
     username = request.user.username
-    stock = Stock(request)
     device = get_object_or_404(Device, id=devices_id)
-    stock.remove_device(device, username=username, )
+    StockTasks.remove_device.delay(device_id=device.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален со склада",
@@ -559,13 +549,13 @@ def stock_remove_device(request, devices_id):
 @require_POST
 def move_device_from_stock(request, device_id):
     username = request.user.username
-    stock = Stock(request)
-    device = get_object_or_404(Device, id=device_id) #Device.objects.filter(id=devices_id).get()
+    device = get_object_or_404(Device, id=device_id)
     form = MoveDeviceForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.move_device(device=device,
-                          workplace=cd['workplace'],
+        workplace_ = cd['workplace']
+        StockTasks.move_device.delay(device_id=device.id,
+                          workplace=workplace_.name,
                           username=username,
                           )
         messages.add_message(request,
