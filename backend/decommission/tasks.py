@@ -1,7 +1,4 @@
-from urllib import request
-
 from .decom import Decom
-from django.contrib import messages
 import datetime
 from celery import shared_task
 from decommission.models import Decommission, Disposal

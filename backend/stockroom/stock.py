@@ -2,8 +2,7 @@ import datetime
 from django.conf import settings
 from device.models import Device
 from consumables.models import Consumables, Accessories
-from workplace.models import Workplace
-from .models import StockCat, History, CategoryAcc, HistoryAcc, StockDev, CategoryDev, HistoryDev
+from .models import StockCat, History, CategoryAcc, HistoryAcc, CategoryDev, HistoryDev
 
 
 class Stock(object):
@@ -207,7 +206,7 @@ class Stock(object):
                 )
         return device_category
 
-    def create_history_dev(device_id: str, quantity: int, username: int, status_choice: str) -> None:
+    def create_history_dev(device_id: str, quantity: int, username: str, status_choice: str) -> None:
         """Creating an entry in the history of devices"""
         if not (Stock.add_category_dev(device_id)):
             history = HistoryDev.objects.create(
