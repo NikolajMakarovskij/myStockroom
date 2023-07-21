@@ -1,12 +1,8 @@
 import csv
 import datetime
-from django.conf import settings
 from django.contrib import messages
 from django.core.cache import cache
-from django.forms import widgets
 from django.http import HttpResponse
-from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
 from django_select2.forms import ModelSelect2Widget
 
 menu = [
@@ -31,7 +27,7 @@ deviceMenu = [
 
 class DataMixin:
     """
-    Миксин с пагинацией, меню, поиском
+    Mixin add pagination and menu in views
     """
     paginate_by = 10
 
@@ -44,31 +40,6 @@ class DataMixin:
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
         return context
-
-
-class WidgetCanAdd(widgets.Select):
-    """
-    Кнопка добавить в форме для связанных моделей
-    """
-
-    def __init__(self, related_model, related_url=None, *args, **kw):
-        super(WidgetCanAdd, self).__init__(*args, **kw)
-
-        if not related_url:
-            rel_to = related_model
-            info = (rel_to._meta.app_label, rel_to._meta.object_name.lower())
-            related_url = 'admin:%s_%s_add' % info
-
-        # Be careful that here "reverse" is not allowed
-        self.related_url = related_url
-
-    def render(self, name, value, *args, **kwargs):
-        self.related_url = reverse_lazy(self.related_url)
-        output = [super(WidgetCanAdd, self).render(name, value, *args, **kwargs),
-                  '<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> '
-                  % (self.related_url, name),
-                  '<img src="%simages/add.svg" width="35" height="35" alt="%s"/></a>' % (settings.STATIC_URL, '+')]
-        return mark_safe(''.join(output))
 
 
 class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
@@ -90,7 +61,7 @@ class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
 
 class ExportAdmin:
     """
-    Функция экспорта в админке
+    Mixin to export data in admin panel
     """
 
     def export_to_csv(modeladmin, request, queryset):
@@ -121,19 +92,19 @@ class ExportAdmin:
 
 class ModelMixin:
     """
-    Миксин с функциями для моделей
+    Mixin with methods from models
     """
 
     def get_all_fields(self):
         """
-        Возвращает список всех полей из записи БД. Используется в шаблонах для DetailView
+        Returned list all fields from model. Used in DetailView
         """
         fields = []
         expose_fields = ['id', 'slug']
         for f in self._meta.fields:
 
             fname = f.name
-            # Разрешает списки выбора с помощью get_xyz_display() 
+            # added selectable lists with get_xyz_display()
             get_choice = 'get_' + fname + '_display'
             if hasattr(self, get_choice):
                 value = getattr(self, get_choice)()
@@ -143,7 +114,7 @@ class ModelMixin:
                 except AttributeError:
                     value = None
 
-            # Отображение полей всех полей, кроме исключенных
+            # Views all fields
             if f.editable and value and f.name not in expose_fields:
                 fields.append(
                     {
@@ -157,7 +128,7 @@ class ModelMixin:
 
 class FormMessageMixin:
     """
-    Добавляет сообщения в формы
+    added messages in form
     """
     success_message = ''
     debug_message = ''
