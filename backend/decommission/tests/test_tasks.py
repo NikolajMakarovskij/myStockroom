@@ -4,7 +4,6 @@ from decommission.models import Decommission, CategoryDec, Disposal, CategoryDis
 from decommission.tasks import DecomTasks
 from decommission.tests.test_decom import create_devices, create_session
 from stockroom.models import StockDev, HistoryDev
-from stockroom.stock import Stock
 from stockroom.tasks import StockTasks
 
 
