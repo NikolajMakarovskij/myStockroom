@@ -1,3 +1,5 @@
+from urllib import request
+
 from .decom import Decom
 from django.contrib import messages
 import datetime
@@ -32,7 +34,7 @@ class DecomTasks(Decom):
             Stock.create_history_dev(device_id, quantity, username, status_choice)
             StockDev.objects.filter(devices=device_id).delete()
         else:
-            pass #TODO add message
+            pass
 
     @shared_task()
     def remove_decom(device_id: str, username: str, status_choice: str) -> None:
@@ -71,7 +73,7 @@ class DecomTasks(Decom):
             Stock.create_history_dev(device_id, quantity, username, status_choice)
             Decommission.objects.filter(devices=device_id).delete()
         else:
-            pass #TODO add message
+            pass
 
     @shared_task()
     def remove_disp(device_id: str, username: str, status_choice: str) -> None:
