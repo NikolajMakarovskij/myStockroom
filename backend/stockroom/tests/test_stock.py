@@ -112,42 +112,6 @@ def test_stock_create_history():
     assert test_history.status == 'Приход'
 
 
-@pytest.mark.django_db
-def test_stock_if_not_device():
-    """Checks the operation of the get_device method of the Stock class in the absence of feedback"""
-    consumable = create_consumable()
-    consumable_id = consumable.id
-    test_device = Stock.get_device(consumable_id)
-    assert test_device == 'Нет'
-
-
-@pytest.mark.django_db
-def test_stock_get_device():
-    """Checks the operation of the get_device method of the Stock class"""
-    from device.models import Device
-    consumable = create_consumable()
-    Device.objects.create(name='device', consumable=consumable)
-    consumable_id = consumable.id
-    test_device = Stock.get_device(consumable_id)
-
-    assert Device.objects.count() == 1
-    assert test_device == 'device'
-
-
-@pytest.mark.django_db
-def test_stock_get_devices():
-    """Checks the operation of the get_device method with multiple connections of the Stock class"""
-    from device.models import Device
-    consumable = create_consumable()
-    add_consumables_in_devices(consumable, accessories=None)
-
-    consumable_id = consumable.id
-    test_printer = Stock.get_device(consumable_id)
-
-    assert Device.objects.count() == 3
-    assert test_printer == 'device 1, device 2, device 3'
-
-
 # Accessories
 @pytest.mark.django_db
 def test_stock_acc_no_category():
@@ -194,42 +158,6 @@ def test_stock_acc_create_history():
     assert test_history.dateInstall == datetime.date.today()
     assert test_history.user == 'admin'
     assert test_history.status == 'Приход'
-
-
-@pytest.mark.django_db
-def test_stock_acc_if_not_device():
-    """Checks the operation of the get_device method of the Stock class in the absence of feedback"""
-    accessories = create_accessories()
-    accessories_id = accessories.id
-    test_device = Stock.get_device_acc(accessories_id)
-    assert test_device == 'Нет'
-
-
-@pytest.mark.django_db
-def test_stock_acc_get_device():
-    """Checks the operation of the get_device method of the Stock class"""
-    from device.models import Device
-    accessories = create_accessories()
-    Device.objects.create(name='device', accessories=accessories)
-    accessories_id = accessories.id
-    test_device = Stock.get_device_acc(accessories_id)
-
-    assert Device.objects.count() == 1
-    assert test_device == 'device'
-
-
-@pytest.mark.django_db
-def test_stock_acc_get_devices():
-    """Checks the operation of the get_device method with multiple connections of the Stock class"""
-    from device.models import Device
-    accessories = create_accessories()
-    add_consumables_in_devices(consumable=None, accessories=accessories)
-
-    accessories_id = accessories.id
-    test_printer = Stock.get_device_acc(accessories_id)
-
-    assert Device.objects.count() == 3
-    assert test_printer == 'device 1, device 2, device 3'
 
 
 # Devices

@@ -59,7 +59,6 @@ def test_stockroom_create():
         dateInstall=datetime.date.today(),
         rack=6,
         shelf=15,
-        device='epson'
     )
     stockroom = Stockroom.objects.get(consumables__name="my_consumable")
     assert Stockroom.objects.count() == 1
@@ -71,7 +70,6 @@ def test_stockroom_create():
     assert stockroom.dateInstall == datetime.date.today()
     assert stockroom.rack == 6
     assert stockroom.shelf == 15
-    assert stockroom.device == 'epson'
 
 
 @pytest.mark.django_db
@@ -150,7 +148,6 @@ def test_stockroom_acc_create():
         dateInstall=datetime.date.today(),
         rack=6,
         shelf=15,
-        device='epson'
     )
     stockroom = StockAcc.objects.get(accessories__name="my_accessories")
     assert StockAcc.objects.count() == 1
@@ -162,7 +159,6 @@ def test_stockroom_acc_create():
     assert stockroom.dateInstall == datetime.date.today()
     assert stockroom.rack == 6
     assert stockroom.shelf == 15
-    assert stockroom.device == 'epson'
 
 
 @pytest.mark.django_db

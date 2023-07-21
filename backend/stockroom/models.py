@@ -1,7 +1,6 @@
 import uuid
 from django.db import models
 from django.urls import reverse
-from workplace.models import Room
 from device.models import Device
 from consumables.models import Consumables, Accessories
 from core.utils import ModelMixin
@@ -28,11 +27,6 @@ class Stockroom (ModelMixin, models.Model):
         blank=True, null=True,
         help_text="Укажите группу",
         verbose_name="группа"
-        )
-    device = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        verbose_name="Устройство"
         )
     dateAddToStock = models.DateField(
         null=True, blank=True,
@@ -182,11 +176,6 @@ class StockAcc (ModelMixin, models.Model):
         blank=True, null=True,
         help_text="Укажите группу",
         verbose_name="группа"
-        )
-    device = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        verbose_name="Устройство"
         )
     dateAddToStock = models.DateField(
         null=True, blank=True,

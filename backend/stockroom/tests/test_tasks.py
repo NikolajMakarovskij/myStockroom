@@ -28,7 +28,6 @@ def test_stock_add_consumable(client):
     assert test_get_stock.categories.name == 'my_category'
     assert test_get_stock.categories.slug == 'my_category'
     assert test_get_stock.consumables.name == 'my_consumable'
-    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.consumables.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
@@ -63,7 +62,6 @@ def test_stock_add_consumable_not_category(client):
     assert History.objects.count() == 1
     assert test_get_stock.categories is None
     assert test_get_stock.consumables.name == 'my_consumable'
-    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.consumables.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
@@ -169,7 +167,6 @@ def test_stock_add_accessories(client):
     assert test_get_stock.categories.name == 'my_category'
     assert test_get_stock.categories.slug == 'my_category'
     assert test_get_stock.accessories.name == 'my_consumable'
-    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.accessories.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
@@ -204,7 +201,6 @@ def test_stock_acc_add_accessories_not_category(client):
     assert HistoryAcc.objects.count() == 1
     assert test_get_stock.categories is None
     assert test_get_stock.accessories.name == 'my_consumable'
-    assert test_get_stock.device == 'device 1, device 2, device 3'
     assert test_get_stock.accessories.score == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13

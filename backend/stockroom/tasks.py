@@ -2,7 +2,6 @@ from .stock import Stock
 from .models import StockDev, StockAcc, Stockroom
 from consumables.models import Accessories, Consumables
 from workplace.models import Workplace
-from django.contrib import messages
 import datetime
 from celery import shared_task
 from device.models import Device
@@ -27,8 +26,7 @@ class StockTasks(Stock):
                 id=consumable_id).update(score=consumable_score)
             Stockroom.objects.filter(
                 consumables=consumable_id).update(
-                dateAddToStock=datetime.date.today(),
-                device=Stock.get_device(consumable_id)
+                dateAddToStock=datetime.date.today()
             )
         else:
             if Stock.add_category(consumable_id) is None:
@@ -37,7 +35,6 @@ class StockTasks(Stock):
                     dateAddToStock=datetime.date.today(),
                     rack=int(number_rack),
                     shelf=int(number_shelf),
-                    device=Stock.get_device(consumable_id)
                 )
                 Consumables.objects.filter(
                     id=consumable_id).update(score=int(quantity))
@@ -49,7 +46,6 @@ class StockTasks(Stock):
                     dateAddToStock=datetime.date.today(),
                     rack=int(number_rack),
                     shelf=int(number_shelf),
-                    device=Stock.get_device(consumable_id)
                 )
                 Consumables.objects.filter(
                     id=consumable_id).update(score=int(quantity))
@@ -99,7 +95,6 @@ class StockTasks(Stock):
             Accessories.objects.filter(id=accessories_id).update(score=accessories_score)
             StockAcc.objects.filter(accessories=accessories_id).update(
                 dateAddToStock=datetime.date.today(),
-                device=Stock.get_device_acc(accessories_id)
             )
         else:
             if Stock.add_category_acc(accessories_id) is None:
@@ -108,7 +103,6 @@ class StockTasks(Stock):
                     dateAddToStock=datetime.date.today(),
                     rack=int(number_rack),
                     shelf=int(number_shelf),
-                    device=Stock.get_device_acc(accessories_id)
                 )
                 Accessories.objects.filter(id=accessories_id).update(score=int(quantity))
             else:
@@ -118,7 +112,6 @@ class StockTasks(Stock):
                     dateAddToStock=datetime.date.today(),
                     rack=int(number_rack),
                     shelf=int(number_shelf),
-                    device=Stock.get_device_acc(accessories_id)
                 )
                 Accessories.objects.filter(id=accessories_id).update(score=int(quantity))
         Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Приход')
@@ -155,7 +148,6 @@ class StockTasks(Stock):
         """
         Add a device to the stock or update its quantity.
         """
-        device_id = str(device_id)
         device_add = Device.objects.get(id=device_id)
         device_score = int(str(device_add.score))
         if StockDev.objects.filter(devices=device_id):
@@ -190,7 +182,6 @@ class StockTasks(Stock):
         Delete device from the stock
         """
         status_choice = "Удаление"
-        device_id = str(device_id)
         if StockDev.objects.filter(devices=device_id):
             StockDev.objects.filter(devices=device_id).delete()
             Stock.create_history_dev(device_id, quantity, username, status_choice=status_choice)
@@ -200,7 +191,6 @@ class StockTasks(Stock):
         """
         Move device
         """
-        device_id = str(device_id)
         quantity = 1
         Device.objects.filter(id=device_id).update(workplace=Workplace.objects.filter(name=workplace).get())
         StockDev.objects.filter(devices=device_id).update(dateInstall=datetime.date.today())

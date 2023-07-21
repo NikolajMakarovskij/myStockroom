@@ -65,7 +65,11 @@
         <td><a class="noDecoration" href="{{ each.consumables.get_absolute_url }}">{{ each.consumables.name }}</a></td>
         <td>{{ each.categories}}</td>
         <td>
-            {% for dev in each.device %}{{ dev }}{% endfor %}
+          {% for dev in each.consumables.device.all %}
+            <a class="noDecoration" href="{{ dev.get_absolute_url }}">
+              {{ dev.name }}
+            </a>
+          {% endfor %}
         </td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>

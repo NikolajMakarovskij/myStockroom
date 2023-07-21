@@ -24,24 +24,6 @@ class Stock(object):
         self.session.modified = True
 
     # Consumables
-    def get_device(consumable_id: str) -> str:
-        """Getting a device"""
-        con_device = list(
-            Consumables.objects.get(id=consumable_id).device.all().distinct()
-        )
-        list_device = []
-        list_id = []
-        devices = ''
-        if con_device:
-            for device in con_device:
-                list_device.append(device.name)
-                list_id.append(device.id)
-        else:
-            devices = 'Нет'
-        for devices in list_device:
-            devices = ', '.join(list_device)
-        return devices
-
     def add_category(consumable_id: str) -> dict:
         """Getting a category"""
         if not Consumables.objects.get(id=consumable_id).categories:
@@ -112,22 +94,6 @@ class Stock(object):
         return history
 
     # Accessories
-    def get_device_acc(accessories_id: str) -> str:
-        """Getting a device"""
-        acc_device = list(Accessories.objects.get(id=accessories_id).device.all().distinct())
-        list_device = []
-        list_id = []
-        devices = ''
-        if acc_device:
-            for device in acc_device:
-                list_device.append(device.name)
-                list_id.append(device.id)
-        else:
-            devices = 'Нет'
-        for devices in list_device:
-            devices = ', '.join(list_device)
-        return devices
-
     def add_category_acc(accessories_id: str) -> dict:
         """Getting a category"""
         if not Accessories.objects.get(id=accessories_id).categories:
