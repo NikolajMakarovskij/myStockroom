@@ -36,6 +36,7 @@ class Employee(ModelMixin, models.Model):
         Workplace,
         on_delete=models.SET_NULL,
         blank=True, null=True,
+        related_name="employee",
         help_text="Выберете рабочее место",
         verbose_name="Рабочее место"
     )

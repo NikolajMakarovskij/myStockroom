@@ -39,8 +39,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead>
         <tr>
-          <th scope="col">Принтер</th>
-          <th scope="col">Расходник</th>
+          <th scope="col">Устройство</th>
           <th scope="col">Описание</th>
           <th scope="col">Рабочее место</th>
           <th scope="col">Кабинет</th>
@@ -52,11 +51,16 @@
       {% for device in device_list %}
       <tr>
         <td><a class="noDecoration" href="{{ device.get_absolute_url }}">{{ device.name }}</a></td>
-        <td><a class="noDecoration" href="{{ device.cartridge.get_absolute_url }}">{{ device.consumable.name }}</a></td>
         <td>{{ device.description }}</td>
         <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
-        <td><a class="noDecoration" href="{{ device.workplace.room.get_absolute_url }}">{{ device.workplace.room.name }}</a></td>
-        <td>{{ device.workplace.room.floor }}</td>
+        <td>{{ device.workplace.room.name}}</td>
+        <td>
+          {% for each in device.workplace.employee.all %}
+            <a class="noDecoration" href="{{ each.get_absolute_url }}">
+              {{ each.name }} {{ each.surname }} {{ each.family }}
+            </a>
+          {% endfor %}
+        </td>
         <td>{{ device.workplace.room.building }}</td>
       </tr>
       {% endfor %}
