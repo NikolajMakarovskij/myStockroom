@@ -69,16 +69,16 @@ def add_decommission(request, device_id):
     DecomTasks.add_device_decom.delay(device_id=device.id, username=username, status_choice="Списание")
     if not Decommission.objects.filter(devices=device):
         messages.add_message(request,
-                         level=messages.SUCCESS,
-                         message=f"{device.name} успешно списан со склада",
-                         extra_tags='Успешно списан'
-                         )
+                             level=messages.SUCCESS,
+                             message=f"{device.name} успешно списан со склада",
+                             extra_tags='Успешно списан'
+                             )
     else:
         messages.add_message(request,
-                         level=messages.WARNING,
-                         message=f"{device.name} находится в списке на списание",
-                         extra_tags='Ошибка'
-                         )
+                             level=messages.WARNING,
+                             message=f"{device.name} находится в списке на списание",
+                             extra_tags='Ошибка'
+                             )
     return redirect('decommission:decom_list')
 
 
@@ -152,16 +152,16 @@ def add_disposal(request, devices_id):
     DecomTasks.add_device_disp.delay(device_id=device.id, username=username, status_choice="Утилизация")
     if not Disposal.objects.filter(devices=device):
         messages.add_message(request,
-                         level=messages.SUCCESS,
-                         message=f"{device.name} отправлен на утилизацию",
-                         extra_tags='Успешно утилизирован'
-                         )
+                             level=messages.SUCCESS,
+                             message=f"{device.name} отправлен на утилизацию",
+                             extra_tags='Успешно утилизирован'
+                             )
     else:
         messages.add_message(request,
-                         level=messages.WARNING,
-                         message=f"{device.name} находится в списке на утилизацию",
-                         extra_tags='Ошибка'
-                         )
+                             level=messages.WARNING,
+                             message=f"{device.name} находится в списке на утилизацию",
+                             extra_tags='Ошибка'
+                             )
     return redirect('decommission:disp_list')
 
 
