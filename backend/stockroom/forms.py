@@ -53,8 +53,4 @@ class MoveDeviceForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ['workplace']
-        widgets = {
-            'workplace': WidgetCanAdd(Workplace, related_url="workplace:new-workplace",
-                                      attrs={'class': 'form-select form-select-lg'}),
-
-        }
+        widgets = {'workplace': WorkplaceWidget}
