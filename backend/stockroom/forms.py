@@ -1,7 +1,7 @@
 from django import forms
 from device.models import Device
 from workplace.models import Workplace
-from core.utils import BaseModelSelect2WidgetMixin, WidgetCanAdd
+from core.utils import BaseModelSelect2WidgetMixin
 
 consumable_score = 11
 CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
