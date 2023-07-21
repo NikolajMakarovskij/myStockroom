@@ -1,6 +1,6 @@
 *.DS_Store
 node_modules/
-
+**/migrations/
 **/database/pgdata/
 pgadmin-data/_data/azurecredentialcache
 pgadmin-data/_data/sessions
