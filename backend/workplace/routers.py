@@ -1,4 +1,4 @@
-from .views import *
+from .views import RoomRestView, WorkplaceRestView
 from rest_framework import routers
 
 

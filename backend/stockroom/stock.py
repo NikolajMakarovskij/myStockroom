@@ -26,6 +26,7 @@ class Stock(object):
     # Consumables
     def add_category(consumable_id: str) -> dict:
         """Getting a category"""
+
         if not Consumables.objects.get(id=consumable_id).categories:
             consumable_category = None
         else:
@@ -175,21 +176,15 @@ class Stock(object):
     def create_history_dev(device_id: str, quantity: int, username: str, status_choice: str) -> None:
         """Creating an entry in the history of devices"""
         if not (Stock.add_category_dev(device_id)):
-            history = HistoryDev.objects.create(
-                devices=Device.objects.get(id=device_id).name,
-                devicesId=Device.objects.get(id=device_id).id,
-                score=quantity,
-                dateInstall=datetime.date.today(),
-                user=username,
-                status=status_choice
-            )
+            categories = None
         else:
-            history = HistoryDev.objects.create(
+            categories = Stock.add_category_dev(device_id)
+        history = HistoryDev.objects.create(
                 devices=Device.objects.filter(id=device_id).get().name,
                 devicesId=Device.objects.filter(id=device_id).get().id,
                 score=quantity,
                 dateInstall=datetime.date.today(),
-                categories=Stock.add_category_dev(device_id),
+                categories=categories,
                 user=username,
                 status=status_choice
             )

@@ -9,7 +9,7 @@ from core.utils import ModelMixin
 class Decommission (ModelMixin, models.Model):
     """
     Extension of the device model for the decommission.
-    The nomenclature of warehouse and decommision and directory devices may differ,
+    The nomenclature of warehouse and decommission and directory devices may differ,
     however, the number and placement of each device must match
     """
     devices = models.OneToOneField(

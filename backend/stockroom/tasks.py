@@ -66,7 +66,7 @@ class StockTasks(Stock):
                                  username, status_choice='Удаление')
 
     @shared_task()
-    def device_add_consumable(consumable: str, device: dict, quantity=1, username=None) -> None:
+    def add_consumable_to_device(consumable: str, device: dict, quantity=1, username=None) -> None:
         """
         Install consumable in the device
         """
@@ -123,8 +123,8 @@ class StockTasks(Stock):
         """
         device_id = None
         accessories_id = str(accessories)
-        if StockAcc.objects.filter(accessories=accessories_id):
-            StockAcc.objects.filter(accessories=accessories_id).delete()
+        if StockAcc.objects.filter(accessories_id):
+            StockAcc.objects.filter(accessories_id).delete()
             Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Удаление')
 
     @shared_task()
