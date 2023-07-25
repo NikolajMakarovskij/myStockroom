@@ -1,8 +1,7 @@
 import datetime
 from django.conf import settings
 from device.models import Device
-from consumables.models import Accessories
-from .models import CategoryAcc, HistoryAcc, CategoryDev, HistoryDev, StockDev
+from .models import CategoryDev, HistoryDev, StockDev
 
 
 class BaseStock(object):
@@ -81,6 +80,7 @@ class DevStock(BaseStock):
     stock_model = StockDev
     stock_category = CategoryDev
     history_model = HistoryDev
+
     def create_history_device(self, model_id: str, quantity: int, username: str, status_choice: str) -> None:
         """Creating an entry in the history of stock_model"""
         model = self.base_model.objects.get(id=model_id)
@@ -95,8 +95,3 @@ class DevStock(BaseStock):
             status=status_choice
         )
         return history
-
-
-class Stock(BaseStock):
-    """Class with stock methods"""
-    pass

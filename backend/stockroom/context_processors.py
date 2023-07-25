@@ -1,5 +1,5 @@
-from .stock import Stock
+from .stock import BaseStock
 
 
 def stock(request):
-    return {'stock': Stock(request)}
+    return {'stock': BaseStock(request)}

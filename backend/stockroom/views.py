@@ -14,7 +14,7 @@ from .models import (
     History, HistoryAcc, HistoryDev,
     StockCat, CategoryAcc, CategoryDev
 )
-from .tasks import BaseStockTasks, ConStockTasks, AccStockTasks, DevStockTasks
+from .tasks import ConStockTasks, AccStockTasks, DevStockTasks
 
 
 # Stock index
@@ -161,11 +161,12 @@ class HistoryCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 def stock_add_consumable(request, consumable_id):
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
+    stock = ConStockTasks
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        ConStockTasks.add_to_stock(
-            ConStockTasks,
+        stock.add_to_stock(
+            stock,
             model_id=consumable.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -192,7 +193,8 @@ def stock_add_consumable(request, consumable_id):
 def stock_remove_consumable(request, consumable_id):
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
-    ConStockTasks.remove_from_stock(ConStockTasks, model_id=consumable.id, username=username)
+    stock = ConStockTasks
+    stock.remove_from_stock(stock, model_id=consumable.id, username=username)
     messages.add_message(
         request,
         level=messages.SUCCESS,
@@ -207,11 +209,12 @@ def device_add_consumable(request, consumable_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']
     consumable = get_object_or_404(Consumables, id=consumable_id)
+    stock = ConStockTasks
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        ConStockTasks.add_to_device(
-            ConStockTasks,
+        stock.add_to_device(
+            stock,
             model_id=consumable.id,
             device=get_device_id,
             quantity=cd['quantity'],
@@ -342,11 +345,12 @@ class HistoryAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 def stock_add_accessories(request, accessories_id):
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
+    stock = AccStockTasks
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        AccStockTasks.add_to_stock(
-            AccStockTasks,
+        stock.add_to_stock(
+            stock,
             model_id=accessories.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -371,7 +375,8 @@ def stock_add_accessories(request, accessories_id):
 def stock_remove_accessories(request, accessories_id):
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
-    AccStockTasks.remove_from_stock(AccStockTasks, model_id=accessories.id, username=username, )
+    stock = AccStockTasks
+    stock.remove_from_stock(stock, model_id=accessories.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{accessories.name} успешно удален со склада",
@@ -384,12 +389,13 @@ def stock_remove_accessories(request, accessories_id):
 def device_add_accessories(request, accessories_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']
+    stock = AccStockTasks
     accessories = get_object_or_404(Accessories, id=accessories_id)
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        AccStockTasks.add_to_device(
-            AccStockTasks,
+        stock.add_to_device(
+            stock,
             model_id=accessories.id,
             device=get_device_id,
             quantity=cd['quantity'],
@@ -516,12 +522,13 @@ class HistoryDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 @require_POST
 def stock_add_device(request, device_id):
     username = request.user.username
+    stock = DevStockTasks
     device = get_object_or_404(Device, id=device_id)
     form = StockAddForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        DevStockTasks.add_to_stock_device(
-            DevStockTasks,
+        stock.add_to_stock_device(
+            stock,
             model_id=device.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -546,7 +553,8 @@ def stock_add_device(request, device_id):
 def stock_remove_device(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DevStockTasks.remove_device_from_stock(DevStockTasks, model_id=device.id, username=username, )
+    stock = DevStockTasks
+    stock.remove_device_from_stock(stock, model_id=device.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален со склада",
@@ -564,21 +572,21 @@ def move_device_from_stock(request, device_id):
     if form.is_valid():
         cd = form.cleaned_data
         workplace_ = cd['workplace']
-        stock.move_device.delay(
-            request.self,
+        stock.move_device(
+            stock,
             model_id=device.id,
             workplace=workplace_.name,
             username=username,
         )
         messages.add_message(request,
                              level=messages.SUCCESS,
-                             message=f"Устройство {device.name} перемещено на рабочее место {device.workplace.name}.",
+                             message=f"Устройство перемещено на рабочее место.",
                              extra_tags='Успешное списание'
                              )
     else:
         messages.add_message(request,
                              level=messages.ERROR,
-                             message=f"Не удалось переместить устройство {device.name}.",
+                             message=f"Не удалось переместить устройство.",
                              extra_tags='Ошибка формы'
                              )
     return redirect('stockroom:stock_dev_list')
