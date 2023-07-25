@@ -62,10 +62,10 @@
     <tbody style="text-align:center">
       {% for each in stockroom_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.consumables.get_absolute_url }}">{{ each.consumables.name }}</a></td>
+        <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
         <td>{{ each.categories}}</td>
         <td>
-          {% for dev in each.consumables.device.all %}
+          {% for dev in each.stock_model.device.all %}
             <a class="noDecoration" href="{{ dev.get_absolute_url }}">
               {{ dev.name }}
             </a>
@@ -73,19 +73,19 @@
         </td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.consumables.score }}</td>
+        <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
         {% else %}
           <td></td>
         {% endif %}
-        {% if each.consumables.note %}  
-          <td>{{ each.consumables.note }}</td>
+        {% if each.stock_model.note %}
+          <td>{{ each.stock_model.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_consumable' each.consumables.id %}"> Удалить </a></td>
+        <td><a class="noDecoration" href="{% url 'stockroom:stock_remove_consumable' each.stock_model.id %}"> Удалить </a></td>
       </tr>
       {% endfor %}
   </table>

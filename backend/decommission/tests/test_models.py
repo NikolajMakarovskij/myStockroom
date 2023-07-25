@@ -48,18 +48,18 @@ def test_decommission_dev_create():
     Device.objects.create(
         name="my_device",
         manufacturer=Manufacturer.objects.get(name="name_manufacturer"),
-        score=10
+        quantity=10
     )
     Decommission.objects.create(
-        devices=Device.objects.get(name="my_device"),
+        stock_model=Device.objects.get(name="my_device"),
         categories=CategoryDec.objects.get(name="my_category"),
         date=datetime.date.today(),
     )
-    decom = Decommission.objects.get(devices__name="my_device")
+    decom = Decommission.objects.get(stock_model__name="my_device")
     assert Decommission.objects.count() == 1
-    assert decom.devices.name == "my_device"
-    assert decom.devices.manufacturer.name == "name_manufacturer"
-    assert decom.devices.score == 10
+    assert decom.stock_model.name == "my_device"
+    assert decom.stock_model.manufacturer.name == "name_manufacturer"
+    assert decom.stock_model.quantity == 10
     assert decom.categories.name == "my_category"
     assert decom.date == datetime.date.today()
 
@@ -105,17 +105,17 @@ def test_disposal_dev_create():
     Device.objects.create(
         name="my_device",
         manufacturer=Manufacturer.objects.get(name="name_manufacturer"),
-        score=10
+        quantity=10
     )
     Disposal.objects.create(
-        devices=Device.objects.get(name="my_device"),
+        stock_model=Device.objects.get(name="my_device"),
         categories=CategoryDis.objects.get(name="my_category"),
         date=datetime.date.today(),
     )
-    decom = Disposal.objects.get(devices__name="my_device")
+    decom = Disposal.objects.get(stock_model__name="my_device")
     assert Disposal.objects.count() == 1
-    assert decom.devices.name == "my_device"
-    assert decom.devices.manufacturer.name == "name_manufacturer"
-    assert decom.devices.score == 10
+    assert decom.stock_model.name == "my_device"
+    assert decom.stock_model.manufacturer.name == "name_manufacturer"
+    assert decom.stock_model.quantity == 10
     assert decom.categories.name == "my_category"
     assert decom.date == datetime.date.today()

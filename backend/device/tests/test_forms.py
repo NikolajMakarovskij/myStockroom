@@ -4,7 +4,7 @@ import pytest
 from workplace.models import Workplace
 from ..forms import DeviceForm, Manufacturer
 from ..models import DeviceCat
-from consumables.models import Consumables, Categories as ConCat
+from consumables.models import Consumables, Categories as ConCat, Accessories, AccCat
 
 
 @pytest.mark.django_db
@@ -20,6 +20,13 @@ def test_device_form_valid():
             slug="cartridges"
         )
     )
+    Accessories.objects.create(
+        name="T7741",
+        categories=AccCat.objects.create(
+            name="Картриджы",
+            slug="cartridges"
+        )
+    )
     form_data = {
         "name": "device_name",
         "categories": DeviceCat.objects.get(name="device_category"),
@@ -31,6 +38,7 @@ def test_device_form_valid():
         "description": "some_description",
         "workplace": Workplace.objects.get(name="device_workplace"),
         "consumable": Consumables.objects.get(name="T7741"),
+        "accessories": Accessories.objects.get(name="T7741"),
         "note": "some_note"
     }
     form = DeviceForm(data=form_data)

@@ -1,6 +1,8 @@
 from django.db.utils import IntegrityError
 from django.urls import reverse
 import pytest
+
+from consumables.models import Accessories
 from ..models import Device, DeviceCat, Consumables
 from workplace.models import Workplace
 from counterparty.models import Manufacturer
@@ -44,6 +46,7 @@ def test_device_create():
     Manufacturer.objects.create(name="epson")
     Workplace.objects.create(name="device_workplace")
     Consumables.objects.create(name="cartridge")
+    Accessories.objects.create(name="accessories")
     Device.objects.create(
         name="device_name",
         categories=DeviceCat.objects.get(name="device_category"),
@@ -53,7 +56,8 @@ def test_device_create():
         description="some_description",
         workplace=Workplace.objects.get(name="device_workplace"),
         consumable=Consumables.objects.get(name="cartridge"),
-        score=0,
+        accessories=Accessories.objects.get(name="accessories"),
+        quantity=0,
         note="some_note"
     )
     device = Device.objects.get(name="device_name")
@@ -66,7 +70,8 @@ def test_device_create():
     assert device.description == "some_description"
     assert device.workplace.name == "device_workplace"
     assert device.consumable.name == "cartridge"
-    assert device.score == 0
+    assert device.accessories.name == "accessories"
+    assert device.quantity == 0
     assert device.note == "some_note"
     assert device.__str__() == "device_name"
     assert device.get_absolute_url() == reverse('device:device-detail', kwargs={'pk': device.pk})

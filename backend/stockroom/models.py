@@ -9,11 +9,11 @@ from core.utils import ModelMixin
 # Consumables
 class Stockroom (ModelMixin, models.Model):
     """
-    Expansion of the consumables model for the warehouse.
-    The nomenclature of the consumables of the warehouse and the directory may differ,
-    however, the quantity of each consumable must match
+    Expansion of the stock_model model for the warehouse.
+    The nomenclature of the stock_model of the warehouse and the directory may differ,
+    however, the quantity of each stock_model must match
     """
-    consumables = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Consumables,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -50,12 +50,12 @@ class Stockroom (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад Расходников'
         verbose_name_plural = 'Склад Расходников'
-        ordering = ['consumables']
+        ordering = ['stock_model']
 
 
 class StockCat(ModelMixin, models.Model):
     """
-    Group model for consumables
+    Group model for stock_model
     """
     id = models.UUIDField(
         primary_key=True,
@@ -90,19 +90,19 @@ class StockCat(ModelMixin, models.Model):
 
 class History(models.Model):
     """
-    Model for storing the history of the use of consumables
+    Model for storing the history of the use of stock_model
     """
     id = models.UUIDField(
         primary_key=True, db_index=True,
         default=uuid.uuid4,
         help_text="ID"
         )
-    consumable = models.CharField(
+    stock_model = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="Расходники"
         )
-    consumableId = models.CharField(
+    stock_model_id = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="ID Расходникa"
@@ -124,7 +124,7 @@ class History(models.Model):
         help_text="Укажите группу",
         verbose_name="группа"
         )
-    score = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True, default=0,
         verbose_name="Количество",
         )
@@ -152,7 +152,7 @@ class History(models.Model):
     class Meta:
         verbose_name = 'История расходников'
         verbose_name_plural = 'История расходников'
-        ordering = ['-dateInstall', 'consumable']
+        ordering = ['-dateInstall', 'stock_model']
 
 
 # Accessories
@@ -162,7 +162,7 @@ class StockAcc (ModelMixin, models.Model):
     The nomenclature of components of the warehouse and the directory may differ,
     however, the quantity of each component must match
     """
-    accessories = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Accessories,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -199,7 +199,7 @@ class StockAcc (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад комплектующих'
         verbose_name_plural = 'Склад комплектующих'
-        ordering = ['accessories']
+        ordering = ['stock_model']
 
 
 class CategoryAcc(ModelMixin, models.Model):
@@ -246,12 +246,12 @@ class HistoryAcc(models.Model):
         default=uuid.uuid4,
         help_text="ID"
         )
-    accessories = models.CharField(
+    stock_model = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="Комплектующие"
         )
-    accessoriesId = models.CharField(
+    stock_model_id = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="ID комплектующего"
@@ -273,7 +273,7 @@ class HistoryAcc(models.Model):
         help_text="Укажите группу",
         verbose_name="группа"
         )
-    score = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True, default=0,
         verbose_name="Количество",
         )
@@ -301,17 +301,17 @@ class HistoryAcc(models.Model):
     class Meta:
         verbose_name = 'История комплектующих'
         verbose_name_plural = 'История комплектующих'
-        ordering = ['-dateInstall', 'accessories']
+        ordering = ['-dateInstall', 'stock_model']
 
 
 # Devices
 class StockDev (ModelMixin, models.Model):
     """
     Extension of the device model for the warehouse.
-    The nomenclature of warehouse and directory devices may differ,
+    The nomenclature of warehouse and directory stock_model may differ,
     however, the number and placement of each device must match
     """
-    devices = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -348,12 +348,12 @@ class StockDev (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад устройств'
         verbose_name_plural = 'Склад устройств'
-        ordering = ['devices']
+        ordering = ['stock_model']
 
 
 class CategoryDev(ModelMixin, models.Model):
     """
-    Group model for devices
+    Group model for stock_model
     """
     id = models.UUIDField(
         primary_key=True,
@@ -395,12 +395,12 @@ class HistoryDev(models.Model):
         default=uuid.uuid4,
         help_text="ID"
         )
-    devices = models.CharField(
+    stock_model = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="Устройства"
         )
-    devicesId = models.CharField(
+    stock_model_id = models.CharField(
         blank=True, default=0,
         max_length=50,
         verbose_name="ID устройства"
@@ -412,7 +412,7 @@ class HistoryDev(models.Model):
         help_text="Укажите группу",
         verbose_name="группа"
         )
-    score = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True, default=0,
         verbose_name="Количество",
         )
@@ -435,4 +435,4 @@ class HistoryDev(models.Model):
     class Meta:
         verbose_name = 'История устройств'
         verbose_name_plural = 'История устройств'
-        ordering = ['-dateInstall', 'devices']
+        ordering = ['-dateInstall', 'stock_model']

@@ -52,7 +52,7 @@ class ConsumablesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
             Q(buhCode__icontains=query) |
-            Q(score__icontains=query) |
+            Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
         ).select_related('categories', 'manufacturer')
@@ -186,7 +186,7 @@ class AccessoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
             Q(buhCode__icontains=query) |
-            Q(score__icontains=query) |
+            Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
         ).select_related('categories', 'manufacturer')
@@ -220,24 +220,12 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     success_message = f"%(categories)s %(name)s успешно создано"
     error_message = f"%(categories)s %(name)s не удалось создать"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Комплектующие")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
 
 class AccCatRestView(LoginRequiredMixin, DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = AccCat.objects.all()
     serializer_class = AccCatModelSerializer
     success_message = f"Категория %(name)s успешно создана"
     error_message = f"Категория %(name)s не удалось создать"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Категории")
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
 
 class AccessoriesDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.DetailView):

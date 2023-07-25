@@ -70,7 +70,7 @@ def test_consumable_create():
     assert consumable.serial == "123"
     assert consumable.invent == "321"
     assert consumable.buhCode == "code"
-    assert consumable.score == 0
+    assert consumable.quantity == 0
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
     assert consumable.__str__() == 'my_consumable'
@@ -143,7 +143,7 @@ def test_consumable_create():
     assert accessories.serial == "123"
     assert accessories.invent == "321"
     assert accessories.buhCode == "code"
-    assert accessories.score == 0
+    assert accessories.quantity == 0
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == 'my_consumable'

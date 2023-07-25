@@ -59,16 +59,16 @@
     <tbody style="text-align:center">
       {% for each in disposal_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.devices.get_absolute_url }}">{{ each.devices.name }}</a></td>
+        <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
         <td>{{ each.categories}}</td>
-        <td>{{ each.devices.score }}</td>
+        <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.date }}</td>
-        {% if each.devices.note %}
-          <td>{{ each.devices.note }}</td>
+        {% if each.stock_model.note %}
+          <td>{{ each.stock_model.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'decommission:remove_disp' each.devices.id %}"> Удалить </a></td>
+        <td><a class="noDecoration" href="{% url 'decommission:remove_disp' each.stock_model.id %}"> Удалить </a></td>
       </tr>
       {% endfor %}
   </table>

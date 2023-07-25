@@ -77,5 +77,5 @@ class SignatureForm(forms.ModelForm):
             'employeeStorage': EmployeeWidget,
             'workstation': DeviceWidget,
             'storage': ConWidget,
-            # 'score': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
+            # 'quantity': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         }

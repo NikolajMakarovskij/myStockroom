@@ -17,7 +17,7 @@ class StockroomViewTest(TestCase):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             cons = Consumables.objects.create(name='Christian %s' % stocks_num)
-            Stockroom.objects.create(consumables=cons)
+            Stockroom.objects.create(stock_model=cons)
         assert Consumables.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -63,7 +63,7 @@ class StockroomCategoryViewTest(TestCase):
         StockCat.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
             cons = Consumables.objects.create(name='Christian %s' % stocks_num)
-            Stockroom.objects.create(consumables=cons, categories=StockCat.objects.get(slug="some_category"))
+            Stockroom.objects.create(stock_model=cons, categories=StockCat.objects.get(slug="some_category"))
         assert Stockroom.objects.count() == 149
         assert StockCat.objects.count() == 1
 
@@ -105,7 +105,7 @@ class HistoryStockViewTest(TestCase):
     def setUpTestData(cls):
         number_in_history = 149
         for history_num in range(number_in_history):
-            History.objects.create(consumable='Christian %s' % history_num, )
+            History.objects.create(stock_model='Christian %s' % history_num, )
         assert History.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -150,7 +150,7 @@ class HistoryCategoryViewTest(TestCase):
         number_in_stock = 149
         StockCat.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
-            History.objects.create(consumable='Christian %s' % stocks_num,
+            History.objects.create(stock_model='Christian %s' % stocks_num,
                                    categories=StockCat.objects.get(slug="some_category"))
         assert History.objects.count() == 149
         assert StockCat.objects.count() == 1
@@ -195,7 +195,7 @@ class StockAccViewTest(TestCase):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             cons = Accessories.objects.create(name='Christian %s' % stocks_num)
-            StockAcc.objects.create(accessories=cons)
+            StockAcc.objects.create(stock_model=cons)
         assert Accessories.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -241,7 +241,7 @@ class StockroomAccCategoryViewTest(TestCase):
         CategoryAcc.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
             cons = Accessories.objects.create(name='Christian %s' % stocks_num)
-            StockAcc.objects.create(accessories=cons, categories=CategoryAcc.objects.get(slug="some_category"))
+            StockAcc.objects.create(stock_model=cons, categories=CategoryAcc.objects.get(slug="some_category"))
         assert StockAcc.objects.count() == 149
         assert CategoryAcc.objects.count() == 1
 
@@ -251,7 +251,8 @@ class StockroomAccCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'stockroom:stock_acc_search'},
         ]
         resp = self.client.get(
-            reverse('stockroom:accessories_category', kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+            reverse('stockroom:accessories_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
@@ -259,7 +260,8 @@ class StockroomAccCategoryViewTest(TestCase):
 
     def test_pagination_is_ten(self):
         resp = self.client.get(
-            reverse('stockroom:accessories_category', kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+            reverse('stockroom:accessories_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -273,6 +275,7 @@ class StockroomAccCategoryViewTest(TestCase):
         self.assertTrue(resp.context['is_paginated'] is True)
         self.assertTrue(len(resp.context['stockacc_list']) == 9)
 
+
 class HistoryAccStockViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -282,7 +285,7 @@ class HistoryAccStockViewTest(TestCase):
     def setUpTestData(cls):
         number_in_history = 149
         for history_num in range(number_in_history):
-            HistoryAcc.objects.create(accessories='Christian %s' % history_num, )
+            HistoryAcc.objects.create(stock_model='Christian %s' % history_num, )
         assert HistoryAcc.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -327,7 +330,7 @@ class HistoryAccCategoryViewTest(TestCase):
         number_in_stock = 149
         CategoryAcc.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
-            HistoryAcc.objects.create(accessories='Christian %s' % stocks_num,
+            HistoryAcc.objects.create(stock_model='Christian %s' % stocks_num,
                                       categories=CategoryAcc.objects.get(slug="some_category"))
         assert HistoryAcc.objects.count() == 149
         assert CategoryAcc.objects.count() == 1
@@ -338,7 +341,8 @@ class HistoryAccCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'stockroom:history_acc_search'},
         ]
         resp = self.client.get(
-            reverse('stockroom:history_acc_category', kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+            reverse('stockroom:history_acc_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
@@ -346,7 +350,8 @@ class HistoryAccCategoryViewTest(TestCase):
 
     def test_pagination_is_ten(self):
         resp = self.client.get(
-            reverse('stockroom:history_acc_category', kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+            reverse('stockroom:history_acc_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -372,7 +377,7 @@ class StockDevViewTest(TestCase):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             cons = Device.objects.create(name='Christian %s' % stocks_num)
-            StockDev.objects.create(devices=cons)
+            StockDev.objects.create(stock_model=cons)
         assert Device.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -418,7 +423,7 @@ class StockroomDevCategoryViewTest(TestCase):
         CategoryDev.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
             cons = Device.objects.create(name='Christian %s' % stocks_num)
-            StockDev.objects.create(devices=cons, categories=CategoryDev.objects.get(slug="some_category"))
+            StockDev.objects.create(stock_model=cons, categories=CategoryDev.objects.get(slug="some_category"))
         assert StockDev.objects.count() == 149
         assert CategoryDev.objects.count() == 1
 
@@ -461,7 +466,7 @@ class HistoryDevStockViewTest(TestCase):
     def setUpTestData(cls):
         number_in_history = 149
         for history_num in range(number_in_history):
-            HistoryDev.objects.create(devices='Christian %s' % history_num, )
+            HistoryDev.objects.create(stock_model='Christian %s' % history_num, )
         assert HistoryDev.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -506,7 +511,7 @@ class HistoryDevCategoryViewTest(TestCase):
         number_in_stock = 149
         CategoryDev.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
-            HistoryDev.objects.create(devices='Christian %s' % stocks_num,
+            HistoryDev.objects.create(stock_model='Christian %s' % stocks_num,
                                       categories=CategoryDev.objects.get(slug="some_category"))
         assert HistoryDev.objects.count() == 149
         assert CategoryDev.objects.count() == 1

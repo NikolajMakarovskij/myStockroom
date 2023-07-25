@@ -60,27 +60,27 @@
     <tbody style="text-align:center">
       {% for each in decommission_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.devices.get_absolute_url }}">{{ each.devices.name }}</a></td>
+        <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
         <td>{{ each.categories}}</td>
-        <td>{{ each.devices.score }}</td>
+        <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.date }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
         {% else %}
           <td></td>
         {% endif %}
-        {% if each.device.note %}
-          <td>{{ each.device.note }}</td>
+        {% if each.stock_model.note %}
+          <td>{{ each.stock_model.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
         <td>
-          <a class="noDecoration" href="{% url 'decommission:add_disp' each.devices.id %}">
+          <a class="noDecoration" href="{% url 'decommission:add_disp' each.stock_model.id %}">
             Утилизировать
           </a>
         </td>
         <td>
-          <a class="noDecoration" href="{% url 'decommission:remove_decom' each.devices.id %}">
+          <a class="noDecoration" href="{% url 'decommission:remove_decom' each.stock_model.id %}">
             Удалить
           </a>
         </td>

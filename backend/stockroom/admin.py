@@ -9,19 +9,19 @@ from core.utils import ExportAdmin
 class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     model = History
     list_display = [
-        'consumable',
-        'consumableId',
+        'stock_model',
+        'stock_model_id',
         'device',
         'categories',
-        'score',
+        'quantity',
         'dateInstall',
         'user'
         ]
     list_filter = ['categories']
     search_fields = [
-        'consumable',
+        'stock_model',
         'categories',
-        'score',
+        'quantity',
         'dateInstall',
         'room'
         ]
@@ -49,19 +49,19 @@ admin.site.register(StockCat, StockCatAdmin)
 class HistoryAccAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryAcc
     list_display = [
-        'accessories',
-        'accessoriesId',
+        'stock_model',
+        'stock_model_id',
         'device',
         'categories',
-        'score',
+        'quantity',
         'dateInstall',
         'user'
         ]
     list_filter = ['categories']
     search_fields = [
-        'accessories',
+        'stock_model',
         'categories',
-        'score',
+        'quantity',
         'dateInstall'
         ]
     actions = [ExportAdmin.export_to_csv]
@@ -88,18 +88,18 @@ admin.site.register(CategoryAcc, CategoryAccAdmin)
 class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryDev
     list_display = [
-        'devices',
-        'devicesId',
+        'stock_model',
+        'stock_model_id',
         'categories',
-        'score',
+        'quantity',
         'dateInstall',
         'user'
         ]
     list_filter = ['categories']
     search_fields = [
-        'devices',
+        'stock_model',
         'categories',
-        'score',
+        'quantity',
         'dateInstall'
         ]
     actions = [ExportAdmin.export_to_csv]

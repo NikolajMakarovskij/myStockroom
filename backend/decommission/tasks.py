@@ -4,7 +4,7 @@ from celery import shared_task
 from decommission.models import Decommission, Disposal
 from device.models import Device
 from stockroom.models import StockDev
-from stockroom.stock import Stock
+from stockroom.stock import DevStock
 
 
 class DecomTasks(Decom):
@@ -17,20 +17,20 @@ class DecomTasks(Decom):
         quantity = int(0)
         device_id = str(device_id)
         device_add = Device.objects.get(id=device_id)
-        if not Decommission.objects.filter(devices=device_id):
+        if not Decommission.objects.filter(stock_model=device_id):
             if Decom.add_category_decom(device_id) is None:
                 Decommission.objects.create(
-                    devices=device_add,
+                    stock_model=device_add,
                     date=datetime.date.today(),
                 )
             else:
                 Decommission.objects.create(
-                    devices=device_add,
+                    stock_model=device_add,
                     categories=Decom.add_category_decom(device_id),
                     date=datetime.date.today(),
                 )
-            Stock.create_history_dev(device_id, quantity, username, status_choice)
-            StockDev.objects.filter(devices=device_id).delete()
+            DevStock.create_history_device(DevStock, device_id, quantity, username, status_choice)
+            StockDev.objects.filter(stock_model=device_id).delete()
         else:
             pass
 
@@ -41,9 +41,9 @@ class DecomTasks(Decom):
         """
         quantity = int(0)
         device_id = str(device_id)
-        if Decommission.objects.filter(devices=device_id):
-            Decommission.objects.filter(devices=device_id).delete()
-            Stock.create_history_dev(device_id, quantity, username, status_choice)
+        if Decommission.objects.filter(stock_model=device_id):
+            Decommission.objects.filter(stock_model=device_id).delete()
+            DevStock.create_history_device(DevStock, device_id, quantity, username, status_choice)
 
     # Disposal
     @shared_task()
@@ -56,20 +56,20 @@ class DecomTasks(Decom):
         quantity = int(0)
         device_id = str(device_id)
         device_add = Device.objects.get(id=device_id)
-        if not Disposal.objects.filter(devices=device_id):
+        if not Disposal.objects.filter(stock_model=device_id):
             if Decom.add_category_disp(device_id) is None:
                 Disposal.objects.create(
-                    devices=device_add,
+                    stock_model=device_add,
                     date=datetime.date.today(),
                 )
             else:
                 Disposal.objects.create(
-                    devices=device_add,
+                    stock_model=device_add,
                     categories=Decom.add_category_disp(device_id),
                     date=datetime.date.today(),
                 )
-            Stock.create_history_dev(device_id, quantity, username, status_choice)
-            Decommission.objects.filter(devices=device_id).delete()
+            DevStock.create_history_device(DevStock, device_id, quantity, username, status_choice)
+            Decommission.objects.filter(stock_model=device_id).delete()
         else:
             pass
 
@@ -81,6 +81,6 @@ class DecomTasks(Decom):
         quantity = int(0)
         status_choice = status_choice
         device_id = str(device_id)
-        if Disposal.objects.filter(devices=device_id):
-            Disposal.objects.filter(devices=device_id).delete()
-            Stock.create_history_dev(device_id, quantity, username, status_choice)
+        if Disposal.objects.filter(stock_model=device_id):
+            Disposal.objects.filter(stock_model=device_id).delete()
+            DevStock.create_history_device(DevStock, device_id, quantity, username, status_choice)

@@ -9,10 +9,10 @@ from core.utils import ModelMixin
 class Decommission (ModelMixin, models.Model):
     """
     Extension of the device model for the decommission.
-    The nomenclature of warehouse and decommission and directory devices may differ,
+    The nomenclature of warehouse and decommission and directory device may differ,
     however, the number and placement of each device must match
     """
-    devices = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -35,12 +35,12 @@ class Decommission (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Списание устройств'
         verbose_name_plural = 'Списание устройств'
-        ordering = ['devices']
+        ordering = ['stock_model']
 
 
 class CategoryDec(ModelMixin, models.Model):
     """
-    Group model for devices
+    Group model for stock_model
     """
     id = models.UUIDField(
         primary_key=True,
@@ -77,10 +77,10 @@ class CategoryDec(ModelMixin, models.Model):
 class Disposal(ModelMixin, models.Model):
     """
     Extension of the device model for the disposal.
-    The nomenclature of warehouse and disposal and directory devices may differ,
+    The nomenclature of warehouse and disposal and directory stock_model may differ,
     however, the number and placement of each device must match
     """
-    devices = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -103,12 +103,12 @@ class Disposal(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Утилизация устройств'
         verbose_name_plural = 'Утилизация устройств'
-        ordering = ['devices']
+        ordering = ['stock_model']
 
 
 class CategoryDis(ModelMixin, models.Model):
     """
-    Group model for devices
+    Group model for stock_model
     """
     id = models.UUIDField(
         primary_key=True,

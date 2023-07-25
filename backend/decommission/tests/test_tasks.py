@@ -4,7 +4,7 @@ from decommission.models import Decommission, CategoryDec, Disposal, CategoryDis
 from decommission.tasks import DecomTasks
 from decommission.tests.test_decom import create_devices, create_session
 from stockroom.models import StockDev, HistoryDev
-from stockroom.tasks import StockTasks
+from stockroom.tasks import StockTasks, DevStockTasks
 
 
 # Decommission
@@ -17,10 +17,10 @@ def test_decom_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
-    test_get_decom = Decommission.objects.get(devices__name='my_consumable')
+    test_get_decom = Decommission.objects.get(stock_model__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на списание")
 
     assert StockDev.objects.count() == 0
@@ -29,8 +29,8 @@ def test_decom_add_devices(client):
     assert HistoryDev.objects.count() == 2
     assert test_get_decom.categories.name == 'my_category'
     assert test_get_decom.categories.slug == 'my_category'
-    assert test_get_decom.devices.name == 'my_consumable'
-    assert test_get_decom.devices.score == 1
+    assert test_get_decom.stock_model.name == 'my_consumable'
+    assert test_get_decom.stock_model.quantity == 1
     assert test_get_decom.date == datetime.date.today()
     assert test_get_history_stock.status == "В список на списание"
 
@@ -46,18 +46,18 @@ def test_decom_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
-    test_get_decom = Decommission.objects.get(devices__name='my_consumable')
+    test_get_decom = Decommission.objects.get(stock_model__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на списание")
 
     assert StockDev.objects.count() == 0
     assert Decommission.objects.count() == 1
     assert HistoryDev.objects.count() == 2
     assert test_get_decom.categories is None
-    assert test_get_decom.devices.name == 'my_consumable'
-    assert test_get_decom.devices.score == 1
+    assert test_get_decom.stock_model.name == 'my_consumable'
+    assert test_get_decom.stock_model.quantity == 1
     assert test_get_decom.date == datetime.date.today()
     assert test_get_history_stock.status == "В список на списание"
 
@@ -71,7 +71,7 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.remove_decom(device_id=devices.id, username=username, status_choice="Удаление")
@@ -93,11 +93,11 @@ def test_disp_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
-    test_get_disp = Disposal.objects.get(devices__name='my_consumable')
+    test_get_disp = Disposal.objects.get(stock_model__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на утилизацию")
 
     assert StockDev.objects.count() == 0
@@ -107,8 +107,8 @@ def test_disp_add_devices(client):
     assert HistoryDev.objects.count() == 3
     assert test_get_disp.categories.name == 'my_category'
     assert test_get_disp.categories.slug == 'my_category'
-    assert test_get_disp.devices.name == 'my_consumable'
-    assert test_get_disp.devices.score == 1
+    assert test_get_disp.stock_model.name == 'my_consumable'
+    assert test_get_disp.stock_model.quantity == 1
     assert test_get_disp.date == datetime.date.today()
     assert test_get_history_stock.status == "В список на утилизацию"
 
@@ -124,11 +124,11 @@ def test_disp_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
-    test_get_disp = Disposal.objects.get(devices__name='my_consumable')
+    test_get_disp = Disposal.objects.get(stock_model__name='my_consumable')
     test_get_history_stock = HistoryDev.objects.get(status="В список на утилизацию")
 
     assert StockDev.objects.count() == 0
@@ -136,8 +136,8 @@ def test_disp_add_device_not_category(client):
     assert Disposal.objects.count() == 1
     assert HistoryDev.objects.count() == 3
     assert test_get_disp.categories is None
-    assert test_get_disp.devices.name == 'my_consumable'
-    assert test_get_disp.devices.score == 1
+    assert test_get_disp.stock_model.name == 'my_consumable'
+    assert test_get_disp.stock_model.quantity == 1
     assert test_get_disp.date == datetime.date.today()
     assert test_get_history_stock.status == "В список на утилизацию"
 
@@ -151,7 +151,7 @@ def test_disp_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    StockTasks.add_device(device_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStockTasks.add_to_stock_device(DevStockTasks, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")

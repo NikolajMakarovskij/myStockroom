@@ -37,7 +37,7 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(description__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(consumable__name__icontains=query) |
-            Q(score__icontains=query) |
+            Q(quantity__icontains=query) |
             Q(workplace__name__icontains=query) |
             Q(workplace__room__name__icontains=query) |
             Q(workplace__room__floor__icontains=query) |

@@ -31,14 +31,14 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
         if not query:
             query = ''
         object_list = Decommission.objects.filter(
-            Q(devices__name__icontains=query) |
-            Q(devices__manufacturer__name__icontains=query) |
-            Q(devices__categories__name__icontains=query) |
-            Q(devices__score__icontains=query) |
-            Q(devices__serial__icontains=query) |
-            Q(devices__invent__icontains=query) |
+            Q(stock_model__name__icontains=query) |
+            Q(stock_model__manufacturer__name__icontains=query) |
+            Q(stock_model__categories__name__icontains=query) |
+            Q(stock_model__quantity__icontains=query) |
+            Q(stock_model__serial__icontains=query) |
+            Q(stock_model__invent__icontains=query) |
             Q(date__icontains=query)
-        ).select_related('devices__manufacturer', 'devices__categories')
+        ).select_related('stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 
@@ -67,7 +67,7 @@ def add_decommission(request, device_id):
     username = request.user.username
     device = get_object_or_404(Device, id=device_id)
     DecomTasks.add_device_decom.delay(device_id=device.id, username=username, status_choice="Списание")
-    if not Decommission.objects.filter(devices=device):
+    if not Decommission.objects.filter(stock_model=device):
         messages.add_message(request,
                              level=messages.SUCCESS,
                              message=f"{device.name} успешно списан со склада",
@@ -115,14 +115,14 @@ class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
         if not query:
             query = ''
         object_list = Disposal.objects.filter(
-            Q(devices__name__icontains=query) |
-            Q(devices__manufacturer__name__icontains=query) |
-            Q(devices__categories__name__icontains=query) |
-            Q(devices__score__icontains=query) |
-            Q(devices__serial__icontains=query) |
-            Q(devices__invent__icontains=query) |
+            Q(stock_model__name__icontains=query) |
+            Q(stock_model__manufacturer__name__icontains=query) |
+            Q(stock_model__categories__name__icontains=query) |
+            Q(stock_model__quantity__icontains=query) |
+            Q(stock_model__serial__icontains=query) |
+            Q(stock_model__invent__icontains=query) |
             Q(date__icontains=query)
-        ).select_related('devices__manufacturer', 'devices__categories')
+        ).select_related('stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 
@@ -150,7 +150,7 @@ def add_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
     DecomTasks.add_device_disp.delay(device_id=device.id, username=username, status_choice="Утилизация")
-    if not Disposal.objects.filter(devices=device):
+    if not Disposal.objects.filter(stock_model=device):
         messages.add_message(request,
                              level=messages.SUCCESS,
                              message=f"{device.name} отправлен на утилизацию",

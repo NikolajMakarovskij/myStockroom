@@ -96,7 +96,7 @@ class Consumables(ModelMixin, models.Model):
         help_text="Введите код по бухгалтерии",
         verbose_name="Код в бухгалтерии"
     )
-    score = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
@@ -217,7 +217,7 @@ class Accessories(ModelMixin, models.Model):
         help_text="Введите код по бухгалтерии",
         verbose_name="Код в бухгалтерии"
     )
-    score = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",

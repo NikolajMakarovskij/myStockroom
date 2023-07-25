@@ -5,10 +5,11 @@ from core.utils import ExportAdmin
 
 class DeviceAdmin(ExportAdmin, admin.ModelAdmin):
     model = Device
-    list_display = ['name', 'description', 'categories', 'manufacturer', 'workplace', 'consumable', 'score', 'note']
+    list_display = ['name', 'description', 'categories', 'manufacturer',
+                    'workplace', 'consumable', 'accessories', 'quantity', 'note']
     list_filter = ['manufacturer', 'workplace__room__floor', 'workplace__room__building']
-    search_fields = ['name', 'description', 'manufacturer', 'serial', 'invent', 'workplace', 'consumable', 'score',
-                     'note']
+    search_fields = ['name', 'description', 'manufacturer', 'serial', 'invent',
+                     'workplace', 'consumable', 'accessories', 'quantity', 'note']
     actions = [ExportAdmin.export_to_csv]
 
 

@@ -6,7 +6,7 @@ from core.utils import ModelMixin
 
 class Manufacturer(ModelMixin, models.Model):
     """
-    Модель поизводителей. Связи один ко многим с моделями consumables, printer, os, software, ups, workstation
+    The manufacturers' model.
     """
     id = models.UUIDField(
         primary_key=True,

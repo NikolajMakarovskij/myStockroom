@@ -30,9 +30,9 @@
                     <tbody style="text-align:center">
                     {% for each in history_acc_list %}
                     <tr>
-                        <td><a class="noDecoration" href="{% url 'consumables:accessories-detail' each.accessoriesId %}">{{ each.accessories }}</a></td>
+                        <td><a class="noDecoration" href="{% url 'consumables:accessories-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
                         <td>{{ each.categories}}</td>
-                        <td>{{ each.score }}</td>
+                        <td>{{ each.quantity }}</td>
                         <td>{{ each.dateInstall }}</td>
                         <td>
                         {% if not each.device %}

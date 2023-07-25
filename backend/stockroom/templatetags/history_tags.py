@@ -7,7 +7,7 @@ register = template.Library()
 # device
 @register.inclusion_tag('stock/history_dev_short_list.html')
 def this_device_history(device_id):
-    history_dev_list = HistoryDev.objects.filter(devicesId=device_id)
+    history_dev_list = HistoryDev.objects.filter(stock_model_id=device_id)
 
     return {
         "history_dev_list": history_dev_list,
@@ -51,7 +51,7 @@ def device_disp_history():
 # consumables
 @register.inclusion_tag('stock/history_short_list.html')
 def this_device_con_history(device_id):
-    history_list = History.objects.filter(deviceId=device_id)
+    history_list = History.objects.filter(stock_model_id=device_id)
 
     return {
         "history_list": history_list,
@@ -62,7 +62,7 @@ def this_device_con_history(device_id):
 
 @register.inclusion_tag('stock/history_short_list.html')
 def this_con_history(consumable_id):
-    history_list = History.objects.filter(consumableId=consumable_id)
+    history_list = History.objects.filter(stock_model_id=consumable_id)
 
     return {
         "history_list": history_list,
@@ -85,7 +85,7 @@ def consumables_history():
 # accessories
 @register.inclusion_tag('stock/history_acc_short_list.html')
 def this_device_acc_history(device_id):
-    history_list = HistoryAcc.objects.filter(deviceId=device_id)
+    history_list = HistoryAcc.objects.filter(stock_model_id=device_id)
 
     return {
         "history_acc_list": history_list,
@@ -96,7 +96,7 @@ def this_device_acc_history(device_id):
 
 @register.inclusion_tag('stock/history_acc_short_list.html')
 def this_acc_history(accessories_id):
-    history_list = HistoryAcc.objects.filter(accessoriesId=accessories_id)
+    history_list = HistoryAcc.objects.filter(stock_model_id=accessories_id)
 
     return {
         "history_acc_list": history_list,

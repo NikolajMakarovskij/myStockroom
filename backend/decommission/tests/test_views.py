@@ -16,7 +16,7 @@ class DecommissionViewTest(TestCase):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             dev = Device.objects.create(name='Christian %s' % stocks_num)
-            Decommission.objects.create(devices=dev)
+            Decommission.objects.create(stock_model=dev)
         assert Decommission.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -62,7 +62,7 @@ class DecommissionCategoryViewTest(TestCase):
         CategoryDec.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
             dev = Device.objects.create(name='Christian %s' % stocks_num)
-            Decommission.objects.create(devices=dev, categories=CategoryDec.objects.get(slug="some_category"))
+            Decommission.objects.create(stock_model=dev, categories=CategoryDec.objects.get(slug="some_category"))
         assert Decommission.objects.count() == 149
         assert CategoryDec.objects.count() == 1
 
@@ -108,7 +108,7 @@ class DisposalViewTest(TestCase):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
             dev = Device.objects.create(name='Christian %s' % stocks_num)
-            Disposal.objects.create(devices=dev)
+            Disposal.objects.create(stock_model=dev)
         assert Disposal.objects.count() == 149
 
     def test_context_data_in_list(self):
@@ -154,7 +154,7 @@ class DisposalCategoryViewTest(TestCase):
         CategoryDis.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
             dev = Device.objects.create(name='Christian %s' % stocks_num)
-            Disposal.objects.create(devices=dev, categories=CategoryDis.objects.get(slug="some_category"))
+            Disposal.objects.create(stock_model=dev, categories=CategoryDis.objects.get(slug="some_category"))
         assert Disposal.objects.count() == 149
         assert CategoryDis.objects.count() == 1
 

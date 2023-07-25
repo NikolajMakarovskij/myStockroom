@@ -63,29 +63,29 @@
     <tbody style="text-align:center">
       {% for each in stockdev_list %}
       <tr>
-        <td><a class="noDecoration" href="{{ each.devices.get_absolute_url }}">{{ each.devices.name }}</a></td>
+        <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.devices.score }}</td>
+        <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
         {% else %}
           <td></td>
         {% endif %}
-        {% if each.devices.note %}
-          <td>{{ each.devices.note }}</td>
+        {% if each.stock_model.note %}
+          <td>{{ each.stock_model.note }}</td>
         {% else %}
         <td></td>
         {% endif %}
         <td>
-          <a class="noDecoration" href="{% url 'decommission:add_decom' each.devices.id %}">
+          <a class="noDecoration" href="{% url 'decommission:add_decom' each.stock_model.id %}">
             Списать
           </a>
         </td>
         <td>
-          <a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.devices.id %}">
+          <a class="noDecoration" href="{% url 'stockroom:stock_remove_device' each.stock_model.id %}">
             Удалить
           </a>
         </td>

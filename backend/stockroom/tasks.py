@@ -1,5 +1,5 @@
-from .stock import Stock
-from .models import StockDev, StockAcc, Stockroom
+from .stock import BaseStock, DevStock
+from .models import StockDev, StockAcc, Stockroom, StockCat, History, CategoryAcc, HistoryAcc, CategoryDev, HistoryDev
 from consumables.models import Accessories, Consumables
 from workplace.models import Workplace
 import datetime
@@ -7,193 +7,139 @@ from celery import shared_task
 from device.models import Device
 
 
-class StockTasks(Stock):
-    # Consumables
-    @shared_task()
-    def add_consumable(consumable: str, quantity=1,
-                       number_rack=1, number_shelf=1,
-                       username=None) -> None:
-        """
-        Add a consumable to the stock or update its quantity.
-        """
-        consumable_id = str(consumable)
-        consumable_add = Consumables.objects.get(id=consumable_id)
-        consumable_score = int(str(consumable_add.score))
-        device_id = None
-        if Stockroom.objects.filter(consumables=consumable_id):
-            consumable_score += quantity
-            Consumables.objects.filter(
-                id=consumable_id).update(score=consumable_score)
-            Stockroom.objects.filter(
-                consumables=consumable_id).update(
-                dateAddToStock=datetime.date.today()
-            )
-        else:
-            if Stock.add_category(consumable_id) is None:
-                Stockroom.objects.create(
-                    consumables=consumable_add,
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Consumables.objects.filter(
-                    id=consumable_id).update(score=int(quantity))
-            else:
-                Stockroom.objects.create(
-                    consumables=consumable_add,
-                    categories=Stock.add_category(
-                        consumable_id),
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Consumables.objects.filter(
-                    id=consumable_id).update(score=int(quantity))
-        Stock.create_history(consumable_id, device_id, quantity,
-                             username, status_choice='Приход')
+class BaseStockTasks(BaseStock):
+    """
+    Class with base tasks of stock methods
+    """
 
     @shared_task()
-    def remove_consumable(consumable: str, quantity=0,
+    def add_to_stock(self, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
+        """
+        Add a stock_model to the stock or update its quantity.
+        """
+
+        model = self.base_model.objects.get(id=model_id)
+        model_instance = self.base_model.objects.filter(id=model_id)
+        model_quantity = int(str(model.quantity))
+        stock_model_instance = self.stock_model.objects.filter(stock_model=model_id)
+        device_id = None
+        category = BaseStock.add_category(self, model_id)
+        if category is None:
+            categories = None
+        else:
+            categories = category
+
+        if stock_model_instance:
+            model_quantity += quantity
+            model_instance.update(quantity=model_quantity)
+            stock_model_instance.update(dateAddToStock=datetime.date.today())
+        else:
+            self.stock_model.objects.create(
+                stock_model=model,
+                categories=categories,
+                dateAddToStock=datetime.date.today(),
+                rack=int(number_rack),
+                shelf=int(number_shelf),
+            )
+            model_instance.update(quantity=int(quantity))
+        BaseStock.create_history(self, model_id, device_id, quantity, username, status_choice='Приход')
+
+    @shared_task()
+    def remove_from_stock(self, model_id: str, quantity=0,
                           username=None) -> None:
         """
-        Remove consumable from the stock
+        Remove stock_model from the stock
         """
         device_id = None
-        consumable_id = str(consumable)
-        if Stockroom.objects.filter(consumables=consumable_id):
-            Stockroom.objects.filter(consumables=consumable_id).delete()
-            Stock.create_history(consumable_id, device_id, quantity,
-                                 username, status_choice='Удаление')
+        stock_model = self.stock_model.objects.filter(stock_model=model_id)
+        if stock_model:
+            stock_model.delete()
+            BaseStock.create_history(self, model_id, device_id, quantity,
+                                     username, status_choice='Удаление')
 
     @shared_task()
-    def add_consumable_to_device(consumable: str, device: dict, quantity=1, username=None) -> None:
+    def add_to_device(self, model_id: str, device: dict, quantity=1, username=None) -> None:
         """
-        Install consumable in the device
+        Install stock_model in the device
         """
         device_id = str(device)
-        consumable_id = str(consumable)
-        consumable_add = Consumables.objects.get(id=consumable_id)
-        consumable_score = int(str(consumable_add.score))
-        consumable_score -= quantity
+        model_add = self.base_model.objects.get(id=model_id)
+        model_quantity = int(str(model_add.quantity))
+        model_quantity -= quantity
 
-        Consumables.objects.filter(id=consumable_id).update(score=consumable_score)
-        Stockroom.objects.filter(consumables=consumable_id).update(dateInstall=datetime.date.today())
-        Stock.create_history(consumable_id, device_id, quantity, username, status_choice='Расход')
+        self.base_model.objects.filter(id=model_id).update(quantity=model_quantity)
+        self.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
+        BaseStock.create_history(self, model_id, device_id, quantity, username, status_choice='Расход')
 
-    # Accessories
+
+class ConStockTasks(BaseStockTasks):
+    base_model = Consumables
+    stock_model = Stockroom
+    stock_category = StockCat
+    history_model = History
+
+
+class AccStockTasks(BaseStockTasks):
+    base_model = Accessories
+    stock_model = StockAcc
+    stock_category = CategoryAcc
+    history_model = HistoryAcc
+
+
+class DevStockTasks(DevStock):
+
     @shared_task()
-    def add_accessories(accessories: str, quantity=1, number_rack=1, number_shelf=1, username=None):
+    def add_to_stock_device(self, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
         """
-        Add an accessories to the stock or update its quantity.
+        Add a stock_model to the stock or update its quantity.
         """
-        accessories_id = str(accessories)
-        accessories_add = Accessories.objects.get(id=accessories_id)
-        accessories_score = int(str(accessories_add.score))
-        device_id = None
-        if StockAcc.objects.filter(accessories=accessories_id):
-            accessories_score += quantity
-            Accessories.objects.filter(id=accessories_id).update(score=accessories_score)
-            StockAcc.objects.filter(accessories=accessories_id).update(
-                dateAddToStock=datetime.date.today(),
-            )
+
+        model = self.base_model.objects.get(id=model_id)
+        model_instance = self.base_model.objects.filter(id=model_id)
+        model_quantity = int(str(model.quantity))
+        stock_model_instance = self.stock_model.objects.filter(stock_model=model_id)
+        category = BaseStock.add_category(self, model_id)
+        if category is None:
+            categories = None
         else:
-            if Stock.add_category_acc(accessories_id) is None:
-                StockAcc.objects.create(
-                    accessories=accessories_add,
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Accessories.objects.filter(id=accessories_id).update(score=int(quantity))
-            else:
-                StockAcc.objects.create(
-                    accessories=accessories_add,
-                    categories=Stock.add_category_acc(accessories_id),
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Accessories.objects.filter(id=accessories_id).update(score=int(quantity))
-        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Приход')
+            categories = category
 
-    @shared_task()
-    def remove_accessories(accessories: str, quantity=0, username=None) -> None:
-        """
-        Delete accessories from the stock
-        """
-        device_id = None
-        accessories_id = str(accessories)
-        if StockAcc.objects.filter(accessories_id):
-            StockAcc.objects.filter(accessories_id).delete()
-            Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Удаление')
-
-    @shared_task()
-    def device_add_accessories(accessories: str, device: str, quantity=1, username=None) -> None:
-        """
-        Install accessories in device
-        """
-        device_id = str(device)
-        accessories_id = str(accessories)
-        acc = Accessories.objects.get(id=accessories_id)
-        accessories_score = int(str(acc.score))
-        accessories_score -= quantity
-
-        Accessories.objects.filter(id=accessories_id).update(score=accessories_score)
-        StockAcc.objects.filter(accessories=accessories_id).update(dateInstall=datetime.date.today())
-        Stock.create_history_acc(accessories_id, device_id, quantity, username, status_choice='Расход')
-
-    # Devices
-    @shared_task()
-    def add_device(device_id: str, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
-        """
-        Add a device to the stock or update its quantity.
-        """
-        device_add = Device.objects.get(id=device_id)
-        device_score = int(str(device_add.score))
-        if StockDev.objects.filter(devices=device_id):
-            device_score += quantity
-            Device.objects.filter(id=device_id).update(score=device_score)
-            StockDev.objects.filter(devices=device_id).update(
-                dateAddToStock=datetime.date.today(),
-            )
+        if stock_model_instance:
+            model_quantity += quantity
+            model_instance.update(quantity=model_quantity)
+            stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            if Stock.add_category_dev(device_id) is None:
-                StockDev.objects.create(
-                    devices=device_add,
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Device.objects.filter(id=device_id).update(score=int(quantity))
-            else:
-                StockDev.objects.create(
-                    devices=device_add,
-                    categories=Stock.add_category_dev(device_id),
-                    dateAddToStock=datetime.date.today(),
-                    rack=int(number_rack),
-                    shelf=int(number_shelf),
-                )
-                Device.objects.filter(id=device_id).update(score=int(quantity))
-        Stock.create_history_dev(device_id, quantity, username, status_choice='Приход')
+            self.stock_model.objects.create(
+                stock_model=model,
+                categories=categories,
+                dateAddToStock=datetime.date.today(),
+                rack=int(number_rack),
+                shelf=int(number_shelf),
+            )
+            model_instance.update(quantity=int(quantity))
+        DevStock.create_history_device(self, model_id, quantity, username, status_choice='Приход')
 
     @shared_task()
-    def remove_device(device_id: str, quantity=0, username=None, status_choice=None) -> None:
+    def remove_device_from_stock(self, model_id: str, quantity=0, username=None, status_choice=None) -> None:
         """
         Delete device from the stock
         """
-        status_choice = "Удаление"
-        if StockDev.objects.filter(devices=device_id):
-            StockDev.objects.filter(devices=device_id).delete()
-            Stock.create_history_dev(device_id, quantity, username, status_choice=status_choice)
+        if self.stock_model.objects.filter(stock_model=model_id):
+            self.stock_model.objects.filter(stock_model=model_id).delete()
+            DevStock.create_history_device(self, model_id, quantity, username, status_choice)
 
     @shared_task()
-    def move_device(device_id: str, workplace: str, username=None) -> None:
+    def move_device(self, model_id: str, workplace: str, username=None) -> None:
         """
         Move device
         """
         quantity = 1
-        Device.objects.filter(id=device_id).update(workplace=Workplace.objects.filter(name=workplace).get())
-        StockDev.objects.filter(devices=device_id).update(dateInstall=datetime.date.today())
-        Stock.create_history_dev(device_id, quantity, username,
-                                 status_choice=f"Перемещение на рабочее место {workplace}"
-                                 )
+        Device.objects.filter(id=model_id).update(workplace=Workplace.objects.filter(name=workplace).get())
+        StockDev.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
+        DevStock.create_history_device(self, model_id, quantity, username,
+                                       status_choice=f"Перемещение на рабочее место {workplace}"
+                                       )
+
+
+class StockTasks(BaseStock):
+    pass  # TODO delete class
