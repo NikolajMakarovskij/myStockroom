@@ -37,5 +37,3 @@ jobs:
           CELERY_BACKEND: redis://redis:6379/0
       - name: Run tests
         run: docker exec web pytest --cov
-      - name: Stop conteiners
-        run: docker-compose docker-compose.yaml down -v
