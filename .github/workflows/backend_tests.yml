@@ -35,10 +35,6 @@ jobs:
           PGDATA: "/var/lib/postgresql/data/pgdata"
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
-      - name: Run makemigrations
-        run: docker exec web python3 manage.py makemigrations
-      - name: Run migrate
-        run: docker exec web python3 manage.py migrate
       - name: Run tests
         run: docker exec web pytest --cov
       - name: Stop conteiners
