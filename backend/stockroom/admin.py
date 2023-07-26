@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import (
-    StockCat, History, HistoryAcc, CategoryAcc, HistoryDev, CategoryDev
-    )
+
+from stockroom.models.accessories import CategoryAcc, HistoryAcc
+from stockroom.models.consumables import StockCat, History
 from core.utils import ExportAdmin
+from stockroom.models.devices import CategoryDev, HistoryDev
 
 
 # Consumables

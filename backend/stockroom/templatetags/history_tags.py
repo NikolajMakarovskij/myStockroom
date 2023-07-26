@@ -1,5 +1,8 @@
 from django import template
-from ..models import History, HistoryAcc, HistoryDev
+
+from stockroom.models.accessories import HistoryAcc
+from stockroom.models.consumables import History
+from stockroom.models.devices import HistoryDev
 
 register = template.Library()
 
@@ -51,7 +54,7 @@ def device_disp_history():
 # consumables
 @register.inclusion_tag('stock/history_short_list.html')
 def this_device_con_history(device_id):
-    history_list = History.objects.filter(stock_model_id=device_id)
+    history_list = History.objects.filter(deviceId=device_id)
 
     return {
         "history_list": history_list,
@@ -85,7 +88,7 @@ def consumables_history():
 # accessories
 @register.inclusion_tag('stock/history_acc_short_list.html')
 def this_device_acc_history(device_id):
-    history_list = HistoryAcc.objects.filter(stock_model_id=device_id)
+    history_list = HistoryAcc.objects.filter(deviceId=device_id)
 
     return {
         "history_acc_list": history_list,

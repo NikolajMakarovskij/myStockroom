@@ -6,8 +6,9 @@ from django.urls import reverse
 from consumables.models import Accessories
 from counterparty.models import Manufacturer
 from device.models import Device
-from ..models import Stockroom, Consumables, StockCat, History, CategoryAcc, StockAcc, HistoryAcc, CategoryDev, \
-    StockDev, HistoryDev
+from stockroom.models.accessories import CategoryAcc, StockAcc, HistoryAcc
+from stockroom.models.consumables import Stockroom, Consumables, StockCat, History
+from stockroom.models.devices import CategoryDev, StockDev, HistoryDev
 
 
 # Consumables

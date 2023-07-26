@@ -3,8 +3,8 @@ import datetime
 from celery import shared_task
 from decommission.models import Decommission, Disposal
 from device.models import Device
-from stockroom.models import StockDev
-from stockroom.stock import DevStock
+from stockroom.models.devices import StockDev
+from stockroom.stock.stock import DevStock
 
 
 class DecomTasks(Decom):
