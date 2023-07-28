@@ -5,14 +5,8 @@ Django settings for backend project.
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=1))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,9 +72,7 @@ import socket
 
 
 def show_toolbar(request):
-    if DEBUG:
-        return True
-    return False
+    return True
 
 
 DEBUG_TOOLBAR_CONFIG = {
@@ -114,7 +106,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'project', 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, '../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -234,20 +226,15 @@ CORS_ALLOWED_ORIGINS = [
 # REST
 
 def render_calasses():
-    if DEBUG:
-        return [
-            'rest_framework.renderers.JSONRenderer',
-            'rest_framework.renderers.BrowsableAPIRenderer',
-        ]
     return [
         'rest_framework.renderers.JSONRenderer',
-    ]
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        ]
 
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': render_calasses(),
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
