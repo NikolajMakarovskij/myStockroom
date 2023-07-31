@@ -66,18 +66,19 @@ def add_decommission(request, device_id):
     from decommission.tasks import DecomTasks
     username = request.user.username
     device = get_object_or_404(Device, id=device_id)
-    DecomTasks.add_device_decom(device_id=device.id, username=username, status_choice="Списание")
+
     if not Decommission.objects.filter(stock_model=device):
-        messages.add_message(request,
-                             level=messages.WARNING,
-                             message=f"{device.name} находится в списке на списание",
-                             extra_tags='Ошибка'
-                             )
-    else:
         messages.add_message(request,
                              level=messages.SUCCESS,
                              message=f"{device.name} успешно списан со склада",
                              extra_tags='Успешно списан'
+                             )
+        DecomTasks.add_device_decom(device_id=device.id, username=username, status_choice="Списание")
+    else:
+        messages.add_message(request,
+                             level=messages.WARNING,
+                             message=f"{device.name} находится в списке на списание",
+                             extra_tags='Ошибка'
                              )
     return redirect('decommission:decom_list')
 
@@ -149,18 +150,19 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 def add_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.add_device_disp(device_id=device.id, username=username, status_choice="Утилизация")
+
     if not Disposal.objects.filter(stock_model=device):
-        messages.add_message(request,
-                             level=messages.WARNING,
-                             message=f"{device.name} находится в списке на утилизацию",
-                             extra_tags='Ошибка'
-                             )
-    else:
         messages.add_message(request,
                              level=messages.SUCCESS,
                              message=f"{device.name} отправлен на утилизацию",
                              extra_tags='Успешно утилизирован'
+                             )
+        DecomTasks.add_device_disp(device_id=device.id, username=username, status_choice="Утилизация")
+    else:
+        messages.add_message(request,
+                             level=messages.WARNING,
+                             message=f"{device.name} находится в списке на утилизацию",
+                             extra_tags='Ошибка'
                              )
     return redirect('decommission:disp_list')
 
