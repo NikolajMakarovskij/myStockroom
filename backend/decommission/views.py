@@ -66,7 +66,7 @@ def add_decommission(request, device_id):
     from decommission.tasks import DecomTasks
     username = request.user.username
     device = get_object_or_404(Device, id=device_id)
-    DecomTasks.add_device_decom.delay(device_id=device.id, username=username, status_choice="Списание")
+    DecomTasks.add_device_decom(device_id=device.id, username=username, status_choice="Списание")
     if not Decommission.objects.filter(stock_model=device):
         messages.add_message(request,
                              level=messages.SUCCESS,
@@ -85,7 +85,7 @@ def add_decommission(request, device_id):
 def remove_decommission(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.remove_decom.delay(device_id=device.id, username=username, status_choice="Удаление")
+    DecomTasks.remove_decom(device_id=device.id, username=username, status_choice="Удаление")
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален из списания",
@@ -149,7 +149,7 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 def add_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.add_device_disp.delay(device_id=device.id, username=username, status_choice="Утилизация")
+    DecomTasks.add_device_disp(device_id=device.id, username=username, status_choice="Утилизация")
     if not Disposal.objects.filter(stock_model=device):
         messages.add_message(request,
                              level=messages.SUCCESS,
@@ -168,7 +168,7 @@ def add_disposal(request, devices_id):
 def remove_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.remove_disp.delay(device_id=device.id, username=username, status_choice="Удален")
+    DecomTasks.remove_disp(device_id=device.id, username=username, status_choice="Удален")
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален из утилизации",
