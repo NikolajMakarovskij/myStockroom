@@ -69,15 +69,15 @@ def add_decommission(request, device_id):
     DecomTasks.add_device_decom(device_id=device.id, username=username, status_choice="Списание")
     if not Decommission.objects.filter(stock_model=device):
         messages.add_message(request,
-                             level=messages.SUCCESS,
-                             message=f"{device.name} успешно списан со склада",
-                             extra_tags='Успешно списан'
-                             )
-    else:
-        messages.add_message(request,
                              level=messages.WARNING,
                              message=f"{device.name} находится в списке на списание",
                              extra_tags='Ошибка'
+                             )
+    else:
+        messages.add_message(request,
+                             level=messages.SUCCESS,
+                             message=f"{device.name} успешно списан со склада",
+                             extra_tags='Успешно списан'
                              )
     return redirect('decommission:decom_list')
 
@@ -152,15 +152,15 @@ def add_disposal(request, devices_id):
     DecomTasks.add_device_disp(device_id=device.id, username=username, status_choice="Утилизация")
     if not Disposal.objects.filter(stock_model=device):
         messages.add_message(request,
-                             level=messages.SUCCESS,
-                             message=f"{device.name} отправлен на утилизацию",
-                             extra_tags='Успешно утилизирован'
-                             )
-    else:
-        messages.add_message(request,
                              level=messages.WARNING,
                              message=f"{device.name} находится в списке на утилизацию",
                              extra_tags='Ошибка'
+                             )
+    else:
+        messages.add_message(request,
+                             level=messages.SUCCESS,
+                             message=f"{device.name} отправлен на утилизацию",
+                             extra_tags='Успешно утилизирован'
                              )
     return redirect('decommission:disp_list')
 
