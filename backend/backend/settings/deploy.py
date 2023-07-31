@@ -8,7 +8,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+ALLOWED_HOSTS = list(os.environ.get('DJANGO_ALLOWED_HOSTS').split(' '))
 
 INSTALLED_APPS = [
     'rest_framework',

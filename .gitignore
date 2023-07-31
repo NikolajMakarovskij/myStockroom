@@ -18,3 +18,5 @@ node_moduless/
 /reactfrontendapp/
 /backend/celerybeat-schedule
 /venv/
+
+.env.dev
