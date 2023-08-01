@@ -56,12 +56,12 @@ class ConsumablesViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['consumables_list']) == 10)
+            self.assertTrue(len(resp.context['consumables_list']) == 20)
 
     def test_lists_all_consumables(self):
         links = ['consumables:consumables_list', 'consumables:consumables_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -102,11 +102,11 @@ class ConsumablesCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['consumables_list']) == 10)
+        self.assertTrue(len(resp.context['consumables_list']) == 20)
 
     def test_lists_all_categories(self):
         resp = self.client.get(reverse('consumables:category', kwargs={
-            "category_slug": Categories.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": Categories.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -163,12 +163,12 @@ class AccessoriesViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['accessories_list']) == 10)
+            self.assertTrue(len(resp.context['accessories_list']) == 20)
 
     def test_lists_all_accessories(self):
         links = ['consumables:accessories_list', 'consumables:accessories_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -209,11 +209,11 @@ class AccessoriesCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['accessories_list']) == 10)
+        self.assertTrue(len(resp.context['accessories_list']) == 20)
 
     def test_lists_all_categories(self):
         resp = self.client.get(reverse('consumables:category_accessories', kwargs={
-            "category_slug": AccCat.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": AccCat.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)

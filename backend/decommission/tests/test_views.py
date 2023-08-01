@@ -39,12 +39,12 @@ class DecommissionViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['decommission_list']) == 10)
+            self.assertTrue(len(resp.context['decommission_list']) == 20)
 
     def test_lists_all_decommission(self):
         links = ['decommission:decom_list', 'decommission:decom_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -86,11 +86,11 @@ class DecommissionCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['decommission_list']) == 10)
+        self.assertTrue(len(resp.context['decommission_list']) == 20)
 
     def test_lists_all_stockroom_consumables(self):
         resp = self.client.get(reverse('decommission:decom_category', kwargs={
-            "category_slug": CategoryDec.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": CategoryDec.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -131,12 +131,12 @@ class DisposalViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['disposal_list']) == 10)
+            self.assertTrue(len(resp.context['disposal_list']) == 20)
 
     def test_lists_all_disposal(self):
         links = ['decommission:disp_list', 'decommission:disp_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -178,11 +178,11 @@ class DisposalCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['disposal_list']) == 10)
+        self.assertTrue(len(resp.context['disposal_list']) == 20)
 
     def test_lists_all_disposal_categories(self):
         resp = self.client.get(reverse('decommission:disp_category', kwargs={
-            "category_slug": CategoryDis.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": CategoryDis.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
