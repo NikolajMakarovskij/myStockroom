@@ -50,6 +50,7 @@
           <th scope="col">Серийник</th>
           <th scope="col">Сотрудник</th>
           <th scope="col">Здание</th>
+          <th scope="col">Примечание</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
@@ -64,7 +65,7 @@
         {% else %}
           <td>{{ device.invent }}</td>
         {% endif %}
-        {% if not device.invent %}
+        {% if not device.serial %}
           <td></td>
         {% else %}
           <td>{{ device.serial }}</td>
@@ -77,6 +78,7 @@
           {% endfor %}
         </td>
         <td>{{ device.workplace.room.building }}</td>
+        <td>{{ device.note }}</td>
       </tr>
       {% endfor %}
   </table>
