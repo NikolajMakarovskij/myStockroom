@@ -35,6 +35,8 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = Device.objects.filter(
             Q(name__icontains=query) |
             Q(description__icontains=query) |
+            Q(invent__icontains=query) |
+            Q(serial__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(consumable__name__icontains=query) |
             Q(quantity__icontains=query) |

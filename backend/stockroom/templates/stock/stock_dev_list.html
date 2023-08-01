@@ -46,13 +46,14 @@
     </table>
   {% else %}
     <table class="table align-middle table-hover" style="text-align:center">
+      <tr>Найдено устройств: {{stockdev_list.count}}</tr>
       <thead>
         <tr>
           <th scope="col">Устройства</th>
-          <th scope="col">Группа</th>
+          <th scope="col">Инвентарник</th>
+          <th scope="col">Серийник</th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
-          <th scope="col">Количество</th>
           <th scope="col">Постановка</th>
           <th scope="col">Перемещение</th>
           <th scope="col">Примечание</th>
@@ -64,10 +65,18 @@
       {% for each in stockdev_list %}
       <tr>
         <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-        <td>{{ each.categories}}</td>
+        {% if not each.invent %}
+          <td></td>
+        {% else %}
+          <td>{{ each.invent }}</td>
+        {% endif %}
+        {% if not each.serial %}
+          <td></td>
+        {% else %}
+          <td>{{ device.serial }}</td>
+        {% endif %}
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>

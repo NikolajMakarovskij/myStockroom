@@ -37,23 +37,39 @@
 {% endif %}
 {% if device_list %}
     <table class="table align-middle table-hover" style="text-align:center">
+      <tr>
+        Найдено устройств: {{device_list.count}}
+      <tr>
       <thead>
         <tr>
+          <th scope="col">Кабинет</th>
+          <th scope="col">Рабочее место</th>
           <th scope="col">Устройство</th>
           <th scope="col">Описание</th>
-          <th scope="col">Рабочее место</th>
-          <th scope="col">Кабинет</th>
+          <th scope="col">Инвентарник</th>
+          <th scope="col">Серийник</th>
           <th scope="col">Сотрудник</th>
           <th scope="col">Здание</th>
+          <th scope="col">Примечание</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
       {% for device in device_list %}
       <tr>
+        <td>{{ device.workplace.room.name}}</td>
+        <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ device.get_absolute_url }}">{{ device.name }}</a></td>
         <td>{{ device.description }}</td>
-        <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
-        <td>{{ device.workplace.room.name}}</td>
+        {% if not device.invent %}
+          <td></td>
+        {% else %}
+          <td>{{ device.invent }}</td>
+        {% endif %}
+        {% if not device.serial %}
+          <td></td>
+        {% else %}
+          <td>{{ device.serial }}</td>
+        {% endif %}
         <td>
           {% for each in device.workplace.employee.all %}
             <a class="noDecoration" href="{{ each.get_absolute_url }}">
@@ -62,6 +78,7 @@
           {% endfor %}
         </td>
         <td>{{ device.workplace.room.building }}</td>
+        <td>{{ device.note }}</td>
       </tr>
       {% endfor %}
   </table>
