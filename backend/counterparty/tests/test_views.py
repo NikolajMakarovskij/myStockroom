@@ -51,12 +51,12 @@ class ManufacturerViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['manufacturer_list']) == 10)
+            self.assertTrue(len(resp.context['manufacturer_list']) == 20)
 
     def test_lists_all_manufacturer(self):
         links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)

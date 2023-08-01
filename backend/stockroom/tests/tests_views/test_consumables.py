@@ -40,12 +40,12 @@ class StockroomViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['stockroom_list']) == 10)
+            self.assertTrue(len(resp.context['stockroom_list']) == 20)
 
     def test_lists_all_stockroom(self):
         links = ['stockroom:stock_list', 'stockroom:stock_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -85,11 +85,11 @@ class StockroomCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['stockroom_list']) == 10)
+        self.assertTrue(len(resp.context['stockroom_list']) == 20)
 
     def test_lists_all_stockroom_consumables(self):
         resp = self.client.get(reverse('stockroom:category', kwargs={
-            "category_slug": StockCat.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": StockCat.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -128,12 +128,12 @@ class HistoryStockViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['history_list']) == 10)
+            self.assertTrue(len(resp.context['history_list']) == 20)
 
     def test_lists_all_stockroom(self):
         links = ['stockroom:history_list', 'stockroom:history_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -161,7 +161,8 @@ class HistoryCategoryViewTest(TestCase):
             {'data_key': 'searchlink', 'data_value': 'stockroom:history_search'},
         ]
         resp = self.client.get(
-            reverse('stockroom:history_category', kwargs={"category_slug": StockCat.objects.get(slug="some_category")}))
+            reverse('stockroom:history_category',
+                    kwargs={"category_slug": StockCat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get('data_key') in resp.context)
@@ -169,15 +170,16 @@ class HistoryCategoryViewTest(TestCase):
 
     def test_pagination_is_ten(self):
         resp = self.client.get(
-            reverse('stockroom:history_category', kwargs={"category_slug": StockCat.objects.get(slug="some_category")}))
+            reverse('stockroom:history_category',
+                    kwargs={"category_slug": StockCat.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['history_list']) == 10)
+        self.assertTrue(len(resp.context['history_list']) == 20)
 
     def test_lists_all_stockroom_history_consumables(self):
         resp = self.client.get(reverse('stockroom:history_category', kwargs={
-            "category_slug": StockCat.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": StockCat.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)

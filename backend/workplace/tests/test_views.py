@@ -52,12 +52,12 @@ class RoomListViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['room_list']) == 10)
+            self.assertTrue(len(resp.context['room_list']) == 20)
 
     def test_lists_all_room(self):
         links = ['workplace:room_list', 'workplace:room_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -112,12 +112,12 @@ class WorkplaceListViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['workplace_list']) == 10)
+            self.assertTrue(len(resp.context['workplace_list']) == 20)
 
     def test_lists_all_workplaces(self):
         links = ['workplace:workplace_list', 'workplace:workplace_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)

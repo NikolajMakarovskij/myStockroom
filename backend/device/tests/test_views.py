@@ -52,12 +52,12 @@ class DeviceViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['device_list']) == 10)
+            self.assertTrue(len(resp.context['device_list']) == 20)
 
     def test_lists_all_device(self):
         links = ['device:device_list', 'device:device_search']
         for link in links:
-            resp = self.client.get(reverse(link) + '?page=15')
+            resp = self.client.get(reverse(link) + '?page=8')
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is True)
@@ -98,11 +98,11 @@ class DeviceCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['device_list']) == 10)
+        self.assertTrue(len(resp.context['device_list']) == 20)
 
     def test_lists_all_device(self):
         resp = self.client.get(reverse('device:category', kwargs={
-            "category_slug": DeviceCat.objects.get(slug="some_category")}) + '?page=15')
+            "category_slug": DeviceCat.objects.get(slug="some_category")}) + '?page=8')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
