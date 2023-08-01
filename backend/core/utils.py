@@ -29,7 +29,7 @@ class DataMixin:
     """
     Mixin add pagination and menu in views
     """
-    paginate_by = 10
+    paginate_by = 20
 
     def get_user_context(self, **kwargs):
         side_menu = cache.get('side_menu')
