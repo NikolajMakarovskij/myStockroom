@@ -177,7 +177,7 @@ def move_device_from_stock(request, device_id):
         stock.move_device(
             stock,
             model_id=device.id,
-            workplace=workplace_.name,
+            workplace_id=workplace_.id,
             username=username,
         )
         messages.add_message(request,

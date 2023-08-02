@@ -83,15 +83,17 @@ class DevStock(BaseStock):
             model_instance.delete()
             self.create_history_device(self, model_id, quantity, username, status_choice)
 
-    def move_device(self, model_id: str, workplace: str, username=None) -> None:
+    def move_device(self, model_id: str, workplace_id: str, username=None) -> None:
         """
         Move device
         """
         model_instance = self.base_model.objects.filter(id=model_id)
         stock_model_instance = self.stock_model.objects.filter(stock_model=model_id)
         quantity = 1
-        model_instance.update(workplace=Workplace.objects.filter(name=workplace).get())
+        workplace = Workplace.objects.get(id=workplace_id)
+        workplace_name = workplace.name
+        model_instance.update(workplace=workplace)
         stock_model_instance.update(dateInstall=datetime.date.today())
         self.create_history_device(self, model_id, quantity, username,
-                                   status_choice=f"Перемещение на рабочее место {workplace}"
+                                   status_choice=f"Перемещение на рабочее место {workplace_name}"
                                    )
