@@ -42,6 +42,7 @@
       <tr>
       <thead>
         <tr>
+          <th scope="col">Здание</th>
           <th scope="col">Кабинет</th>
           <th scope="col">Рабочее место</th>
           <th scope="col">Устройство</th>
@@ -49,13 +50,13 @@
           <th scope="col">Инвентарник</th>
           <th scope="col">Серийник</th>
           <th scope="col">Сотрудник</th>
-          <th scope="col">Здание</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
       {% for device in device_list %}
       <tr>
+        <td>{{ device.workplace.room.building }}</td>
         <td>{{ device.workplace.room.name}}</td>
         <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ device.get_absolute_url }}">{{ device.name }}</a></td>
@@ -77,7 +78,6 @@
             </a>
           {% endfor %}
         </td>
-        <td>{{ device.workplace.room.building }}</td>
         <td>{{ device.note }}</td>
       </tr>
       {% endfor %}

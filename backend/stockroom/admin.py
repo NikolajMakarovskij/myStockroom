@@ -1,12 +1,22 @@
 from django.contrib import admin
 
-from stockroom.models.accessories import CategoryAcc, HistoryAcc
-from stockroom.models.consumables import StockCat, History
+from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
+from stockroom.models.consumables import StockCat, History, Stockroom
 from core.utils import ExportAdmin
-from stockroom.models.devices import CategoryDev, HistoryDev
+from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 
 
 # Consumables
+class StockAdmin(ExportAdmin, admin.ModelAdmin):
+    model = Stockroom
+    list_filter = ['categories']
+    search_fields = ['__all__']
+    actions = [ExportAdmin.export_to_csv]
+
+
+admin.site.register(Stockroom, StockAdmin)
+
+
 class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     model = History
     list_display = [
@@ -47,6 +57,16 @@ admin.site.register(StockCat, StockCatAdmin)
 
 
 # Accessories
+class StockAccAdmin(ExportAdmin, admin.ModelAdmin):
+    model = StockAcc
+    list_filter = ['categories']
+    search_fields = ['__all__']
+    actions = [ExportAdmin.export_to_csv]
+
+
+admin.site.register(StockAcc, StockAccAdmin)
+
+
 class HistoryAccAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryAcc
     list_display = [
@@ -86,6 +106,16 @@ admin.site.register(CategoryAcc, CategoryAccAdmin)
 
 
 # Devices
+class StockDevAdmin(ExportAdmin, admin.ModelAdmin):
+    model = StockDev
+    list_filter = ['categories']
+    search_fields = ['__all__']
+    actions = [ExportAdmin.export_to_csv]
+
+
+admin.site.register(StockDev, StockDevAdmin)
+
+
 class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = HistoryDev
     list_display = [
