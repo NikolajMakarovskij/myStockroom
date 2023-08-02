@@ -164,7 +164,8 @@ def test_stock_move_device(client):
     """Checks the operation of the remove_accessories method of the Stock class"""
     create_session(client)
     from workplace.models import Workplace
-    workplace = Workplace.objects.create(name="pc-004-r")
+    Workplace.objects.create(name="pc-004-r")
+    workplace = Workplace.objects.get(name="pc-004-r")
     devices = create_devices()
     quantity = 5
     number_rack = 3
@@ -172,7 +173,7 @@ def test_stock_move_device(client):
     username = 'admin'
     DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
-    DevStock.move_device(DevStock, model_id=devices.id, workplace=workplace, username=username)
+    DevStock.move_device(DevStock, model_id=devices.id, workplace_id=workplace.id, username=username)
     test_history = HistoryDev.objects.get(status='Перемещение на рабочее место pc-004-r')
     test_stock = StockDev.objects.get(stock_model__name='my_consumable')
 
