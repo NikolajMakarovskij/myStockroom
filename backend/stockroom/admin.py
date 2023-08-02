@@ -9,6 +9,7 @@ from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 # Consumables
 class StockAdmin(ExportAdmin, admin.ModelAdmin):
     model = Stockroom
+    list_display = ['stock_model']
     list_filter = ['categories']
     search_fields = ['__all__']
     actions = [ExportAdmin.export_to_csv]
@@ -59,6 +60,7 @@ admin.site.register(StockCat, StockCatAdmin)
 # Accessories
 class StockAccAdmin(ExportAdmin, admin.ModelAdmin):
     model = StockAcc
+    list_display = ['stock_model']
     list_filter = ['categories']
     search_fields = ['__all__']
     actions = [ExportAdmin.export_to_csv]
@@ -108,6 +110,7 @@ admin.site.register(CategoryAcc, CategoryAccAdmin)
 # Devices
 class StockDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = StockDev
+    list_display = ['stock_model']
     list_filter = ['categories']
     search_fields = ['__all__']
     actions = [ExportAdmin.export_to_csv]
