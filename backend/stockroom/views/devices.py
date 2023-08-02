@@ -40,9 +40,11 @@ class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__quantity__icontains=query) |
             Q(stock_model__serial__icontains=query) |
             Q(stock_model__invent__icontains=query) |
+            Q(stock_model__workplace__name__icontains=query) |
+            Q(stock_model__workplace__room__name__icontains=query) |
             Q(dateInstall__icontains=query) |
             Q(dateAddToStock__icontains=query)
-        ).select_related('stock_model__manufacturer', 'stock_model__categories')
+        ).select_related('stock_model')
         return object_list
 
 
@@ -62,7 +64,9 @@ class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = StockDev.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = StockDev.objects.filter(
+            categories__slug=self.kwargs['category_slug']
+            ).select_related('stock_model')
         return object_list
 
 

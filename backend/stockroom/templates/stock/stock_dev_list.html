@@ -65,15 +65,15 @@
       {% for each in stockdev_list %}
       <tr>
         <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-        {% if not each.invent %}
+        {% if not each.stock_model.invent %}
           <td></td>
         {% else %}
-          <td>{{ each.invent }}</td>
+          <td>{{ each.stock_model.invent }}</td>
         {% endif %}
-        {% if not each.serial %}
+        {% if not each.stock_model.serial %}
           <td></td>
         {% else %}
-          <td>{{ device.serial }}</td>
+          <td>{{ device.stock_model.serial }}</td>
         {% endif %}
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>

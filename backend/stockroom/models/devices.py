@@ -51,7 +51,7 @@ class StockDev (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад устройств'
         verbose_name_plural = 'Склад устройств'
-        ordering = ['stock_model']
+        ordering = ['stock_model__workplace__room__building', 'stock_model__workplace__room__name']
 
 
 class CategoryDev(ModelMixin, models.Model):
