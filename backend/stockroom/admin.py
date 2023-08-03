@@ -132,6 +132,7 @@ class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     list_filter = ['categories']
     search_fields = [
         'stock_model',
+        'stock_model_id',
         'categories',
         'quantity',
         'dateInstall'
