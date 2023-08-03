@@ -46,16 +46,16 @@
     </table>
   {% else %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <tr>Найдено устройств: {{stockdev_list.count}}</tr>
+      <tr>Устройств на странице: {{stockdev_list.count}}</tr>
       <thead>
         <tr>
           <th scope="col">Устройства</th>
           <th scope="col">Инвентарник</th>
           <th scope="col">Серийник</th>
+          <th scope="col">Размещение</th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Постановка</th>
-          <th scope="col">Перемещение</th>
           <th scope="col">Примечание</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -75,14 +75,10 @@
         {% else %}
           <td>{{ device.stock_model.serial }}</td>
         {% endif %}
+        <td>{{ each.stock_model.workplace.room.name }}</td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
         <td>{{ each.dateAddToStock }}</td>
-        {% if each.dateInstall %}  
-          <td>{{ each.dateInstall }}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
         {% if each.stock_model.note %}
           <td>{{ each.stock_model.note }}</td>
         {% else %}

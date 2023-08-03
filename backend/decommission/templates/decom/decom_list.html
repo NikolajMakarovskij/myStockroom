@@ -46,12 +46,15 @@
     </table>
   {% else %}
     <table class="table align-middle table-hover" style="text-align:center">
+      <tr>Устройств на странице: {{decommission_list.count}}</tr>
       <thead>
         <tr>
           <th scope="col">Устройства</th>
           <th scope="col">Группа</th>
           <th scope="col">Количество</th>
           <th scope="col">Дата cписания</th>
+          <th scope="col">Размещение</th>
+          <th scope="col">Здание</th>
           <th scope="col">Примечание</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -64,11 +67,8 @@
         <td>{{ each.categories}}</td>
         <td>{{ each.stock_model.quantity }}</td>
         <td>{{ each.date }}</td>
-        {% if each.dateInstall %}  
-          <td>{{ each.dateInstall }}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
+        <td>{{ each.stock_model.workplace.room.name }}</td>
+        <td>{{ each.stock_model.workplace.room.building }}</td>
         {% if each.stock_model.note %}
           <td>{{ each.stock_model.note }}</td>
         {% else %}

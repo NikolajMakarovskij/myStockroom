@@ -13,7 +13,7 @@ services:
     expose:
       - 8010
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - db
       - redis
@@ -23,7 +23,7 @@ services:
     image: postgres:14
     restart: always
     env_file:
-      - ./.env.dev
+      - ./.env
     volumes:
       - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database:/var/lib/postgresql/data
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./:/backend
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - db
       - redis
@@ -64,7 +64,7 @@ services:
     volumes:
       - .:/backend
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - db
       - redis
@@ -75,7 +75,7 @@ services:
     volumes:
       - .:/backend
     env_file:
-      - ./.env.dev
+      - ./.env
     ports:
       - 5557:5555
     depends_on:
