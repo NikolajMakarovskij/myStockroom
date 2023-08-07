@@ -53,6 +53,8 @@
           <th scope="col">Производитель</th>
           <th scope="col">Код в бухгалтерии</th>
           <th scope="col">Количество</th>
+          <th scope="col">Стоимость</th>
+          <th scope="col">Общая стоимость</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
@@ -68,7 +70,9 @@
         {% endif %}
         <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
         <td>{{ each.buhCode }}</td>
-        <td>{{ each.score }}</td>
+        <td>{{ each.quantity }}</td>
+        <td>{{ each.cost }}</td>
+        <td>{{ each.get_cost_all }}</td>
         {% if each.note %}  
           <td>{{ each.note}}</td>
         {% else %}
