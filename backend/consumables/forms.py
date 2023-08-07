@@ -36,7 +36,7 @@ class AccCatWidget(BaseModelSelect2WidgetMixin):
 class ConsumablesForm(forms.ModelForm):
     class Meta:
         model = Consumables
-        fields = ['name', 'buhCode', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg',
+        fields = ['name', 'buhCode', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg', 'cost',
                   'description', 'note', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -49,13 +49,14 @@ class ConsumablesForm(forms.ModelForm):
             'serialImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         }
 
 
 class AccessoriesForm(forms.ModelForm):
     class Meta:
         model = Accessories
-        fields = ['name', 'buhCode', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg',
+        fields = ['name', 'buhCode', 'categories', 'manufacturer', 'serial', 'serialImg', 'invent', 'inventImg', 'cost',
                   'description', 'note', ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -68,4 +69,5 @@ class AccessoriesForm(forms.ModelForm):
             'serialImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'inventImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         }

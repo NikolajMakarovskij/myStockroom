@@ -53,30 +53,35 @@
           <th scope="col">Производитель</th>
           <th scope="col">Код в бухгалтерии</th>
           <th scope="col">Количество</th>
+          <th scope="col">Стоимость</th>
+          <th scope="col">Общая стоимость</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
-    <tbody style="text-align:center">
-      {% for each in consumables_list %}
-      <tr>
-        <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
-        <td>{{ each.categories}}</td>
-        {% if each.description %}  
-          <td>{{ each.description}}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
-        <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
-        <td>{{ each.buhCode }}</td>
-        <td>{{ each.score }}</td>
-        {% if each.note %}  
-          <td>{{ each.note}}</td>
-        {% else %}
-          <td></td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-  </table>
+      <tbody style="text-align:center">
+        {% for each in consumables_list %}
+        <tr>
+          <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
+          <td>{{ each.categories}}</td>
+          {% if each.description %}
+            <td>{{ each.description}}</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+          <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
+          <td>{{ each.buhCode }}</td>
+          <td>{{ each.quantity }}</td>
+          <td>{{ each.cost }}</td>
+          <td>{{ each.get_cost_all }}</td>
+          {% if each.note %}
+            <td>{{ each.note}}</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 
     {% endif %}

@@ -53,6 +53,8 @@
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Количество</th>
+          <th scope="col">Стоимость</th>
+          <th scope="col">Код в бухгалтерии</th>
           <th scope="col">Постановка</th>
           <th scope="col">Установка</th>
           <th scope="col">Примечание</th>
@@ -73,7 +75,9 @@
         </td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.stock_model.score }}</td>
+        <td>{{ each.stock_model.quantity }}</td>
+        <td>{{ each.stock_model.cost }}</td>
+        <td>{{ each.stock_model.buhCode }}</td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
