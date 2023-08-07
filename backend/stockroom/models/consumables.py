@@ -51,7 +51,7 @@ class Stockroom (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад Расходников'
         verbose_name_plural = 'Склад Расходников'
-        ordering = ['stock_model']
+        ordering = ['rack', 'shelf']
 
 
 class StockCat(ModelMixin, models.Model):

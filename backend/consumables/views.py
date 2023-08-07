@@ -121,7 +121,6 @@ class ConsumablesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateV
     model = Consumables
     form_class = ConsumablesForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:consumables_list')
     success_message = f"Расходник %(name)s успешно создан"
     error_message = f"Расходник %(name)s не удалось создать"
 
@@ -136,7 +135,6 @@ class ConsumablesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateV
     model = Consumables
     template_name = 'Forms/add.html'
     form_class = ConsumablesForm
-    success_url = reverse_lazy('consumables:consumables_list')
     success_message = f"Расходник %(name)s успешно обновлен"
     error_message = f"Расходник %(name)s не удалось обновить"
 
@@ -245,7 +243,6 @@ class AccessoriesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateV
     model = Accessories
     form_class = AccessoriesForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('consumables:accessories_list')
     success_message = f"Комплектующее %(name)s успешно создано"
     error_message = f"Комплектующее %(name)s не удалось создать"
 
@@ -260,7 +257,6 @@ class AccessoriesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateV
     model = Accessories
     template_name = 'Forms/add.html'
     form_class = AccessoriesForm
-    success_url = reverse_lazy('consumables:accessories_list')
     success_message = f"Комплектующее %(name)s успешно обновлен"
     error_message = f"Комплектующее %(name)s не удалось обновить"
 

@@ -51,7 +51,7 @@ class StockAcc (ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Склад комплектующих'
         verbose_name_plural = 'Склад комплектующих'
-        ordering = ['stock_model']
+        ordering = ['rack', 'shelf']
 
 
 class CategoryAcc(ModelMixin, models.Model):
