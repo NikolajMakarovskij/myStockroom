@@ -113,7 +113,6 @@ class DeviceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
     model = Device
     form_class = DeviceForm
     template_name = 'Forms/add.html'
-    success_url = reverse_lazy('device:device_list')
     success_message = f"%(categories)s %(name)s успешно создано"
     error_message = f"%(categories)s %(name)s не удалось создать"
 
@@ -128,7 +127,6 @@ class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Device
     template_name = 'Forms/add.html'
     form_class = DeviceForm
-    success_url = reverse_lazy('device:device_list')
     success_message = f"%(categories)s %(name)s успешно обновлено"
     error_message = f"%(categories)s %(name)s не удалось обновить"
 
