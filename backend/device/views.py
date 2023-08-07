@@ -44,7 +44,7 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(workplace__room__name__icontains=query) |
             Q(workplace__room__floor__icontains=query) |
             Q(workplace__room__building__icontains=query)
-        ).select_related('manufacturer', 'categories', 'consumable', 'workplace', 'workplace__room')
+        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee')
         return object_list
 
 
@@ -65,7 +65,7 @@ class DeviceCategoryListView(LoginRequiredMixin, DataMixin, generic.ListView):
 
     def get_queryset(self):
         object_list = Device.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'manufacturer', 'categories', 'consumable', 'workplace', 'workplace__room')
+            'workplace', 'workplace__room').prefetch_related('workplace__employee')
         return object_list
 
 

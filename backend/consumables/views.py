@@ -55,7 +55,7 @@ class ConsumablesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
-        ).select_related('categories', 'manufacturer')
+        ).select_related('categories')
         return object_list
 
 
@@ -76,7 +76,7 @@ class ConsumablesCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView)
 
     def get_queryset(self):
         object_list = Consumables.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'categories', 'manufacturer')
+            'categories')
         return object_list
 
 
@@ -189,7 +189,7 @@ class AccessoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
-        ).select_related('categories', 'manufacturer')
+        ).select_related('categories')
         return object_list
 
 
@@ -210,7 +210,7 @@ class AccessoriesCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView)
 
     def get_queryset(self):
         object_list = Accessories.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'categories', 'manufacturer')
+            'categories')
         return object_list
 
 
