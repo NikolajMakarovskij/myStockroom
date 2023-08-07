@@ -38,7 +38,7 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__serial__icontains=query) |
             Q(stock_model__invent__icontains=query) |
             Q(date__icontains=query)
-        ).select_related('stock_model__manufacturer', 'stock_model__categories')
+        ).select_related('stock_model', 'stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 
@@ -58,7 +58,8 @@ class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = Decommission.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Decommission.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
+            'stock_model', 'stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 
@@ -123,7 +124,7 @@ class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__serial__icontains=query) |
             Q(stock_model__invent__icontains=query) |
             Q(date__icontains=query)
-        ).select_related('stock_model__manufacturer', 'stock_model__categories')
+        ).select_related('stock_model', 'stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 
@@ -143,7 +144,8 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        object_list = Disposal.objects.filter(categories__slug=self.kwargs['category_slug'])
+        object_list = Disposal.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
+            'stock_model', 'stock_model__manufacturer', 'stock_model__categories')
         return object_list
 
 

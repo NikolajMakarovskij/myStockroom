@@ -44,7 +44,7 @@ class EmployeeListView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(workplace__room__name__icontains=query) |
             Q(workplace__room__floor__icontains=query) |
             Q(workplace__room__building__icontains=query)
-        ).select_related('workplace', 'workplace__room', 'post', 'post__departament')
+        ).select_related('workplace', 'post',)
         return object_list
 
 
