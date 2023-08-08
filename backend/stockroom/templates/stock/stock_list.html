@@ -49,24 +49,41 @@
       <thead>
         <tr>
           <th scope="col">Расходник</th>
-          <th scope="col">Группа</th>
           <th scope="col">Устройства </th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Количество</th>
-          <th scope="col">Стоимость</th>
-          <th scope="col">Код в бухгалтерии</th>
+          <th scope="col">На балансе</th>
           <th scope="col">Постановка</th>
           <th scope="col">Установка</th>
           <th scope="col">Примечание</th>
           <th scope="col">Удалить</th>
+        </tr>
+        <tr>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col">
+            <table class="table align-middle table-hover table-borderless" style="text-align:center">
+              <tr>
+                <td>код</td>
+                <td>кол-во</td>
+                <td>разность</td>
+              </tr>
+            </table>
+          </td>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col"></td>
+          <td scope="col"></td>
         </tr>
       </thead>
     <tbody style="text-align:center">
       {% for each in stockroom_list %}
       <tr>
         <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-        <td>{{ each.categories}}</td>
         <td>
           {% for dev in each.stock_model.device.all %}
             <a class="noDecoration" href="{{ dev.get_absolute_url }}">
@@ -77,7 +94,27 @@
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
         <td>{{ each.stock_model.quantity }}</td>
-
+        <td>
+          <table class="table align-left table-hover" style="text-align:center">
+            <tbody style="text-align:left">
+              {% for con in each.stock_model.consumable.all %}
+              <tr>
+                <td>
+                  <a class="noDecoration" href="{{ con.get_absolute_url }}">
+                    {{ con.code }}
+                  </a>
+                </td>
+                <td>
+                  {{ con.quantity }}
+                </td>
+                <td>
+                  {{ con.get_difference_consumable }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
