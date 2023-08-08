@@ -5,11 +5,9 @@ from core.utils import ExportAdmin
 
 class ConsumablesAdmin(ExportAdmin, admin.ModelAdmin):
     model = Consumables
-    list_display = ['name', 'categories', 'manufacturer', 'buhCode', 'cost',
-                    'quantity', 'serial', 'invent', 'description', 'note']
+    list_display = ['name', 'categories', 'manufacturer','quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
-    search_fields = ['name', 'categories', 'manufacturer', 'buhCode', 'cost',
-                     'quantity', 'serial', 'invent', 'description', 'note']
+    search_fields = ['name', 'categories', 'manufacturer','quantity', 'serial', 'invent', 'description', 'note']
     actions = [ExportAdmin.export_to_csv]
 
 
@@ -29,11 +27,9 @@ admin.site.register(Categories, CategoriesAdmin)
 
 class AccessoriesAdmin(ExportAdmin, admin.ModelAdmin):
     model = Accessories
-    list_display = ['name', 'categories', 'manufacturer', 'buhCode', 'cost',
-                    'quantity', 'serial', 'invent', 'description', 'note']
+    list_display = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
-    search_fields = ['name', 'categories', 'manufacturer', 'buhCode', 'cost',
-                     'quantity', 'serial', 'invent', 'description', 'note']
+    search_fields = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     actions = [ExportAdmin.export_to_csv]
 
 

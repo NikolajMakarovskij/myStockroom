@@ -21,25 +21,25 @@
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'consumables:consumables_list' %}active{% endif %}" href="{% url 'consumables:consumables_list' %}">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'accounting:accounting_list' %}active{% endif %}" href="{% url 'accounting:accounting_list' %}">
               Все группы
             </a>
         </li>
         {% for item in menu_categories %}
           <li class="nav-item ">
-            <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
-              href="{{ item.get_absolute_url }}">{{item.name}}
+            <a class="nav-link text-secondary {% if request.get_full_path == item.get_slug_url %}active{% endif %}"
+              href="{{ item.get_slug_url }}">{{item.name}}
             </a>
           </li>
         {% endfor %}
       </ul>
     </nav>
   {% endif %}
-  {% if not consumables_list%}
+  {% if not accounting_list %}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Расходники не обнаружены</th>
+          <th scope="col" style="font-size: 32px;">Расходники на балансе не обнаружены</th>
         </tr>
       </thead>
     </table>
@@ -48,9 +48,6 @@
       <thead>
         <tr>
           <th scope="col">Расходник</th>
-          <th scope="col">Группа</th>
-          <th scope="col">Описание</th>
-          <th scope="col">Производитель</th>
           <th scope="col">Код в бухгалтерии</th>
           <th scope="col">Количество</th>
           <th scope="col">Стоимость</th>
@@ -59,17 +56,13 @@
         </tr>
       </thead>
       <tbody style="text-align:center">
-        {% for each in consumables_list %}
+        {% for each in accounting_list %}
         <tr>
           <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
-          <td>{{ each.categories}}</td>
-          {% if each.description %}
-            <td>{{ each.description}}</td>
-          {% else %}
-            <td></td>
-          {% endif %}
-          <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
+          <td>{{ each.code }}</td>
           <td>{{ each.quantity }}</td>
+          <td>{{ each.cost }}</td>
+          <td>{{ each.get_cost_all }}</td>
           {% if each.note %}
             <td>{{ each.note}}</td>
           {% else %}

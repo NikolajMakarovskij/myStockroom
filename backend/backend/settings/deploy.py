@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'counterparty.apps.CounterpartyConfig',
     'stockroom.apps.StockroomConfig',
     'decommission.apps.DecommissionConfig',
+    'accounting.apps.AccountingConfig',
     'django.contrib.postgres',
     'django_bootstrap5',
     'crispy_forms',

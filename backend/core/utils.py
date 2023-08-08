@@ -16,11 +16,13 @@ menu = [
     {'title': "Расходники", 'url_name': 'consumables:consumables_list'},
     {'title': "Комплектующие", 'url_name': 'consumables:accessories_list'},
     {'title': "Контрагенты", 'url_name': 'counterparty:counterparty'},
+    {'title': "Баланс", 'url_name': 'accounting:accounting_index'},
 ]
 
 deviceMenu = [
-    {'title': "Информация об устройстве", 'anchor': '#printerInfo'},
-    {'title': "Информация о расходнике", 'anchor': '#cartridgeInfo'},
+    {'title': "Информация об устройстве", 'anchor': '#deviceInfo'},
+    {'title': "Информация о расходнике", 'anchor': '#consumableInfo'},
+    {'title': "Информация о комплектующем", 'anchor': '#accessorieseInfo'},
     {'title': "Местоположение", 'anchor': '#workplaceInfo'},
 ]
 

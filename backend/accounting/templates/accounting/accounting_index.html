@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% block content %}
+<div class="col ">
+
+
+  </div>
+
+<div class="col ">
+  <div class="row row-cols-3 row-cols-md-3">
+    <div class="col nodecorationIndex">
+      <a href="{% url 'accounting:accounting_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Баланс</h5>
+          </div>
+          <img src="{% static 'images/consumables.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+    <div class="col nodecorationIndex">
+      <a href="{% url 'accounting:categories_list' %}">
+        <div class="card text-white text-center bg-dark square justify-content-center">
+          <div class="card-header">
+            <h5 class="card-title">Категории</h5>
+          </div>
+          <img src="{% static 'images/accessories.svg' %}" class="card-img-top iconIndex">
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+<!--toast messages-->
+  {% include 'toast.html'%}
+
+{% endblock %}

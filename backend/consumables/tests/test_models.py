@@ -55,9 +55,7 @@ def test_consumable_create():
         manufacturer=Manufacturer.objects.get(name="name_manufacturer"),
         serial="123",
         invent="321",
-        buhCode="code",
         quantity='2',
-        cost='5',
         description="my_description",
         note="my_note",
     )
@@ -71,10 +69,7 @@ def test_consumable_create():
     assert consumable.manufacturer.production == "production_country"
     assert consumable.serial == "123"
     assert consumable.invent == "321"
-    assert consumable.buhCode == "code"
     assert consumable.quantity == 2
-    assert consumable.cost == 5
-    assert consumable.get_cost_all() == 10
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
     assert consumable.__str__() == 'my_consumable'
@@ -132,9 +127,7 @@ def test_consumable_create():
         manufacturer=Manufacturer.objects.get(name="name_manufacturer"),
         serial="123",
         invent="321",
-        buhCode="code",
         quantity='2',
-        cost='5',
         description="my_description",
         note="my_note",
     )
@@ -148,10 +141,7 @@ def test_consumable_create():
     assert accessories.manufacturer.production == "production_country"
     assert accessories.serial == "123"
     assert accessories.invent == "321"
-    assert accessories.buhCode == "code"
     assert accessories.quantity == 2
-    assert accessories.cost == 5
-    assert accessories.get_cost_all() == 10
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == 'my_consumable'
