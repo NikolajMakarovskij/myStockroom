@@ -46,20 +46,20 @@
   <div class="row g-1">
     <div class="col-sm-12">
       <div class="d-flex justify-content-center input-group mt-1 ">
-        <form action="{% url 'stockroom:stock_add_device' device.id %}" class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
-              method="post">
+        <form action="{% url 'stockroom:stock_add_device' device.id %}"
+              class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data" method="post">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              stock_form.quantity.label }}
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ stock_form.quantity.label }}
             </div>
             <div class="">{{ stock_form.quantity }}</div>
-            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              stock_form.number_rack.label }}
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{stock_form.number_rack.label }}
             </div>
             <div class="">{{ stock_form.number_rack }}</div>
-            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              stock_form.number_shelf.label }}
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{stock_form.number_shelf.label }}
             </div>
             <div class="">{{ stock_form.number_shelf }}</div>
             <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
@@ -70,12 +70,12 @@
     </div>
     <div class="col-sm-12">
       <div class="d-flex justify-content-center input-group mt-1 ">
-        <form action="{% url 'stockroom:move_device' device.id %}" class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
-              method="post">
+        <form action="{% url 'stockroom:move_device' device.id %}"
+              class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data" method="post">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              move_form.workplace.label }}
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ move_form.workplace.label }}
             </div>
             <div class="">{{ move_form.workplace }}</div>
             <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit" value="Перемещение">
