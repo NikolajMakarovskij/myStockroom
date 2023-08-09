@@ -48,7 +48,8 @@
       <thead>
         <tr>
           <th scope="col">Расходник</th>
-          <th scope="col">Код в бухгалтерии</th>
+          <th scope="col">Счет</th>
+          <th scope="col">Код</th>
           <th scope="col">Количество</th>
           <th scope="col">Стоимость</th>
           <th scope="col">Общая стоимость</th>
@@ -59,6 +60,7 @@
         {% for each in accounting_list %}
         <tr>
           <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
+          <td>{{ each.account }}</td>
           <td>{{ each.code }}</td>
           <td>{{ each.quantity }}</td>
           <td>{{ each.cost }}</td>

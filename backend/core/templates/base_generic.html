@@ -64,14 +64,6 @@
             {% endfor %}
           </ul>
         {% endblock mainmenu %}
-        <ul class="nav-pills bg-dark  w-100"  >
-          {% for m in detailMenu %}
-          <li class="nav-item">
-            <a  class="nav-link {% if request.resolver_match.view_name == m.anchor %}active{% endif %}"
-            href="{{ m.anchor }}">{{m.title}}</a>
-          </li> 
-          {% endfor %} 
-        </ul>
       </nav>
     </div>
     {% endblock sidemenu %}

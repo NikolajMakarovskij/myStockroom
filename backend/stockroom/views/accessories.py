@@ -173,19 +173,27 @@ def device_add_accessories(request, accessories_id):
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_to_device(
-            stock,
-            model_id=accessories.id,
-            device=get_device_id,
-            quantity=cd['quantity'],
-            username=username,
-        )
-        messages.add_message(request,
-                             level=messages.SUCCESS,
-                             message=f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт."
-                                     f" успешно списан со склада",
-                             extra_tags='Успешное списание'
-                             )
+        if accessories.quantity == 0:
+            messages.add_message(request,
+                                 level=messages.WARNING,
+                                 message=f"Комплектующее {accessories.name} закончилось на складе.",
+                                 extra_tags='Нет расходника'
+                                 )
+        else:
+            stock.add_to_device(
+                stock,
+                model_id=accessories.id,
+                device=get_device_id,
+                quantity=cd['quantity'],
+                note=cd['note'],
+                username=username,
+            )
+            messages.add_message(request,
+                                 level=messages.SUCCESS,
+                                 message=f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт."
+                                         f" успешно списан со склада",
+                                 extra_tags='Успешное списание'
+                                 )
     else:
         messages.add_message(request,
                              level=messages.ERROR,

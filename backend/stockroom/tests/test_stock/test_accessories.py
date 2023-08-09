@@ -1,5 +1,7 @@
 import datetime
+
 import pytest
+
 from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
 from stockroom.stock.stock import AccStock
 from stockroom.tests.test_stock.test_stock import add_consumables_in_devices, create_session, create_accessories
@@ -63,7 +65,7 @@ def test_stock_add_accessories(client):
     username = 'admin'
     add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
-                               number_shelf=number_shelf, username=username)
+                          number_shelf=number_shelf, username=username)
     test_get_stock = StockAcc.objects.get(stock_model__name='my_consumable')
     test_get_history = HistoryAcc.objects.get(stock_model='my_consumable')
 
@@ -98,7 +100,7 @@ def test_stock_acc_add_accessories_not_category(client):
     username = 'admin'
     add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
-                               number_shelf=number_shelf, username=username)
+                          number_shelf=number_shelf, username=username)
     test_get_stock = StockAcc.objects.get(stock_model__name='my_consumable')
     test_get_history = HistoryAcc.objects.get(stock_model='my_consumable')
 
@@ -129,9 +131,9 @@ def test_stock_acc_update_accessories(client):
     username = 'admin'
     add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
-                               number_shelf=number_shelf, username=username)
+                          number_shelf=number_shelf, username=username)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=2, number_shelf=2,
-                               username=username)
+                          username=username)
     test_get_stock = StockAcc.objects.get(stock_model__name='my_consumable')
 
     assert StockAcc.objects.count() == 1
@@ -152,7 +154,7 @@ def test_stock_acc_remove_accessories(client):
     username = 'admin'
     add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
-                               number_shelf=number_shelf, username=username)
+                          number_shelf=number_shelf, username=username)
     AccStock.remove_from_stock(AccStock, model_id=accessories.id, quantity=0, username=username)
     test_history = HistoryAcc.objects.get(status='Удаление')
 
@@ -175,15 +177,16 @@ def test_stock_device_acc_add_accessories(client):
     username = 'admin'
     add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
-                               number_shelf=number_shelf, username=username)
+                          number_shelf=number_shelf, username=username)
     AccStock.add_to_device(AccStock, model_id=accessories.id, device=device,
-                                quantity=1, username=username)
+                           quantity=1, note='note', username=username)
     test_get_stock = StockAcc.objects.get(stock_model__name='my_consumable')
     test_history = HistoryAcc.objects.get(status='Расход')
 
     assert StockAcc.objects.count() == 1
     assert HistoryAcc.objects.count() == 2
     assert test_get_stock.stock_model.quantity == 4
+    assert test_get_stock.stock_model.note == 'note'
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'

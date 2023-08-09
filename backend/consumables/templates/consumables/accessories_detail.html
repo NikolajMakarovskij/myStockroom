@@ -5,18 +5,9 @@
 <div class="mt-3">
   <h1 style="text-align:center" >{{title}}</h1>
 </div>
-  <div class="card-header text-center mt-3">
-    <a name="accessoriesInfo" class="btn" data-bs-toggle="collapse" href="#accessoriesInfoContent" role="button"
-      aria-expanded="false" aria-controls="accessoriesInfoContent">
-      <h1 class="card-title">
-        <img src="{% static 'images/consumables.svg' %}" class="iconHeader">
-        Информация о комплектующем
-      </h1>
-    </a>
-  </div>
-  <div class="collapse" id="accessoriesInfoContent">
+<div class="col-sm-12">
     <div class="row row-cols-3 row-cols-md-3">
-      {% for f in accessories.get_all_fields %}
+        {% for f in accessories.get_all_fields %}
       <div class="col mt-3">
         <div class="card border-dark  h-100">
           <div class="card-header">
@@ -26,17 +17,16 @@
           </div>
           <div class="card-body text-dark">
             {% if f.value.get_absolute_url %}
-            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            </a>
+              <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
+                  <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
+              </a>
             {% else %}
               <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
             {% endif %}
-          </div>  
+          </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
+        {% endfor %}
   </div>
   {% if accessories %}
   <div class="d-flex justify-content-center input-group mt-3 ">
@@ -49,30 +39,31 @@
         <div class="">{{ form.number_rack }}</div>
         <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_shelf.label }}</div>
         <div class="">{{ form.number_shelf }}</div>
-        <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">      
+          <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                 value="Добавить на склад">
       </div>
     </form>
   </div>
   {% endif %}
   <div class="d-flex justify-content-center input-group mt-3 ">
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url add %}">
             Добавить
         </a>
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url update accessories.id%}">
             Редактировать
         </a>
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url delete accessories.id%}">
             Удалить
-        </a>      
+      </a>
   </div>
   <div >
     {% load history_tags %}
     {% this_acc_history accessories.id%}
   </div>
 </div>
-
+</div>
 </div>
 {% endblock %}
