@@ -116,7 +116,8 @@ class BaseStock(object):
             self.create_history(self, model_id, device_id, quantity,
                                 username, status_choice='Удаление')
 
-    def add_to_device(self, model_id: str, device: dict, quantity=1, note=None, username=None) -> None:
+    def add_to_device(self, model_id: str, device: dict, quantity: int = 1, note: str = None,
+                      username: str = None) -> None:
         """
         Install stock_model in the device
         """
@@ -128,7 +129,10 @@ class BaseStock(object):
         if not note:
             model_note
         else:
-            model_note = f"{model_note} {note}"
+            if model_note is None:
+                model_note = f"{note}"
+            else:
+                model_note = f"{model_note} {note}"
 
         self.base_model.objects.filter(id=model_id).update(
             quantity=model_quantity,

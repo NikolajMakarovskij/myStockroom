@@ -1,5 +1,7 @@
 import datetime
+
 import pytest
+
 from stockroom.models.consumables import History, Stockroom, StockCat
 from stockroom.stock.stock import ConStock
 from stockroom.tests.test_stock.test_stock import add_consumables_in_devices, create_consumable, create_session
@@ -177,7 +179,7 @@ def test_stock_device_add_consumable(client):
     add_consumables_in_devices(consumable, accessories=None)
     ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
-    ConStock.add_to_device(ConStock, model_id=consumable.id, device=device, quantity=1,
+    ConStock.add_to_device(ConStock, model_id=consumable.id, device=device, quantity=1, note='note',
                                 username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
     test_history = History.objects.get(status='Расход')
@@ -185,6 +187,7 @@ def test_stock_device_add_consumable(client):
     assert Stockroom.objects.count() == 1
     assert History.objects.count() == 2
     assert test_get_stock.stock_model.quantity == 4
+    assert test_get_stock.stock_model.note == 'note'
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'
