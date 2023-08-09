@@ -60,7 +60,7 @@ def test_details_url(auto_login_user):
 @pytest.mark.django_db
 def test_consumable_category_url(auto_login_user):
     client, user = auto_login_user()
-    Categories.objects.create(name="some_category")
+    Categories.objects.create(name="some_category", slug="some_category")
     url = reverse('accounting:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")})
     response = client.get(url)
     assert response.status_code == 200

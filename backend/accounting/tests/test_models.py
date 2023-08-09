@@ -10,6 +10,7 @@ def test_category_create():
     """Тестирует создание записи в базе данных для модели Categories приложения Accounting"""
     Categories.objects.create(
         name="my_category_name",
+        slug="my_category_name",
     )
     category = Categories.objects.get(name="my_category_name")
     assert Categories.objects.count() == 1

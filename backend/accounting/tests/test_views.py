@@ -124,7 +124,7 @@ class CategoriesViewTest(TestCase):
     def setUpTestData(cls):
         number_of_accessories = 149
         for accessories_num in range(number_of_accessories):
-            Categories.objects.create(name='Christian %s' % accessories_num)
+            Categories.objects.create(name='Christian %s' % accessories_num, slug='Christian %s' % accessories_num)
         assert Categories.objects.count() == 149
 
     def test_context_data_in_list(self):
