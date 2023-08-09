@@ -17,6 +17,7 @@ urlpatterns += [
     path('signature/', include(('signature.urls', 'signature'), namespace='signature'), ),
     path('device/', include(('device.urls', 'device'), namespace='device'), ),
     path('consumables/', include(('consumables.urls', 'consumables'), namespace='consumables'), ),
+    path('accounting/', include(('accounting.urls', 'accounting'), namespace='accounting'), ),
     path('software/', include(('software.urls', 'software'), namespace='software'), ),
     path('employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
     path('workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),

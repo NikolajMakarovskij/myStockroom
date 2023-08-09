@@ -17,8 +17,6 @@ def test_consumable_form_valid():
         'description': "some_description",
         'note': "some_name",
         'manufacturer': Manufacturer.objects.get(name="My_manufacturer"),
-        'buhCode': "000753",
-        'cost': "32.23",
         'serial': "some_serial123",
         'invent': "some_invent123",
         'serialImg': mock.MagicMock(spec=File, name='serial_Img'),
@@ -40,19 +38,6 @@ def test_consumable_form_name_invalid():
     assert [err_name] == form.errors['name']
 
 
-@pytest.mark.django_db
-def test_consumable_form_code_invalid():
-    """Тест на наличие бухгалтерского кода"""
-    err_mes = "Введите число."
-    form_data = {
-        'name': "my_consumable",
-        'cost': "qwerty",
-    }
-    form = ConsumablesForm(data=form_data)
-    assert form.is_valid() is False
-    assert [err_mes] == form.errors['cost']
-
-
 # Комплектующие
 @pytest.mark.django_db
 def test_accessories_form_valid():
@@ -66,8 +51,6 @@ def test_accessories_form_valid():
         'description': "some_description",
         'note': "some_name",
         'manufacturer': Manufacturer.objects.get(name="My_manufacturer"),
-        'buhCode': "000753",
-        'cost': "32.23",
         'serial': "some_serial123",
         'invent': "some_invent123",
         'serialImg': mock.MagicMock(spec=File, name='serial_Img'),
@@ -87,16 +70,3 @@ def test_accessories_form_name_invalid():
     form = AccessoriesForm(data=form_data)
     assert form.is_valid() is False
     assert [err_name] == form.errors['name']
-
-
-@pytest.mark.django_db
-def test_accessories_form_code_invalid():
-    """Тест на наличие бухгалтерского кода"""
-    err_mes = "Введите число."
-    form_data = {
-        'name': "my_consumable",
-        'cost': "qwerty",
-    }
-    form = AccessoriesForm(data=form_data)
-    assert form.is_valid() is False
-    assert [err_mes] == form.errors['cost']

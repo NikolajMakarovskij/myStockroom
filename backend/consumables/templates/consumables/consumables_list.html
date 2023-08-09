@@ -48,13 +48,11 @@
       <thead>
         <tr>
           <th scope="col">Расходник</th>
-          <th scope="col">Группа</th>
           <th scope="col">Описание</th>
           <th scope="col">Производитель</th>
-          <th scope="col">Код в бухгалтерии</th>
           <th scope="col">Количество</th>
-          <th scope="col">Стоимость</th>
-          <th scope="col">Общая стоимость</th>
+          <th scope="col">Разность</th>
+          <th scope="col">На балансе</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
@@ -62,17 +60,48 @@
         {% for each in consumables_list %}
         <tr>
           <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
-          <td>{{ each.categories}}</td>
           {% if each.description %}
             <td>{{ each.description}}</td>
           {% else %}
             <td></td>
           {% endif %}
           <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
-          <td>{{ each.buhCode }}</td>
           <td>{{ each.quantity }}</td>
-          <td>{{ each.cost }}</td>
-          <td>{{ each.get_cost_all }}</td>
+          <td>{{ each.get_difference }}</td>
+          {% if not each.consumable.all %}
+            <td></td>
+          {% else %}
+            <td>
+              <table class="table table-sm table-hover " >
+                <tbody style="text-align:center">
+                  <tr>
+                    <td>код</td>
+                    <td>кол-во</td>
+                    <td>стоимость</td>
+                    <td>общая стоимость</td>
+                  </tr>
+                  {% for con in each.consumable.all %}
+                    <tr >
+                      <td>
+                        <a class="noDecoration" href="{{ con.get_absolute_url }}">
+                          {{ con.code }}
+                        </a>
+                      </td>
+                      <td>
+                        {{ con.quantity }}
+                      </td>
+                      <td>
+                        {{ con.cost }}
+                      </td>
+                      <td>
+                        {{ con.get_cost_all }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          {% endif %}
           {% if each.note %}
             <td>{{ each.note}}</td>
           {% else %}

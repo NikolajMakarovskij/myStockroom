@@ -91,21 +91,10 @@ class Consumables(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель"
     )
-    buhCode = models.CharField(
-        max_length=50,
-        blank=True, null=True,
-        help_text="Введите код по бухгалтерии",
-        verbose_name="Код в бухгалтерии"
-    )
     quantity = models.IntegerField(
         blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
-    )
-    cost = models.FloatField(
-        blank=True, default=0,
-        help_text="Введите стоимость за 1 ед.",
-        verbose_name="Стоимость",
     )
     description = models.TextField(
         max_length=1000,
@@ -126,9 +115,12 @@ class Consumables(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('consumables:consumables-detail', args=[str(self.id)])
 
-    def get_cost_all(self):
-        cost_all = self.cost * self.quantity
-        return cost_all
+    def get_difference(self) -> int:
+        quantity_all = 0
+        for each in self.consumable.all():
+            quantity_all += each.quantity
+        difference = self.quantity - quantity_all
+        return difference
 
     class Meta:
         verbose_name = 'Расходник'
@@ -222,21 +214,10 @@ class Accessories(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель"
     )
-    buhCode = models.CharField(
-        blank=True, default=0,
-        max_length=50,
-        help_text="Введите код по бухгалтерии",
-        verbose_name="Код в бухгалтерии"
-    )
     quantity = models.IntegerField(
         blank=True, default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
-    )
-    cost = models.FloatField(
-        blank=True, default=0,
-        help_text="Введите стоимость за 1 ед.",
-        verbose_name="Стоимость",
     )
     description = models.TextField(
         max_length=1000,
@@ -257,9 +238,12 @@ class Accessories(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('consumables:accessories-detail', args=[str(self.id)])
 
-    def get_cost_all(self):
-        cost_all = self.cost * self.quantity
-        return cost_all
+    def get_difference(self) -> int:
+        quantity_all = 0
+        for each in self.accessories.all():
+            quantity_all += each.quantity
+        difference = self.quantity - quantity_all
+        return difference
 
     class Meta:
         verbose_name = 'Комплектующее'

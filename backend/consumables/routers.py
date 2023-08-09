@@ -1,4 +1,4 @@
-from .views import *
+from .views import CategoriesRestView, ConsumablesRestView, AccessoriesRestView, AccCatRestView
 from rest_framework import routers
 
 router = routers.SimpleRouter()

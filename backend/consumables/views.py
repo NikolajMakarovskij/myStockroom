@@ -51,7 +51,6 @@ class ConsumablesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(name__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
-            Q(buhCode__icontains=query) |
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
@@ -183,7 +182,6 @@ class AccessoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(name__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
-            Q(buhCode__icontains=query) |
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)

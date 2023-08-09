@@ -49,13 +49,11 @@
       <thead>
         <tr>
           <th scope="col">Комплектующее</th>
-          <th scope="col">Группа</th>
           <th scope="col">Устройства </th>
           <th scope="col">Стеллаж</th>
           <th scope="col">Полка</th>
           <th scope="col">Количество</th>
-          <th scope="col">Стоимость</th>
-          <th scope="col">Код в бухгалтерии</th>
+          <th scope="col">На балансе</th>
           <th scope="col">Постановка</th>
           <th scope="col">Установка</th>
           <th scope="col">Примечание</th>
@@ -66,7 +64,6 @@
       {% for each in stockacc_list %}
       <tr>
         <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-        <td>{{ each.categories}}</td>
         <td>
           {% for dev in each.stock_model.device.all %}
             <a class="noDecoration" href="{{ dev.get_absolute_url }}">
@@ -77,8 +74,33 @@
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
         <td>{{ each.stock_model.quantity }}</td>
-        <td>{{ each.stock_model.cost }}</td>
-        <td>{{ each.stock_model.buhCode }}</td>
+        <td>{{ each.stock_model.get_difference }}</td>
+        {% if not each.stock_model.accessories.all %}
+          <td></td>
+        {% else %}
+          <td>
+            <table class="table table-sm table-hover " >
+              <tbody style="text-align:center">
+                <tr>
+                  <td>код</td>
+                  <td>кол-во</td>
+                </tr>
+                {% for con in each.stock_model.accessories.all %}
+                <tr >
+                  <td>
+                    <a class="noDecoration" href="{{ con.get_absolute_url }}">
+                      {{ con.code }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ con.quantity }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </td>
+        {% endif %}
         <td>{{ each.dateAddToStock }}</td>
         {% if each.dateInstall %}  
           <td>{{ each.dateInstall }}</td>
