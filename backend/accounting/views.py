@@ -1,10 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
+
 from core.utils import menu, DataMixin, FormMessageMixin
 from .forms import AccountingForm, CategoriesForm
 from .models import Accounting, Categories
@@ -31,13 +32,13 @@ class AccountingView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Accounting
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        accu_cat = cache.get('acn_cat')
-        if not accu_cat:
-            accu_cat = Categories.objects.all()
-            cache.set('accu_cat', accu_cat, 300)
+        acn_cat = cache.get('acn_cat')
+        if not acn_cat:
+            acn_cat = Categories.objects.all()
+            cache.set('acn_cat', acn_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=accu_cat)
+                                      add='accounting:new-accounting', menu_categories=acn_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -64,13 +65,13 @@ class AccountingCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Accounting.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        accu_cat = cache.get('acn_cat')
-        if not accu_cat:
+        acn_cat = cache.get('acn_cat')
+        if not acn_cat:
             acn_cat = Categories.objects.all()
-            cache.set('accu_cat', accu_cat, 300)
+            cache.set('acn_cat', acn_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=accu_cat)
+                                      add='accounting:new-accounting', menu_categories=acn_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -182,6 +183,7 @@ class CategoryCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView
     model = Categories
     form_class = CategoriesForm
     template_name = 'Forms/add.html'
+    success_url = reverse_lazy('accounting:categories_list')
     success_message = f"Категория %(name)s успешно создан"
     error_message = f"Категорию %(name)s не удалось создать"
 
@@ -195,7 +197,8 @@ class CategoryCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView
 class CategoryUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     model = Categories
     template_name = 'Forms/add.html'
-    form_class = AccountingForm
+    form_class = CategoriesForm
+    success_url = reverse_lazy('accounting:categories_list')
     success_message = f"Категория %(name)s успешно обновлен"
     error_message = f"Категорию %(name)s не удалось обновить"
 

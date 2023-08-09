@@ -1,7 +1,8 @@
 from django import forms
+
+from consumables.models import Consumables, Accessories
 from core.utils import BaseModelSelect2WidgetMixin
 from .models import Categories, Accounting
-from consumables.models import Consumables, Accessories
 
 
 class CategoryWidget(BaseModelSelect2WidgetMixin):
@@ -36,10 +37,10 @@ class AccessoriesWidget(BaseModelSelect2WidgetMixin):
 class AccountingForm(forms.ModelForm):
     class Meta:
         model = Accounting
-        fields = ['name', 'categories', 'account', 'consumable', 'accessories',
-                  'code', 'quantity', 'cost', 'note']
+        fields = ['name', 'note', 'categories', 'account', 'consumable', 'accessories',
+                  'code', 'quantity', 'cost', ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'name': forms.Textarea(attrs={'class': 'form-control form-control-lg'}),
             'categories': CategoryWidget,
             'account': forms.NumberInput(attrs={'class': 'form-control form-control-lg', }),
             'consumable': ConsumablesWidget,

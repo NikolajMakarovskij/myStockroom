@@ -188,19 +188,27 @@ def device_add_consumable(request, consumable_id):
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        stock.add_to_device(
-            stock,
-            model_id=consumable.id,
-            device=get_device_id,
-            quantity=cd['quantity'],
-            username=username,
-        )
-        messages.add_message(request,
-                             level=messages.SUCCESS,
-                             message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
-                                     f" успешно списан со склада",
-                             extra_tags='Успешное списание'
-                             )
+        if consumable.quantity == 0:
+            messages.add_message(request,
+                                 level=messages.WARNING,
+                                 message=f"Расходник {consumable.name} закончился на складе.",
+                                 extra_tags='Нет расходника'
+                                 )
+        else:
+            stock.add_to_device(
+                stock,
+                model_id=consumable.id,
+                device=get_device_id,
+                quantity=cd['quantity'],
+                note=cd['note'],
+                username=username,
+            )
+            messages.add_message(request,
+                                 level=messages.SUCCESS,
+                                 message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
+                                         f" успешно списан со склада",
+                                 extra_tags='Успешное списание'
+                                 )
     else:
         messages.add_message(request,
                              level=messages.ERROR,
