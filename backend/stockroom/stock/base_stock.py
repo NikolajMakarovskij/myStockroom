@@ -1,7 +1,8 @@
 import datetime
+
 from django.conf import settings
+
 from device.models import Device
-from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 
 
 class BaseStock(object):
@@ -115,15 +116,23 @@ class BaseStock(object):
             self.create_history(self, model_id, device_id, quantity,
                                 username, status_choice='Удаление')
 
-    def add_to_device(self, model_id: str, device: dict, quantity=1, username=None) -> None:
+    def add_to_device(self, model_id: str, device: dict, quantity=1, note=None, username=None) -> None:
         """
         Install stock_model in the device
         """
         device_id = str(device)
         model_add = self.base_model.objects.get(id=model_id)
         model_quantity = int(str(model_add.quantity))
+        model_note = model_add.note
         model_quantity -= quantity
+        if not note:
+            model_note
+        else:
+            model_note = f"{model_note} {note}"
 
-        self.base_model.objects.filter(id=model_id).update(quantity=model_quantity)
+        self.base_model.objects.filter(id=model_id).update(
+            quantity=model_quantity,
+            note=model_note
+        )
         self.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
         self.create_history(self, model_id, device_id, quantity, username, status_choice='Расход')

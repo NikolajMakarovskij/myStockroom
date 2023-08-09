@@ -167,9 +167,9 @@
           <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ move_form.workplace.label }}</div>
           <div class="">{{ move_form.workplace }}</div>
           <input type="submit" value="Перемещение" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-          {{ move_form.media.js }}
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ move_form.media.js }}
       </form>
     </div>
   </div>
@@ -186,6 +186,10 @@
           <div class="input-group mb-3">
             <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
             <div class="">{{ consumable_form.quantity }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
+              consumable_form.note.label }}
+            </div>
+            <div class="">{{ consumable_form.note }}</div>
             <input type="submit" value="Установить расходник" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
           </div>
         </form>
@@ -201,6 +205,10 @@
           <div class="input-group mb-3">
             <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
             <div class="">{{ consumable_form.quantity }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
+              consumable_form.note.label }}
+            </div>
+            <div class="">{{ consumable_form.note }}</div>
             <input type="submit" value="Установить комплектующее" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
           </div>
         </form>

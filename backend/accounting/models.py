@@ -1,9 +1,10 @@
-from django.db import models
-from django.template.defaultfilters import slugify
-from django.urls import reverse
-from core.utils import ModelMixin
-from consumables.models import Consumables, Accessories
 import uuid
+
+from django.db import models
+from django.urls import reverse
+
+from consumables.models import Consumables, Accessories
+from core.utils import ModelMixin
 
 
 class Categories(ModelMixin, models.Model):
@@ -16,7 +17,7 @@ class Categories(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=50,
+        max_length=500,
         help_text="Введите название",
         verbose_name="Название"
     )
@@ -126,4 +127,4 @@ class Accounting(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'На балансе'
         verbose_name_plural = 'На балансе'
-        ordering = ['name', 'categories']
+        ordering = ['account', 'name']
