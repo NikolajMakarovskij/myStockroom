@@ -17,7 +17,7 @@ class Categories(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=500,
+        max_length=50,
         help_text="Введите название",
         verbose_name="Название"
     )
@@ -59,7 +59,7 @@ class Accounting(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=50,
+        max_length=500,
         help_text="Введите название",
         verbose_name="Название"
     )
