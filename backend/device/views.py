@@ -1,11 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
-from core.utils import DataMixin, FormMessageMixin, deviceMenu
+
+from core.utils import DataMixin, FormMessageMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
@@ -101,7 +102,6 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
             title="Устройство", add='device:new-device', update='device:device-update', delete='device:device-delete',
         )
         context = dict(list(context.items()) + list(c_def.items()))
-        context['detailMenu'] = deviceMenu
         context['get_device_id'] = self.request.session['get_device_id']
         context['stock_form'] = stock_form
         context['consumable_form'] = consumable_form

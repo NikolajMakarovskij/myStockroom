@@ -6,18 +6,8 @@
   <h1 style="text-align:center" >{{title}}</h1>
 </div>
 <div class="col-sm-12">
-  <div class="card-header text-center">
-    <a name="deviceInfo" class="btn" data-bs-toggle="collapse" href="#deviceInfoContent" role="button"
-      aria-expanded="false" aria-controls="deviceInfoContent">
-      <h1 class="card-title">
-        <img src="{% static 'images/device.svg' %}" class="iconHeader">
-        Информация об устройстве
-      </h1>
-    </a>
-  </div>
-  <div class="collapse" id="deviceInfoContent">
-    <div class="row row-cols-3 row-cols-md-3">
-      {% for f in device.get_all_fields %}
+  <div class="row row-cols-3 row-cols-md-3">
+    {% for f in device.get_all_fields %}
       <div class="col mt-3">
         <div class="card border-dark  h-100">
           <div class="card-header">
@@ -33,191 +23,125 @@
             {% else %}
               <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
             {% endif %}
-          </div>  
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  <div class="card-header text-center mt-3">
-    <a name="consumableInfo" class="btn" data-bs-toggle="collapse" href="#consumableInfoContent" role="button"
-      aria-expanded="false" aria-controls="consumableInfoContent">
-      <h1 class="card-title">
-        <img src="{% static 'images/consumables.svg' %}" class="iconHeader">
-        Информация о расходнике
-      </h1>
-    </a>
-  </div>
-  <div class="collapse" id="consumableInfoContent">
-    <div class="row row-cols-3 row-cols-md-3">
-      {% for f in device.consumable.get_all_fields %}
-      <div class="col mt-3">
-        <div class="card border-dark  h-100">
-          <div class="card-header">
-            <h5 class="card-title">
-              {{f.label|capfirst}}
-            </h5>
           </div>
-          <div class="card-body text-dark">
-            {% if f.value.get_absolute_url %}
-            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            </a>
-            {% else %}
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            {% endif %}
-          </div>  
         </div>
       </div>
-      {% endfor %}
-    </div>
+    {% endfor %}
   </div>
-  <div class="card-header text-center mt-3">
-    <a name="workplaceInfo" class="btn" data-bs-toggle="collapse" href="#workplaceInfoContent" role="button"
-      aria-expanded="false" aria-controls="workplaceInfoContent">
-      <h1 class="card-title">
-        <img src="{% static 'images/workplace.svg' %}" class="iconHeader">
-        Информация о местоположении
-      </h1>
-    </a>
-  </div>
-  <div class="collapse" id="workplaceInfoContent">
-    <div class="row row-cols-3 row-cols-md-3">
-      {% for f in device.workplace.get_all_fields %}
-      <div class="col mt-3">
-        <div class="card border-dark  h-100">
-          <div class="card-header">
-            <h5 class="card-title">
-              {{f.label|capfirst}}
-            </h5>
-          </div>
-          <div class="card-body text-dark">
-            {% if f.value.get_absolute_url %}
-            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            </a>
-            {% else %}
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            {% endif %}
-          </div>  
-        </div>
-      </div>
-      {% endfor %}
-      {% for f in device.workplace.room.get_all_fields %}
-      <div class="col mt-3">
-        <div class="card border-dark  h-100">
-          <div class="card-header">
-            <h5 class="card-title">
-              {{f.label|capfirst}}
-            </h5>
-          </div>
-          <div class="card-body text-dark">
-            {% if f.value.get_absolute_url %}
-            <a class="noDecoration" href="{{ f.value.get_absolute_url }}">
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            </a>
-            {% else %}
-              <h5 class="card-title">{{f.value|escape|urlize|linebreaks}}</h5>
-            {% endif %}
-          </div>  
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
-
-<div class="d-flex justify-content-center input-group mt-3 ">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
+  <div class="d-flex justify-content-center input-group mt-3 ">
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+       href="{% url add %}">
       Добавить
-  </a>
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update device.id %}">
+    </a>
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+       href="{% url update device.id %}">
       Редактировать
-  </a>
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete device.id %}">
+    </a>
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+       href="{% url delete device.id %}">
       Удалить
-  </a>
-</div>
-{% load history_tags %}
-<div class="row g-1">
-  <div class="col-sm-12">
-    <div class="d-flex justify-content-center input-group mt-3 ">
-      <form action="{% url 'stockroom:stock_add_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.quantity.label }}</div>
-          <div class="">{{ stock_form.quantity }}</div>
-          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_rack.label }}</div>
-          <div class="">{{ stock_form.number_rack }}</div>
-          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ stock_form.number_shelf.label }}</div>
-          <div class="">{{ stock_form.number_shelf }}</div>
-          <input type="submit" value="Добавить на склад" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">      
-        </div>
-      </form>
-    </div>
+    </a>
   </div>
-  <div class="col-sm-12">
-    <div class="d-flex justify-content-center input-group mt-3 ">
-      <form action="{% url 'stockroom:move_device' device.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ move_form.workplace.label }}</div>
-          <div class="">{{ move_form.workplace }}</div>
-          <input type="submit" value="Перемещение" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
-        </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        {{ move_form.media.js }}
-      </form>
-    </div>
-  </div>
-  <div class="col-sm-12">
-    {% this_device_history device.id %}
-  </div>
-</div>
-<div class="row g-2">
-  <div class="col-sm-6">
-    {% if device.consumable.id %}
-      <div class="d-flex justify-content-center input-group mt-3">
-        <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
+  {% load history_tags %}
+  <div class="row g-1">
+    <div class="col-sm-12">
+      <div class="d-flex justify-content-center input-group mt-1 ">
+        <form action="{% url 'stockroom:stock_add_device' device.id %}" class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+              method="post">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
-            <div class="">{{ consumable_form.quantity }}</div>
             <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              consumable_form.note.label }}
+              stock_form.quantity.label }}
             </div>
-            <div class="">{{ consumable_form.note }}</div>
-            <input type="submit" value="Установить расходник" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+            <div class="">{{ stock_form.quantity }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
+              stock_form.number_rack.label }}
+            </div>
+            <div class="">{{ stock_form.number_rack }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
+              stock_form.number_shelf.label }}
+            </div>
+            <div class="">{{ stock_form.number_shelf }}</div>
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                   value="Добавить на склад">
           </div>
         </form>
       </div>
-    {%endif%}
-    {% this_device_con_history device.id %}
-  </div>
-  <div class="col-sm-6">
-    {% if device.accessories.id %}
-      <div class="d-flex justify-content-center input-group mt-3">
-        <form action="{% url 'stockroom:device_add_accessories' device.accessories.id %}" method="post" enctype="multipart/form-data" class="mt-1 d-flex align-items-center justify-content-center">
+    </div>
+    <div class="col-sm-12">
+      <div class="d-flex justify-content-center input-group mt-1 ">
+        <form action="{% url 'stockroom:move_device' device.id %}" class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+              method="post">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ consumable_form.quantity.label }}</div>
-            <div class="">{{ consumable_form.quantity }}</div>
             <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">{{
-              consumable_form.note.label }}
+              move_form.workplace.label }}
+            </div>
+            <div class="">{{ move_form.workplace }}</div>
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit" value="Перемещение">
+          </div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+          {{ move_form.media.js }}
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      {% this_device_history device.id %}
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-sm-6">
+      {% if device.consumable.id %}
+      <div class="d-flex justify-content-center input-group mt-3">
+        <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}"
+              class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+              method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ consumable_form.quantity.label }}
+            </div>
+            <div class="">{{ consumable_form.quantity }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ consumable_form.note.label }}
             </div>
             <div class="">{{ consumable_form.note }}</div>
-            <input type="submit" value="Установить комплектующее" class="btn btn-lg btn-outline-dark bg-gradient input-group-text ">
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                   value="Установить расходник">
           </div>
         </form>
       </div>
-    {%endif%}
-    {% this_device_acc_history device.id %}
+      {%endif%}
+      {% this_device_con_history device.id %}
+    </div>
+    <div class="col-sm-6">
+      {% if device.accessories.id %}
+      <div class="d-flex justify-content-center input-group mt-3">
+        <form action="{% url 'stockroom:device_add_accessories' device.accessories.id %}"
+              class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+              method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ consumable_form.quantity.label }}
+            </div>
+            <div class="">{{ consumable_form.quantity }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ consumable_form.note.label }}
+            </div>
+            <div class="">{{ consumable_form.note }}</div>
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                   value="Установить комплектующее">
+          </div>
+        </form>
+      </div>
+      {%endif%}
+      {% this_device_acc_history device.id %}
+    </div>
   </div>
+</div>
+</div>
 </div>
 
 
 {% endblock %}
-
