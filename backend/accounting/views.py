@@ -31,13 +31,13 @@ class AccountingView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Accounting
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        acn_cat = cache.get('acn_cat')
-        if not acn_cat:
-            acn_cat = Categories.objects.all()
-            cache.set('acn_cat', acn_cat, 300)
+        accu_cat = cache.get('acn_cat')
+        if not accu_cat:
+            accu_cat = Categories.objects.all()
+            cache.set('accu_cat', accu_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=acn_cat)
+                                      add='accounting:new-accounting', menu_categories=accu_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -64,13 +64,13 @@ class AccountingCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = Accounting.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        acn_cat = cache.get('acn_cat')
-        if not acn_cat:
+        accu_cat = cache.get('acn_cat')
+        if not accu_cat:
             acn_cat = Categories.objects.all()
-            cache.set('acn_cat', acn_cat, 300)
+            cache.set('accu_cat', accu_cat, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=acn_cat)
+                                      add='accounting:new-accounting', menu_categories=accu_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

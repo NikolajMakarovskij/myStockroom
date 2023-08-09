@@ -41,10 +41,6 @@ class Categories(ModelMixin, models.Model):
     def get_delete_url(self):
         return reverse('accounting:categories-delete', args=[str(self.id)])
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Categories, self).save(*args, **kwargs)
-
     class Meta:
         verbose_name = 'Группа расходников'
         verbose_name_plural = 'Группы расходников'
@@ -126,14 +122,6 @@ class Accounting(ModelMixin, models.Model):
     def get_cost_all(self):
         cost_all = self.cost * self.quantity
         return cost_all
-
-    def get_difference_consumable(self):
-        difference = self.consumable.quantity - self.quantity
-        return difference
-
-    def get_difference_accessories(self):
-        difference = self.accessories.quantity - self.quantity
-        return difference
 
     class Meta:
         verbose_name = 'На балансе'

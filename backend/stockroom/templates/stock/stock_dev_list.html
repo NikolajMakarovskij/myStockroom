@@ -79,10 +79,10 @@
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
         <td>{{ each.dateAddToStock }}</td>
-        {% if each.stock_model.note %}
-          <td>{{ each.stock_model.note }}</td>
+        {% if not each.stock_model.note %}
+          <td></td>
         {% else %}
-        <td></td>
+          <td>{{ each.stock_model.note }}</td>
         {% endif %}
         <td>
           <a class="noDecoration" href="{% url 'decommission:add_decom' each.stock_model.id %}">

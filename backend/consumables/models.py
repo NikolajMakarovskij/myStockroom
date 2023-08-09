@@ -115,9 +115,12 @@ class Consumables(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('consumables:consumables-detail', args=[str(self.id)])
 
-    def get_cost_all(self):
-        cost_all = self.cost * self.quantity
-        return cost_all
+    def get_difference(self) -> int:
+        quantity_all = 0
+        for each in self.consumable.all():
+            quantity_all += each.quantity
+        difference = self.quantity - quantity_all
+        return difference
 
     class Meta:
         verbose_name = 'Расходник'
@@ -234,6 +237,13 @@ class Accessories(ModelMixin, models.Model):
 
     def get_absolute_url(self):
         return reverse('consumables:accessories-detail', args=[str(self.id)])
+
+    def get_difference(self) -> int:
+        quantity_all = 0
+        for each in self.accessories.all():
+            quantity_all += each.quantity
+        difference = self.quantity - quantity_all
+        return difference
 
     class Meta:
         verbose_name = 'Комплектующее'
