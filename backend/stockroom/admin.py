@@ -1,8 +1,8 @@
 from django.contrib import admin
 
+from core.utils import ExportAdmin
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from stockroom.models.consumables import StockCat, History, Stockroom
-from core.utils import ExportAdmin
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 
 
@@ -11,7 +11,7 @@ class StockAdmin(ExportAdmin, admin.ModelAdmin):
     model = Stockroom
     list_display = ['stock_model']
     list_filter = ['categories']
-    search_fields = ['__all__']
+    search_fields = ['stock_model__name']
     actions = [ExportAdmin.export_to_csv]
 
 
@@ -62,7 +62,7 @@ class StockAccAdmin(ExportAdmin, admin.ModelAdmin):
     model = StockAcc
     list_display = ['stock_model']
     list_filter = ['categories']
-    search_fields = ['__all__']
+    search_fields = ['stock_model__name']
     actions = [ExportAdmin.export_to_csv]
 
 
@@ -112,7 +112,7 @@ class StockDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = StockDev
     list_display = ['stock_model']
     list_filter = ['categories']
-    search_fields = ['__all__']
+    search_fields = ['stock_model__name']
     actions = [ExportAdmin.export_to_csv]
 
 
