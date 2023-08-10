@@ -1,13 +1,15 @@
 from django.contrib import admin
-from .models import Consumables, Categories, AccCat, Accessories
+
 from core.utils import ExportAdmin
+from .models import Consumables, Categories, AccCat, Accessories
 
 
 class ConsumablesAdmin(ExportAdmin, admin.ModelAdmin):
     model = Consumables
-    list_display = ['name', 'categories', 'manufacturer','quantity', 'serial', 'invent', 'description', 'note']
+    list_display = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
-    search_fields = ['name', 'categories', 'manufacturer','quantity', 'serial', 'invent', 'description', 'note']
+    search_fields = ['name', 'categories__name', 'manufacturer__name', 'quantity', 'serial', 'invent', 'description',
+                     'note']
     actions = [ExportAdmin.export_to_csv]
 
 
@@ -29,7 +31,8 @@ class AccessoriesAdmin(ExportAdmin, admin.ModelAdmin):
     model = Accessories
     list_display = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
-    search_fields = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
+    search_fields = ['name', 'categories__name', 'manufacturer__name', 'quantity', 'serial', 'invent', 'description',
+                     'note']
     actions = [ExportAdmin.export_to_csv]
 
 
