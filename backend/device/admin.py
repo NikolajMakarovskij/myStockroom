@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Device, DeviceCat
+
 from core.utils import ExportAdmin
+from .models import Device, DeviceCat
 
 
 class DeviceAdmin(ExportAdmin, admin.ModelAdmin):
@@ -8,8 +9,8 @@ class DeviceAdmin(ExportAdmin, admin.ModelAdmin):
     list_display = ['name', 'description', 'categories', 'manufacturer',
                     'workplace', 'consumable', 'accessories', 'quantity', 'note']
     list_filter = ['manufacturer', 'workplace__room__floor', 'workplace__room__building']
-    search_fields = ['name', 'description', 'manufacturer', 'serial', 'invent',
-                     'workplace', 'consumable', 'accessories', 'quantity', 'note']
+    search_fields = ['name', 'description', 'manufacturer__name', 'serial', 'invent',
+                     'workplace__name', 'consumable__name', 'accessories__name', 'quantity', 'note']
     actions = [ExportAdmin.export_to_csv]
 
 
