@@ -1,6 +1,7 @@
 from django import forms
-from core.utils import BaseModelSelect2WidgetMixin
+
 from consumables.models import Consumables, Accessories
+from core.utils import BaseModelSelect2WidgetMixin
 from counterparty.models import Manufacturer
 from .models import Device, DeviceCat
 
@@ -34,7 +35,6 @@ class ConWidget(BaseModelSelect2WidgetMixin):
         "categories__name__icontains",
         "description__icontains",
         "note__icontains",
-        "buhCode__icontains",
         "manufacturer__name__icontains",
         "manufacturer__country__icontains",
         "manufacturer__production__icontains",
@@ -50,7 +50,6 @@ class AccWidget(BaseModelSelect2WidgetMixin):
         "categories__name__icontains",
         "description__icontains",
         "note__icontains",
-        "buhCode__icontains",
         "manufacturer__name__icontains",
         "manufacturer__country__icontains",
         "manufacturer__production__icontains",
