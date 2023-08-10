@@ -35,7 +35,6 @@ class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
         'categories__name',
         'quantity',
         'dateInstall',
-        'room'
         ]
     actions = [ExportAdmin.export_to_csv]
 
