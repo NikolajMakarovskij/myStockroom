@@ -32,7 +32,7 @@ class HistoryAdmin(ExportAdmin, admin.ModelAdmin):
     list_filter = ['categories']
     search_fields = [
         'stock_model',
-        'categories',
+        'categories__name',
         'quantity',
         'dateInstall',
         'room'
@@ -83,7 +83,7 @@ class HistoryAccAdmin(ExportAdmin, admin.ModelAdmin):
     list_filter = ['categories']
     search_fields = [
         'stock_model',
-        'categories',
+        'categories__name',
         'quantity',
         'dateInstall'
         ]
@@ -133,7 +133,7 @@ class HistoryDevAdmin(ExportAdmin, admin.ModelAdmin):
     search_fields = [
         'stock_model',
         'stock_model_id',
-        'categories',
+        'categories__name',
         'quantity',
         'dateInstall'
         ]
