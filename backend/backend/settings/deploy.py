@@ -5,7 +5,7 @@ Django settings for deploy.
 
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = list(os.environ.get('DJANGO_ALLOWED_HOSTS').split(' '))
@@ -118,9 +118,9 @@ DATE_FORMAT = 'd.m.Y'
 # start file settings
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static').replace('\\', '/')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 
 MEDIA_URL = 'media/'
 
