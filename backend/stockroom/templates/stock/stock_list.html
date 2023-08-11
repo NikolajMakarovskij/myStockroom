@@ -65,13 +65,20 @@
         {% for each in stockroom_list %}
           <tr>
             <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-            <td >
+            {% if not each.stock_model.device.all %}
+            <td></td>
+            {% else %}
+            <td>
+
               {% for dev in each.stock_model.device.all %}
+              <div>
                 <a class="noDecoration" href="{{ dev.get_absolute_url }}">
-                  {{ dev.name }}
+                  {{ dev.name }}: {{ dev.workplace.name }}
                 </a>
+              </div>
               {% endfor %}
             </td>
+            {% endif %}
             <td>{{ each.rack }}</td>
             <td>{{ each.shelf }}</td>
             <td>{{ each.stock_model.quantity }}</td>

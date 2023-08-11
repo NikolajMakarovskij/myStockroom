@@ -127,4 +127,4 @@ class Accounting(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'На балансе'
         verbose_name_plural = 'На балансе'
-        ordering = ['account', 'name']
+        ordering = ['-account', 'name']
