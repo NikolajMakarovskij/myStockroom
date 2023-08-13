@@ -1,5 +1,5 @@
-from django.urls import path
-
+from django.urls import path, include
+from .routers import router
 from stockroom.views.accessories import StockAccView, StockAccCategoriesView, stock_add_accessories, \
     stock_remove_accessories, device_add_accessories, HistoryAccView, HistoryAccCategoriesView
 from stockroom.views.devices import StockDevView, StockDevCategoriesView, stock_add_device, stock_remove_device, \
@@ -10,6 +10,7 @@ from stockroom.views.consumables import StockroomView, StockroomCategoriesView, 
 
 
 urlpatterns = [
+    path('api/v1/', include(router.urls)),
     path('', StockroomIndexView.as_view(), name='stock_index'),
 
     # Consumables
