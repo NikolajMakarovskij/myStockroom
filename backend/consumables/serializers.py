@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Categories, Consumables, AccCat, Accessories
 
 
@@ -12,6 +13,9 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
 
 
 class ConsumablesModelSerializer(serializers.ModelSerializer):
+    device = serializers.StringRelatedField(many=True)
+    consumable = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Consumables
         fields = '__all__'

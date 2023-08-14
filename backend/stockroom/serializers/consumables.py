@@ -1,6 +1,19 @@
 from rest_framework import serializers
 
+from consumables.models import Consumables
 from ..models.consumables import Stockroom, StockCat, History
+
+
+class StockConSerializer(serializers.ModelSerializer):
+    device = serializers.StringRelatedField(many=True)
+    consumable = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Consumables
+        fields = '__all__'
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
 
 
 class StockCatModelSerializer(serializers.ModelSerializer):
@@ -13,11 +26,17 @@ class StockCatModelSerializer(serializers.ModelSerializer):
 
 
 class StockModelSerializer(serializers.ModelSerializer):
-    stock_model = ConsumablesModelSerializer(many=True, read_only=True)
+    categories = StockCatModelSerializer()
+    stock_model = StockConSerializer()
 
     class Meta:
         model = Stockroom
-        fields = ['stock_model']
+        fields = ["stock_model",
+                  "dateAddToStock",
+                  "dateInstall",
+                  "rack",
+                  "shelf",
+                  "categories"]
         extra_kwargs = {
             'id': {'read_only': True}
         }
