@@ -38,7 +38,7 @@ class Room(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Кабинет'
         verbose_name_plural = 'Кабинеты'
-        ordering = ["name"]
+        ordering = ['name', 'building']
 
 
 class Workplace(ModelMixin, models.Model):
@@ -74,4 +74,4 @@ class Workplace(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Рабочее место'
         verbose_name_plural = 'Рабочие места'
-        ordering = ["room", ]
+        ordering = ['room__building', 'name']
