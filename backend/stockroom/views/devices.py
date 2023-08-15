@@ -35,6 +35,8 @@ class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
             query = ''
         object_list = StockDev.objects.filter(
             Q(stock_model__name__icontains=query) |
+            Q(stock_model__description__icontains=query) |
+            Q(stock_model__note__icontains=query) |
             Q(stock_model__manufacturer__name__icontains=query) |
             Q(stock_model__categories__name__icontains=query) |
             Q(stock_model__quantity__icontains=query) |

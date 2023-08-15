@@ -40,6 +40,7 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = Stockroom.objects.filter(
             Q(stock_model__name__icontains=query) |
             Q(stock_model__description__icontains=query) |
+            Q(stock_model__note__icontains=query) |
             Q(stock_model__device__name__icontains=query) |
             Q(stock_model__device__workplace__name__icontains=query) |
             Q(stock_model__device__workplace__room__name__icontains=query) |
