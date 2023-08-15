@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from core.utils import DataMixin, FormMessageMixin, menu
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .serializers import WorkplaceModelSerializer, RoomModelSerializer
 
 
@@ -51,6 +51,7 @@ class WorkplaceListView(LoginRequiredMixin, DataMixin, generic.ListView):
 class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceModelSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class WorkplaceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
@@ -135,6 +136,7 @@ class RoomListView(LoginRequiredMixin, DataMixin, generic.ListView):
 class RoomRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class RoomDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):

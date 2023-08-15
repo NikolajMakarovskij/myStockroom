@@ -60,6 +60,7 @@ class Workplace(ModelMixin, models.Model):
         'Room',
         on_delete=models.SET_NULL,
         blank=True, null=True,
+        related_name='workplace',
         help_text="Выберете номер кабинета",
         verbose_name="Номер кабинета"
     )
