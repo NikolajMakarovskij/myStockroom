@@ -5,11 +5,13 @@ from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from django.views.decorators.http import require_POST
+from rest_framework import viewsets
 
 from consumables.models import Consumables
 from core.utils import DataMixin
 from stockroom.forms import StockAddForm, ConsumableInstallForm
 from stockroom.models.consumables import Stockroom, History, StockCat
+from stockroom.serializers.consumables import StockModelSerializer
 from stockroom.stock.stock import ConStock
 
 
@@ -38,9 +40,11 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
         object_list = Stockroom.objects.filter(
             Q(stock_model__name__icontains=query) |
             Q(stock_model__description__icontains=query) |
+            Q(stock_model__note__icontains=query) |
             Q(stock_model__device__name__icontains=query) |
             Q(stock_model__device__workplace__name__icontains=query) |
             Q(stock_model__device__workplace__room__name__icontains=query) |
+            Q(stock_model__device__workplace__room__building__icontains=query) |
             Q(stock_model__manufacturer__name__icontains=query) |
             Q(stock_model__categories__name__icontains=query) |
             Q(stock_model__quantity__icontains=query) |
@@ -48,7 +52,7 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__invent__icontains=query) |
             Q(dateInstall__icontains=query) |
             Q(dateAddToStock__icontains=query)
-        ).select_related('stock_model', 'stock_model__categories').prefetch_related('stock_model__device')
+        ).select_related('stock_model', 'stock_model__categories')
         return object_list
 
 
@@ -73,8 +77,13 @@ class StockroomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
     def get_queryset(self):
         object_list = Stockroom.objects.filter(
             categories__slug=self.kwargs['category_slug']).select_related(
-            'stock_model', 'stock_model__categories').prefetch_related('stock_model__device')
+            'stock_model', 'stock_model__categories')
         return object_list
+
+
+class StockRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = Stockroom.objects.all()
+    serializer_class = StockModelSerializer
 
 
 # History

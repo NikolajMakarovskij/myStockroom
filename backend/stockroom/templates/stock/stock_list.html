@@ -64,14 +64,24 @@
       <tbody style="text-align:center">
         {% for each in stockroom_list %}
           <tr>
-            <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
-            <td >
-              {% for dev in each.stock_model.device.all %}
-                <a class="noDecoration" href="{{ dev.get_absolute_url }}">
-                  {{ dev.name }}
-                </a>
-              {% endfor %}
+            <td>
+              <a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a>
             </td>
+              {% if not each.stock_model.device_con.all %}
+                <td></td>
+              {% else %}
+                <td>
+                  <table class="table table-sm table-hover " >
+                    <tbody style="text-align:center">
+                      {% for dev in each.stock_model.device_con.all %}
+                          <a class="noDecoration" href="{{ dev.get_absolute_url }}">
+                            {{ dev.name }}
+                          </a>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </td>
+              {% endif %}
             <td>{{ each.rack }}</td>
             <td>{{ each.shelf }}</td>
             <td>{{ each.stock_model.quantity }}</td>

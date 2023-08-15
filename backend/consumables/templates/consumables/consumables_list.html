@@ -65,6 +65,7 @@
           {% else %}
             <td></td>
           {% endif %}
+
           <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
           <td>{{ each.quantity }}</td>
           <td>{{ each.get_difference }}</td>

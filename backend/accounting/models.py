@@ -122,9 +122,9 @@ class Accounting(ModelMixin, models.Model):
 
     def get_cost_all(self):
         cost_all = self.cost * self.quantity
-        return cost_all
+        return "{:.2f}".cost_all
 
     class Meta:
         verbose_name = 'На балансе'
         verbose_name_plural = 'На балансе'
-        ordering = ['account', 'name']
+        ordering = ['-account', 'name']
