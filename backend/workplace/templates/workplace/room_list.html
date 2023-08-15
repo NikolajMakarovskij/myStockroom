@@ -10,7 +10,8 @@
     {%include 'search/search.html' %}
 <!--block content-->
 {% if room_list %}
-    <table class="table align-middle table-hover" style="text-align:center">
+    <table class="table align-middle table-hover caption-top" style="text-align:center">
+      <caption>Кабинетов на странице: {{room_list.count}}</caption>
       <thead>
         <tr>
           <th scope="col">Кабинет</th>
