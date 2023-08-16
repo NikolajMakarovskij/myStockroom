@@ -145,4 +145,4 @@ class Device(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Устройства'
         verbose_name_plural = 'Устройства'
-        ordering = ['workplace__room__building', 'workplace__room__name']
+        ordering = ['workplace__room__building', 'workplace__name']
