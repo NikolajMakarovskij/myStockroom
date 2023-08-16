@@ -1,8 +1,10 @@
+import uuid
+
 from django.db import models
 from django.urls import reverse
-from counterparty.models import Manufacturer
+
 from core.utils import ModelMixin
-import uuid
+from counterparty.models import Manufacturer
 
 
 # Расходники
@@ -49,7 +51,7 @@ class Consumables(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=50,
+        max_length=150,
         help_text="Введите название",
         verbose_name="Название"
     )
@@ -172,7 +174,7 @@ class Accessories(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=50,
+        max_length=150,
         help_text="Введите название",
         verbose_name="Название"
     )

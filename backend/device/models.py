@@ -52,7 +52,7 @@ class Device(ModelMixin, models.Model):
         help_text="ID"
     )
     name = models.CharField(
-        max_length=50,
+        max_length=150,
         help_text="Введите название устройства",
         verbose_name="Название"
     )
