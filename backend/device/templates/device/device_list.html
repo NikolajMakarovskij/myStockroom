@@ -74,7 +74,7 @@
         <td>
           {% for each in device.workplace.employee.all %}
             <a class="noDecoration" href="{{ each.get_absolute_url }}">
-              {{ each.name }} {{ each.surname }} {{ each.family }}
+                {{ each.family }} {{ each.name }} {{ each.surname }}
             </a>
           {% endfor %}
         </td>

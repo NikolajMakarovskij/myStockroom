@@ -68,7 +68,7 @@
         <td>
           {% for dev in each.stock_model.device.all %}
             <a class="noDecoration" href="{{ dev.get_absolute_url }}">
-              {{ dev.name }}
+              | {{ dev.name }}
             </a>
           {% endfor %}
         </td>
