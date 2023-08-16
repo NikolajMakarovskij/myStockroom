@@ -100,7 +100,7 @@ class HistoryDev(models.Model):
         )
     stock_model = models.CharField(
         blank=True, default=0,
-        max_length=50,
+        max_length=150,
         verbose_name="Устройства"
         )
     stock_model_id = models.CharField(

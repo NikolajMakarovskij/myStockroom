@@ -100,7 +100,7 @@ class HistoryAcc(models.Model):
         )
     stock_model = models.CharField(
         blank=True, default=0,
-        max_length=50,
+        max_length=150,
         verbose_name="Комплектующие"
         )
     stock_model_id = models.CharField(
@@ -110,7 +110,7 @@ class HistoryAcc(models.Model):
         )
     device = models.CharField(
         blank=True, null=True,
-        max_length=50,
+        max_length=150,
         verbose_name="Устройства"
         )
     deviceId = models.CharField(
