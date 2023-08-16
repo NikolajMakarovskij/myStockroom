@@ -35,6 +35,7 @@ class DataMixin:
         context = kwargs
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')
+        context['obj_list_count'] = self.get_queryset().count()
         return context
 
 

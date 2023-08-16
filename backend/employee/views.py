@@ -1,20 +1,21 @@
-from django.urls import reverse_lazy
-from .forms import EmployeeForm, PostForm, DepartamentForm
-from .models import Employee, Departament, Post
-from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from core.utils import DataMixin, FormMessageMixin
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from core.utils import DataMixin, FormMessageMixin, menu
+from .forms import EmployeeForm, PostForm, DepartamentForm
+from .models import Employee, Departament, Post
 
 
-class IndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'employee/employee_index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Сотрудники, Должности, Отделы")
-        context = dict(list(context.items()) + list(c_def.items()))
+        context['title'] = 'Сотрудники, Должности, Отделы'
+        context['menu'] = menu
         return context
 
 

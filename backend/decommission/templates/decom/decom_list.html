@@ -45,8 +45,8 @@
       </thead>
     </table>
   {% else %}
-    <table class="table align-middle table-hover" style="text-align:center">
-      <tr>Устройств на странице: {{decommission_list.count}}</tr>
+      <table class="table align-middle table-hover caption-top" style="text-align:center">
+        <caption>Устройств на странице: {{decommission_list.count}} из {{obj_list_count}}</caption>
       <thead>
         <tr>
           <th scope="col">Устройства</th>

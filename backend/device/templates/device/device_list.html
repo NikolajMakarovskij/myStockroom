@@ -36,10 +36,8 @@
   </nav>
 {% endif %}
 {% if device_list %}
-    <table class="table align-middle table-hover" style="text-align:center">
-      <tr>
-        Найдено устройств: {{device_list.count}}
-      <tr>
+      <table class="table align-middle table-hover caption-top" style="text-align:center">
+        <caption>Устройств на странице: {{device_list.count}} из {{obj_list_count}}</caption>
       <thead>
         <tr>
           <th scope="col">Здание</th>
