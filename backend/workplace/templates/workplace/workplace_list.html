@@ -10,7 +10,8 @@
       {%include 'search/search.html' %}
 <!--block content-->
 {% if workplace_list %}
-      <table class="table align-middle table-hover" style="text-align:center">
+      <table class="table align-middle table-hover caption-top" style="text-align:center">
+      <caption>Рабочих мест на странице: {{workplace_list.count}}</caption>
         <thead>
           <tr>
             <th scope="col">Раб. место</th>
