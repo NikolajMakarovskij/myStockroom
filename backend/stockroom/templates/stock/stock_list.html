@@ -67,13 +67,13 @@
             <td>
               <a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a>
             </td>
-              {% if not each.stock_model.device_con.all %}
+            {% if not each.stock_model.device.all %}
                 <td></td>
               {% else %}
                 <td>
                   <table class="table table-sm table-hover " >
                     <tbody style="text-align:center">
-                      {% for dev in each.stock_model.device_con.all %}
+                    {% for dev in each.stock_model.device.all %}
                           <a class="noDecoration" href="{{ dev.get_absolute_url }}">
                             {{ dev.name }}
                           </a>

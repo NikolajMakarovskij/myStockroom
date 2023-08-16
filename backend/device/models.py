@@ -1,10 +1,12 @@
+import uuid
+
 from django.db import models
 from django.urls import reverse
-from workplace.models import Workplace
+
 from consumables.models import Consumables, Accessories
-from counterparty.models import Manufacturer
 from core.utils import ModelMixin
-import uuid
+from counterparty.models import Manufacturer
+from workplace.models import Workplace
 
 
 class DeviceCat(ModelMixin, models.Model):
@@ -109,7 +111,7 @@ class Device(ModelMixin, models.Model):
     consumable = models.ForeignKey(
         Consumables,
         blank=True, null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='device',
         help_text="Укажите расходник",
         verbose_name="Расходник"
@@ -117,7 +119,7 @@ class Device(ModelMixin, models.Model):
     accessories = models.ForeignKey(
         Accessories,
         blank=True, null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='device',
         help_text="Укажите комплектующее",
         verbose_name="Комплектующее"
