@@ -19,14 +19,14 @@ class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
     model = StockAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        history = HistoryAcc.objects.all()[:5]
         cat_acc = cache.get('cat_acc')
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set('cat_acc', cat_acc, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад комплектующих", searchlink='stockroom:stock_acc_search',
-                                      menu_categories=cat_acc, historyacc_list=history)
+                                      menu_categories=cat_acc,
+                                      )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -64,7 +64,7 @@ class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             cache.set('cat_acc', cat_acc, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад комплектующих", searchlink='stockroom:stock_acc_search',
-                                      menu_categories=cat_acc)
+                                      menu_categories=cat_acc, )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

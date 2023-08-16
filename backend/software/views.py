@@ -1,20 +1,21 @@
-from django.urls import reverse_lazy
-from .forms import SoftwareForm, OSForm
-from .models import Software, Os
-from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from core.utils import DataMixin, FormMessageMixin
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from core.utils import menu, DataMixin, FormMessageMixin
+from .forms import SoftwareForm, OSForm
+from .models import Software, Os
 
 
-class IndexView(LoginRequiredMixin, DataMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'software/soft_index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="СОФТ, ОС")
-        context = dict(list(context.items()) + list(c_def.items()))
+        context['title'] = 'СОФТ, ОС'
+        context['menu'] = menu
         return context
 
 

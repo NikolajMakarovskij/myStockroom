@@ -1,12 +1,13 @@
-from django.urls import reverse_lazy
-from .forms import RoomForm, WorkplaceForm
-from .models import Room, Workplace
-from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from core.utils import DataMixin, FormMessageMixin, menu
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets, permissions
+
+from core.utils import DataMixin, FormMessageMixin, menu
+from .forms import RoomForm, WorkplaceForm
+from .models import Room, Workplace
 from .serializers import WorkplaceModelSerializer, RoomModelSerializer
 
 
@@ -31,7 +32,7 @@ class WorkplaceListView(LoginRequiredMixin, DataMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Рабочие места", searchlink='workplace:workplace_search',
-                                      add='workplace:new-workplace')
+                                      add='workplace:new-workplace', )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -117,7 +118,8 @@ class RoomListView(LoginRequiredMixin, DataMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room_search', add='workplace:new-room', )
+        c_def = self.get_user_context(title="Кабинеты", searchlink='workplace:room_search', add='workplace:new-room',
+                                      )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

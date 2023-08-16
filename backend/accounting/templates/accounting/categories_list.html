@@ -18,7 +18,8 @@
       </thead>
     </table>
   {% else %}
-    <table class="table align-middle table-hover" style="text-align:center">
+      <table class="table align-middle table-hover caption-top" style="text-align:center">
+        <caption>Категорий на странице: {{categories_list.count}} из {{obj_list_count}}</caption>
       <thead>
         <tr>
           <th scope="col">Категория</th>

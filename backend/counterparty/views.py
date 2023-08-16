@@ -1,21 +1,22 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from core.utils import DataMixin, FormMessageMixin, menu
 from .forms import ManufacturerForm
 from .models import Manufacturer
-from django.views import generic
-from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from core.utils import DataMixin, FormMessageMixin
-from django.urls import reverse_lazy
 
 
 # Контрагенты
-class CounterpartyView(LoginRequiredMixin, DataMixin, generic.TemplateView):
+class CounterpartyView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'counterparty/counterparty.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Контрагенты, поставщики")
-        context = dict(list(context.items()) + list(c_def.items()))
+        context['title'] = 'Контрагенты, поставщики'
+        context['menu'] = menu
         return context
 
 

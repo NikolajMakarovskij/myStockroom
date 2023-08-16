@@ -25,7 +25,7 @@ class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
             cache.set('cat_dev', cat_dev, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search',
-                                      menu_categories=cat_dev)
+                                      menu_categories=cat_dev, )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -61,7 +61,7 @@ class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
             cache.set('cat_dev', cat_dev, 300)
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Склад устройств", searchlink='stockroom:stock_dev_search',
-                                      menu_categories=cat_dev, )
+                                      menu_categories=cat_dev)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

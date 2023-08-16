@@ -29,7 +29,6 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
             title="Склад расходников",
             searchlink='stockroom:stock_search',
             menu_categories=stock_cat,
-            obj_list_count=self.get_queryset().count()
         )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
@@ -70,7 +69,7 @@ class StockroomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         c_def = self.get_user_context(
             title="Склад расходников",
             searchlink='stockroom:stock_search',
-            menu_categories=stock_cat
+            menu_categories=stock_cat,
         )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
