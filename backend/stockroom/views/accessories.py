@@ -49,7 +49,7 @@ class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__invent__icontains=query) |
             Q(dateInstall__icontains=query) |
             Q(dateAddToStock__icontains=query)
-        ).select_related('stock_model','stock_model__categories',).prefetch_related('stock_model__device')
+        ).select_related('stock_model', 'stock_model__categories', ).prefetch_related('stock_model__device').distinct()
         return object_list
 
 
@@ -70,7 +70,7 @@ class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
     def get_queryset(self):
         object_list = StockAcc.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'stock_model','stock_model__categories',).prefetch_related('stock_model__device')
+            'stock_model', 'stock_model__categories', ).prefetch_related('stock_model__device').distinct()
         return object_list
 
 
