@@ -41,7 +41,8 @@ def test_stock_create_history():
     quantity = 1
     username = 'admin'
     status_choice = 'Приход'
-    ConStock.create_history(ConStock, consumable_id, device_id, quantity, username, status_choice)
+    note = 'Примечание'
+    ConStock.create_history(ConStock, consumable_id, device_id, quantity, username, note, status_choice)
     test_history = History.objects.get(stock_model='my_consumable')
 
     assert History.objects.count() == 1
@@ -52,6 +53,7 @@ def test_stock_create_history():
     assert test_history.dateInstall == datetime.date.today()
     assert test_history.user == 'admin'
     assert test_history.status == 'Приход'
+    assert test_history.note == 'Примечание'
 
 
 @pytest.mark.django_db

@@ -47,7 +47,7 @@ class BaseStock(object):
         return category
 
     def create_history(self, model_id: str, device_id: str,
-                       quantity: int, username: str, status_choice: str
+                       quantity: int, username: str, note: str, status_choice: str
                        ) -> dict:
         """Creating an entry in the history of stock_model"""
 
@@ -70,6 +70,7 @@ class BaseStock(object):
             dateInstall=datetime.date.today(),
             categories=category,
             user=username,
+            note=note,
             status=status_choice
         )
         return history
@@ -103,7 +104,7 @@ class BaseStock(object):
                 shelf=int(number_shelf),
             )
             model_instance.update(quantity=int(quantity))
-        self.create_history(self, model_id, device_id, quantity, username, status_choice='Приход')
+        self.create_history(self, model_id, device_id, quantity, username, note=None, status_choice='Приход')
 
     def remove_from_stock(self, model_id: str, quantity=0, username=None) -> None:
         """
@@ -113,8 +114,7 @@ class BaseStock(object):
         stock_model = self.stock_model.objects.filter(stock_model=model_id)
         if stock_model:
             stock_model.delete()
-            self.create_history(self, model_id, device_id, quantity,
-                                username, status_choice='Удаление')
+            self.create_history(self, model_id, device_id, quantity, username, note=None, status_choice='Удаление')
 
     def add_to_device(self, model_id: str, device: dict, quantity: int = 1, note: str = None,
                       username: str = None) -> None:
@@ -125,18 +125,23 @@ class BaseStock(object):
         model_add = self.base_model.objects.get(id=model_id)
         model_quantity = int(str(model_add.quantity))
         model_note = model_add.note
+        history_note = None
         model_quantity -= quantity
+
         if not note:
             model_note
+            history_note
         else:
             if model_note is None:
                 model_note = f"{note}"
             else:
                 model_note = f"{model_note} {note}"
+            history_note = f"{note}"
+
 
         self.base_model.objects.filter(id=model_id).update(
             quantity=model_quantity,
             note=model_note
         )
         self.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
-        self.create_history(self, model_id, device_id, quantity, username, status_choice='Расход')
+        self.create_history(self, model_id, device_id, quantity, username, history_note, status_choice='Расход')

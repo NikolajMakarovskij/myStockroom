@@ -149,6 +149,12 @@ class HistoryAcc(models.Model):
         choices=STATUS_CHOICES,
         default='Расход',
     )
+    note = models.TextField(
+        max_length=1000,
+        blank=True, null=True,
+        help_text="Введите примечание",
+        verbose_name="Примечание"
+    )
 
     class Meta:
         verbose_name = 'История комплектующих'
