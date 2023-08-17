@@ -1,8 +1,10 @@
+import uuid
+
 from django.db import models
 from django.urls import reverse
-from workplace.models import Workplace
-import uuid
+
 from core.utils import ModelMixin
+from workplace.models import Workplace
 
 
 class Employee(ModelMixin, models.Model):
@@ -62,7 +64,7 @@ class Employee(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
-        ordering = ["name", "-workplace"]
+        ordering = ["post__departament__name", "workplace__name"]
 
 
 class Departament(ModelMixin, models.Model):
