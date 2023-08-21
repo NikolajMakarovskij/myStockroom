@@ -5,10 +5,9 @@ from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from django.views.decorators.http import require_POST
-
 from core.utils import DataMixin
 from device.models import Device
-from stockroom.forms import StockAddForm, MoveDeviceForm
+from stockroom.forms import StockAddForm, MoveDeviceForm, AddHistoryDeviceForm
 from stockroom.models.devices import StockDev, HistoryDev, CategoryDev
 from stockroom.stock.stock import DevStock
 
@@ -175,11 +174,45 @@ def move_device_from_stock(request, device_id):
     if form.is_valid():
         cd = form.cleaned_data
         workplace_ = cd['workplace']
+        note_ = cd['note']
         stock.move_device(
             stock,
             model_id=device.id,
             workplace_id=workplace_.id,
+            note=note_,
             username=username,
+        )
+        messages.add_message(request,
+                             level=messages.SUCCESS,
+                             message=f"Устройство перемещено на рабочее место.",
+                             extra_tags='Успешное списание'
+                             )
+    else:
+        messages.add_message(request,
+                             level=messages.ERROR,
+                             message=f"Не удалось переместить устройство.",
+                             extra_tags='Ошибка формы'
+                             )
+    return redirect('stockroom:stock_dev_list')
+
+
+@require_POST
+def add_history_to_device(request, device_id):
+    username = request.user.username
+    device = get_object_or_404(Device, id=device_id)
+    stock = DevStock
+    form = AddHistoryDeviceForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        note_ = cd['note']
+        stock.create_history_device(
+            stock,
+            model_id=device.id,
+            quantity=0,
+            username=username,
+            status_choice='Обслуживание',
+            note=note_,
+
         )
         messages.add_message(request,
                              level=messages.SUCCESS,

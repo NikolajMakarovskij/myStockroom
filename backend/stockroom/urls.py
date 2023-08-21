@@ -3,7 +3,7 @@ from .routers import router
 from stockroom.views.accessories import StockAccView, StockAccCategoriesView, stock_add_accessories, \
     stock_remove_accessories, device_add_accessories, HistoryAccView, HistoryAccCategoriesView
 from stockroom.views.devices import StockDevView, StockDevCategoriesView, stock_add_device, stock_remove_device, \
-    HistoryDevView, HistoryDevCategoriesView, move_device_from_stock
+    HistoryDevView, HistoryDevCategoriesView, move_device_from_stock, add_history_to_device
 from stockroom.views.index import StockroomIndexView
 from stockroom.views.consumables import StockroomView, StockroomCategoriesView, stock_add_consumable, \
     stock_remove_consumable, device_add_consumable, HistoryView, HistoryCategoriesView
@@ -56,5 +56,6 @@ urlpatterns = [
     path('devices/history/category/<slug:category_slug>', HistoryDevCategoriesView.as_view(),
          name='history_dev_category'),
     path('devices/stockroom/move/<uuid:device_id>/', move_device_from_stock, name='move_device'),
+    path('devices/stockroom/add_history/<uuid:device_id>/', add_history_to_device, name='add_device_history'),
 
 ]
