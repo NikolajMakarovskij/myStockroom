@@ -24,6 +24,7 @@
                         <th scope="col">Количество</th>
                         <th scope="col">Дата</th>
                         <th scope="col">Статус</th>
+                        <th scope="col">Примечание</th>
                         <th scope="col">Пользователь</th>
                         </tr>
                     </thead>
@@ -35,6 +36,11 @@
                         <td>{{ each.quantity }}</td>
                         <td>{{ each.dateInstall }}</td>
                         <td>{{ each.status }}</td>
+                        {% if not each.note %}
+                            <td></td>
+                        {% else %}
+                            <td>{{ each.note }}</td>
+                        {% endif %}
                         <td>{{ each.user }}</td>
                         </tr>
                     {% endfor %}

@@ -73,15 +73,35 @@
         <form action="{% url 'stockroom:move_device' device.id %}"
               class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data" method="post">
           {% csrf_token %}
-          <div class="input-group mb-3">
+          <div class="input-group mb-5">
             <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
               {{ move_form.workplace.label }}
             </div>
             <div class="">{{ move_form.workplace }}</div>
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ move_form.note.label }}
+            </div>
+            <div class="">{{ move_form.note }}</div>
             <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit" value="Перемещение">
           </div>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
           {{ move_form.media.js }}
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="d-flex justify-content-center input-group mt-1 ">
+        <form action="{% url 'stockroom:add_device_history' device.id %}"
+              class="mt-5 d-flex align-items-center justify-content-center" enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+              {{ history_form.note.label }}
+            </div>
+            <div class="">{{ history_form.note }}</div>
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                   value="Добавить историю">
+          </div>
         </form>
       </div>
     </div>

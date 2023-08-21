@@ -40,6 +40,14 @@ class ConsumableInstallForm(forms.Form):
         attrs={'class': 'form-control form-control-lg btn-outline-dark'}))
 
 
+class AddHistoryDeviceForm(forms.Form):
+    """
+    Форма добавления истории устройства. Добавляется в template и DetailView техники
+    """
+    note = forms.CharField(required=False, label='Примечание', widget=forms.TextInput(
+        attrs={'class': 'form-control form-control-lg btn-outline-dark'}))
+
+
 class WorkplaceWidget(BaseModelSelect2WidgetMixin):
     empty_label = "--выбрать--"
     model = Workplace
@@ -55,5 +63,7 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
 class MoveDeviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['workplace']
-        widgets = {'workplace': WorkplaceWidget}
+        fields = ['workplace', 'note']
+        widgets = {'workplace': WorkplaceWidget, 'note': forms.TextInput(
+            attrs={'class': 'js-example-placeholder-single js-states form-control form-control-lg',
+                      'style': 'width:100%'})}

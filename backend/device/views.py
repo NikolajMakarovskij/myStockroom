@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from rest_framework import viewsets
 
 from core.utils import DataMixin, FormMessageMixin
-from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm
+from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm, AddHistoryDeviceForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
 from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
@@ -92,6 +92,7 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         consumable_form = ConsumableInstallForm(self.request.GET or None)
         stock_form = StockAddForm(self.request.GET or None)
         move_form = MoveDeviceForm(self.request.GET or None)
+        history_form = AddHistoryDeviceForm(self.request.GET or None)
         self.request.session['get_device_id'] = str(Device.objects.filter(pk=self.kwargs['pk']).get().id)
         device_cat = cache.get('device_cat')
         if not device_cat:
@@ -106,6 +107,7 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         context['stock_form'] = stock_form
         context['consumable_form'] = consumable_form
         context['move_form'] = move_form
+        context['history_form'] = history_form
         return context
 
 
@@ -221,5 +223,34 @@ class MoveFormView(FormView):
                     stock_form=stock_form,
                     consumable_form=consumable_form,
                     move_form=move_form
+                )
+            )
+
+
+class AddHistoryFormView(FormView):
+    form_class = AddHistoryDeviceForm
+    template_name = 'device/device_detail.html'
+    success_url = reverse_lazy('device:device_list')
+
+    def post(self, request, *args, **kwargs):
+        history_form = self.form_class(request.POST)
+        move_form = MoveDeviceForm
+        consumable_form = ConsumableInstallForm()
+        stock_form = StockAddForm()
+
+        if history_form.is_valid():
+            history_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                    success=True
+                )
+            )
+        else:
+            return self.render_to_response(
+                self.get_context_data(
+                    stock_form=stock_form,
+                    consumable_form=consumable_form,
+                    move_form=move_form,
+                    history_form=history_form
                 )
             )

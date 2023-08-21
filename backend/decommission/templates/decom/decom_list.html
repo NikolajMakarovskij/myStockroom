@@ -52,6 +52,7 @@
           <th scope="col">Устройства</th>
           <th scope="col">Группа</th>
           <th scope="col">Количество</th>
+          <th scope="col">Инвентарник</th>
           <th scope="col">Дата cписания</th>
           <th scope="col">Размещение</th>
           <th scope="col">Здание</th>
@@ -66,6 +67,7 @@
         <td><a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.stock_model.quantity }}</td>
+        <td>{{ each.stock_model.invent }}</td>
         <td>{{ each.date }}</td>
         <td>{{ each.stock_model.workplace.room.name }}</td>
         <td>{{ each.stock_model.workplace.room.building }}</td>

@@ -38,7 +38,8 @@ def test_stock_dev_create_history():
     quantity = 1
     username = 'admin'
     status_choice = 'Приход'
-    DevStock.create_history_device(DevStock, devices_id, quantity, username, status_choice)
+    note = 'some history'
+    DevStock.create_history_device(DevStock, devices_id, quantity, username, status_choice, note)
     test_history = HistoryDev.objects.get(stock_model='my_consumable')
 
     assert HistoryDev.objects.count() == 1
@@ -49,6 +50,7 @@ def test_stock_dev_create_history():
     assert test_history.dateInstall == datetime.date.today()
     assert test_history.user == 'admin'
     assert test_history.status == 'Приход'
+    assert test_history.note == 'some history'
 
 
 @pytest.mark.django_db

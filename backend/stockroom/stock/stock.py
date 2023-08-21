@@ -29,10 +29,14 @@ class DevStock(BaseStock):
     history_model = HistoryDev
 
     """Class with stock methods for device"""
-    def create_history_device(self, model_id: str, quantity: int, username: str, status_choice: str) -> None:
+    def create_history_device(self, model_id: str, quantity: int, username: str, status_choice: str, note: str) -> None:
         """Creating an entry in the history of stock_model"""
         model = self.base_model.objects.get(id=model_id)
         category = self.add_category(self, model_id)
+        if not note:
+            note = None
+        else:
+            note = note
         history = self.history_model.objects.create(
             stock_model=model.name,
             stock_model_id=model.id,
@@ -40,6 +44,7 @@ class DevStock(BaseStock):
             dateInstall=datetime.date.today(),
             categories=category,
             user=username,
+            note=note,
             status=status_choice
         )
         return history
@@ -72,7 +77,7 @@ class DevStock(BaseStock):
                 shelf=int(number_shelf),
             )
             model_instance.update(quantity=int(quantity))
-        self.create_history_device(self, model_id, quantity, username, status_choice='Приход')
+        self.create_history_device(self, model_id, quantity, username, status_choice='Приход', note=None)
 
     def remove_device_from_stock(self, model_id: str, quantity=0, username=None, status_choice="Удаление") -> None:
         """
@@ -81,19 +86,21 @@ class DevStock(BaseStock):
         model_instance = self.stock_model.objects.filter(stock_model=model_id)
         if model_instance:
             model_instance.delete()
-            self.create_history_device(self, model_id, quantity, username, status_choice)
+            self.create_history_device(self, model_id, quantity, username, status_choice, note=None)
 
-    def move_device(self, model_id: str, workplace_id: str, username=None) -> None:
+    def move_device(self, model_id: str, workplace_id: str, username=None, note=None) -> None:
         """
         Move device
         """
         model_instance = self.base_model.objects.filter(id=model_id)
         stock_model_instance = self.stock_model.objects.filter(stock_model=model_id)
+        note=note
         quantity = 1
         workplace = Workplace.objects.get(id=workplace_id)
         workplace_name = workplace.name
         model_instance.update(workplace=workplace)
         stock_model_instance.update(dateInstall=datetime.date.today())
         self.create_history_device(self, model_id, quantity, username,
-                                   status_choice=f"Перемещение на рабочее место {workplace_name}"
+                                   status_choice=f"Перемещение на рабочее место {workplace_name}",
+                                   note=note
                                    )
