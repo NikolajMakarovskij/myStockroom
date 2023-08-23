@@ -109,9 +109,13 @@ admin.site.register(CategoryAcc, CategoryAccAdmin)
 # Devices
 class StockDevAdmin(ExportAdmin, admin.ModelAdmin):
     model = StockDev
-    list_display = ['stock_model']
+    list_display = ['stock_model', 'dateAddToStock']
     list_filter = ['categories']
-    search_fields = ['stock_model__name']
+    search_fields = [
+        'stock_model__name',
+        'stock_model__invent',
+
+    ]
     actions = [ExportAdmin.export_to_csv]
 
 

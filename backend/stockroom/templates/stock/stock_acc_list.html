@@ -102,9 +102,9 @@
             </table>
           </td>
         {% endif %}
-        <td>{{ each.dateAddToStock }}</td>
+        <td>{{ each.dateAddToStock|date:"SHORT_DATE_FORMAT" }}</td>
         {% if each.dateInstall %}  
-          <td>{{ each.dateInstall }}</td>
+          <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
         {% else %}
           <td></td>
         {% endif %}

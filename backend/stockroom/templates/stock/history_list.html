@@ -62,7 +62,7 @@
         <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
         <td>{{ each.categories}}</td>
         <td>{{ each.quantity }}</td>
-        <td>{{ each.dateInstall }}</td>
+        <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
         <td>
           {% if not each.device %}
               {{ each.status }}

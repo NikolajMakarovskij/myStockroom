@@ -78,7 +78,7 @@
         <td>{{ each.stock_model.workplace.room.name }}</td>
         <td>{{ each.rack }}</td>
         <td>{{ each.shelf }}</td>
-        <td>{{ each.dateAddToStock }}</td>
+        <td>{{ each.dateAddToStock|date:"SHORT_DATE_FORMAT" }}</td>
         {% if not each.stock_model.note %}
           <td></td>
         {% else %}
