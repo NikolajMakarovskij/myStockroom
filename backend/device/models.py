@@ -173,10 +173,6 @@ class Device(ModelMixin, models.Model):
         verbose_name_plural = 'Устройства'
         ordering = ['workplace__room__building', 'workplace__name']
         permissions = [
-            ('can_view_device', 'Просмотр'),
-            ('can_add_device', 'Добавление'),
-            ('can_change_device', 'Изменение'),
-            ('can_delete_device', 'Удаление'),
             ('can_move_device', 'Перемещение'),
             ('can_add_stock', 'Добавление на склад'),
             ('can_install_consumable', 'Установка расходника'),

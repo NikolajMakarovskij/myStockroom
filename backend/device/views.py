@@ -1,5 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -16,7 +15,7 @@ from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
 # Устройства
 class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
-    permission_required = ('device.can_view_device',)
+    permission_required = ('device.view_device',)
     model = Device
     template_name = 'device/device_list.html'
 
@@ -56,7 +55,7 @@ class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, gen
 class DeviceCategoryListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     model = Device.objects
     template_name = 'device/device_list.html'
-    permission_required = ('device.can_view_device',)
+    permission_required = ('device.view_device',)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         device_cat = cache.get('device_cat')
@@ -111,7 +110,7 @@ class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class DeviceDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
     model = Device
     template_name = 'device/device_detail.html'
-    permission_required = ('device.can_view_device',)
+    permission_required = ('device.view_device',)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         consumable_form = ConsumableInstallForm(self.request.GET or None)
@@ -137,7 +136,7 @@ class DeviceDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, g
 
 
 class DeviceCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
-    permission_required = ('device.can_add_device',)
+    permission_required = ('device.add_device',)
     model = Device
     form_class = DeviceForm
     template_name = 'Forms/add.html'
@@ -152,7 +151,7 @@ class DeviceCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormM
 
 
 class DeviceUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
-    permission_required = ('device.can_change_device',)
+    permission_required = ('device.change_device',)
     model = Device
     template_name = 'Forms/add.html'
     form_class = DeviceForm
@@ -167,7 +166,7 @@ class DeviceUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormM
 
 
 class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):
-    permission_required = ('device.can_delete_device',)
+    permission_required = ('device.delete_device',)
     model = Device
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('device:device_list')

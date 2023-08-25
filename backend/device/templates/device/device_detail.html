@@ -29,19 +29,19 @@
     {% endfor %}
   </div>
   <div class="d-flex justify-content-center input-group mt-3 ">
-    {% if perms.device.can_add_stock %}
+    {% if perms.device.add_device %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
          href="{% url add %}">
         Добавить
       </a>
     {% endif %}
-    {% if perms.device.can_add_stock %}
+    {% if perms.device.change_device %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
          href="{% url update device.id %}">
         Редактировать
       </a>
     {% endif %}
-    {% if perms.device.can_add_stock %}
+    {% if perms.device.delete_device %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
          href="{% url delete device.id %}">
         Удалить
