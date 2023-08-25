@@ -216,13 +216,13 @@ def add_history_to_device(request, device_id):
         )
         messages.add_message(request,
                              level=messages.SUCCESS,
-                             message=f"Устройство перемещено на рабочее место.",
+                             message=f"Добавлена запись в историю устройства",
                              extra_tags='Успешное списание'
                              )
     else:
         messages.add_message(request,
                              level=messages.ERROR,
-                             message=f"Не удалось переместить устройство.",
+                             message=f"Не удалось добавить запись в историю устройства.",
                              extra_tags='Ошибка формы'
                              )
     return redirect('stockroom:stock_dev_list')
