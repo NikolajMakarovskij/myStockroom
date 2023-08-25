@@ -42,6 +42,9 @@ class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__device__workplace__name__icontains=query) |
             Q(stock_model__device__workplace__room__name__icontains=query) |
             Q(stock_model__device__workplace__room__building__icontains=query) |
+            Q(stock_model__device__workplace__employee__name__icontains=query) |
+            Q(stock_model__device__workplace__employee__surname__icontains=query) |
+            Q(stock_model__device__workplace__employee__family__icontains=query) |
             Q(stock_model__manufacturer__name__icontains=query) |
             Q(stock_model__categories__name__icontains=query) |
             Q(stock_model__quantity__icontains=query) |
