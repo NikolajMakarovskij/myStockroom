@@ -60,11 +60,16 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ['name', 'categories',  'serial', 'serialImg', 'invent', 'inventImg',
+                  'hostname', 'ip_address', 'login', 'pwd',
                   'accessories', 'consumable', 'manufacturer', 'description', 'note']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'categories': CategoryWidget,
             'manufacturer': ManufacturerWidget,
+            'hostname': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'ip_address': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'login': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'pwd': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serial': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'serialImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
             'invent': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),

@@ -56,6 +56,30 @@ class Device(ModelMixin, models.Model):
         help_text="Введите название устройства",
         verbose_name="Название"
     )
+    hostname = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите имя хоста",
+        verbose_name="Имя хоста"
+    )
+    ip_address = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите IP адрес",
+        verbose_name="IP адрес"
+    )
+    login = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+        help_text="Введите логин",
+        verbose_name="Логин"
+    )
+    pwd = models.CharField(
+        max_length=20,
+        blank=True, null=True,
+        help_text="Введите пароль",
+        verbose_name="Пароль"
+    )
     categories = models.ForeignKey(
         'DeviceCat',
         on_delete=models.SET_NULL,
@@ -141,6 +165,8 @@ class Device(ModelMixin, models.Model):
 
     def get_absolute_url(self):
         return reverse('device:device-detail', args=[str(self.id)])
+
+    #TODO valid method to ip_address field
 
     class Meta:
         verbose_name = 'Устройства'

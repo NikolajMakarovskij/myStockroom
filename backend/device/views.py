@@ -40,6 +40,8 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(serial__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(consumable__name__icontains=query) |
+            Q(hostname__icontains=query) |
+            Q(ip_address__icontains=query) |
             Q(quantity__icontains=query) |
             Q(workplace__name__icontains=query) |
             Q(workplace__room__name__icontains=query) |

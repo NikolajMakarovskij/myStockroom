@@ -44,6 +44,7 @@
           <th scope="col">Кабинет</th>
           <th scope="col">Рабочее место</th>
           <th scope="col">Устройство</th>
+          <th scope="col">Хост</th>
           <th scope="col">Описание</th>
           <th scope="col">Инвентарник</th>
           <th scope="col">Серийник</th>
@@ -58,6 +59,13 @@
         <td>{{ device.workplace.room.name}}</td>
         <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ device.get_absolute_url }}">{{ device.name }}</a></td>
+        {% if device.hostname %}
+          <td>{{ device.hostname }}</a></td>
+        {% elif device.ip_address %}
+          <td>{{ device.ip_address }}</a></td>
+        {% else %}
+          <td></td>
+        {% endif %}
         <td>{{ device.description }}</td>
         {% if not device.invent %}
           <td></td>
