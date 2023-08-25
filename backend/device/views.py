@@ -151,7 +151,7 @@ class DeviceCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormM
         return context
 
 
-class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class DeviceUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
     permission_required = ('device.can_change_device',)
     model = Device
     template_name = 'Forms/add.html'
@@ -166,7 +166,7 @@ class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class DeviceDelete(LoginRequiredMixin, DataMixin, DeleteView):
+class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):
     permission_required = ('device.can_delete_device',)
     model = Device
     template_name = 'Forms/delete.html'
@@ -182,7 +182,8 @@ class DeviceDelete(LoginRequiredMixin, DataMixin, DeleteView):
 
 
 # form views
-class ConsumableInstallFormView(FormView):
+class ConsumableInstallFormView(PermissionRequiredMixin, FormView):
+    permission_required = ('device.can_install_consumable',)
     form_class = ConsumableInstallForm
     template_name = 'device/device_detail.html'
     success_url = reverse_lazy('device:device_list')
@@ -204,7 +205,8 @@ class ConsumableInstallFormView(FormView):
             )
 
 
-class StockAddFormView(FormView):
+class StockAddFormView(PermissionRequiredMixin, FormView):
+    permission_required = ('device.can_add_stock',)
     form_class = StockAddForm
     template_name = 'device/device_detail.html'
     success_url = reverse_lazy('device:device_list')
@@ -228,7 +230,8 @@ class StockAddFormView(FormView):
             )
 
 
-class MoveFormView(FormView):
+class MoveFormView(PermissionRequiredMixin, FormView):
+    permission_required = ('device.can_install_accessories',)
     form_class = MoveDeviceForm
     template_name = 'device/device_detail.html'
     success_url = reverse_lazy('device:device_list')
@@ -255,7 +258,8 @@ class MoveFormView(FormView):
             )
 
 
-class AddHistoryFormView(FormView):
+class AddHistoryFormView(PermissionRequiredMixin, FormView):
+    permission_required = ('device.can_add_history',)
     form_class = AddHistoryDeviceForm
     template_name = 'device/device_detail.html'
     success_url = reverse_lazy('device:device_list')
