@@ -49,6 +49,10 @@ def test_device_create():
     Accessories.objects.create(name="accessories")
     Device.objects.create(
         name="device_name",
+        hostname="web.db",
+        ip_address="10.10.10.10",
+        login="db_user",
+        pwd="123zxc",
         categories=DeviceCat.objects.get(name="device_category"),
         manufacturer=Manufacturer.objects.get(name="epson"),
         serial="some_serial",
@@ -63,6 +67,10 @@ def test_device_create():
     device = Device.objects.get(name="device_name")
     assert Device.objects.count() == 1
     assert device.name == "device_name"
+    assert device.hostname == "web.db"
+    assert device.ip_address == "10.10.10.10"
+    assert device.login == "db_user"
+    assert device.pwd == "123zxc"
     assert device.categories.name == "device_category"
     assert device.manufacturer.name == "epson"
     assert device.serial == "some_serial"

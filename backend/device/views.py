@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -14,7 +15,8 @@ from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
 
 # Устройства
-class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = ('device.can_view_device',)
     model = Device
     template_name = 'device/device_list.html'
 
@@ -40,6 +42,8 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(serial__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(consumable__name__icontains=query) |
+            Q(hostname__icontains=query) |
+            Q(ip_address__icontains=query) |
             Q(quantity__icontains=query) |
             Q(workplace__name__icontains=query) |
             Q(workplace__room__name__icontains=query) |
@@ -49,9 +53,10 @@ class DeviceListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class DeviceCategoryListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DeviceCategoryListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     model = Device.objects
     template_name = 'device/device_list.html'
+    permission_required = ('device.can_view_device',)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         device_cat = cache.get('device_cat')
@@ -59,14 +64,33 @@ class DeviceCategoryListView(LoginRequiredMixin, DataMixin, generic.ListView):
             device_cat = DeviceCat.objects.all()
             cache.set('device_cat', device_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Устройства", searchlink='device:device_search', add='device:new-device',
-                                      menu_categories=device_cat)
+        c_def = self.get_user_context(title="Устройства",
+                                      searchlink="device:device_search",
+                                      add='device:new-device', menu_categories=device_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        object_list = Device.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'workplace', 'workplace__room').prefetch_related('workplace__employee')
+        query = self.request.GET.get('q')
+        if not query:
+            query = ''
+        object_list = Device.objects.filter(
+            categories__slug=self.kwargs['category_slug']
+        ).filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(invent__icontains=query) |
+            Q(serial__icontains=query) |
+            Q(manufacturer__name__icontains=query) |
+            Q(consumable__name__icontains=query) |
+            Q(hostname__icontains=query) |
+            Q(ip_address__icontains=query) |
+            Q(quantity__icontains=query) |
+            Q(workplace__name__icontains=query) |
+            Q(workplace__room__name__icontains=query) |
+            Q(workplace__room__floor__icontains=query) |
+            Q(workplace__room__building__icontains=query)
+        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee')
         return object_list
 
 
@@ -84,9 +108,10 @@ class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     error_message = f"Категория %(name)s не удалось создать"
 
 
-class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class DeviceDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
     model = Device
     template_name = 'device/device_detail.html'
+    permission_required = ('device.can_view_device',)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         consumable_form = ConsumableInstallForm(self.request.GET or None)
@@ -111,7 +136,8 @@ class DeviceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class DeviceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class DeviceCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = ('device.can_add_device',)
     model = Device
     form_class = DeviceForm
     template_name = 'Forms/add.html'
@@ -126,6 +152,7 @@ class DeviceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
 
 
 class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = ('device.can_change_device',)
     model = Device
     template_name = 'Forms/add.html'
     form_class = DeviceForm
@@ -140,6 +167,7 @@ class DeviceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
 
 
 class DeviceDelete(LoginRequiredMixin, DataMixin, DeleteView):
+    permission_required = ('device.can_delete_device',)
     model = Device
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('device:device_list')

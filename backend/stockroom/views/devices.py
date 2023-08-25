@@ -39,6 +39,8 @@ class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__manufacturer__name__icontains=query) |
             Q(stock_model__categories__name__icontains=query) |
             Q(stock_model__quantity__icontains=query) |
+            Q(stock_model__hostname__icontains=query) |
+            Q(stock_model__ip_address__icontains=query) |
             Q(stock_model__serial__icontains=query) |
             Q(stock_model__invent__icontains=query) |
             Q(stock_model__workplace__name__icontains=query) |
@@ -216,13 +218,13 @@ def add_history_to_device(request, device_id):
         )
         messages.add_message(request,
                              level=messages.SUCCESS,
-                             message=f"Устройство перемещено на рабочее место.",
+                             message=f"Добавлена запись в историю устройства",
                              extra_tags='Успешное списание'
                              )
     else:
         messages.add_message(request,
                              level=messages.ERROR,
-                             message=f"Не удалось переместить устройство.",
+                             message=f"Не удалось добавить запись в историю устройства.",
                              extra_tags='Ошибка формы'
                              )
     return redirect('stockroom:stock_dev_list')

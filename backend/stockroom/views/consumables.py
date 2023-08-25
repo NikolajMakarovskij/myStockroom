@@ -45,6 +45,9 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
             Q(stock_model__device__workplace__name__icontains=query) |
             Q(stock_model__device__workplace__room__name__icontains=query) |
             Q(stock_model__device__workplace__room__building__icontains=query) |
+            Q(stock_model__device__workplace__employee__name__icontains=query) |
+            Q(stock_model__device__workplace__employee__surname__icontains=query) |
+            Q(stock_model__device__workplace__employee__family__icontains=query) |
             Q(stock_model__manufacturer__name__icontains=query) |
             Q(stock_model__categories__name__icontains=query) |
             Q(stock_model__quantity__icontains=query) |
@@ -201,10 +204,10 @@ def device_add_consumable(request, consumable_id):
     form = ConsumableInstallForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        if consumable.quantity == 0:
+        if consumable.quantity < cd['quantity']:
             messages.add_message(request,
                                  level=messages.WARNING,
-                                 message=f"Расходник {consumable.name} закончился на складе.",
+                                 message=f"Не достаточно расходников {consumable.name} на складе.",
                                  extra_tags='Нет расходника'
                                  )
         else:
