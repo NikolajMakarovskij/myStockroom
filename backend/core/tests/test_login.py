@@ -7,7 +7,7 @@ from django.urls import reverse
 @pytest.fixture
 def auto_login_user(db, client):
     def make_auto_login(user=None):
-        client.force_login(User.objects.get_or_create(username='user')[0])
+        client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
         return client, user
 
     return make_auto_login
