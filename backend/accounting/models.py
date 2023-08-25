@@ -23,7 +23,7 @@ class Categories(ModelMixin, models.Model):
     )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии в расходниках)",
+        help_text="Введите URL (для работы навигации в расходниках)",
         verbose_name="URL"
     )
 
@@ -122,7 +122,6 @@ class Accounting(ModelMixin, models.Model):
 
     def get_cost_all(self):
         cost_all = self.cost * self.quantity
-
         return float("{:.2f}".format(cost_all))
 
     class Meta:

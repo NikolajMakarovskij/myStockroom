@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -13,11 +13,12 @@ from .serializers import AccountingModelSerializer, CategoriesModelSerializer
 
 
 # Index
-class AccountingIndexView(LoginRequiredMixin, generic.TemplateView):
+class AccountingIndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
     """
     Home
     """
     template_name = 'accounting/accounting_index.html'
+    permission_required = 'accounting.view_accounting'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,7 +28,8 @@ class AccountingIndexView(LoginRequiredMixin, generic.TemplateView):
 
 
 # Accounting
-class AccountingView(LoginRequiredMixin, DataMixin, generic.ListView):
+class AccountingView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'accounting.view_accounting'
     template_name = 'accounting/accounting_list.html'
     model = Accounting
 
@@ -60,7 +62,8 @@ class AccountingView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class AccountingCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class AccountingCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'accounting.view_accounting'
     template_name = 'accounting/accounting_list.html'
     model = Accounting.objects
 
@@ -94,7 +97,8 @@ class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class AccountingDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class AccountingDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'accounting.view_accounting'
     model = Accounting
     template_name = 'accounting/accounting_detail.html'
 
@@ -106,7 +110,8 @@ class AccountingDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class AccountingCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class AccountingCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'accounting.add_accounting'
     model = Accounting
     form_class = AccountingForm
     template_name = 'Forms/add.html'
@@ -120,7 +125,8 @@ class AccountingCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateVi
         return context
 
 
-class AccountingUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class AccountingUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'accounting.change_accounting'
     model = Accounting
     template_name = 'Forms/add.html'
     form_class = AccountingForm
@@ -134,7 +140,8 @@ class AccountingUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateVi
         return context
 
 
-class AccountingDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class AccountingDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'accounting.delete_accounting'
     model = Accounting
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('accounting:accounting_list')
@@ -149,7 +156,8 @@ class AccountingDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteVi
 
 
 # Categories
-class CategoryView(LoginRequiredMixin, DataMixin, generic.ListView):
+class CategoryView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'accounting.view_category'
     template_name = 'accounting/categories_list.html'
     model = Categories
 
@@ -179,7 +187,8 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class CategoryCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class CategoryCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'accounting.add_category'
     model = Categories
     form_class = CategoriesForm
     template_name = 'Forms/add.html'
@@ -194,7 +203,8 @@ class CategoryCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView
         return context
 
 
-class CategoryUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class CategoryUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'accounting.update_category'
     model = Categories
     template_name = 'Forms/add.html'
     form_class = CategoriesForm
@@ -209,7 +219,8 @@ class CategoryUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView
         return context
 
 
-class CategoryDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class CategoryDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'accounting.delete_category'
     model = Categories
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('accounting:categories_list')
