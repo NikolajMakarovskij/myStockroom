@@ -31,20 +31,24 @@
   </div>
 </div>
 <div class="d-flex justify-content-center input-group mt-3 mr-1">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
-      Добавить
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update software.id%}">
-      Редактировать
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete software.id%}">
-      Удалить
-  </a>
+  {% if perms.software.add_os %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url add %}">
+        Добавить
+    </a>
+  {% endif %}
+  {% if perms.software.add_os %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url update software.id%}">
+        Редактировать
+    </a>
+  {% endif %}
+  {% if perms.software.add_os %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url delete software.id%}">
+        Удалить
+    </a>
+  {% endif %}
 </div>
 </div>
 </div>
