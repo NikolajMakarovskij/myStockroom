@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
@@ -9,7 +9,8 @@ from .forms import EmployeeForm, PostForm, DepartamentForm
 from .models import Employee, Departament, Post
 
 
-class IndexView(LoginRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
+    permission_required = 'employee.view_employee'
     template_name = 'employee/employee_index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -20,7 +21,8 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 
 
 # Сотрудники
-class EmployeeListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class EmployeeListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'employee.view_employee'
     model = Employee
     template_name = 'employee/employee_list.html'
 
@@ -49,7 +51,8 @@ class EmployeeListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class EmployeeDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'employee.view_employee'
     model = Employee
     template_name = 'employee/employee_detail.html'
 
@@ -61,7 +64,8 @@ class EmployeeDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class EmployeeCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class EmployeeCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'employee.add_employee'
     model = Employee
     form_class = EmployeeForm
     template_name = 'Forms/add.html'
@@ -76,7 +80,8 @@ class EmployeeCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView
         return context
 
 
-class EmployeeUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class EmployeeUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'employee.change_employee'
     model = Employee
     template_name = 'Forms/add.html'
     form_class = EmployeeForm
@@ -91,7 +96,8 @@ class EmployeeUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView
         return context
 
 
-class EmployeeDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class EmployeeDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'employee.delete_employee'
     model = Employee
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:employee_list')
@@ -106,7 +112,8 @@ class EmployeeDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 
 
 # Должность
-class PostListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class PostListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'employee.view_post'
     model = Post
     template_name = 'employee/post_list.html'
 
@@ -128,7 +135,8 @@ class PostListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class PostDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class PostDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'employee.view_post'
     model = Post
     template_name = 'employee/post_detail.html'
 
@@ -140,7 +148,8 @@ class PostDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class PostCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'employee.add_post'
     model = Post
     form_class = PostForm
     template_name = 'Forms/add.html'
@@ -155,7 +164,8 @@ class PostCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class PostUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'employee.change_post'
     model = Post
     template_name = 'Forms/add.html'
     form_class = PostForm
@@ -170,7 +180,8 @@ class PostUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class PostDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class PostDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'employee.delete_post'
     model = Post
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:post_list')
@@ -185,7 +196,8 @@ class PostDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
 
 
 # Отдел
-class DepartamentListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DepartamentListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'employee.view_departament'
     model = Departament
     template_name = 'employee/departament_list.html'
 
@@ -206,7 +218,8 @@ class DepartamentListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class DepartamentDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class DepartamentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'employee.view_departament'
     model = Departament
     template_name = 'employee/departament_detail.html'
 
@@ -218,7 +231,8 @@ class DepartamentDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class DepartamentCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class DepartamentCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'employee.add_departament'
     model = Departament
     form_class = DepartamentForm
     template_name = 'Forms/add.html'
@@ -233,7 +247,8 @@ class DepartamentCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateV
         return context
 
 
-class DepartamentUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class DepartamentUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'employee.change_departament'
     model = Departament
     template_name = 'Forms/add.html'
     form_class = DepartamentForm
@@ -248,7 +263,8 @@ class DepartamentUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateV
         return context
 
 
-class DepartamentDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class DepartamentDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'employee.delete_departament'
     model = Departament
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('employee:departament_list')
