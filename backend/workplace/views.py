@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
@@ -11,7 +11,8 @@ from .models import Room, Workplace
 from .serializers import WorkplaceModelSerializer, RoomModelSerializer
 
 
-class IndexView(LoginRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
+    permission_required = 'workplace.view_workplace'
     """
     Главная
     """
@@ -25,7 +26,8 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 
 
 # Рабочие места
-class WorkplaceListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class WorkplaceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'workplace.view_workplace'
     model = Workplace
     template_name = 'workplace/workplace_list.html'
 
@@ -55,7 +57,8 @@ class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class WorkplaceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class WorkplaceDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'workplace.view_workplace'
     model = Workplace
     template_name = 'workplace/workplace_detail.html'
 
@@ -67,7 +70,8 @@ class WorkplaceDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class WorkplaceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class WorkplaceCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'workplace.add_workplace'
     model = Workplace
     form_class = WorkplaceForm
     template_name = 'Forms/add.html'
@@ -82,7 +86,8 @@ class WorkplaceCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateVie
         return context
 
 
-class WorkplaceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class WorkplaceUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'workplace.change_workplace'
     model = Workplace
     template_name = 'Forms/add.html'
     form_class = WorkplaceForm
@@ -97,7 +102,8 @@ class WorkplaceUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateVie
         return context
 
 
-class WorkplaceDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class WorkplaceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'workplace.delete_workplace'
     model = Workplace
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:workplace_list')
@@ -112,7 +118,8 @@ class WorkplaceDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteVie
 
 
 # Кабинеты
-class RoomListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class RoomListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'workplace.view_room'
     model = Room
     template_name = 'workplace/room_list.html'
 
@@ -141,7 +148,8 @@ class RoomRestView(DataMixin, viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class RoomDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class RoomDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'workplace.view_room'
     model = Room
     template_name = 'workplace/room_detail.html'
 
@@ -153,7 +161,8 @@ class RoomDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class RoomCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class RoomCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'workplace.add_room'
     model = Room
     form_class = RoomForm
     template_name = 'Forms/add.html'
@@ -168,7 +177,8 @@ class RoomCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
         return context
 
 
-class RoomUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class RoomUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'workplace.change_room'
     model = Room
     template_name = 'Forms/add.html'
     form_class = RoomForm
@@ -183,7 +193,8 @@ class RoomUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
         return context
 
 
-class RoomDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class RoomDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'workplace.delete_room'
     model = Room
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('workplace:room_list')

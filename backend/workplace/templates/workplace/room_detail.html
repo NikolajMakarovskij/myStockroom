@@ -31,20 +31,24 @@
   </div>
 </div>
 <div class="d-flex justify-content-center input-group mt-3 ">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
-      Добавить
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update room.id%}">
-      Редактировать
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete room.id%}">
-      Удалить
-  </a>
+  {% if perms.workplace.add_room %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url add %}">
+        Добавить
+    </a>
+  {% endif %}
+  {% if perms.workplace.change_room %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url update room.id%}">
+        Редактировать
+    </a>
+  {% endif %}
+  {% if perms.workplace.delete_room %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url delete room.id%}">
+        Удалить
+    </a>
+  {% endif %}
 </div>
 </div>
 </div>
