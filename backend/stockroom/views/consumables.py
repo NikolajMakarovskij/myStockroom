@@ -1,12 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views import generic
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
-
 from consumables.models import Consumables
 from core.utils import DataMixin
 from stockroom.forms import StockAddForm, ConsumableInstallForm
@@ -15,7 +15,8 @@ from stockroom.serializers.consumables import StockModelSerializer
 from stockroom.stock.stock import ConStock
 
 
-class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockroomView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockroom'
     template_name = 'stock/stock_list.html'
     model = Stockroom
 
@@ -59,7 +60,8 @@ class StockroomView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class StockroomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockroomCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockroom'
     template_name = 'stock/stock_list.html'
     model = Stockroom
 
@@ -90,7 +92,8 @@ class StockRestView(DataMixin, viewsets.ModelViewSet):
 
 
 # History
-class HistoryView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_history'
     template_name = 'stock/history_list.html'
     model = History
 
@@ -123,7 +126,8 @@ class HistoryView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_history'
     template_name = 'stock/history_list.html'
     model = History
 
@@ -149,6 +153,8 @@ class HistoryCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 # Methods
 @require_POST
+@login_required
+@permission_required('stockroom.add_consumables_to_stock', raise_exception=True)
 def stock_add_consumable(request, consumable_id):
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
@@ -181,6 +187,8 @@ def stock_add_consumable(request, consumable_id):
     return redirect('stockroom:stock_list')
 
 
+@login_required
+@permission_required('stockroom.remove_consumables_from_stock', raise_exception=True)
 def stock_remove_consumable(request, consumable_id):
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
@@ -196,6 +204,8 @@ def stock_remove_consumable(request, consumable_id):
 
 
 @require_POST
+@login_required
+@permission_required('stockroom.add_consumables_to_device', raise_exception=True)
 def device_add_consumable(request, consumable_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']

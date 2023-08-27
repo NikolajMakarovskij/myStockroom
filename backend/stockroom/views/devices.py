@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
@@ -13,7 +14,8 @@ from stockroom.stock.stock import DevStock
 
 
 # Devices
-class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockDevView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockdev'
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
 
@@ -51,7 +53,8 @@ class StockDevView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockDevCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockdev'
     template_name = 'stock/stock_dev_list.html'
     model = StockDev
 
@@ -73,7 +76,8 @@ class StockDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 
 # History
-class HistoryDevView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryDevView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historydev'
     template_name = 'stock/history_dev_list.html'
     model = HistoryDev
 
@@ -102,7 +106,8 @@ class HistoryDevView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryDevCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historydev'
     template_name = 'stock/history_dev_list.html'
     model = HistoryDev
 
@@ -124,6 +129,8 @@ class HistoryDevCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 # Methods
 @require_POST
+@login_required
+@permission_required('stockroom.add_device_to_stock', raise_exception=True)
 def stock_add_device(request, device_id):
     username = request.user.username
     stock = DevStock
@@ -154,6 +161,8 @@ def stock_add_device(request, device_id):
     return redirect('stockroom:stock_dev_list')
 
 
+@login_required
+@permission_required('stockroom.remove_device_from_stock', raise_exception=True)
 def stock_remove_device(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
@@ -168,6 +177,8 @@ def stock_remove_device(request, devices_id):
 
 
 @require_POST
+@login_required
+@permission_required('stockroom.move_device', raise_exception=True)
 def move_device_from_stock(request, device_id):
     username = request.user.username
     device = get_object_or_404(Device, id=device_id)
@@ -199,6 +210,8 @@ def move_device_from_stock(request, device_id):
 
 
 @require_POST
+@login_required
+@permission_required('stockroom.add_history_to_device', raise_exception=True)
 def add_history_to_device(request, device_id):
     username = request.user.username
     device = get_object_or_404(Device, id=device_id)

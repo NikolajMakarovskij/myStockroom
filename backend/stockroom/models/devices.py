@@ -52,6 +52,12 @@ class StockDev (ModelMixin, models.Model):
         verbose_name = 'Склад устройств'
         verbose_name_plural = 'Склад устройств'
         ordering = ['stock_model__workplace__room__building', 'stock_model__workplace__name']
+        permissions = [
+            ('remove_device_from_stock', 'Удалить co склада'),
+            ('add_device_to_stock', 'Добавить на склада'),
+            ('move_device', 'Переместить устройство'),
+            ('add_history_to_device', 'Добавить историю'),
+        ]
 
 
 class CategoryDev(ModelMixin, models.Model):

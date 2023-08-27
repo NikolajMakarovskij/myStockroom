@@ -52,6 +52,11 @@ class Stockroom (ModelMixin, models.Model):
         verbose_name = 'Склад Расходников'
         verbose_name_plural = 'Склад Расходников'
         ordering = ['rack', 'shelf']
+        permissions = [
+            ('remove_consumables_from_stock', 'Удалить co склада'),
+            ('add_consumables_to_stock', 'Добавить на склада'),
+            ('add_consumables_to_device', 'Установить в устройство'),
+        ]
 
 
 class StockCat(ModelMixin, models.Model):
