@@ -73,7 +73,13 @@
         {% else %}
         <td></td>
         {% endif %}
-        <td><a class="noDecoration" href="{% url 'decommission:remove_disp' each.stock_model.id %}"> Удалить </a></td>
+        <td>
+          {% if perms.decommission.remove_from_disposal %}
+            <a class="noDecoration" href="{% url 'decommission:remove_disp' each.stock_model.id %}">
+              Удалить
+            </a>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
   </table>

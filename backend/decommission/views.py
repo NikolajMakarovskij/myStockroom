@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
@@ -11,7 +12,8 @@ from .tasks import DecomTasks
 
 
 # Decommission
-class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DecommissionView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'decommission.view_decommission'
     template_name = 'decom/decom_list.html'
     model = Decommission
 
@@ -42,7 +44,8 @@ class DecommissionView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DecomCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'decommission.view_decommission'
     template_name = 'decom/decom_list.html'
     model = Decommission
 
@@ -63,6 +66,8 @@ class DecomCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
+@login_required
+@permission_required('decommission.add_to_decommission', raise_exception=True)
 def add_decommission(request, device_id):
     from decommission.tasks import DecomTasks
     username = request.user.username
@@ -84,6 +89,8 @@ def add_decommission(request, device_id):
     return redirect('decommission:decom_list')
 
 
+@login_required
+@permission_required('decommission.remove_from_decommission', raise_exception=True)
 def remove_decommission(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
@@ -97,7 +104,8 @@ def remove_decommission(request, devices_id):
 
 
 # Disposal
-class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DisposalView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'decommission.view_disposal'
     template_name = 'decom/disp_list.html'
     model = Disposal
 
@@ -128,7 +136,8 @@ class DisposalView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class DispCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'decommission.view_disposal'
     template_name = 'decom/disp_list.html'
     model = Disposal
 
@@ -149,6 +158,8 @@ class DispCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
+@login_required
+@permission_required('decommission.add_to_disposal', raise_exception=True)
 def add_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
@@ -169,6 +180,8 @@ def add_disposal(request, devices_id):
     return redirect('decommission:disp_list')
 
 
+@login_required
+@permission_required('decommission.remove_from_disposal', raise_exception=True)
 def remove_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)

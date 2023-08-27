@@ -77,14 +77,18 @@
         <td></td>
         {% endif %}
         <td>
-          <a class="noDecoration" href="{% url 'decommission:add_disp' each.stock_model.id %}">
-            Утилизировать
-          </a>
+          {% if perms.decommission.add_to_disposal %}
+            <a class="noDecoration" href="{% url 'decommission:add_disp' each.stock_model.id %}">
+              Утилизировать
+            </a>
+          {% endif %}
         </td>
         <td>
-          <a class="noDecoration" href="{% url 'decommission:remove_decom' each.stock_model.id %}">
-            Удалить
-          </a>
+          {% if perms.decommission.remove_from_decommission %}
+            <a class="noDecoration" href="{% url 'decommission:remove_decom' each.stock_model.id %}">
+              Удалить
+            </a>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

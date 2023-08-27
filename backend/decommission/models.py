@@ -36,6 +36,10 @@ class Decommission (ModelMixin, models.Model):
         verbose_name = 'Списание устройств'
         verbose_name_plural = 'Списание устройств'
         ordering = ['stock_model']
+        permissions = [
+            ('add_to_decommission', 'Отправить на списание'),
+            ('remove_from_decommission', 'Удалить из списания'),
+        ]
 
 
 class CategoryDec(ModelMixin, models.Model):
@@ -139,3 +143,7 @@ class CategoryDis(ModelMixin, models.Model):
         verbose_name = 'Группа утилизации устройств'
         verbose_name_plural = 'Группы утилизации устройств'
         ordering = ['name']
+        permissions = [
+            ('add_to_disposal', 'Отправить на утилизацию'),
+            ('remove_from_disposal', 'Удалить из утилизации'),
+        ]
