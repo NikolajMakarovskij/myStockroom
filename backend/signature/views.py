@@ -4,12 +4,13 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from core.utils import DataMixin, FormMessageMixin
 from stockroom.forms import ConsumableInstallForm
 
 
-class SignatureListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class SignatureListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'signature.view_signature'
     model = Signature
     template_name = 'signature/signature_list.html'
 
@@ -41,7 +42,8 @@ class SignatureListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class SignatureDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+class SignatureDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+    permission_required = 'signature.view_signature'
     model = Signature
     template_name = 'signature/signature_detail.html'
     form_class = ConsumableInstallForm
@@ -54,7 +56,8 @@ class SignatureDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.Deta
         return context
 
 
-class SignatureCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class SignatureCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'signature.add_signature'
     model = Signature
     form_class = SignatureForm
     template_name = 'Forms/add.html'
@@ -69,7 +72,8 @@ class SignatureCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateVie
         return context
 
 
-class SignatureUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class SignatureUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'signature.change_signature'
     model = Signature
     template_name = 'Forms/add.html'
     form_class = SignatureForm
@@ -84,7 +88,8 @@ class SignatureUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateVie
         return context
 
 
-class SignatureDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class SignatureDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'signature.delete_signature'
     model = Signature
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('signature:signature_list')

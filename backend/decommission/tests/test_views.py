@@ -9,7 +9,7 @@ from django.urls import reverse
 class DecommissionViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -54,7 +54,7 @@ class DecommissionViewTest(TestCase):
 class DecommissionCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -101,7 +101,7 @@ class DecommissionCategoryViewTest(TestCase):
 class DisposalViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -146,7 +146,7 @@ class DisposalViewTest(TestCase):
 class DisposalCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):

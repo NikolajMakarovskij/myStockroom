@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class ManufacturerViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):

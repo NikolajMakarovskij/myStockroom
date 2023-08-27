@@ -9,7 +9,7 @@ from django.urls import reverse
 class StockDevViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -54,7 +54,7 @@ class StockDevViewTest(TestCase):
 class StockroomDevCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -100,7 +100,7 @@ class StockroomDevCategoryViewTest(TestCase):
 class HistoryDevStockViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -144,7 +144,7 @@ class HistoryDevStockViewTest(TestCase):
 class HistoryDevCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):

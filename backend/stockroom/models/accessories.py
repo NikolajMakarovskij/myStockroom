@@ -52,6 +52,11 @@ class StockAcc (ModelMixin, models.Model):
         verbose_name = 'Склад комплектующих'
         verbose_name_plural = 'Склад комплектующих'
         ordering = ['rack', 'shelf']
+        permissions = [
+            ('remove_accessories_from_stock', 'Удалить co склада'),
+            ('add_accessories_to_stock', 'Добавить на склада'),
+            ('add_accessories_to_device', 'Установить в устройство'),
+        ]
 
 
 class CategoryAcc(ModelMixin, models.Model):

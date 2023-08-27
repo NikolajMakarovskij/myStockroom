@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
@@ -10,8 +10,9 @@ from .models import Manufacturer
 
 
 # Контрагенты
-class CounterpartyView(LoginRequiredMixin, generic.TemplateView):
+class CounterpartyView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
     template_name = 'counterparty/counterparty.html'
+    permission_required = 'counterparty.view_manufacturer'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -21,7 +22,8 @@ class CounterpartyView(LoginRequiredMixin, generic.TemplateView):
 
 
 # Производитель
-class ManufacturerListView(LoginRequiredMixin, DataMixin, generic.ListView):
+class ManufacturerListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'counterparty.view_manufacturer'
     model = Manufacturer
     template_name = 'counterparty/manufacturer_list.html'
 
@@ -44,7 +46,8 @@ class ManufacturerListView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class ManufacturerDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
+class ManufacturerDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
+    permission_required = 'counterparty.view_manufacturer'
     model = Manufacturer
     template_name = 'counterparty/manufacturer_detail.html'
 
@@ -57,7 +60,8 @@ class ManufacturerDetailView(LoginRequiredMixin, DataMixin, generic.DetailView):
         return context
 
 
-class ManufacturerCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class ManufacturerCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'counterparty.add_manufacturer'
     model = Manufacturer
     form_class = ManufacturerForm
     template_name = 'Forms/add.html'
@@ -72,7 +76,8 @@ class ManufacturerCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, Create
         return context
 
 
-class ManufacturerUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class ManufacturerUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'counterparty.change_manufacturer'
     model = Manufacturer
     template_name = 'Forms/add.html'
     form_class = ManufacturerForm
@@ -87,7 +92,8 @@ class ManufacturerUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, Update
         return context
 
 
-class ManufacturerDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class ManufacturerDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'counterparty.delete_manufacturer'
     model = Manufacturer
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('counterparty:manufacturer_list')

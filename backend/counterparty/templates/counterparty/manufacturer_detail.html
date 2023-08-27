@@ -30,18 +30,24 @@
         {% endfor %}
     </div>
     <div class="d-flex justify-content-center input-group mt-3 ">
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-           href="{% url add %}">
-            Добавить
-        </a>
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-           href="{% url update manufacturer.id%}">
-            Редактировать
-        </a>
-        <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-           href="{% url delete manufacturer.id%}">
-            Удалить
-        </a>
+        {% if perms.counterparty.add_manufacturer %}
+            <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+               href="{% url add %}">
+                Добавить
+            </a>
+        {% endif %}
+        {% if perms.counterparty.change_manufacturer %}
+            <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+               href="{% url update manufacturer.id%}">
+                Редактировать
+            </a>
+        {% endif %}
+        {% if perms.counterparty.delete_manufacturer %}
+            <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+               href="{% url delete manufacturer.id%}">
+                Удалить
+            </a>
+        {% endif %}
     </div>
 </div>
 </div>

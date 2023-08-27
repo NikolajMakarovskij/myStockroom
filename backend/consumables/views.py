@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from rest_framework import viewsets
 from core.utils import menu, DataMixin, FormMessageMixin
 from stockroom.forms import StockAddForm
@@ -14,11 +14,12 @@ from .serializers import ConsumablesModelSerializer, CategoriesModelSerializer, 
 
 
 # Расходники главная
-class ConsumableIndexView(LoginRequiredMixin, generic.TemplateView):
+class ConsumableIndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
     """
     Главная
     """
     template_name = 'consumables/consumables_index.html'
+    permission_required = 'consumables.view_consumables'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,7 +29,8 @@ class ConsumableIndexView(LoginRequiredMixin, generic.TemplateView):
 
 
 # Расходники
-class ConsumablesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class ConsumablesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'consumables.view_consumables'
     template_name = 'consumables/consumables_list.html'
     model = Consumables
 
@@ -58,7 +60,8 @@ class ConsumablesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class ConsumablesCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class ConsumablesCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'consumables.view_consumables'
     template_name = 'consumables/consumables_list.html'
     model = Consumables.objects
 
@@ -103,7 +106,8 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class ConsumablesDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+class ConsumablesDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+    permission_required = 'consumables.view_consumables'
     model = Consumables
     template_name = 'consumables/consumables_detail.html'
     form_class = StockAddForm
@@ -116,7 +120,8 @@ class ConsumablesDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.De
         return context
 
 
-class ConsumablesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class ConsumablesCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'consumables.add_consumables'
     model = Consumables
     form_class = ConsumablesForm
     template_name = 'Forms/add.html'
@@ -130,7 +135,8 @@ class ConsumablesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateV
         return context
 
 
-class ConsumablesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class ConsumablesUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'consumables.change_consumables'
     model = Consumables
     template_name = 'Forms/add.html'
     form_class = ConsumablesForm
@@ -144,7 +150,8 @@ class ConsumablesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateV
         return context
 
 
-class ConsumablesDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class ConsumablesDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'consumables.delete_consumables'
     model = Consumables
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:consumables_list')
@@ -159,7 +166,8 @@ class ConsumablesDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteV
 
 
 # Комплектующие
-class AccessoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class AccessoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'consumables.view_accessories'
     template_name = 'consumables/accessories_list.html'
     model = Accessories
 
@@ -189,7 +197,8 @@ class AccessoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class AccessoriesCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class AccessoriesCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'consumables.view_accessories'
     template_name = 'consumables/accessories_list.html'
     model = Accessories.objects
 
@@ -224,7 +233,8 @@ class AccCatRestView(LoginRequiredMixin, DataMixin, FormMessageMixin, viewsets.M
     error_message = f"Категория %(name)s не удалось создать"
 
 
-class AccessoriesDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+class AccessoriesDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMixin, generic.DetailView):
+    permission_required = 'consumables.view_accessories'
     model = Accessories
     template_name = 'consumables/accessories_detail.html'
     form_class = StockAddForm
@@ -237,7 +247,8 @@ class AccessoriesDetailView(LoginRequiredMixin, DataMixin, FormMixin, generic.De
         return context
 
 
-class AccessoriesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+class AccessoriesCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
+    permission_required = 'consumables.add_accessories'
     model = Accessories
     form_class = AccessoriesForm
     template_name = 'Forms/add.html'
@@ -251,7 +262,8 @@ class AccessoriesCreate(LoginRequiredMixin, DataMixin, FormMessageMixin, CreateV
         return context
 
 
-class AccessoriesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+class AccessoriesUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
+    permission_required = 'consumables.change_accessories'
     model = Accessories
     template_name = 'Forms/add.html'
     form_class = AccessoriesForm
@@ -265,7 +277,8 @@ class AccessoriesUpdate(LoginRequiredMixin, DataMixin, FormMessageMixin, UpdateV
         return context
 
 
-class AccessoriesDelete(LoginRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class AccessoriesDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+    permission_required = 'consumables.delete_accessories'
     model = Accessories
     template_name = 'Forms/delete.html'
     success_url = reverse_lazy('consumables:accessories_list')

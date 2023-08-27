@@ -10,7 +10,7 @@ from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
 class StockAccViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -55,7 +55,7 @@ class StockAccViewTest(TestCase):
 class StockroomAccCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -101,7 +101,7 @@ class StockroomAccCategoryViewTest(TestCase):
 class HistoryAccStockViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):
@@ -145,7 +145,7 @@ class HistoryAccStockViewTest(TestCase):
 class HistoryAccCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user')[0])
+        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
 
     @classmethod
     def setUpTestData(cls):

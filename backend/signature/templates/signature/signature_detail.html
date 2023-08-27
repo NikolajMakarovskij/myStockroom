@@ -109,17 +109,23 @@
 </div>
 {% endif %}
 <div class="d-flex justify-content-center input-group mt-3 ">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
-      Добавить
-  </a>
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update signature.id%}">
-      Редактировать
-  </a>
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete signature.id%}">
-      Удалить
-  </a>
+  {% if perms.signature.add_signature %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url add %}">
+        Добавить
+    </a>
+  {% endif %}
+  {% if perms.signature.change_signature %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url update signature.id%}">
+        Редактировать
+    </a>
+  {% endif %}
+  {% if perms.signature.delete_signature %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url delete signature.id%}">
+        Удалить
+    </a>
+  {% endif %}
 </div>
 {% endblock %}

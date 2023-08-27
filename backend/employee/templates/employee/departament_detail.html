@@ -30,18 +30,24 @@
     {% endfor %}
   </div>
   <div class="d-flex justify-content-center input-group mt-3 mr-1">
-    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-       href="{% url add %}">
-      Добавить
-    </a>
-    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-       href="{% url update departament.id%}">
-      Редактировать
-    </a>
-    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
-       href="{% url delete departament.id%}">
-      Удалить
-    </a>
+    {% if perms.employee.add_departament %}
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+         href="{% url add %}">
+        Добавить
+      </a>
+    {% endif %}
+    {% if perms.employee.change_departament %}
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+         href="{% url update departament.id%}">
+        Редактировать
+      </a>
+    {% endif %}
+    {% if perms.employee.delete_departament %}
+      <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+         href="{% url delete departament.id%}">
+        Удалить
+      </a>
+    {% endif %}
   </div>
 </div>
 </div>

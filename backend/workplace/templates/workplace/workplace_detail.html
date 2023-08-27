@@ -51,20 +51,24 @@
   </div>
 </div>
 <div class="d-flex justify-content-center input-group mt-3 mr-1">
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url add %}">
-      Добавить
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url update workplace.id %}">
-      Редактировать
-  </a>
-
-  <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
-    href="{% url delete workplace.id %}">
-      Удалить
-  </a>
+  {% if perms.workplace.add_workplace %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url add %}">
+        Добавить
+    </a>
+  {% endif %}
+  {% if perms.workplace.change_workplace %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url update workplace.id %}">
+        Редактировать
+    </a>
+  {% endif %}
+  {% if perms.workplace.delete_workplace %}
+    <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+      href="{% url delete workplace.id %}">
+        Удалить
+    </a>
+  {% endif %}
 </div>
 </div>
 </div>

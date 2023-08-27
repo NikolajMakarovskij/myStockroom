@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
@@ -14,7 +15,8 @@ from stockroom.stock.stock import AccStock
 
 
 # accessories
-class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockAccView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockacc'
     template_name = 'stock/stock_acc_list.html'
     model = StockAcc
 
@@ -56,7 +58,8 @@ class StockAccView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class StockAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_stockacc'
     template_name = 'stock/stock_acc_list.html'
     model = StockAcc
 
@@ -78,7 +81,8 @@ class StockAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 
 # History
-class HistoryAccView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryAccView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historyacc'
     template_name = 'stock/history_acc_list.html'
     model = HistoryAcc
 
@@ -108,7 +112,8 @@ class HistoryAccView(LoginRequiredMixin, DataMixin, generic.ListView):
         return object_list
 
 
-class HistoryAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
+class HistoryAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historyacc'
     template_name = 'stock/history_acc_list.html'
     model = HistoryAcc
 
@@ -130,6 +135,8 @@ class HistoryAccCategoriesView(LoginRequiredMixin, DataMixin, generic.ListView):
 
 # Methods
 @require_POST
+@login_required
+@permission_required('stockroom.add_accessories_to_stock', raise_exception=True)
 def stock_add_accessories(request, accessories_id):
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
@@ -160,6 +167,8 @@ def stock_add_accessories(request, accessories_id):
     return redirect('stockroom:stock_acc_list')
 
 
+@login_required
+@permission_required('stockroom.remove_accessories_from_stock', raise_exception=True)
 def stock_remove_accessories(request, accessories_id):
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
@@ -174,6 +183,8 @@ def stock_remove_accessories(request, accessories_id):
 
 
 @require_POST
+@login_required
+@permission_required('stockroom.add_accessories_to_device', raise_exception=True)
 def device_add_accessories(request, accessories_id):
     username = request.user.username
     get_device_id = request.session['get_device_id']

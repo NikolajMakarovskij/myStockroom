@@ -28,36 +28,44 @@
       </div>
         {% endfor %}
   </div>
-  {% if accessories %}
-  <div class="d-flex justify-content-center input-group mt-3 ">
-    <form action="{% url 'stockroom:stock_add_accessories' accessories.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
-      {% csrf_token %}
-      <div class="input-group mb-3">
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
-        <div class="">{{ form.quantity }}</div>
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_rack.label }}</div>
-        <div class="">{{ form.number_rack }}</div>
-        <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_shelf.label }}</div>
-        <div class="">{{ form.number_shelf }}</div>
-          <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
-                 value="Добавить на склад">
-      </div>
-    </form>
-  </div>
+  {% if perms.consumables.can_add_accessories_to_stock %}
+    {% if accessories %}
+    <div class="d-flex justify-content-center input-group mt-3 ">
+      <form action="{% url 'stockroom:stock_add_accessories' accessories.id %}" method="post" enctype="multipart/form-data" class="mt-5 d-flex align-items-center justify-content-center">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.quantity.label }}</div>
+          <div class="">{{ form.quantity }}</div>
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_rack.label }}</div>
+          <div class="">{{ form.number_rack }}</div>
+          <div type="button" class="btn btn-lg btn-outline-dark input-group-text" disabled>{{ form.number_shelf.label }}</div>
+          <div class="">{{ form.number_shelf }}</div>
+            <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                   value="Добавить на склад">
+        </div>
+      </form>
+    </div>
+    {% endif %}
   {% endif %}
   <div class="d-flex justify-content-center input-group mt-3 ">
+    {% if perms.consumables.add_accessories %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url add %}">
             Добавить
-        </a>
+      </a>
+    {% endif %}
+    {% if perms.consumables.change_accessories %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url update accessories.id%}">
             Редактировать
-        </a>
+      </a>
+    {% endif %}
+    {% if perms.consumables.delete_accessories %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
           href="{% url delete accessories.id%}">
             Удалить
       </a>
+    {% endif %}
   </div>
   <div >
     {% load history_tags %}

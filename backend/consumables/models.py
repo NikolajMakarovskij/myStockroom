@@ -24,7 +24,7 @@ class Categories(ModelMixin, models.Model):
     )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии в расходниках)",
+        help_text="Введите URL (для работы навигации в расходниках)",
         verbose_name="URL"
     )
 
@@ -128,6 +128,9 @@ class Consumables(ModelMixin, models.Model):
         verbose_name = 'Расходник'
         verbose_name_plural = 'Расходники'
         ordering = ['name', 'categories']
+        permissions = [
+            ('can_add_consumable_to_stock', 'Добавление на склад'),
+        ]
 
 
 # Комплектующие /// accessories
@@ -147,7 +150,7 @@ class AccCat(ModelMixin, models.Model):
     )
     slug = models.SlugField(
         max_length=50, unique=True, db_index=True,
-        help_text="Введите URL (для работы навигациии в комплектующих)",
+        help_text="Введите URL (для работы навигации в комплектующих)",
         verbose_name="URL"
     )
 
@@ -251,3 +254,7 @@ class Accessories(ModelMixin, models.Model):
         verbose_name = 'Комплектующее'
         verbose_name_plural = 'Комплектующие'
         ordering = ['name', 'categories']
+        permissions = [
+            ('can_add_accessories_to_stock', 'Добавление на склад'),
+        ]
+
