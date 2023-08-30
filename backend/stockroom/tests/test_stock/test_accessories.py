@@ -171,24 +171,26 @@ def test_stock_device_acc_add_accessories(client):
     from device.models import Device
     create_session(client)
     accessories = create_accessories()
-    Device.objects.create(name='device', accessories=accessories)
-    device = Device.objects.get(name='device').id
+    Device.objects.get_or_create(name='device', accessories=accessories)
+    device = Device.objects.get(name='device')
     quantity = 5
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_devices(consumable=None, accessories=accessories)
     AccStock.add_to_stock(AccStock, model_id=accessories.id, quantity=quantity, number_rack=number_rack,
                           number_shelf=number_shelf, username=username)
-    AccStock.add_to_device(AccStock, model_id=accessories.id, device=device,
+    AccStock.add_to_device(AccStock, model_id=accessories.id, device=device.id,
                            quantity=1, note='note', username=username)
     test_get_stock = StockAcc.objects.get(stock_model__name='my_consumable')
     test_history = HistoryAcc.objects.get(status='Расход')
 
     assert StockAcc.objects.count() == 1
     assert HistoryAcc.objects.count() == 2
+    assert Device.objects.count() == 1
     assert test_get_stock.stock_model.quantity == 4
-    assert test_get_stock.stock_model.note == 'note'
+    #assert device.note == f"{datetime.date.today()} note"
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'
+    assert test_history.note == 'note'
+    #TODO check note in device

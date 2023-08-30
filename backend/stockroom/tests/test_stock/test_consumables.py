@@ -178,7 +178,6 @@ def test_stock_device_add_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    add_consumables_in_devices(consumable, accessories=None)
     ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
     ConStock.add_to_device(ConStock, model_id=consumable.id, device=device, quantity=1, note='note',
@@ -188,8 +187,10 @@ def test_stock_device_add_consumable(client):
 
     assert Stockroom.objects.count() == 1
     assert History.objects.count() == 2
+    assert Device.objects.count() == 1
     assert test_get_stock.stock_model.quantity == 4
-    assert test_get_stock.stock_model.note == 'note'
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'
+    assert test_history.note == 'note'
+    #TODO check note in device

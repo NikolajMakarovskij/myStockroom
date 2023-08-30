@@ -62,7 +62,7 @@ class Device(ModelMixin, models.Model):
         help_text="Введите имя хоста",
         verbose_name="Имя хоста"
     )
-    ip_address = models.CharField(
+    ip_address = models.URLField(
         max_length=50,
         blank=True, null=True,
         help_text="Введите IP адрес",
