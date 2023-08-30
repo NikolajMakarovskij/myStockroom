@@ -1,7 +1,7 @@
 import datetime
 
 from django.conf import settings
-
+from consumables.models import Accessories
 from device.models import Device
 
 
@@ -124,24 +124,25 @@ class BaseStock(object):
         device_id = str(device)
         model_add = self.base_model.objects.get(id=model_id)
         model_quantity = int(str(model_add.quantity))
-        model_note = model_add.note
+        device_obj = Device.objects.get(id=device_id)
+        device_note = device_obj.note
         history_note = None
         model_quantity -= quantity
 
         if not note:
-            model_note
+            device_note
             history_note
         else:
-            if model_note is None:
-                model_note = f"{note}"
+            if device_note is None:
+                device_note = f"{datetime.date.today()} {note}"
             else:
-                model_note = f"{model_note} {note}"
+                device_note = f"{device_note} {datetime.date.today()} {note}"
             history_note = f"{note}"
-
-
+        #TODO change Device to self.base_model.device
+        #TODO fix tests
+        Device.objects.filter(id=device_id).update(note=device_note)
         self.base_model.objects.filter(id=model_id).update(
             quantity=model_quantity,
-            note=model_note
         )
         self.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
         self.create_history(self, model_id, device_id, quantity, username, history_note, status_choice='Расход')
