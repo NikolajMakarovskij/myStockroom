@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   web:
-    container_name: web
     build: ./
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always

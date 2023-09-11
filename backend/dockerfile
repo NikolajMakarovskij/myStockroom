@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.10-bullseye
+FROM python:3.12-rc-bullseye
 # set work directory
 WORKDIR /backend
 # set environment variables
