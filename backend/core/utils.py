@@ -4,7 +4,7 @@ import datetime
 from django.contrib import messages
 from django.core.cache import cache
 from django.http import HttpResponse
-from django_select2.forms import ModelSelect2Widget
+from django_select2.forms import ModelSelect2Widget, ModelSelect2MultipleWidget
 
 menu = [
     {'title': "Главная страница", 'url_name': 'core:index'},
@@ -40,6 +40,22 @@ class DataMixin:
 
 
 class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.attrs = {'class': 'js-example-placeholder-single js-states form-control form-control-lg',
+                      'style': 'width:100%'}
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        base_attrs = super().build_attrs(base_attrs, extra_attrs)
+        base_attrs.update(
+            {"data-minimum-input-length": 0,
+             "data-placeholder": self.empty_label,
+
+             }
+        )
+        return base_attrs
+
+class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
     def __init__(self, **kwargs):
         super().__init__(kwargs)
         self.attrs = {'class': 'js-example-placeholder-single js-states form-control form-control-lg',

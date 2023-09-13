@@ -7,7 +7,7 @@ from .models import Device, DeviceCat
 class DeviceAdmin(ExportAdmin, admin.ModelAdmin):
     model = Device
     list_display = ['name', 'description', 'categories', 'manufacturer',
-                    'workplace', 'consumable', 'accessories', 'quantity', 'note']
+                    'workplace', 'quantity', 'note']
     list_filter = ['manufacturer', 'workplace__room__floor', 'workplace__room__building']
     search_fields = ['name', 'description', 'manufacturer__name', 'serial', 'invent',
                      'workplace__name', 'consumable__name', 'accessories__name', 'quantity', 'note']
