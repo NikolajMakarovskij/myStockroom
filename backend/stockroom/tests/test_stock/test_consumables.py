@@ -172,15 +172,16 @@ def test_stock_device_add_consumable(client):
     from device.models import Device
     create_session(client)
     consumable = create_consumable()
-    Device.objects.create(name='device', consumable=consumable)
-    device = Device.objects.get(name='device').id
+    Device.objects.create(name='device')
+    device = Device.objects.get(name='device')
+    device.consumable.set([consumable.id])
     quantity = 5
     number_rack = 3
     number_shelf = 13
     username = 'admin'
     ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
-    ConStock.add_to_device(ConStock, model_id=consumable.id, device=device, quantity=1, note='note',
+    ConStock.add_to_device(ConStock, model_id=consumable.id, device=device.id, quantity=1, note='note',
                                 username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
     test_history = History.objects.get(status='Расход')

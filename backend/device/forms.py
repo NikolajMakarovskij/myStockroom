@@ -1,7 +1,7 @@
 from django import forms
 
 from consumables.models import Consumables, Accessories
-from core.utils import BaseModelSelect2WidgetMixin
+from core.utils import BaseModelSelect2WidgetMixin, BaseSelect2MultipleWidgetMixin
 from counterparty.models import Manufacturer
 from .models import Device, DeviceCat
 
@@ -26,7 +26,7 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class ConWidget(BaseModelSelect2WidgetMixin):
+class ConWidget(BaseSelect2MultipleWidgetMixin):
     empty_label = "--выбрать--"
     model = Consumables
     queryset = Consumables.objects.all().order_by("name")
@@ -41,7 +41,7 @@ class ConWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class AccWidget(BaseModelSelect2WidgetMixin):
+class AccWidget(BaseSelect2MultipleWidgetMixin):
     empty_label = "--выбрать--"
     model = Accessories
     queryset = Accessories.objects.all().order_by("name")

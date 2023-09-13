@@ -36,4 +36,4 @@ jobs:
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
       - name: Run tests
-        run: docker exec web pytest --cov
+        run: docker exec backend_web_1 pytest --cov

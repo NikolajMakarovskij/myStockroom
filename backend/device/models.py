@@ -132,18 +132,16 @@ class Device(ModelMixin, models.Model):
         help_text="Укажите рабочее место",
         verbose_name="Рабочее место"
     )
-    consumable = models.ForeignKey(
+    consumable = models.ManyToManyField(
         Consumables,
-        blank=True, null=True,
-        on_delete=models.SET_NULL,
+        blank=True,
         related_name='device',
         help_text="Укажите расходник",
         verbose_name="Расходник"
     )
-    accessories = models.ForeignKey(
+    accessories = models.ManyToManyField(
         Accessories,
-        blank=True, null=True,
-        on_delete=models.SET_NULL,
+        blank=True,
         related_name='device',
         help_text="Укажите комплектующее",
         verbose_name="Комплектующее"

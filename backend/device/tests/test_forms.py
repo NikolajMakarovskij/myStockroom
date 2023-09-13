@@ -37,8 +37,8 @@ def test_device_form_valid():
         'inventImg': mock.MagicMock(spec=File, name='invent_Img'),
         "description": "some_description",
         "workplace": Workplace.objects.get(name="device_workplace"),
-        "consumable": Consumables.objects.get(name="T7741"),
-        "accessories": Accessories.objects.get(name="T7741"),
+        "consumable_set": Consumables.objects.get(name="T7741"),
+        "accessories_set": Accessories.objects.get(name="T7741"),
         "note": "some_note"
     }
     form = DeviceForm(data=form_data)

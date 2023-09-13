@@ -28,6 +28,42 @@
       </div>
     {% endfor %}
   </div>
+  <div class="row row-cols-3 row-cols-md-3">
+    {% for f in device.consumable.all %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Расходник № {{ forloop.counter }}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <a class="noDecoration" href="{{ f.get_absolute_url }}">
+              <h5 class="card-title">{{ f.name }}</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="row row-cols-3 row-cols-md-3">
+    {% for f in device.accessories.all %}
+      <div class="col mt-3">
+        <div class="card border-dark  h-100">
+          <div class="card-header">
+            <h5 class="card-title">
+              Комплектующее № {{ forloop.counter }}
+            </h5>
+          </div>
+          <div class="card-body text-dark">
+            <a class="noDecoration" href="{{ f.get_absolute_url }}">
+              <h5 class="card-title">{{ f.name }}</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
   <div class="d-flex justify-content-center input-group mt-3 ">
     {% if perms.device.add_device %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
@@ -124,52 +160,62 @@
   <div class="row g-2">
     <div class="col-sm-6">
       {% if perms.device.can_install_consumable %}
-        {% if device.consumable.id %}
-          <div class="d-flex justify-content-center input-group mt-3">
-            <form action="{% url 'stockroom:device_add_consumable' device.consumable.id %}"
-                  class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
-                  method="post">
-              {% csrf_token %}
-              <div class="input-group mb-3">
-                <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
-                  {{ consumable_form.quantity.label }}
+        {% if device.consumable.all %}
+          {% for f in device.consumable.all %}
+            <div class="d-flex justify-content-center input-group mt-3">
+              <form action="{% url 'stockroom:device_add_consumable' f.id %}"
+                    class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+                    method="post">
+                {% csrf_token %}
+                <div class="input-group mb-4">
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ f.name }}
+                  </div>
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ consumable_form.quantity.label }}
+                  </div>
+                  <div class="">{{ consumable_form.quantity }}</div>
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ consumable_form.note.label }}
+                  </div>
+                  <div class="">{{ consumable_form.note }}</div>
+                  <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                         value="Установить расходник">
                 </div>
-                <div class="">{{ consumable_form.quantity }}</div>
-                <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
-                  {{ consumable_form.note.label }}
-                </div>
-                <div class="">{{ consumable_form.note }}</div>
-                <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
-                       value="Установить расходник">
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+          {% endfor %}
         {% endif %}
       {% endif %}
       {% this_device_con_history device.id %}
     </div>
     <div class="col-sm-6">
       {% if perms.device.can_install_accessories %}
-        {% if device.accessories.id %}
-          <div class="d-flex justify-content-center input-group mt-3">
-            <form action="{% url 'stockroom:device_add_accessories' device.accessories.id %}"
-                  class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
-                  method="post">
-              {% csrf_token %}
-              <div class="input-group mb-3">
-                <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
-                  {{ consumable_form.quantity.label }}
+        {% if device.accessories.all %}
+          {% for f in device.accessories.all %}
+            <div class="d-flex justify-content-center input-group mt-3">
+              <form action="{% url 'stockroom:device_add_accessories' f.id %}"
+                    class="mt-1 d-flex align-items-center justify-content-center" enctype="multipart/form-data"
+                    method="post">
+                {% csrf_token %}
+                <div class="input-group mb-4">
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ f.name }}
+                  </div>
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ consumable_form.quantity.label }}
+                  </div>
+                  <div class="">{{ consumable_form.quantity }}</div>
+                  <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
+                    {{ consumable_form.note.label }}
+                  </div>
+                  <div class="">{{ consumable_form.note }}</div>
+                  <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
+                         value="Установить комплектующее">
                 </div>
-                <div class="">{{ consumable_form.quantity }}</div>
-                <div class="btn btn-lg btn-outline-dark input-group-text" disabled type="button">
-                  {{ consumable_form.note.label }}
-                </div>
-                <div class="">{{ consumable_form.note }}</div>
-                <input class="btn btn-lg btn-outline-dark bg-gradient input-group-text " type="submit"
-                       value="Установить комплектующее">
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+          {% endfor %}
         {% endif %}
       {% endif %}
       {% this_device_acc_history device.id %}

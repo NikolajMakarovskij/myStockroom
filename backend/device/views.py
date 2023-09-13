@@ -48,7 +48,7 @@ class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, gen
             Q(workplace__room__name__icontains=query) |
             Q(workplace__room__floor__icontains=query) |
             Q(workplace__room__building__icontains=query)
-        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee')
+        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee').distinct()
         return object_list
 
 
@@ -89,7 +89,7 @@ class DeviceCategoryListView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
             Q(workplace__room__name__icontains=query) |
             Q(workplace__room__floor__icontains=query) |
             Q(workplace__room__building__icontains=query)
-        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee')
+        ).select_related('workplace', 'workplace__room').prefetch_related('workplace__employee').distinct()
         return object_list
 
 
