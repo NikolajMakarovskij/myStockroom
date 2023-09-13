@@ -171,8 +171,9 @@ def test_stock_device_acc_add_accessories(client):
     from device.models import Device
     create_session(client)
     accessories = create_accessories()
-    Device.objects.get_or_create(name='device', accessories=accessories)
+    Device.objects.get_or_create(name='device')
     device = Device.objects.get(name='device')
+    device.accessories.set([accessories.id])
     quantity = 5
     number_rack = 3
     number_shelf = 13

@@ -59,12 +59,14 @@ def test_device_create():
         invent="some_number_124",
         description="some_description",
         workplace=Workplace.objects.get(name="device_workplace"),
-        consumable=Consumables.objects.get(name="cartridge"),
-        accessories=Accessories.objects.get(name="accessories"),
         quantity=0,
         note="some_note"
     )
+
     device = Device.objects.get(name="device_name")
+    device.consumable.set([Consumables.objects.get(name="cartridge").id])
+    device.accessories.set([Accessories.objects.create(name="accessories").id])
+
     assert Device.objects.count() == 1
     assert device.name == "device_name"
     assert device.hostname == "web.db"
@@ -77,8 +79,8 @@ def test_device_create():
     assert device.invent == "some_number_124"
     assert device.description == "some_description"
     assert device.workplace.name == "device_workplace"
-    assert device.consumable.name == "cartridge"
-    assert device.accessories.name == "accessories"
+    assert device.consumable.count() == 1
+    assert device.accessories.count() == 1
     assert device.quantity == 0
     assert device.note == "some_note"
     assert device.__str__() == "device_name"

@@ -52,9 +52,19 @@ def add_consumables_in_devices(consumable: dict, accessories: dict) -> dict:
     """Service function. Creates a category, stock_model and stock_model. Return stock_model"""
     from device.models import Device
     Device.objects.bulk_create([
-        Device(name='device 1', consumable=consumable, accessories=accessories),
-        Device(name='device 2', consumable=consumable, accessories=accessories),
-        Device(name='device 3', consumable=consumable, accessories=accessories),
+        Device(name='device 1'),
+        Device(name='device 2'),
+        Device(name='device 3'),
     ])
+    if not consumable:
+        pass
+    else:
+        for device in Device.objects.all():
+            device.consumable.set([consumable.id])
+    if not accessories:
+        pass
+    else:
+        for device in Device.objects.all():
+            device.accessories.set([accessories.id])
     get_devices = Device.objects.all()
     return get_devices
