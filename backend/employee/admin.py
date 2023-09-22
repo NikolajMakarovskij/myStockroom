@@ -5,9 +5,9 @@ from core.utils import ExportAdmin
 
 class EmployeeAdmin(ExportAdmin, admin.ModelAdmin):
     model = Employee
-    list_display = ['name', 'surname', 'family', 'workplace', 'post', ]
+    list_display = ['name', 'surname', 'last_name', 'workplace', 'post', ]
     list_filter = ['workplace__room__building', 'workplace__room__floor', 'post__departament']
-    search_fields = ['name', 'surname', 'family', 'workplace', 'post', 'employeeEmail']
+    search_fields = ['name', 'surname', 'last_name', 'workplace', 'post', 'employeeEmail']
     actions = [ExportAdmin.export_to_csv]
 
 
