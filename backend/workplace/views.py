@@ -54,7 +54,7 @@ class WorkplaceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, 
 class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceModelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
 
 class WorkplaceDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
@@ -145,7 +145,7 @@ class RoomListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, gener
 class RoomRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
 
 class RoomDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):

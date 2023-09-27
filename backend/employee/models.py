@@ -19,20 +19,20 @@ class Employee(ModelMixin, models.Model):
     )
     name = models.CharField(
         max_length=50,
-        help_text="Введите имя сотрудника",
-        verbose_name="Имя сотрудника"
+        help_text="Введите имя",
+        verbose_name="Имя"
+    )
+    last_name = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Введите отчество",
+        verbose_name="Отчество"
     )
     surname = models.CharField(
         max_length=50,
         blank=True,
-        help_text="Введите отчество сотрудника",
-        verbose_name="Отчество сотрудника"
-    )
-    family = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="Введите фамилию сотрудника",
-        verbose_name="Фамилия сотрудника"
+        help_text="Введите фамилию",
+        verbose_name="Фамилия"
     )
     workplace = models.ForeignKey(
         Workplace,
@@ -64,7 +64,7 @@ class Employee(ModelMixin, models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
-        ordering = ["post__departament__name", "workplace__name"]
+        ordering = ["surname", "workplace__name", "post__departament__name", ]
 
 
 class Departament(ModelMixin, models.Model):

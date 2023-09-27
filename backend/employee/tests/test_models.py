@@ -46,7 +46,7 @@ def test_employee_create():
     Employee.objects.create(
         name="employee_name",
         surname="employee_surname",
-        family="employee_family",
+        last_name="employee_last_name",
         workplace=Workplace.objects.get(name="my_workplace"),
         post=Post.objects.get(name="employee_post"),
         employeeEmail="admin@admin.com",
@@ -55,7 +55,7 @@ def test_employee_create():
     assert Employee.objects.count() == 1
     assert employee.name == "employee_name"
     assert employee.surname == "employee_surname"
-    assert employee.family == "employee_family"
+    assert employee.last_name == "employee_last_name"
     assert employee.workplace.name == "my_workplace"
     assert employee.post.name == "employee_post"
     assert employee.post.departament.name == "my_departament"

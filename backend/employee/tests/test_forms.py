@@ -59,7 +59,7 @@ def test_employee_form_valid():
     form_data = {
         "name": "employee_name",
         "surname": "employee_surname",
-        "family": "employee_family",
+        "last_name": "employee_last_name",
         "workplace": Workplace.objects.get(name="my_workplace"),
         "post": Post.objects.get(name="employee_post"),
         "employeeEmail": "admin@admin.com",

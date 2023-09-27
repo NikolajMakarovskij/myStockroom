@@ -40,7 +40,7 @@ class EmployeeListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, g
         object_list = Employee.objects.filter(
             Q(name__icontains=query) |
             Q(surname__icontains=query) |
-            Q(family__icontains=query) |
+            Q(last_name__icontains=query) |
             Q(post__departament__name__icontains=query) |
             Q(post__name__icontains=query) |
             Q(workplace__name__icontains=query) |

@@ -159,6 +159,7 @@
   </div>
   <div class="row g-2">
     <div class="col-sm-6">
+      {% this_device_con_history device.id %}
       {% if perms.device.can_install_consumable %}
         {% if device.consumable.all %}
           {% for f in device.consumable.all %}
@@ -187,9 +188,9 @@
           {% endfor %}
         {% endif %}
       {% endif %}
-      {% this_device_con_history device.id %}
     </div>
     <div class="col-sm-6">
+      {% this_device_acc_history device.id %}
       {% if perms.device.can_install_accessories %}
         {% if device.accessories.all %}
           {% for f in device.accessories.all %}
@@ -218,7 +219,6 @@
           {% endfor %}
         {% endif %}
       {% endif %}
-      {% this_device_acc_history device.id %}
     </div>
   </div>
 </div>

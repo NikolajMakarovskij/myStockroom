@@ -39,11 +39,11 @@ class DepartamentWidget(BaseModelSelect2WidgetMixin):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['name', 'surname', 'family', 'workplace', 'post', 'employeeEmail']
+        fields = ['surname', 'name',  'last_name', 'workplace', 'post', 'employeeEmail']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'surname': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'family': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
             'workplace': WorkplaceWidget,
             'post': PostWidget,
             'employeeEmail': forms.EmailInput(attrs={'class': 'form-control form-control-lg'}),
