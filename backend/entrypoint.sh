@@ -9,12 +9,11 @@ then
     done
     echo "Старт!"
 fi
-# Выполняем миграции
+echo "Выполняем миграции"
 python3 manage.py makemigrations
 sleep 1
 python3 manage.py migrate
 sleep 1
-#python3 manage.py collectstatic
-#sleep 1
-#pytest --cov
+echo "Собираем статику"
+python3 manage.py collectstatic
 exec "$@"
