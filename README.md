@@ -101,8 +101,10 @@ ___
 
 <details>
 <summary> Разработка </summary>
+
 1. REST API на основе Django rest api;
 2. frontend на основе React;
 3. раздел "Программное обеспечение";
 4. раздел "Цифровые подписи".
+
 </details>
