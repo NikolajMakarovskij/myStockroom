@@ -28,42 +28,57 @@
       </div>
     {% endfor %}
   </div>
-  <div class="row row-cols-3 row-cols-md-3">
-    {% for f in device.consumable.all %}
-      <div class="col mt-3">
-        <div class="card border-dark  h-100">
-          <div class="card-header">
-            <h5 class="card-title">
-              Расходник № {{ forloop.counter }}
-            </h5>
-          </div>
-          <div class="card-body text-dark">
-            <a class="noDecoration" href="{{ f.get_absolute_url }}">
-              <h5 class="card-title">{{ f.name }}</h5>
-            </a>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-  <div class="row row-cols-3 row-cols-md-3">
-    {% for f in device.accessories.all %}
-      <div class="col mt-3">
-        <div class="card border-dark  h-100">
-          <div class="card-header">
-            <h5 class="card-title">
-              Комплектующее № {{ forloop.counter }}
-            </h5>
-          </div>
-          <div class="card-body text-dark">
-            <a class="noDecoration" href="{{ f.get_absolute_url }}">
-              <h5 class="card-title">{{ f.name }}</h5>
-            </a>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
+  <table class="table align-middle table-hover" style="text-align:center">
+    <th>Расходники</th>
+    <th>Комплектующие</th>
+    <tbody>
+      <td>
+        <table class="table align-middle table-hover" style="text-align:center">
+          {% if not device.consumable.all %}
+            <th>Расходники отсутствуют</th>
+          {% else %}
+            <th>№ п/п</th>
+            <th>Название</th>
+            <tbody>
+              {% for f in device.consumable.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <a class="noDecoration" href="{{ f.get_absolute_url }}">
+                    {{ f.name }}
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          {% endif %}
+        </table>
+      </td>
+      <td>
+        <table class="table align-middle table-hover" style="text-align:center">
+          {% if not device.accessories.all %}
+            <th>Коплектующие отсутствуют</th>
+          {% else %}
+            <th>№ п/п</th>
+            <th>Название</th>
+            <tbody>
+              {% for f in device.accessories.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <a class="noDecoration" href="{{ f.get_absolute_url }}">
+                    {{ f.name }}
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          {% endif %}
+        </table>
+      </td>
+    </tbody>
+  </table>
+
   <div class="d-flex justify-content-center input-group mt-3 ">
     {% if perms.device.add_device %}
       <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
