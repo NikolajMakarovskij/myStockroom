@@ -73,7 +73,7 @@
         {% if not each.stock_model.serial %}
           <td></td>
         {% else %}
-          <td>{{ device.stock_model.serial }}</td>
+          <td>{{ each.stock_model.serial }}</td>
         {% endif %}
         <td>{{ each.stock_model.workplace.room.name }}</td>
         <td>{{ each.rack }}</td>
