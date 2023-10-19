@@ -170,7 +170,7 @@ def add_disposal(request, devices_id):
                              message=f"{device.name} отправлен на утилизацию",
                              extra_tags='Успешно утилизирован'
                              )
-        DecomTasks.add_device_disp(device_id=device.id, username=username, status_choice="Утилизация")
+        DecomTasks.add_device_disp.delay(device_id=device.id, username=username, status_choice="Утилизация")
     else:
         messages.add_message(request,
                              level=messages.WARNING,
@@ -185,7 +185,7 @@ def add_disposal(request, devices_id):
 def remove_disposal(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.remove_disp(device_id=device.id, username=username, status_choice="Удален")
+    DecomTasks.remove_disp.delay(device_id=device.id, username=username, status_choice="Удален")
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален из утилизации",
