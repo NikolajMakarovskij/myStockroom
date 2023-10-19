@@ -14,7 +14,7 @@ def test_stock_no_category():
     Consumables.objects.create(name="my_consumable")
     consumable = Consumables.objects.get(name="my_consumable")
     consumable_id = consumable.id
-    ConStock.add_category(ConStock, consumable_id)
+    ConStock.add_category(consumable_id)
 
     assert StockCat.objects.count() == 0
 
@@ -24,7 +24,7 @@ def test_stock_add_category():
     """Checks the operation of the add_category method of the Stock class"""
     consumable = create_consumable()
     consumable_id = consumable.id
-    ConStock.add_category(ConStock, consumable_id)
+    ConStock.add_category(consumable_id)
     test_category = StockCat.objects.get(name='my_category')
 
     assert StockCat.objects.count() == 1
@@ -42,7 +42,7 @@ def test_stock_create_history():
     username = 'admin'
     status_choice = 'Приход'
     note = 'Примечание'
-    ConStock.create_history(ConStock, consumable_id, device_id, quantity, username, note, status_choice)
+    ConStock.create_history(consumable_id, device_id, quantity, username, note, status_choice)
     test_history = History.objects.get(stock_model='my_consumable')
 
     assert History.objects.count() == 1
@@ -66,7 +66,7 @@ def test_stock_add_consumable(client):
     number_shelf = 13
     username = 'admin'
     add_consumables_in_devices(consumable, accessories=None)
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
     test_get_history = History.objects.get(stock_model='my_consumable')
@@ -101,7 +101,7 @@ def test_stock_add_consumable_not_category(client):
     number_shelf = 13
     username = 'admin'
     add_consumables_in_devices(consumable, accessories=None)
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
     test_get_history = History.objects.get(stock_model='my_consumable')
@@ -132,9 +132,9 @@ def test_stock_update_consumable(client):
     number_shelf = 13
     username = 'admin'
     add_consumables_in_devices(consumable, accessories=None)
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=2,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=2,
                                number_shelf=2,
                                username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
@@ -156,9 +156,9 @@ def test_stock_remove_consumable(client):
     number_shelf = 13
     username = 'admin'
     add_consumables_in_devices(consumable, accessories=None)
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
-    ConStock.remove_from_stock(ConStock, model_id=consumable.id, quantity=0, username=username)
+    ConStock.remove_from_stock(model_id=consumable.id, quantity=0, username=username)
     test_history = History.objects.get(status='Удаление')
 
     assert Stockroom.objects.count() == 0
@@ -179,9 +179,9 @@ def test_stock_device_add_consumable(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    ConStock.add_to_stock(ConStock, model_id=consumable.id, quantity=quantity, number_rack=number_rack,
+    ConStock.add_to_stock(model_id=consumable.id, quantity=quantity, number_rack=number_rack,
                                number_shelf=number_shelf, username=username)
-    ConStock.add_to_device(ConStock, model_id=consumable.id, device=device.id, quantity=1, note='note',
+    ConStock.add_to_device(model_id=consumable.id, device=device.id, quantity=1, note='note',
                                 username=username)
     test_get_stock = Stockroom.objects.get(stock_model__name='my_consumable')
     test_history = History.objects.get(status='Расход')
