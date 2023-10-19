@@ -120,6 +120,7 @@ class Accounting(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('accounting:accounting-detail', args=[str(self.id)])
 
+    @staticmethod
     def get_cost_all(self):
         cost_all = self.cost * self.quantity
         return float("{:.2f}".format(cost_all))

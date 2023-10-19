@@ -163,7 +163,6 @@ def stock_add_consumable(request, consumable_id):
     if form.is_valid():
         cd = form.cleaned_data
         stock.add_to_stock(
-            stock,
             model_id=consumable.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -193,7 +192,7 @@ def stock_remove_consumable(request, consumable_id):
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
     stock = ConStock
-    stock.remove_from_stock(stock, model_id=consumable.id, username=username)
+    stock.remove_from_stock(model_id=consumable.id, username=username)
     messages.add_message(
         request,
         level=messages.SUCCESS,
@@ -222,7 +221,6 @@ def device_add_consumable(request, consumable_id):
                                  )
         else:
             stock.add_to_device(
-                stock,
                 model_id=consumable.id,
                 device=get_device_id,
                 quantity=cd['quantity'],

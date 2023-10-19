@@ -17,7 +17,7 @@ def test_decom_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     test_get_decom = Decommission.objects.get(stock_model__name='my_consumable')
@@ -46,7 +46,7 @@ def test_decom_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                       number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     test_get_decom = Decommission.objects.get(stock_model__name='my_consumable')
@@ -71,7 +71,7 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                       number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.remove_decom(device_id=devices.id, username=username, status_choice="Удаление")
@@ -93,7 +93,7 @@ def test_disp_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                       number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
@@ -124,7 +124,7 @@ def test_disp_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                       number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
@@ -151,7 +151,7 @@ def test_disp_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                       number_shelf=number_shelf, username=username)
     DecomTasks.add_device_decom(device_id=devices.id, username=username, status_choice="В список на списание")
     DecomTasks.add_device_disp(device_id=devices.id, username=username, status_choice="В список на утилизацию")
