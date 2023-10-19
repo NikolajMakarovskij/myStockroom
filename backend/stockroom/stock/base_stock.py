@@ -1,12 +1,16 @@
 import datetime
 
 from django.conf import settings
-from consumables.models import Accessories
 from device.models import Device
+from dataclasses import dataclass
 
-
+@dataclass
 class BaseStock(object):
     """Class with stock base methods"""
+    base_model: dict = None
+    stock_model: dict = None
+    stock_category: dict = None
+    history_mode: dict = None
 
     def __init__(self, request, ):
         """
@@ -17,42 +21,40 @@ class BaseStock(object):
         if not stock:
             stock = self.session[settings.STOCK_SESSION_ID] = {}
         self.stock = stock
-        self.base_model = None
-        self.stock_model = None
-        self.stock_category = None
-        self.history_model = None
 
     def save(self):
         self.session[settings.STOCK_SESSION_ID] = self.stock
         self.session.modified = True
 
-    def add_category(self, model_id: str) -> dict:
+    @classmethod
+    def add_category(cls, model_id: str) -> dict:
         """Getting a category"""
-        model = self.base_model.objects.get(id=model_id)
+        model = cls.base_model.objects.get(id=model_id)
         if not model.categories:
             category = None
         else:
             model_category = (
                 model.categories.name
             )
-            if self.stock_category.objects.filter(name=model_category):
-                category = self.stock_category.objects.get(
+            if cls.stock_category.objects.filter(name=model_category):
+                category = cls.stock_category.objects.get(
                     name=model_category
                 )
             else:
-                category = self.stock_category.objects.create(
+                category = cls.stock_category.objects.create(
                     name=model.categories.name,
                     slug=model.categories.slug
                 )
         return category
 
-    def create_history(self, model_id: str, device_id: str,
+    @classmethod
+    def create_history(cls, model_id: str, device_id: str,
                        quantity: int, username: str, note: str, status_choice: str
                        ) -> dict:
         """Creating an entry in the history of stock_model"""
 
-        model = self.base_model.objects.get(id=model_id)
-        category = BaseStock.add_category(self, model_id)
+        model = cls.base_model.objects.get(id=model_id)
+        category = cls.add_category(model_id)
         if not device_id:
             device_name = None
             device_id = None
@@ -61,7 +63,7 @@ class BaseStock(object):
             device_name = device.name
             device_id = device.id
 
-        history = self.history_model.objects.create(
+        history = cls.history_model.objects.create(
             stock_model=model.name,
             stock_model_id=model.id,
             device=device_name,
@@ -75,17 +77,18 @@ class BaseStock(object):
         )
         return history
 
-    def add_to_stock(self, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
+    @classmethod
+    def add_to_stock(cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None) -> None:
         """
         Add a stock_model to the stock or update its quantity.
         """
 
-        model = self.base_model.objects.get(id=model_id)
-        model_instance = self.base_model.objects.filter(id=model_id)
+        model = cls.base_model.objects.get(id=model_id)
+        model_instance = cls.base_model.objects.filter(id=model_id)
         model_quantity = int(str(model.quantity))
-        stock_model_instance = self.stock_model.objects.filter(stock_model=model_id)
+        stock_model_instance = cls.stock_model.objects.filter(stock_model=model_id)
         device_id = None
-        category = self.add_category(self, model_id)
+        category = cls.add_category(model_id)
         if category is None:
             categories = None
         else:
@@ -96,7 +99,7 @@ class BaseStock(object):
             model_instance.update(quantity=model_quantity)
             stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            self.stock_model.objects.create(
+            cls.stock_model.objects.create(
                 stock_model=model,
                 categories=categories,
                 dateAddToStock=datetime.date.today(),
@@ -104,25 +107,27 @@ class BaseStock(object):
                 shelf=int(number_shelf),
             )
             model_instance.update(quantity=int(quantity))
-        self.create_history(self, model_id, device_id, quantity, username, note=None, status_choice='Приход')
+        cls.create_history(model_id, device_id, quantity, username, note=None, status_choice='Приход')
 
-    def remove_from_stock(self, model_id: str, quantity=0, username=None) -> None:
+    @classmethod
+    def remove_from_stock(cls, model_id: str, quantity=0, username=None) -> None:
         """
         Remove stock_model from the stock
         """
         device_id = None
-        stock_model = self.stock_model.objects.filter(stock_model=model_id)
+        stock_model = cls.stock_model.objects.filter(stock_model=model_id)
         if stock_model:
             stock_model.delete()
-            self.create_history(self, model_id, device_id, quantity, username, note=None, status_choice='Удаление')
+            cls.create_history(model_id, device_id, quantity, username, note=None, status_choice='Удаление')
 
-    def add_to_device(self, model_id: str, device: dict, quantity: int = 1, note: str = None,
+    @classmethod
+    def add_to_device(cls, model_id: str, device: dict, quantity: int = 1, note: str = None,
                       username: str = None) -> None:
         """
         Install stock_model in the device
         """
         device_id = str(device)
-        model_add = self.base_model.objects.get(id=model_id)
+        model_add = cls.base_model.objects.get(id=model_id)
         model_quantity = int(str(model_add.quantity))
         device_obj = Device.objects.get(id=device_id)
         device_note = device_obj.note
@@ -141,8 +146,8 @@ class BaseStock(object):
         #TODO change Device to self.base_model.device
         #TODO fix tests
         Device.objects.filter(id=device_id).update(note=device_note)
-        self.base_model.objects.filter(id=model_id).update(
+        cls.base_model.objects.filter(id=model_id).update(
             quantity=model_quantity,
         )
-        self.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
-        self.create_history(self, model_id, device_id, quantity, username, history_note, status_choice='Расход')
+        cls.stock_model.objects.filter(stock_model=model_id).update(dateInstall=datetime.date.today())
+        cls.create_history(model_id, device_id, quantity, username, history_note, status_choice='Расход')

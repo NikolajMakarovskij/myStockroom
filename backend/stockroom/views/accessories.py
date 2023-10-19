@@ -145,7 +145,6 @@ def stock_add_accessories(request, accessories_id):
     if form.is_valid():
         cd = form.cleaned_data
         stock.add_to_stock(
-            stock,
             model_id=accessories.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -173,7 +172,7 @@ def stock_remove_accessories(request, accessories_id):
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
     stock = AccStock
-    stock.remove_from_stock(stock, model_id=accessories.id, username=username, )
+    stock.remove_from_stock(model_id=accessories.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{accessories.name} успешно удален со склада",
@@ -201,7 +200,6 @@ def device_add_accessories(request, accessories_id):
                                  )
         else:
             stock.add_to_device(
-                stock,
                 model_id=accessories.id,
                 device=get_device_id,
                 quantity=cd['quantity'],

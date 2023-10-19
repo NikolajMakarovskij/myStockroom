@@ -12,7 +12,7 @@ def test_stock_dev_no_category():
     Device.objects.create(name="my_consumable")
     device = Device.objects.get(name="my_consumable")
     device_id = device.id
-    DevStock.add_category(DevStock, device_id)
+    DevStock.add_category(device_id)
 
     assert CategoryDev.objects.count() == 0
 
@@ -22,7 +22,7 @@ def test_stock_dev_add_category():
     """Checks the operation of the add_category_dev method of the Stock class"""
     device = create_devices()
     device_id = device.id
-    DevStock.add_category(DevStock, device_id)
+    DevStock.add_category(device_id)
     test_category = CategoryDev.objects.get(name='my_category')
 
     assert CategoryDev.objects.count() == 1
@@ -39,7 +39,7 @@ def test_stock_dev_create_history():
     username = 'admin'
     status_choice = 'Приход'
     note = 'some history'
-    DevStock.create_history_device(DevStock, devices_id, quantity, username, status_choice, note)
+    DevStock.create_history_device(devices_id, quantity, username, status_choice, note)
     test_history = HistoryDev.objects.get(stock_model='my_consumable')
 
     assert HistoryDev.objects.count() == 1
@@ -62,7 +62,7 @@ def test_stock_add_devices(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
     test_get_stock = StockDev.objects.get(stock_model__name='my_consumable')
     test_get_history = HistoryDev.objects.get(stock_model='my_consumable')
@@ -96,7 +96,7 @@ def test_stock_dev_add_device_not_category(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
     test_get_stock = StockDev.objects.get(stock_model__name='my_consumable')
     test_get_history = HistoryDev.objects.get(stock_model='my_consumable')
@@ -126,9 +126,9 @@ def test_stock_dev_update_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=2,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=2,
                                  number_shelf=2,
                                  username=username)
     test_get_stock = StockDev.objects.get(stock_model__name='my_consumable')
@@ -150,9 +150,9 @@ def test_stock_dev_remove_device(client):
     number_shelf = 13
     username = 'admin'
     status_choice = "Удаление"
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
-    DevStock.remove_device_from_stock(DevStock, model_id=devices.id, quantity=0, username=username,
+    DevStock.remove_device_from_stock(model_id=devices.id, quantity=0, username=username,
                                       status_choice=status_choice)
     test_history = HistoryDev.objects.get(status='Удаление')
 
@@ -173,9 +173,9 @@ def test_stock_move_device(client):
     number_rack = 3
     number_shelf = 13
     username = 'admin'
-    DevStock.add_to_stock_device(DevStock, model_id=devices.id, quantity=quantity, number_rack=number_rack,
+    DevStock.add_to_stock_device(model_id=devices.id, quantity=quantity, number_rack=number_rack,
                                  number_shelf=number_shelf, username=username)
-    DevStock.move_device(DevStock, model_id=devices.id, workplace_id=workplace.id, username=username)
+    DevStock.move_device(model_id=devices.id, workplace_id=workplace.id, username=username)
     test_history = HistoryDev.objects.get(status='Перемещение на рабочее место pc-004-r')
     test_stock = StockDev.objects.get(stock_model__name='my_consumable')
 

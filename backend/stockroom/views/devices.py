@@ -139,7 +139,6 @@ def stock_add_device(request, device_id):
     if form.is_valid():
         cd = form.cleaned_data
         stock.add_to_stock_device(
-            stock,
             model_id=device.id,
             quantity=cd['quantity'],
             number_rack=cd['number_rack'],
@@ -167,7 +166,7 @@ def stock_remove_device(request, devices_id):
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
     stock = DevStock
-    stock.remove_device_from_stock(stock, model_id=device.id, username=username, )
+    stock.remove_device_from_stock(model_id=device.id, username=username, )
     messages.add_message(request,
                          level=messages.SUCCESS,
                          message=f"{device.name} успешно удален со склада",
@@ -189,7 +188,6 @@ def move_device_from_stock(request, device_id):
         workplace_ = cd['workplace']
         note_ = cd['note']
         stock.move_device(
-            stock,
             model_id=device.id,
             workplace_id=workplace_.id,
             note=note_,
@@ -221,7 +219,6 @@ def add_history_to_device(request, device_id):
         cd = form.cleaned_data
         note_ = cd['note']
         stock.create_history_device(
-            stock,
             model_id=device.id,
             quantity=0,
             username=username,
