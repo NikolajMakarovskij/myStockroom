@@ -1,7 +1,7 @@
 import os
 
 
-DEBUG = int(os.environ.get("DBG_BKND"))
+DEBUG = int(os.environ.get("DEBUG"))
 
 if DEBUG:
     from .production import *
