@@ -117,7 +117,6 @@ class Consumables(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('consumables:consumables-detail', args=[str(self.id)])
 
-    @staticmethod
     def get_difference(self) -> int:
         quantity_all = 0
         for each in self.consumable.all():
@@ -244,7 +243,6 @@ class Accessories(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('consumables:accessories-detail', args=[str(self.id)])
 
-    @staticmethod
     def get_difference(self) -> int:
         quantity_all = 0
         for each in self.accessories.all():
