@@ -16,6 +16,8 @@ is under development`
 
 `The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel, and the system of access rights to sections.`
 
+`Программа написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
+PostgreSQL (v. 14). для запуска и развертывания программы используется Doсker`
 `The program is written using the Django framework (v 5) in Python 3.12. It is used as a database.
 PostgreSQL (v. 14). Docker is used to launch and deploy the program.`
 
@@ -27,6 +29,11 @@ ___
 <details>
 <summary> Additional Software </summary>
 
+1. Для развертывания программы потребуются предварительно установленные: 
+    * [Docker](https://docs.docker.com/engine/) и [Docker compose](https://docs.docker.com/compose/)
+    или
+    * [Docker desktop](https://docs.docker.com/get-docker/)
+   
 1. To deploy the program, you will need pre-installed:
     * Docker и Docker compose
 
@@ -46,6 +53,7 @@ https://docs.docker.com/get-docker/).
 </details>
 
 ___
+## Развертывание
 ## Deployment
 
 <details>
