@@ -14,7 +14,7 @@ ___
 `Доступ в программу осуществляется через браузер во внутренней локальной сети. Присутствует система авторизации, панель администратора,
 система прав доступа к разделам`
 
-`Пронграмма написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
+`Программа написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
 PostgreSQL (v. 14). для запуска и развертывания программы используется Doсker`
 
 </details>
@@ -26,33 +26,14 @@ ___
 <summary> Дополнительное ПО </summary>
 
 1. Для развертывания программы потребуются предварительно установленные: 
-    * Docker и Docker compose
-   
+    * [Docker](https://docs.docker.com/engine/) и [Docker compose](https://docs.docker.com/compose/)
     или
-
-    * Docker desktop
-
-2. С установкой Docker можно ознакомиться по [ссылке](
-https://docs.docker.com/engine/).
-
-3. С установкой Docker compose можно ознакомиться по [ссылке](
-https://docs.docker.com/compose/).
-
-4. С установкой Docker desktop можно ознакомиться по [ссылке](
-https://docs.docker.com/get-docker/).
-
+    * [Docker desktop](https://docs.docker.com/get-docker/)
+   
 </details>
 
 ___
 ## Развертывание
-
-<details>
-<summary>Клонирование репозитория</summary>
-
-С копированием репозитория можно ознакомится по [ссылке](
-https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloning-a-repository).
-
-</details>
 
 <details>
 <summary>Настройка переменных окружения</summary>
