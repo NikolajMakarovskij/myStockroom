@@ -8,15 +8,15 @@ pgadmin-data/_data/storage
 pgadmin-data/_data/pgadmin4.db
 .vscode/settings.json
 .pytest_cache
-/backend/media
-/backend/static
+/backend/media/
+/backend/static/
+/static/
+/media/
 .coverage
 env/
-node_moduless/
 **/__pycache__/
 
-/reactfrontendapp/
 /backend/celerybeat-schedule
 /venv/
-
+.idea/
 .env.dev

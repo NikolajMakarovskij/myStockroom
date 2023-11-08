@@ -11,7 +11,7 @@ from workplace.models import Workplace
 
 class DeviceCat(ModelMixin, models.Model):
     """
-    Модель группы для устройств
+    Group model for devices
     """
     id = models.UUIDField(
         primary_key=True,
@@ -164,7 +164,7 @@ class Device(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('device:device-detail', args=[str(self.id)])
 
-    #TODO valid method to ip_address field
+    # TODO valid method to ip_address field
 
     class Meta:
         verbose_name = 'Устройства'
