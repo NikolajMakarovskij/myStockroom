@@ -13,7 +13,7 @@ from .models import Device, DeviceCat
 from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
 
-# Устройства
+# Devices
 class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = ('device.view_device',)
     model = Device
