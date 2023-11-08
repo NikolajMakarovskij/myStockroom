@@ -1,4 +1,4 @@
-from .views import *
+from .views import DeviceRestView, DeviceCatRestView
 from rest_framework import routers
 
 
