@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/.gitignore.backend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/myStockroom.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/myStockroom.iml" afterDir="false" />
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="add branch gitignore">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore.backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore.backend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/device/templates/device/device_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/device/templates/device/device_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +60,17 @@
       <option name="presentableId" value="Default" />
       <updated>1699353306679</updated>
       <workItem from="1699423169601" duration="40000" />
-      <workItem from="1699424210822" duration="860000" />
+      <workItem from="1699424210822" duration="3089000" />
     </task>
+    <task id="LOCAL-00001" summary="add branch gitignore">
+      <option name="closed" value="true" />
+      <created>1699438150447</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699438150447</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -78,5 +86,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add branch gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="add branch gitignore" />
   </component>
 </project>

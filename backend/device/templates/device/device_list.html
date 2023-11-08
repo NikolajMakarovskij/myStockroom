@@ -59,12 +59,14 @@
         <td>{{ device.workplace.room.name}}</td>
         <td><a class="noDecoration" href="{{ device.workplace.get_absolute_url }}">{{ device.workplace.name }}</a></td>
         <td><a class="noDecoration" href="{{ device.get_absolute_url }}">{{ device.name }}</a></td>
-        {% if device.hostname %}
-          <td>{{ device.hostname }}</a></td>
-        {% elif device.ip_address %}
-          <td>{{ device.ip_address }}</a></td>
-        {% else %}
+        {% if not device.hostname and not device.ip_address %}
           <td></td>
+        {% elif not device.ip_address %}
+            <td><a>{{ device.hostname }}</a></td>
+        {% elif not device.hostname %}
+          <td>{{ device.ip_address }}</td>
+        {% else %}
+            <td>{{ device.hostname }} <br> {{ device.ip_address }} </td>
         {% endif %}
         <td>{{ device.description }}</td>
         {% if not device.invent %}
@@ -72,10 +74,12 @@
         {% else %}
           <td>{{ device.invent }}</td>
         {% endif %}
-        {% if not device.serial %}
-          <td></td>
-        {% else %}
+        {% if not device.serial and device.serialImg %}
+          <td><img src="{{ MEDIA_URL }}{{ device.serialImg }}" style="height: 100px"></td>
+        {% elif device.serial %}
           <td>{{ device.serial }}</td>
+        {% else %}
+          <td></td>
         {% endif %}
         <td>
           {% for each in device.workplace.employee.all %}
