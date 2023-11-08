@@ -17,7 +17,7 @@ env/
 **/__pycache__/
 
 /venv/
-.idea/
+**/.idea/
 .env.dev
 
 # celery
