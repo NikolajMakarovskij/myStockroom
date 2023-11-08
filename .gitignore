@@ -18,5 +18,5 @@ env/
 
 /backend/celerybeat-schedule
 /venv/
-
+/.idea
 .env.dev
