@@ -50,10 +50,10 @@
         <tr>
           <th scope="col">Расходник</th>
           <th scope="col">Описание</th>
-          <th scope="col">Производитель</th>
           <th scope="col">Количество</th>
           <th scope="col">Разность</th>
           <th scope="col">На балансе</th>
+          <th scope="col">Расход за год</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
@@ -66,8 +66,6 @@
           {% else %}
             <td></td>
           {% endif %}
-
-          <td><a class="noDecoration" href="{{ each.manufacturer.get_absolute_url }}">{{ each.manufacturer.name }}</a></td>
           <td>{{ each.quantity }}</td>
           <td>{{ each.get_difference }}</td>
           {% if not each.consumable.all %}
@@ -104,8 +102,9 @@
               </table>
             </td>
           {% endif %}
+          <td>{{ each.consumption_year }}</td>
           {% if each.note %}
-            <td>{{ each.note}}</td>
+            <td>{{ each.note }}</td>
           {% else %}
             <td></td>
           {% endif %}
