@@ -194,4 +194,5 @@ def test_stock_device_acc_add_accessories(client):
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'
     assert test_history.note == 'note'
+    assert accessories.consumption_year() == 1
     #TODO check note in device
