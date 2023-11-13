@@ -21,8 +21,13 @@
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
         <li class="nav-item">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_consumption_acc_list' %}active{% endif %}" href="{% url 'stockroom:history_consumption_acc_list' %}">
+              Расход
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_acc_list' %}active{% endif %}" href="{% url 'stockroom:history_acc_list' %}">
-              Все группы
+              История
             </a>
         </li>
         {% for item in menu_categories %}

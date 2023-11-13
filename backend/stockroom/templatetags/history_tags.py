@@ -1,4 +1,5 @@
 from django import template
+from datetime import datetime
 
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
@@ -74,6 +75,42 @@ def this_con_history(consumable_id):
         }
 
 
+@register.inclusion_tag('stock/consumption_list.html')
+def consumption(consumable_id) -> int:
+    cur_year = datetime.now()
+    history = History.objects.all()
+    unit_history_all = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+    )
+    unit_history_last_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31"
+    )
+    unit_history_current_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+        dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
+    )
+    quantity_all = 0
+    quantity_last_year = 0
+    quantity_current_year = 0
+    for unit in unit_history_all:
+        quantity_all += unit.quantity
+    for unit in unit_history_last_year:
+        quantity_last_year += unit.quantity
+    for unit in unit_history_current_year:
+        quantity_current_year += unit.quantity
+    return {
+        'quantity_all': quantity_all,
+        'quantity_last_year': quantity_last_year,
+        'quantity_current_year': quantity_current_year
+    }
+
+
 @register.inclusion_tag('stock/history_short_list.html')
 def consumables_history():
     history_list = History.objects.all()[:5]
@@ -117,3 +154,39 @@ def accessories_history():
         "table_head": "История комплектующих",
         "no_history": "Комплектующее не использовались"
         }
+
+
+@register.inclusion_tag('stock/consumption_list.html')
+def consumption_acc(consumable_id) -> int:
+    cur_year = datetime.now()
+    history = HistoryAcc.objects.all()
+    unit_history_all = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+    )
+    unit_history_last_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31"
+    )
+    unit_history_current_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+        dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
+    )
+    quantity_all = 0
+    quantity_last_year = 0
+    quantity_current_year = 0
+    for unit in unit_history_all:
+        quantity_all += unit.quantity
+    for unit in unit_history_last_year:
+        quantity_last_year += unit.quantity
+    for unit in unit_history_current_year:
+        quantity_current_year += unit.quantity
+    return {
+        'quantity_all': quantity_all,
+        'quantity_last_year': quantity_last_year,
+        'quantity_current_year': quantity_current_year
+    }

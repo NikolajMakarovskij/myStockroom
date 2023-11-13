@@ -133,6 +133,63 @@ class HistoryAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, Data
         return object_list
 
 
+class HistoryConsumptionAccView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_history'
+    template_name = 'stock/history_consumption_acc_list.html'
+    model = HistoryAcc
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(
+            title="Расход комплектующих по годам",
+            searchlink='stockroom:history_consumption_acc_search',
+            menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items())
+                       )
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query:
+            query = ''
+        object_list = HistoryAcc.objects.filter(
+            Q(stock_model__icontains=query) |
+            Q(categories__name__icontains=query) |
+            Q(device__icontains=query) |
+            Q(status__icontains=query) |
+            Q(dateInstall__icontains=query) |
+            Q(user__icontains=query)
+        ).order_by('stock_model_id').distinct('stock_model_id')
+        return object_list
+
+
+class HistoryAccConsumptionCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historyacc'
+    template_name = 'stock/history_consumption_acc_list.html'
+    model = HistoryAcc
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Расход комплектующих по годам",
+                                      searchlink='stockroom:history_consumption_acc_search',
+                                      menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = HistoryAcc.objects.filter(categories__slug=self.kwargs[
+            'category_slug']).order_by('stock_model_id').distinct('stock_model_id')
+        return object_list
+
+
 # Methods
 @require_POST
 @login_required
