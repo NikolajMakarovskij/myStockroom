@@ -53,10 +53,17 @@ class ConsumablesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, ge
             Q(name__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
+            Q(device__name__icontains=query) |
+            Q(device__workplace__name__icontains=query) |
+            Q(device__workplace__room__name__icontains=query) |
+            Q(device__workplace__room__building__icontains=query) |
+            Q(device__workplace__employee__name__icontains=query) |
+            Q(device__workplace__employee__surname__icontains=query) |
+            Q(device__workplace__employee__last_name__icontains=query) |
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
-        ).select_related('categories')
+        ).select_related('categories').prefetch_related('device').distinct()
         return object_list
 
 
@@ -190,10 +197,17 @@ class AccessoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, ge
             Q(name__icontains=query) |
             Q(manufacturer__name__icontains=query) |
             Q(categories__name__icontains=query) |
+            Q(device__name__icontains=query) |
+            Q(device__workplace__name__icontains=query) |
+            Q(device__workplace__room__name__icontains=query) |
+            Q(device__workplace__room__building__icontains=query) |
+            Q(device__workplace__employee__name__icontains=query) |
+            Q(device__workplace__employee__surname__icontains=query) |
+            Q(device__workplace__employee__last_name__icontains=query) |
             Q(quantity__icontains=query) |
             Q(serial__icontains=query) |
             Q(invent__icontains=query)
-        ).select_related('categories')
+        ).select_related('categories').prefetch_related('device').distinct()
         return object_list
 
 
