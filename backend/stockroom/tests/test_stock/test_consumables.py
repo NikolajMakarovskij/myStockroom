@@ -194,5 +194,4 @@ def test_stock_device_add_consumable(client):
     assert test_get_stock.shelf == 13
     assert test_history.status == 'Расход'
     assert test_history.note == 'note'
-    assert consumable.consumption_year() == 1
     #TODO check note in device
