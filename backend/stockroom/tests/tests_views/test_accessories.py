@@ -106,10 +106,11 @@ class HistoryAccStockViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_in_history = 149
+        Accessories.objects.create(name='check_consumable')
         for history_num in range(number_in_history):
             HistoryAcc.objects.create(
                 stock_model='Christian %s' % history_num,
-                stock_model_id='1e7cec54-fdfd-48f9-837c-b0533b9e9b8c'
+                stock_model_id=Accessories.objects.filter(name='check_consumable').get().id
             )
         assert HistoryAcc.objects.count() == 149
 
@@ -176,12 +177,13 @@ class HistoryAccCategoryViewTest(TestCase):
     def setUpTestData(cls):
         number_in_stock = 149
         CategoryAcc.objects.create(name="some_category", slug="some_category")
+        Accessories.objects.create(name='check_consumable')
         for stocks_num in range(number_in_stock):
             HistoryAcc.objects.create(
                 stock_model='Christian %s' % stocks_num,
                 categories=CategoryAcc.objects.get(slug="some_category"),
-                stock_model_id='1e7cec54-fdfd-48f9-837c-b0533b9e9b8c'
-                )
+                stock_model_id=Accessories.objects.filter(name='check_consumable').get().id
+            )
         assert HistoryAcc.objects.count() == 149
         assert CategoryAcc.objects.count() == 1
 
@@ -227,6 +229,7 @@ class HistoryAccCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is False)
+        self.assertTrue(len(resp.context['historyacc_list']) == 1)
 
     def test_lists_all_stockroom_history_acc_consumables(self):
         resp = self.client.get(reverse('stockroom:history_acc_category', kwargs={
