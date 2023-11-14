@@ -1,25 +1,18 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+
 from .models import Room, Workplace
-from core.utils import ExportAdmin
 
 
-class RoomAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Room
+@admin.register(Room)
+class RoomAdmin(ImportExportModelAdmin):
     list_display = ['name', 'floor', 'building', ]
     list_filter = ['floor', 'building']
     search_fields = ['name', 'floor', 'building']
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(Room, RoomAdmin)
-
-
-class WorkplaceAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Workplace
+@admin.register(Workplace)
+class WorkplaceAdmin(ImportExportModelAdmin):
     list_display = ['name', 'room']
     list_filter = ['room', 'room__floor', 'room__building']
     search_fields = ['name', 'room']
-    actions = [ExportAdmin.export_to_csv]
-
-
-admin.site.register(Workplace, WorkplaceAdmin)
