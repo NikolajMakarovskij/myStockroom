@@ -179,7 +179,7 @@ def accessories_history():
 def consumption_acc(consumable_id) -> int:
     cur_year = datetime.now()
     history = HistoryAcc.objects.all()
-    consumables = Accessories.objects.filter(id=consumable_id).get()
+    consumables = Accessories.objects.all()
     device_count = 0
     device_name = ''
     quantity = 0
