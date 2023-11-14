@@ -1,33 +1,34 @@
 from django.contrib import admin
-from decommission.models import CategoryDec, CategoryDis
-from core.utils import ExportAdmin
+from import_export.admin import ImportExportModelAdmin
+
+from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 
 
 # Decommission
-class CategoryDecAdmin(ExportAdmin, admin.ModelAdmin):
-    model = CategoryDec
-    list_display = [
-        'name',
-        'slug'
-        ]
+@admin.register(CategoryDec)
+class CategoryDecAdmin(ImportExportModelAdmin):
+    list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name", )}
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(CategoryDec, CategoryDecAdmin)
+@admin.register(Decommission)
+class DecommissionAdmin(ImportExportModelAdmin):
+    list_display = ['stock_model', 'categories', 'date']
+    list_filter = ['categories']
+    search_fields = ['stock_model__name']
 
 
 # Disposal
-class CategoryDisAdmin(ExportAdmin, admin.ModelAdmin):
-    model = CategoryDis
-    list_display = [
-        'name',
-        'slug'
-        ]
+@admin.register(CategoryDis)
+class CategoryDisAdmin(ImportExportModelAdmin):
+    list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name", )}
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(CategoryDis, CategoryDisAdmin)
+@admin.register(Disposal)
+class DisposalAdmin(ImportExportModelAdmin):
+    list_display = ['stock_model', 'categories', 'date']
+    list_filter = ['categories']
+    search_fields = ['stock_model__name']
