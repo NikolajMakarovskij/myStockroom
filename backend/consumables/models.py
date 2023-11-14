@@ -125,20 +125,6 @@ class Consumables(ModelMixin, models.Model):
         difference = self.quantity - quantity_all
         return difference
 
-    def consumption_year(self) -> int:
-        from stockroom.models.consumables import History
-        quantity_year = 0
-        history = History.objects.all()
-        cur_year = datetime.now()
-        unit_history = history.filter(stock_model_id=self.id,
-                                      status='Расход',
-                                      dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
-                                      dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
-                                      )
-        for unit in unit_history:
-            quantity_year += unit.quantity
-        return quantity_year
-
     class Meta:
         verbose_name = 'Расходник'
         verbose_name_plural = 'Расходники'
@@ -264,20 +250,6 @@ class Accessories(ModelMixin, models.Model):
             quantity_all += each.quantity
         difference = self.quantity - quantity_all
         return difference
-
-    def consumption_year(self) -> int:
-        from stockroom.models.accessories import HistoryAcc
-        quantity_year = 0
-        history = HistoryAcc.objects.all()
-        cur_year = datetime.now()
-        unit_history = history.filter(stock_model_id=self.id,
-                                      status='Расход',
-                                      dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
-                                      dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
-                                      )
-        for unit in unit_history:
-            quantity_year += unit.quantity
-        return quantity_year
 
     class Meta:
         verbose_name = 'Комплектующее'
