@@ -65,7 +65,7 @@ def test_device_create():
 
     device = Device.objects.get(name="device_name")
     device.consumable.set([Consumables.objects.get(name="cartridge").id])
-    device.accessories.set([Accessories.objects.create(name="accessories").id])
+    device.accessories.set([Accessories.objects.get(name="accessories").id])
 
     assert Device.objects.count() == 1
     assert device.name == "device_name"

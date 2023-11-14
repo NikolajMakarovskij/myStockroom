@@ -77,13 +77,13 @@ def this_con_history(consumable_id):
 
 
 @register.inclusion_tag('stock/consumption_list.html')
-def consumption(consumable_id) -> int:
+def consumption(consumable_id):
     cur_year = datetime.now()
     history = History.objects.all()
     consumables = Consumables.objects.all()
-    device_count = 0
+    device_count = ''
     device_name = ''
-    quantity = 0
+    quantity = ''
     if not consumables.filter(id=consumable_id):
         pass
     else:
@@ -176,7 +176,7 @@ def accessories_history():
 
 
 @register.inclusion_tag('stock/consumption_list.html')
-def consumption_acc(consumable_id) -> int:
+def consumption_acc(consumable_id):
     cur_year = datetime.now()
     history = HistoryAcc.objects.all()
     consumables = Accessories.objects.all()

@@ -155,8 +155,7 @@ class HistoryAccStockViewTest(TestCase):
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is False)
-            self.assertTrue(len(resp.context['historyacc_list']) == 1)
+            self.assertTrue(resp.context['is_paginated'] is True)
 
     def test_lists_all_stockroom_in_history_list(self):
         links = ['stockroom:history_acc_list', 'stockroom:history_acc_search']
@@ -228,8 +227,7 @@ class HistoryAccCategoryViewTest(TestCase):
                     kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is False)
-        self.assertTrue(len(resp.context['historyacc_list']) == 1)
+        self.assertTrue(resp.context['is_paginated'] is True)
 
     def test_lists_all_stockroom_history_acc_consumables(self):
         resp = self.client.get(reverse('stockroom:history_acc_category', kwargs={

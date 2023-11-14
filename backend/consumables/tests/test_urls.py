@@ -51,8 +51,10 @@ def test_details_url(auto_login_user):
         {'model': Accessories, 'link': 'consumables:accessories-update', 'template': 'Forms/add.html'},
         {'model': Accessories, 'link': 'consumables:accessories-delete', 'template': 'Forms/delete.html'},
     ]
+    Consumables.objects.create(name="some_model")
+    Accessories.objects.create(name="some_model")
     for each in links:
-        model = each.get('model').objects.create(name="some_model")
+        model = each.get('model').objects.filter(name="some_model").get()
         url = reverse(each.get('link'), kwargs={"pk": model.pk})
         response = client.get(url)
         assert response.status_code == 200
