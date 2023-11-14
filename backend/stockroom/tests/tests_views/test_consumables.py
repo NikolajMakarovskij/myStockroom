@@ -104,8 +104,12 @@ class HistoryStockViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_in_history = 149
+        Consumables.objects.create(name='check_consumable')
         for history_num in range(number_in_history):
-            History.objects.create(stock_model='Christian %s' % history_num, )
+            History.objects.create(
+                stock_model='Christian %s' % history_num,
+                stock_model_id=Consumables.objects.filter(name='check_consumable').get().id
+            )
         assert History.objects.count() == 149
 
     def test_context_data_in_history_list(self):
@@ -150,6 +154,7 @@ class HistoryStockViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue('is_paginated' in resp.context)
             self.assertTrue(resp.context['is_paginated'] is False)
+            self.assertTrue(len(resp.context['history_list']) == 1)
 
     def test_lists_all_stockroom(self):
         links = ['stockroom:history_list', 'stockroom:history_search']
@@ -170,9 +175,13 @@ class HistoryCategoryViewTest(TestCase):
     def setUpTestData(cls):
         number_in_stock = 149
         StockCat.objects.create(name="some_category", slug="some_category")
+        Consumables.objects.create(name='check_consumable')
         for stocks_num in range(number_in_stock):
-            History.objects.create(stock_model='Christian %s' % stocks_num,
-                                   categories=StockCat.objects.get(slug="some_category"))
+            History.objects.create(
+                stock_model='Christian %s' % stocks_num,
+                categories=StockCat.objects.get(slug="some_category"),
+                stock_model_id=Consumables.objects.filter(name='check_consumable').get().id
+                )
         assert History.objects.count() == 149
         assert StockCat.objects.count() == 1
 
@@ -218,6 +227,7 @@ class HistoryCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is False)
+        self.assertTrue(len(resp.context['history_list']) == 1)
 
     def test_lists_all_stockroom_history_consumables(self):
         resp = self.client.get(reverse('stockroom:history_category', kwargs={
