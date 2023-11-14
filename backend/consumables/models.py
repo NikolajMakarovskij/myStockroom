@@ -53,6 +53,7 @@ class Consumables(ModelMixin, models.Model):
     )
     name = models.CharField(
         max_length=150,
+        unique=True,
         help_text="Введите название",
         verbose_name="Название"
     )
@@ -179,6 +180,7 @@ class Accessories(ModelMixin, models.Model):
     )
     name = models.CharField(
         max_length=150,
+        unique=True,
         help_text="Введите название",
         verbose_name="Название"
     )

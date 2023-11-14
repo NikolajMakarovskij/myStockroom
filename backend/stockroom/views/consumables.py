@@ -181,7 +181,7 @@ class HistoryConsumptionView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
             Q(status__icontains=query) |
             Q(dateInstall__icontains=query) |
             Q(user__icontains=query)
-        ).order_by('stock_model_id').distinct('stock_model_id')
+        ).order_by('stock_model').distinct('stock_model')
         return object_list
 
 
@@ -206,7 +206,7 @@ class HistoryConsumptionCategoriesView(LoginRequiredMixin, PermissionRequiredMix
 
     def get_queryset(self):
         object_list = History.objects.filter(
-            categories__slug=self.kwargs['category_slug']).order_by('stock_model_id').distinct('stock_model_id')
+            categories__slug=self.kwargs['category_slug']).order_by('stock_model').distinct('stock_model')
         return object_list
 
 
