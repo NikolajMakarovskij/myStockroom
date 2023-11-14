@@ -1,50 +1,34 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
-from core.utils import ExportAdmin
 from .models import Consumables, Categories, AccCat, Accessories
 
 
-class ConsumablesAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Consumables
+@admin.register(Consumables)
+class ConsumablesAdmin(ImportExportModelAdmin):
     list_display = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
     search_fields = ['name', 'categories__name', 'manufacturer__name', 'quantity', 'serial', 'invent', 'description',
                      'note']
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(Consumables, ConsumablesAdmin)
-
-
-class CategoriesAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Categories
+@admin.register(Categories)
+class CategoriesAdmin(ImportExportModelAdmin):
     list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name",)}
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(Categories, CategoriesAdmin)
-
-
-class AccessoriesAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Accessories
+@admin.register(Accessories)
+class AccessoriesAdmin(ImportExportModelAdmin):
     list_display = ['name', 'categories', 'manufacturer', 'quantity', 'serial', 'invent', 'description', 'note']
     list_filter = ['categories']
     search_fields = ['name', 'categories__name', 'manufacturer__name', 'quantity', 'serial', 'invent', 'description',
                      'note']
-    actions = [ExportAdmin.export_to_csv]
 
 
-admin.site.register(Accessories, AccessoriesAdmin)
-
-
-class AccCatAdmin(ExportAdmin, admin.ModelAdmin):
-    model = AccCat
+@admin.register(AccCat)
+class AccCatAdmin(ImportExportModelAdmin):
     list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {"slug": ("name",)}
-    actions = [ExportAdmin.export_to_csv]
-
-
-admin.site.register(AccCat, AccCatAdmin)

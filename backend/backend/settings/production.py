@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'debug_toolbar',
     'django_select2',
+    'import_export',
 ]
 
 MIDDLEWARE = [
