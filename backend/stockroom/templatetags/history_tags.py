@@ -80,10 +80,21 @@ def this_con_history(consumable_id):
 def consumption(consumable_id) -> int:
     cur_year = datetime.now()
     history = History.objects.all()
-    consumable = Consumables.objects.filter(id=consumable_id).get()
-    device_count = consumable.device.count()
-    device_name = consumable.device.all()[:1]
-    quantity = consumable.quantity
+    consumables = Consumables.objects.all()
+    device_count = 0
+    device_name = ''
+    quantity = 0
+    if not consumables.filter(id=consumable_id):
+        pass
+    else:
+        consumable = consumables.filter(id=consumable_id).get()
+        quantity = consumable.quantity
+        if not consumable.device.all():
+            pass
+        else:
+            device_name = consumable.device.all()[:1]
+            device_count = consumable.device.count()
+
     unit_history_all = history.filter(
         stock_model_id=consumable_id,
         status='Расход',
@@ -168,10 +179,20 @@ def accessories_history():
 def consumption_acc(consumable_id) -> int:
     cur_year = datetime.now()
     history = HistoryAcc.objects.all()
-    consumable = Accessories.objects.filter(id=consumable_id).get()
-    device_count = consumable.device.count()
-    device_name = consumable.device.all()[:1]
-    quantity = consumable.quantity
+    consumables = Accessories.objects.filter(id=consumable_id).get()
+    device_count = 0
+    device_name = ''
+    quantity = 0
+    if not consumables.filter(id=consumable_id):
+        pass
+    else:
+        consumable = consumables.filter(id=consumable_id).get()
+        quantity = consumable.quantity
+        if not consumable.device.all():
+            pass
+        else:
+            device_name = consumable.device.all()[:1]
+            device_count = consumable.device.count()
     unit_history_all = history.filter(
         stock_model_id=consumable_id,
         status='Расход',
