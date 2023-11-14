@@ -1,14 +1,11 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+
 from .models import Manufacturer
-from core.utils import ExportAdmin
 
 
-class ManufacturerAdmin(ExportAdmin, admin.ModelAdmin):
-    model = Manufacturer
+@admin.register(Manufacturer)
+class ManufacturerAdmin(ImportExportModelAdmin):
     list_display = ['name', 'country', 'production']
     list_filter = ['country', 'production']
     search_fields = ['name', 'country', 'production']
-    actions = [ExportAdmin.export_to_csv]
-
-
-admin.site.register(Manufacturer, ManufacturerAdmin)
