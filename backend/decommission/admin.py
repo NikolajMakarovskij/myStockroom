@@ -2,6 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
+from .resources import DecommissionResource
 
 
 # Decommission
@@ -14,6 +15,7 @@ class CategoryDecAdmin(ImportExportModelAdmin):
 
 @admin.register(Decommission)
 class DecommissionAdmin(ImportExportModelAdmin):
+    resource_classes = [DecommissionResource]
     list_display = ['stock_model', 'categories', 'date']
     list_filter = ['categories']
     search_fields = ['stock_model__name']

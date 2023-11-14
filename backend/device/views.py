@@ -12,6 +12,9 @@ from .forms import DeviceForm
 from .models import Device, DeviceCat
 from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
+from django.http import HttpResponse
+from .resources import DeviceResource
+
 
 # Devices
 class DeviceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
@@ -285,3 +288,11 @@ class AddHistoryFormView(PermissionRequiredMixin, FormView):
                     history_form=history_form
                 )
             )
+
+
+def export_device(request):
+    person_resource = DeviceResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Устройства.csv"'
+    return response

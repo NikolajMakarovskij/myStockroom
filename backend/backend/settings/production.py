@@ -246,3 +246,9 @@ REST_FRAMEWORK = {
         '%d.%m.%y',  # '25.10.21'
     ],
 }
+
+# start import-export
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# end import-export
