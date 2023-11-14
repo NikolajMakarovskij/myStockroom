@@ -1,6 +1,7 @@
 from django import template
 from datetime import datetime
 
+from consumables.models import Consumables, Accessories
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
 from stockroom.models.devices import HistoryDev
@@ -79,6 +80,10 @@ def this_con_history(consumable_id):
 def consumption(consumable_id) -> int:
     cur_year = datetime.now()
     history = History.objects.all()
+    consumable = Consumables.objects.filter(id=consumable_id).get()
+    device_count = consumable.device.count()
+    device_name = consumable.device.all()[:1]
+    quantity = consumable.quantity
     unit_history_all = history.filter(
         stock_model_id=consumable_id,
         status='Расход',
@@ -105,9 +110,12 @@ def consumption(consumable_id) -> int:
     for unit in unit_history_current_year:
         quantity_current_year += unit.quantity
     return {
+        'device_name': device_name,
+        'device_count': device_count,
         'quantity_all': quantity_all,
         'quantity_last_year': quantity_last_year,
-        'quantity_current_year': quantity_current_year
+        'quantity_current_year': quantity_current_year,
+        'quantity': quantity
     }
 
 
@@ -160,6 +168,10 @@ def accessories_history():
 def consumption_acc(consumable_id) -> int:
     cur_year = datetime.now()
     history = HistoryAcc.objects.all()
+    consumable = Accessories.objects.filter(id=consumable_id).get()
+    device_count = consumable.device.count()
+    device_name = consumable.device.all()[:1]
+    quantity = consumable.quantity
     unit_history_all = history.filter(
         stock_model_id=consumable_id,
         status='Расход',
@@ -186,7 +198,10 @@ def consumption_acc(consumable_id) -> int:
     for unit in unit_history_current_year:
         quantity_current_year += unit.quantity
     return {
+        'device_name': device_name,
+        'device_count': device_count,
         'quantity_all': quantity_all,
         'quantity_last_year': quantity_last_year,
-        'quantity_current_year': quantity_current_year
+        'quantity_current_year': quantity_current_year,
+        'quantity': quantity
     }
