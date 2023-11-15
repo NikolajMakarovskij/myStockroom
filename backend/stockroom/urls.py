@@ -70,5 +70,6 @@ urlpatterns = [
     path('devices/stockroom/move/<uuid:device_id>/', move_device_from_stock, name='move_device'),
     path('devices/stockroom/add_history/<uuid:device_id>/', add_history_to_device, name='add_device_history'),
     path('devices/export/', ExportStockDevice.as_view(), name='export_stock_device'),
-    path('devices/export/category/<slug:category_slug>', ExportStockDeviceCategory.as_view(), name='export_stock_device_category'),
+    path('devices/export/category/<slug:category_slug>', ExportStockDeviceCategory.as_view(),
+         name='export_stock_device_category'),
 ]

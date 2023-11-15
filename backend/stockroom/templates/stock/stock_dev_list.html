@@ -14,7 +14,7 @@
       <thead> 
         <tr>
           <td>
-            {% if perms.device.can_export_device %}
+            {% if perms.stockdev.can_export_device %}
               <a class="text-secondary" href="{% url 'stockroom:export_stock_device' %}">
                 Экспорт
               </a>
@@ -26,7 +26,7 @@
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
-        {% if perms.device.can_export_device %}
+        {% if perms.stockdev.can_export_device %}
           <div class="dropdown">
             <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               Экспорт
