@@ -4,7 +4,8 @@ from stockroom.views.accessories import StockAccView, StockAccCategoriesView, st
     stock_remove_accessories, device_add_accessories, HistoryAccView, HistoryAccCategoriesView, \
     HistoryConsumptionAccView, HistoryAccConsumptionCategoriesView
 from stockroom.views.devices import StockDevView, StockDevCategoriesView, stock_add_device, stock_remove_device, \
-    HistoryDevView, HistoryDevCategoriesView, move_device_from_stock, add_history_to_device
+    HistoryDevView, HistoryDevCategoriesView, move_device_from_stock, add_history_to_device, ExportStockDevice, \
+    ExportStockDeviceCategory
 from stockroom.views.index import StockroomIndexView
 from stockroom.views.consumables import StockroomView, StockroomCategoriesView, stock_add_consumable, \
     stock_remove_consumable, device_add_consumable, HistoryView, HistoryCategoriesView, HistoryConsumptionView, \
@@ -68,4 +69,6 @@ urlpatterns = [
          name='history_dev_category'),
     path('devices/stockroom/move/<uuid:device_id>/', move_device_from_stock, name='move_device'),
     path('devices/stockroom/add_history/<uuid:device_id>/', add_history_to_device, name='add_device_history'),
+    path('devices/export/', ExportStockDevice.as_view(), name='export_stock_device'),
+    path('devices/export/category/<slug:category_slug>', ExportStockDeviceCategory.as_view(), name='export_stock_device_category'),
 ]

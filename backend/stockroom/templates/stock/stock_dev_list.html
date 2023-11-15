@@ -13,13 +13,40 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Группы не обнаружены</th>
+          <td>
+            {% if perms.device.can_export_device %}
+              <a class="text-secondary" href="{% url 'stockroom:export_stock_device' %}">
+                Экспорт
+              </a>
+            {% endif %}
+          </td>
         </tr>
       </thead>
     </table>
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
+        {% if perms.device.can_export_device %}
+          <div class="dropdown">
+            <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Экспорт
+            </button>
+            <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+              <li>
+                <a class="dropdown-item text-secondary" href="{% url 'stockroom:export_stock_device' %}">
+                  Все устройства
+                </a>
+              </li>
+              {% for item in menu_categories %}
+                <li>
+                  <a class="dropdown-item text-secondary"
+                    href="{% url 'stockroom:export_stock_device_category' item.slug %}">{{item.name}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:stock_dev_list' %}active{% endif %}"
                href="{% url 'stockroom:stock_dev_list' %}">
