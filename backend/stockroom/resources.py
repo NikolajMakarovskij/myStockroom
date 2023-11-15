@@ -23,5 +23,6 @@ class StockDevResource(resources.ModelResource):
             'stock_model__consumable__name',
             'stock_model__manufacturer__name',
             'stock_model__description',
-            'stock_model__note'
+            'stock_model__note',
+            'dateAddToStock'
         ]

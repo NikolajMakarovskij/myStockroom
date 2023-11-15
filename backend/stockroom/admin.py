@@ -55,7 +55,6 @@ class CategoryAccAdmin(ImportExportModelAdmin):
 # Devices
 @admin.register(StockDev)
 class StockDevAdmin(ImportExportModelAdmin):
-    resource_classes = [StockDevResource]
     list_display = ['stock_model', 'dateAddToStock', 'dateInstall', 'rack', 'shelf']
     list_filter = ['categories']
     search_fields = ['stock_model__name', 'stock_model__invent', 'categories__name']

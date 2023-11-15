@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from rest_framework import viewsets
 
@@ -14,6 +14,7 @@ from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
 
 from django.http import HttpResponse
 from .resources import DeviceResource
+from datetime import datetime
 
 
 # Devices
@@ -290,9 +291,37 @@ class AddHistoryFormView(PermissionRequiredMixin, FormView):
             )
 
 
-def export_device(request):
-    person_resource = DeviceResource()
-    dataset = person_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Устройства.csv"'
-    return response
+class ExportDevice(View):
+
+    def get(self, *args, **kwargs):
+        resource = DeviceResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        device_cat = cache.get('device_cat')
+        if not device_cat:
+            device_cat = DeviceCat.objects.all()
+            cache.set('device_cat', device_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=device_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Device.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = DeviceResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response

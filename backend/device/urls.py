@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from .routers import router
 from .views import DeviceListView, DeviceCategoryListView, DeviceDetailView, DeviceCreate, DeviceUpdate, DeviceDelete,\
-    export_device
+    ExportDevice, ExportDeviceCategory
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
@@ -13,5 +13,6 @@ urlpatterns = [
     re_path(r'^create/$', DeviceCreate.as_view(), name='new-device'),
     re_path(r'^(?P<pk>[-\w]+)/update$', DeviceUpdate.as_view(), name='device-update'),
     re_path(r'^(?P<pk>[-\w]+)/delete$', DeviceDelete.as_view(), name='device-delete'),
-    re_path(r'ˆexport$', export_device, name='export_device'),
+    path('export/', ExportDevice.as_view(), name='export_device'),
+    path('export/category/<slug:category_slug>', ExportDeviceCategory.as_view(), name='export_device_category'),
 ]
