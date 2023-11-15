@@ -21,9 +21,31 @@
   <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
     <ul class="nav nav-tabs">
       <li class="nav-item">
-          <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'device:device_list' %}active{% endif %}" href="{% url 'device:device_list' %}">
-            Все группы
-          </a>
+
+      </li>
+      <div class="dropdown">
+        <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Экспорт
+        </button>
+        <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+          <li>
+            <a class="dropdown-item text-secondary {% if request.resolver_match.view_name == 'device:export_device' %}active{% endif %}" href="{% url 'device:export_device' %}">
+              Все устройства
+            </a>
+          </li>
+          {% for item in menu_categories %}
+            <li>
+              <a class="dropdown-item text-secondary"
+                href="{% url 'device:export_device_category' item.slug %}">{{item.name}}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <li class="nav-item">
+        <a class="dropdown-item nav-link text-secondary {% if request.resolver_match.view_name == 'device:device_list' %}active{% endif %}" href="{% url 'device:device_list' %}">
+          Все группы
+        </a>
       </li>
       {% for item in menu_categories %}
         <li class="nav-item ">
