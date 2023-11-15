@@ -8,10 +8,6 @@ from workplace.models import Workplace
 
 
 class DeviceResource(resources.ModelResource):
-    id = fields.Field(
-        column_name='ID',
-        attribute='id',
-    )
     name = fields.Field(
         column_name='Название',
         attribute='name',

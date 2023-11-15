@@ -39,6 +39,7 @@ class Decommission (ModelMixin, models.Model):
         permissions = [
             ('add_to_decommission', 'Отправить на списание'),
             ('remove_from_decommission', 'Удалить из списания'),
+            ('can_export_device', 'Экспорт устройств'),
         ]
 
 

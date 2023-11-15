@@ -4,7 +4,6 @@ from import_export.admin import ImportExportModelAdmin
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from stockroom.models.consumables import StockCat, History, Stockroom
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
-from stockroom.resources import StockDevResource
 
 
 # Consumables

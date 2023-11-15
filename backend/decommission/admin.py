@@ -15,7 +15,6 @@ class CategoryDecAdmin(ImportExportModelAdmin):
 
 @admin.register(Decommission)
 class DecommissionAdmin(ImportExportModelAdmin):
-    resource_classes = [DecommissionResource]
     list_display = ['stock_model', 'categories', 'date']
     list_filter = ['categories']
     search_fields = ['stock_model__name']

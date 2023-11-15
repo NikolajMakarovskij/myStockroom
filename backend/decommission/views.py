@@ -4,11 +4,15 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from core.utils import DataMixin
 from device.models import Device
 from .models import Decommission, CategoryDec, Disposal, CategoryDis
+from .resources import DecommissionResource
 from .tasks import DecomTasks
+
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # Decommission
@@ -101,6 +105,41 @@ def remove_decommission(request, devices_id):
                          extra_tags='Успешно удален'
                          )
     return redirect('decommission:decom_list')
+
+
+class ExportDecomDevice(View):
+    def get(self, *args, **kwargs):
+        resource = DecommissionResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportDecomDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_decom = cache.get('cat_decom')
+        if not cat_decom:
+            cat_decom = CategoryDec.objects.all()
+            cache.set('cat_decom', cat_decom, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_decom)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Decommission.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = DecommissionResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
 
 
 # Disposal
