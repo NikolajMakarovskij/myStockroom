@@ -13,7 +13,13 @@
 <table class="table align-middle table-hover" style="text-align:center">
   <thead> 
     <tr>
-      <th scope="col" style="font-size: 32px;">Группы устройств не обнаружены</th>
+      <td>
+        {% if perms.device.can_export %}
+          <a class="text-secondary" href="{% url 'device:export_device' %}">
+            Экспорт
+          </a>
+        {% endif %}
+      </td>
     </tr>
   </thead>
 </table>
@@ -27,7 +33,7 @@
           </button>
           <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
             <li>
-              <a class="dropdown-item text-secondary {% if request.resolver_match.view_name == 'device:export_device' %}active{% endif %}" href="{% url 'device:export_device' %}">
+              <a class="dropdown-item text-secondary" href="{% url 'device:export_device' %}">
                 Все устройства
               </a>
             </li>
