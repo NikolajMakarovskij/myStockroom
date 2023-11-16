@@ -10,7 +10,8 @@ from stockroom.views.devices import StockDevView, StockDevCategoriesView, stock_
 from stockroom.views.index import StockroomIndexView
 from stockroom.views.consumables import StockroomView, StockroomCategoriesView, stock_add_consumable, \
     stock_remove_consumable, device_add_consumable, HistoryView, HistoryCategoriesView, HistoryConsumptionView, \
-    HistoryConsumptionCategoriesView, ExportStockConsumable, ExportStockConsumableCategory
+    HistoryConsumptionCategoriesView, ExportStockConsumable, ExportStockConsumableCategory, ExportConsumptionConsumable, \
+    ExportConsumptionConsumableCategory
 
 
 urlpatterns = [
@@ -36,6 +37,9 @@ urlpatterns = [
     path('history/consumption/search', HistoryConsumptionView.as_view(), name='history_consumption_search'),
     path('history/consumption/category/<slug:category_slug>', HistoryConsumptionCategoriesView.as_view(),
          name='history_consumption_category'),
+    path('stockroom/history/export/', ExportConsumptionConsumable.as_view(), name='export_consumption_consumable'),
+    path('stockroom/history/export/category/<slug:category_slug>', ExportConsumptionConsumableCategory.as_view(),
+         name='export_consumption_consumable_category'),
 
 
     # Accessories

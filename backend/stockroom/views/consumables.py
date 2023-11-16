@@ -15,7 +15,7 @@ from stockroom.forms import StockAddForm, ConsumableInstallForm
 from stockroom.models.consumables import Stockroom, History, StockCat
 from stockroom.serializers.consumables import StockModelSerializer
 from stockroom.stock.stock import ConStock
-from stockroom.resources import StockConResource
+from stockroom.resources import StockConResource, ConsumptionResource
 
 from django.http import HttpResponse
 from datetime import datetime
@@ -249,6 +249,41 @@ class HistoryConsumptionCategoriesView(LoginRequiredMixin, PermissionRequiredMix
         object_list = History.objects.filter(
             categories__slug=self.kwargs['category_slug']).order_by('stock_model').distinct('stock_model')
         return object_list
+
+
+class ExportConsumptionConsumable(View):
+    def get(self, *args, **kwargs):
+        resource = ConsumptionResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumptionConsumableCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        stock_cat = cache.get('stock_cat')
+        if not stock_cat:
+            stock_cat = StockCat.objects.all()
+            cache.set('stock_cat', stock_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = History.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = ConsumptionResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
 
 
 # Methods

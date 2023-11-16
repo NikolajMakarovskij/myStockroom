@@ -4,8 +4,10 @@ from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
 from device.models import Device
 from consumables.models import Consumables, Accessories
 from stockroom.models.devices import StockDev, CategoryDev
-from stockroom.models.consumables import Stockroom, StockCat
-from stockroom.models.accessories import StockAcc, CategoryAcc
+from stockroom.models.consumables import Stockroom, StockCat, History
+from stockroom.models.accessories import StockAcc, CategoryAcc, HistoryAcc
+
+from datetime import datetime
 
 
 class StockDevResource(resources.ModelResource):
@@ -104,7 +106,7 @@ class StockConResource(resources.ModelResource):
     categories = fields.Field(
         column_name='Категория',
         attribute='categories',
-        widget=ForeignKeyWidget(CategoryAcc, field='name')
+        widget=ForeignKeyWidget(StockCat, field='name')
     )
     manufacturer = fields.Field(
         column_name='Производитель',
@@ -176,7 +178,7 @@ class StockAccResource(resources.ModelResource):
     categories = fields.Field(
         column_name='Категория',
         attribute='categories',
-        widget=ForeignKeyWidget(StockAcc, field='name')
+        widget=ForeignKeyWidget(CategoryAcc, field='name')
     )
     manufacturer = fields.Field(
         column_name='Производитель',
@@ -237,3 +239,123 @@ class StockAccResource(resources.ModelResource):
 
     class Meta:
         model = StockAcc
+
+
+class ConsumptionResource(resources.ModelResource):
+    stock_model = fields.Field(
+        column_name="Название",
+    )
+    devices = fields.Field(
+        column_name="Устройства",
+    )
+    devices_count = fields.Field(
+        column_name="Количество устройств",
+    )
+    quantity_all = fields.Field(
+        column_name="Расход за все время",
+    )
+    quantity_last_year = fields.Field(
+        column_name="Расход за прошлый год",
+    )
+    quantity_current_year = fields.Field(
+        column_name="Расход за текущий год",
+    )
+    quantity = fields.Field(
+        column_name='Остаток',
+        attribute='quantity',
+    )
+
+
+    def get_queryset(self):
+        return self._meta.model.objects.filter(status='Расход').order_by('stock_model').distinct('stock_model')
+
+    class Meta:
+        model = History
+        exclude = ['id', 'stock_model_id', 'device', 'deviceId', 'categories', 'dateInstall', 'user', 'status',	'note']
+
+    def dehydrate_stock_model(self, history):
+        name = getattr(history, "stock_model")
+        return name
+
+    def dehydrate_quantity(self, history):
+        id = getattr(history, "stock_model_id")
+        consumables = Consumables.objects.all()
+        if not consumables.filter(id=id):
+            quantity = ''
+        else:
+            quantity = consumables.filter(id=id).get().quantity
+        return quantity
+
+    def dehydrate_devices(self, history):
+        id = getattr(history, "stock_model_id")
+        device_list = []
+        consumables = Consumables.objects.all()
+        if not consumables.filter(id=id):
+            devices = ''
+        else:
+            consumable = consumables.filter(id=id).get()
+            if not consumable.device.all():
+                devices = ''
+            else:
+                devices = consumable.device.all().order_by('name').distinct('name')
+                for device in devices:
+                     device_list.append(device.name)
+                devices = '|'.join(device_list)
+        return devices
+
+    def dehydrate_devices_count(self, history):
+        id = getattr(history, "stock_model_id")
+        consumables = Consumables.objects.all()
+        if not consumables.filter(id=id):
+            devices_count = ''
+        else:
+            consumable = consumables.filter(id=id).get()
+            if not consumable.device.all():
+                devices_count = ''
+            else:
+                devices_count = consumable.device.count()
+        return devices_count
+
+    def dehydrate_quantity_all(self, history):
+        quantity_all = 0
+        id = getattr(history, "stock_model_id")
+        history = History.objects.all()
+        unit_history_all = history.filter(
+            stock_model_id=id,
+            status='Расход',
+        )
+        for unit in unit_history_all:
+            quantity_all += unit.quantity
+        return quantity_all
+
+    def dehydrate_quantity_last_year(self, history):
+        quantity_last_year = 0
+        id = getattr(history, "stock_model_id")
+        cur_year = datetime.now()
+        history = History.objects.all()
+        unit_history_last_year = history.filter(
+            stock_model_id=id,
+            status='Расход',
+            dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
+            dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31"
+        )
+        for unit in unit_history_last_year:
+            quantity_last_year += unit.quantity
+        return quantity_last_year
+
+    def dehydrate_quantity_current_year(self, history):
+        quantity_current_year = 0
+        id = getattr(history, "stock_model_id")
+        cur_year = datetime.now()
+        history = History.objects.all()
+        unit_history_current_year = history.filter(
+            stock_model_id=id,
+            status='Расход',
+            dateInstall__gte=f"{int(cur_year.strftime('%Y'))}-01-01",
+            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31"
+        )
+        for unit in unit_history_current_year:
+            quantity_current_year += unit.quantity
+        return quantity_current_year
+
+
