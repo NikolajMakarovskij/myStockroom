@@ -132,6 +132,7 @@ class Consumables(ModelMixin, models.Model):
         ordering = ['name', 'categories']
         permissions = [
             ('can_add_consumable_to_stock', 'Добавление на склад'),
+            ('can_export_consumable', 'Экспорт'),
         ]
 
 
@@ -259,5 +260,6 @@ class Accessories(ModelMixin, models.Model):
         ordering = ['name', 'categories']
         permissions = [
             ('can_add_accessories_to_stock', 'Добавление на склад'),
+            ('can_export_accessories', 'Экспорт'),
         ]
 
