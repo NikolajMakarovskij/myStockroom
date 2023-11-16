@@ -92,7 +92,7 @@ def consumption(consumable_id):
         if not consumable.device.all():
             pass
         else:
-            device_name = consumable.device.all()[:1]
+            device_name = consumable.device.all().order_by('name').distinct('name')
             device_count = consumable.device.count()
 
     unit_history_all = history.filter(
@@ -191,7 +191,7 @@ def consumption_acc(consumable_id):
         if not consumable.device.all():
             pass
         else:
-            device_name = consumable.device.all()[:1]
+            device_name = consumable.device.all().order_by('name').distinct('name')
             device_count = consumable.device.count()
     unit_history_all = history.filter(
         stock_model_id=consumable_id,
