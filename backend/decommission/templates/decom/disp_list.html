@@ -13,7 +13,7 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          {% if perms.decommission.can_export_device %}
+          {% if perms.disposal.can_export_device %}
             <a class="text-secondary" href="{% url 'decommission:export_disp_device' %}">
               Экспорт
             </a>
@@ -24,7 +24,7 @@
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
-        {% if perms.decommission.can_export_device %}
+        {% if perms.disposal.can_export_device %}
           <div class="dropdown">
             <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               Экспорт
