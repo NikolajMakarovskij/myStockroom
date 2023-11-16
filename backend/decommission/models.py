@@ -147,4 +147,5 @@ class CategoryDis(ModelMixin, models.Model):
         permissions = [
             ('add_to_disposal', 'Отправить на утилизацию'),
             ('remove_from_disposal', 'Удалить из утилизации'),
+            ('can_export_device', 'Экспорт устройств'),
         ]

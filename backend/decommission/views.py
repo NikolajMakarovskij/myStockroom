@@ -8,7 +8,7 @@ from django.views import generic, View
 from core.utils import DataMixin
 from device.models import Device
 from .models import Decommission, CategoryDec, Disposal, CategoryDis
-from .resources import DecommissionResource
+from .resources import DecommissionResource, DisposalResource
 from .tasks import DecomTasks
 
 from django.http import HttpResponse
@@ -231,3 +231,39 @@ def remove_disposal(request, devices_id):
                          extra_tags='Успешно удален'
                          )
     return redirect('decommission:disp_list')
+
+
+class ExportDispDevice(View):
+    def get(self, *args, **kwargs):
+        resource = DisposalResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportDispDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_disp = cache.get('cat_disp')
+        if not cat_disp:
+            cat_disp = CategoryDis.objects.all()
+            cache.set('cat_disp', cat_disp, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_disp)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Disposal.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = DisposalResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+

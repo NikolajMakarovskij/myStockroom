@@ -20,14 +20,6 @@ class DeviceResource(resources.ModelResource):
         column_name='IP адрес',
         attribute='ip_address',
     )
-    login = fields.Field(
-        column_name='Логин',
-        attribute='login',
-    )
-    pwd = fields.Field(
-        column_name='Пароль',
-        attribute='pwd',
-    )
     categories = fields.Field(
         column_name='Категория',
         attribute='categories',

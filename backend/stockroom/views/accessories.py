@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from django.views.decorators.http import require_POST
 
 from consumables.models import Accessories
@@ -12,6 +12,10 @@ from core.utils import DataMixin
 from stockroom.forms import StockAddForm, ConsumableInstallForm
 from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
 from stockroom.stock.stock import AccStock
+from stockroom.resources import StockAccResource
+
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # accessories
@@ -78,6 +82,41 @@ class StockAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
         object_list = StockAcc.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
             'stock_model', 'stock_model__categories', ).prefetch_related('stock_model__device').distinct()
         return object_list
+
+
+class ExportStockAccessories(View):
+    def get(self, *args, **kwargs):
+        resource = StockAccResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportStockAccessoriesCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = StockAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = StockAccResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
 
 
 # History
