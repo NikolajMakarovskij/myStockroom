@@ -91,9 +91,9 @@
         {% elif not device.ip_address %}
             <td><a>{{ device.hostname }}</a></td>
         {% elif not device.hostname %}
-          <td>{{ device.ip_address }}</td>
+          <td><a href="{{ device.ip_address }}">{{ device.ip_address }}</a></td>
         {% else %}
-            <td>{{ device.hostname }} <br> {{ device.ip_address }} </td>
+        <td>{{ device.hostname }} <br> <a href="{{ device.ip_address }}">{{ device.ip_address }} </a>></td>
         {% endif %}
         <td>{{ device.description }}</td>
         {% if not device.invent %}
