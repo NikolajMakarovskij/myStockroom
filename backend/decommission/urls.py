@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from .views import (
                     DecommissionView, DecomCategoriesView, DisposalView, DispCategoriesView,
                     add_decommission, remove_decommission, add_disposal, remove_disposal,
-                    ExportDecomDevice, ExportDecomDeviceCategory
+                    ExportDecomDevice, ExportDecomDeviceCategory, ExportDispDevice, ExportDispDeviceCategory
                     )
 
 urlpatterns = [
@@ -26,5 +26,8 @@ urlpatterns = [
 
     path('disposal/add/<uuid:devices_id>/', add_disposal, name='add_disp'),
     path('disposal/remove/<uuid:devices_id>/', remove_disposal, name='remove_disp'),
+    path('disposal/export/', ExportDispDevice.as_view(), name='export_disp_device'),
+    path('disposal/export/category/<slug:category_slug>', ExportDispDeviceCategory.as_view(),
+         name='export_disp_device_category'),
 
 ]
