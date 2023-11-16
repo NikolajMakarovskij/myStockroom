@@ -109,6 +109,11 @@ class Disposal(ModelMixin, models.Model):
         verbose_name = 'Утилизация устройств'
         verbose_name_plural = 'Утилизация устройств'
         ordering = ['stock_model']
+        permissions = [
+            ('add_to_disposal', 'Отправить на утилизацию'),
+            ('remove_from_disposal', 'Удалить из утилизации'),
+            ('can_export_device', 'Экспорт устройств'),
+        ]
 
 
 class CategoryDis(ModelMixin, models.Model):
@@ -144,8 +149,4 @@ class CategoryDis(ModelMixin, models.Model):
         verbose_name = 'Группа утилизации устройств'
         verbose_name_plural = 'Группы утилизации устройств'
         ordering = ['name']
-        permissions = [
-            ('add_to_disposal', 'Отправить на утилизацию'),
-            ('remove_from_disposal', 'Удалить из утилизации'),
-            ('can_export_device', 'Экспорт устройств'),
-        ]
+
