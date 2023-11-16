@@ -56,7 +56,7 @@ class StockAcc (ModelMixin, models.Model):
             ('remove_accessories_from_stock', 'Удалить co склада'),
             ('add_accessories_to_stock', 'Добавить на склада'),
             ('add_accessories_to_device', 'Установить в устройство'),
-            ('can_export_device', 'Экспорт устройств'),
+            ('can_export_device', 'Экспорт'),
         ]
 
 
