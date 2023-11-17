@@ -153,7 +153,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
     )
 
     def get_queryset(self):
-        return self._meta.model.objects.filter(status='Расход').order_by('stock_model').distinct('stock_model')
+        return self._meta.model.objects.order_by('stock_model').distinct('stock_model')
 
     class Meta:
         model = History
