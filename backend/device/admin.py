@@ -7,7 +7,6 @@ from .resources import DeviceResource
 
 @admin.register(Device)
 class DeviceAdmin(ImportExportModelAdmin):
-    resource_classes = [DeviceResource]
     list_display = ['name', 'description', 'categories', 'manufacturer',
               'workplace', 'quantity', 'note']
     list_filter = ['categories']
