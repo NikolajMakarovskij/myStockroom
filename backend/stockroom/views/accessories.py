@@ -143,7 +143,8 @@ class ExportConsumptionAccessoriesCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        queryset = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
+        queryset = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug']
+                                             ).order_by('stock_model').distinct('stock_model')
         resource = AccessoriesConsumptionResource()
         dataset = resource.export(queryset, *args, **kwargs)
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
