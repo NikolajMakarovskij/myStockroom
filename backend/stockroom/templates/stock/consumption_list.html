@@ -1,6 +1,8 @@
-{% for name in device_name %}
-<td>{{ name.name }} |</td>
-{% endfor %}
+<td>
+    {% for name in device_name %}
+        {{ name.name }} |
+    {% endfor %}
+</td>
 <td>{{ device_count }}</td>
 <td>{{ quantity_all }}</td>
 <td>{{ quantity_last_year }}</td>
