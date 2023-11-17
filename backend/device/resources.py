@@ -76,3 +76,4 @@ class DeviceResource(resources.ModelResource):
 
     class Meta:
         model = Device
+        exclude = ['id', 'login', 'pwd']
