@@ -15,5 +15,7 @@ sleep 1
 python3 manage.py migrate
 sleep 1
 echo "Собираем статику"
-python3 manage.py collectstatic
+python3 manage.py collectstatic <<EOF
+yes
+EOF
 exec "$@"
