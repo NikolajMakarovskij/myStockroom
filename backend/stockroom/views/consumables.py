@@ -121,7 +121,8 @@ class ExportStockConsumableCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        queryset = Stockroom.objects.filter(categories__slug=self.kwargs['category_slug'])
+        queryset = Stockroom.objects.filter(categories__slug=self.kwargs['category_slug']
+                                            ).order_by('stock_model').distinct('stock_model')
         resource = StockConResource()
         dataset = resource.export(queryset, *args, **kwargs)
         response = HttpResponse(dataset.xlsx, content_type="xlsx")

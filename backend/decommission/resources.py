@@ -6,8 +6,7 @@ from device.models import Device
 
 
 class DecommissionResource(resources.ModelResource):
-
-    name = fields.Field(
+    stock_model = fields.Field(
         column_name='Название',
         attribute='stock_model',
         widget=ForeignKeyWidget(Device, field='name')
@@ -79,10 +78,10 @@ class DecommissionResource(resources.ModelResource):
 
     class Meta:
         model = Decommission
+        exclude = ['stock_model']
 
 
 class DisposalResource(resources.ModelResource):
-
     name = fields.Field(
         column_name='Название',
         attribute='stock_model',
@@ -155,3 +154,4 @@ class DisposalResource(resources.ModelResource):
 
     class Meta:
         model = Disposal
+        exclude = ['stock_model']
