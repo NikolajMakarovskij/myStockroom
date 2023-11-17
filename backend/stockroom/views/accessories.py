@@ -12,7 +12,7 @@ from core.utils import DataMixin
 from stockroom.forms import StockAddForm, ConsumableInstallForm
 from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
 from stockroom.stock.stock import AccStock
-from stockroom.resources import StockAccResource
+from stockroom.resources import StockAccResource, AccessoriesConsumptionResource
 
 from django.http import HttpResponse
 from datetime import datetime
@@ -114,6 +114,41 @@ class ExportStockAccessoriesCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
             filename=F'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumptionAccessories(View):
+    def get(self, *args, **kwargs):
+        resource = AccessoriesConsumptionResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumptionAccessoriesCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = AccessoriesConsumptionResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
             ext='xlsx'
         )
         return response

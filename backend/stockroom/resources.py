@@ -128,7 +128,7 @@ class StockAccResource(BaseStockResource):
         exclude = ['stock_model']
 
 
-class ConsumptionResource(resources.ModelResource):
+class ConsumableConsumptionResource(resources.ModelResource):
     stock_model = fields.Field(
         column_name="Название",
     )
@@ -159,27 +159,30 @@ class ConsumptionResource(resources.ModelResource):
         model = History
         exclude = ['id', 'stock_model_id', 'device', 'deviceId', 'categories', 'dateInstall', 'user', 'status', 'note']
 
-    def dehydrate_stock_model(self, history):
+    @staticmethod
+    def dehydrate_stock_model(history):
         name = getattr(history, "stock_model")
         return name
 
-    def dehydrate_quantity(self, history):
-        id = getattr(history, "stock_model_id")
+    @staticmethod
+    def dehydrate_quantity(history):
+        id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
-        if not consumables.filter(id=id):
+        if not consumables.filter(id=id_):
             quantity = ''
         else:
-            quantity = consumables.filter(id=id).get().quantity
+            quantity = consumables.filter(id=id_).get().quantity
         return quantity
 
-    def dehydrate_devices(self, history):
-        id = getattr(history, "stock_model_id")
+    @staticmethod
+    def dehydrate_devices(history):
+        id_ = getattr(history, "stock_model_id")
         device_list = []
         consumables = Consumables.objects.all()
-        if not consumables.filter(id=id):
+        if not consumables.filter(id=id_):
             devices = ''
         else:
-            consumable = consumables.filter(id=id).get()
+            consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
                 devices = ''
             else:
@@ -189,38 +192,41 @@ class ConsumptionResource(resources.ModelResource):
                 devices = '|'.join(device_list)
         return devices
 
-    def dehydrate_devices_count(self, history):
-        id = getattr(history, "stock_model_id")
+    @staticmethod
+    def dehydrate_devices_count(history):
+        id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
-        if not consumables.filter(id=id):
+        if not consumables.filter(id=id_):
             devices_count = ''
         else:
-            consumable = consumables.filter(id=id).get()
+            consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
                 devices_count = ''
             else:
                 devices_count = consumable.device.count()
         return devices_count
 
-    def dehydrate_quantity_all(self, history):
+    @staticmethod
+    def dehydrate_quantity_all(history):
         quantity_all = 0
-        id = getattr(history, "stock_model_id")
+        id_ = getattr(history, "stock_model_id")
         history = History.objects.all()
         unit_history_all = history.filter(
-            stock_model_id=id,
+            stock_model_id=id_,
             status='Расход',
         )
         for unit in unit_history_all:
             quantity_all += unit.quantity
         return quantity_all
 
-    def dehydrate_quantity_last_year(self, history):
+    @staticmethod
+    def dehydrate_quantity_last_year(history):
         quantity_last_year = 0
-        id = getattr(history, "stock_model_id")
+        id_ = getattr(history, "stock_model_id")
         cur_year = datetime.now()
         history = History.objects.all()
         unit_history_last_year = history.filter(
-            stock_model_id=id,
+            stock_model_id=id_,
             status='Расход',
             dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
             dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31"
@@ -229,13 +235,138 @@ class ConsumptionResource(resources.ModelResource):
             quantity_last_year += unit.quantity
         return quantity_last_year
 
-    def dehydrate_quantity_current_year(self, history):
+    @staticmethod
+    def dehydrate_quantity_current_year(history):
         quantity_current_year = 0
-        id = getattr(history, "stock_model_id")
+        id_ = getattr(history, "stock_model_id")
         cur_year = datetime.now()
         history = History.objects.all()
         unit_history_current_year = history.filter(
-            stock_model_id=id,
+            stock_model_id=id_,
+            status='Расход',
+            dateInstall__gte=f"{int(cur_year.strftime('%Y'))}-01-01",
+            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31"
+        )
+        for unit in unit_history_current_year:
+            quantity_current_year += unit.quantity
+        return quantity_current_year
+
+
+class AccessoriesConsumptionResource(resources.ModelResource):
+    stock_model = fields.Field(
+        column_name="Название",
+    )
+    devices = fields.Field(
+        column_name="Устройства",
+    )
+    devices_count = fields.Field(
+        column_name="Количество устройств",
+    )
+    quantity_all = fields.Field(
+        column_name="Расход за все время",
+    )
+    quantity_last_year = fields.Field(
+        column_name="Расход за прошлый год",
+    )
+    quantity_current_year = fields.Field(
+        column_name="Расход за текущий год",
+    )
+    quantity = fields.Field(
+        column_name='Остаток',
+        attribute='quantity',
+    )
+
+    def get_queryset(self):
+        return self._meta.model.objects.filter(status='Расход').order_by('stock_model').distinct('stock_model')
+
+    class Meta:
+        model = HistoryAcc
+        exclude = ['id', 'stock_model_id', 'device', 'deviceId', 'categories', 'dateInstall', 'user', 'status', 'note']
+
+    @staticmethod
+    def dehydrate_stock_model(history):
+        name = getattr(history, "stock_model")
+        return name
+
+    @staticmethod
+    def dehydrate_quantity(history):
+        id_ = getattr(history, "stock_model_id")
+        consumables = Accessories.objects.all()
+        if not consumables.filter(id=id_):
+            quantity = ''
+        else:
+            quantity = consumables.filter(id=id_).get().quantity
+        return quantity
+
+    @staticmethod
+    def dehydrate_devices(history):
+        id_ = getattr(history, "stock_model_id")
+        device_list = []
+        consumables = Accessories.objects.all()
+        if not consumables.filter(id=id_):
+            devices = ''
+        else:
+            consumable = consumables.filter(id=id_).get()
+            if not consumable.device.all():
+                devices = ''
+            else:
+                devices = consumable.device.all().order_by('name').distinct('name')
+                for device in devices:
+                    device_list.append(device.name)
+                devices = '|'.join(device_list)
+        return devices
+
+    @staticmethod
+    def dehydrate_devices_count(history):
+        id_ = getattr(history, "stock_model_id")
+        consumables = Accessories.objects.all()
+        if not consumables.filter(id=id_):
+            devices_count = ''
+        else:
+            consumable = consumables.filter(id=id_).get()
+            if not consumable.device.all():
+                devices_count = ''
+            else:
+                devices_count = consumable.device.count()
+        return devices_count
+
+    @staticmethod
+    def dehydrate_quantity_all(history):
+        quantity_all = 0
+        id_ = getattr(history, "stock_model_id")
+        history = HistoryAcc.objects.all()
+        unit_history_all = history.filter(
+            stock_model_id=id_,
+            status='Расход',
+        )
+        for unit in unit_history_all:
+            quantity_all += unit.quantity
+        return quantity_all
+
+    @staticmethod
+    def dehydrate_quantity_last_year(history):
+        quantity_last_year = 0
+        id_ = getattr(history, "stock_model_id")
+        cur_year = datetime.now()
+        history = HistoryAcc.objects.all()
+        unit_history_last_year = history.filter(
+            stock_model_id=id_,
+            status='Расход',
+            dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+            dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31"
+        )
+        for unit in unit_history_last_year:
+            quantity_last_year += unit.quantity
+        return quantity_last_year
+
+    @staticmethod
+    def dehydrate_quantity_current_year(history):
+        quantity_current_year = 0
+        id_ = getattr(history, "stock_model_id")
+        cur_year = datetime.now()
+        history = HistoryAcc.objects.all()
+        unit_history_current_year = history.filter(
+            stock_model_id=id_,
             status='Расход',
             dateInstall__gte=f"{int(cur_year.strftime('%Y'))}-01-01",
             dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31"
