@@ -1,5 +1,6 @@
 from django import template
 from datetime import datetime
+import math
 
 from consumables.models import Consumables, Accessories
 from stockroom.models.accessories import HistoryAcc
@@ -120,13 +121,18 @@ def consumption(consumable_id):
         quantity_last_year += unit.quantity
     for unit in unit_history_current_year:
         quantity_current_year += unit.quantity
+    if quantity <= 2*quantity_last_year:
+        requirement = abs(2*quantity_last_year-quantity+quantity_current_year)
+    else:
+        requirement = 0
     return {
         'device_name': device_name,
         'device_count': device_count,
         'quantity_all': quantity_all,
         'quantity_last_year': quantity_last_year,
         'quantity_current_year': quantity_current_year,
-        'quantity': quantity
+        'quantity': quantity,
+        'requirement': requirement
     }
 
 
@@ -218,11 +224,16 @@ def consumption_acc(consumable_id):
         quantity_last_year += unit.quantity
     for unit in unit_history_current_year:
         quantity_current_year += unit.quantity
+    if quantity <= 2*quantity_last_year:
+        requirement = abs(2*quantity_last_year-quantity+quantity_current_year)
+    else:
+        requirement = 0
     return {
         'device_name': device_name,
         'device_count': device_count,
         'quantity_all': quantity_all,
         'quantity_last_year': quantity_last_year,
         'quantity_current_year': quantity_current_year,
-        'quantity': quantity
+        'quantity': quantity,
+        'requirement': requirement
     }
