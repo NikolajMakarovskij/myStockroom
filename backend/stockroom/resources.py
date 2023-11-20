@@ -172,7 +172,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
         id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
-            quantity = ''
+            quantity = 0
         else:
             quantity = consumables.filter(id=id_).get().quantity
         return quantity
@@ -183,7 +183,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
-            devices = ''
+            devices = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
@@ -200,11 +200,11 @@ class ConsumableConsumptionResource(resources.ModelResource):
         id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
-            devices_count = ''
+            devices_count = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
-                devices_count = ''
+                devices_count = 0
             else:
                 devices_count = consumable.device.count()
         return devices_count
@@ -311,7 +311,7 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         id_ = getattr(historyacc, "stock_model_id")
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
-            quantity = ''
+            quantity = 0
         else:
             quantity = consumables.filter(id=id_).get().quantity
         return quantity
@@ -322,7 +322,7 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
-            devices = ''
+            devices = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
@@ -339,11 +339,11 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         id_ = getattr(historyacc, "stock_model_id")
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
-            devices_count = ''
+            devices_count = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
-                devices_count = ''
+                devices_count = 0
             else:
                 devices_count = consumable.device.count()
         return devices_count
