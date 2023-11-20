@@ -82,9 +82,9 @@ def consumption(consumable_id):
     cur_year = datetime.now()
     history = History.objects.all()
     consumables = Consumables.objects.all()
-    device_count = ''
+    device_count = 0
     device_name = ''
-    quantity = ''
+    quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
     else:
