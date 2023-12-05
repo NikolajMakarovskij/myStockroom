@@ -106,11 +106,15 @@ class HistoryAccStockViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_in_history = 149
+        Accessories.objects.create(name='check_consumable')
         for history_num in range(number_in_history):
-            HistoryAcc.objects.create(stock_model='Christian %s' % history_num, )
+            HistoryAcc.objects.create(
+                stock_model='Christian %s' % history_num,
+                stock_model_id=Accessories.objects.filter(name='check_consumable').get().id
+            )
         assert HistoryAcc.objects.count() == 149
 
-    def test_context_data_in_list(self):
+    def test_context_data_in_history_list(self):
         links = ['stockroom:history_acc_list', 'stockroom:history_acc_search']
         context_data = [
             {'data_key': 'title', 'data_value': 'История комплектующих'},
@@ -123,7 +127,20 @@ class HistoryAccStockViewTest(TestCase):
                 self.assertTrue(each.get('data_key') in resp.context)
                 self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
-    def test_pagination_is_ten(self):
+    def test_context_data_in_consumption_list(self):
+        links = ['stockroom:history_consumption_acc_list', 'stockroom:history_consumption_acc_search']
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Расход комплектующих по годам'},
+            {'data_key': 'searchlink', 'data_value': 'stockroom:history_consumption_acc_search'},
+        ]
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            for each in context_data:
+                self.assertTrue(each.get('data_key') in resp.context)
+                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_pagination_is_ten_in_history_list(self):
         links = ['stockroom:history_acc_list', 'stockroom:history_acc_search']
         for link in links:
             resp = self.client.get(reverse(link))
@@ -132,7 +149,15 @@ class HistoryAccStockViewTest(TestCase):
             self.assertTrue(resp.context['is_paginated'] is True)
             self.assertTrue(len(resp.context['historyacc_list']) == 20)
 
-    def test_lists_all_stockroom(self):
+    def test_pagination_is_ten_in_consumption_list(self):
+        links = ['stockroom:history_consumption_acc_list', 'stockroom:history_consumption_acc_search']
+        for link in links:
+            resp = self.client.get(reverse(link))
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue('is_paginated' in resp.context)
+            self.assertTrue(resp.context['is_paginated'] is True)
+
+    def test_lists_all_stockroom_in_history_list(self):
         links = ['stockroom:history_acc_list', 'stockroom:history_acc_search']
         for link in links:
             resp = self.client.get(reverse(link) + '?page=8')
@@ -151,13 +176,17 @@ class HistoryAccCategoryViewTest(TestCase):
     def setUpTestData(cls):
         number_in_stock = 149
         CategoryAcc.objects.create(name="some_category", slug="some_category")
+        Accessories.objects.create(name='check_consumable')
         for stocks_num in range(number_in_stock):
-            HistoryAcc.objects.create(stock_model='Christian %s' % stocks_num,
-                                      categories=CategoryAcc.objects.get(slug="some_category"))
+            HistoryAcc.objects.create(
+                stock_model='Christian %s' % stocks_num,
+                categories=CategoryAcc.objects.get(slug="some_category"),
+                stock_model_id=Accessories.objects.filter(name='check_consumable').get().id
+            )
         assert HistoryAcc.objects.count() == 149
         assert CategoryAcc.objects.count() == 1
 
-    def test_context_data_in_category(self):
+    def test_context_data_in_history_category(self):
         context_data = [
             {'data_key': 'title', 'data_value': 'История комплектующих'},
             {'data_key': 'searchlink', 'data_value': 'stockroom:history_acc_search'},
@@ -170,7 +199,20 @@ class HistoryAccCategoryViewTest(TestCase):
             self.assertTrue(each.get('data_key') in resp.context)
             self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
 
-    def test_pagination_is_ten(self):
+    def test_context_data_in_consumption_category(self):
+        context_data = [
+            {'data_key': 'title', 'data_value': 'Расход комплектующих по годам'},
+            {'data_key': 'searchlink', 'data_value': 'stockroom:history_consumption_acc_search'},
+        ]
+        resp = self.client.get(
+            reverse('stockroom:history_acc_consumption_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+        self.assertEqual(resp.status_code, 200)
+        for each in context_data:
+            self.assertTrue(each.get('data_key') in resp.context)
+            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+
+    def test_pagination_is_ten_in_history(self):
         resp = self.client.get(
             reverse('stockroom:history_acc_category',
                     kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
@@ -178,6 +220,14 @@ class HistoryAccCategoryViewTest(TestCase):
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
         self.assertTrue(len(resp.context['historyacc_list']) == 20)
+
+    def test_pagination_is_ten_in_consumption(self):
+        resp = self.client.get(
+            reverse('stockroom:history_acc_consumption_category',
+                    kwargs={"category_slug": CategoryAcc.objects.get(slug="some_category")}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('is_paginated' in resp.context)
+        self.assertTrue(resp.context['is_paginated'] is True)
 
     def test_lists_all_stockroom_history_acc_consumables(self):
         resp = self.client.get(reverse('stockroom:history_acc_category', kwargs={

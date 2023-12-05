@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from rest_framework import viewsets
@@ -11,6 +11,9 @@ from .forms import ConsumablesForm, AccessoriesForm
 from .models import Consumables, Categories, Accessories, AccCat
 from .serializers import ConsumablesModelSerializer, CategoriesModelSerializer, AccessoriesModelSerializer, \
     AccCatModelSerializer
+from consumables.resources import ConsumableResource, AccessoriesResource
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # Расходники главная
@@ -172,6 +175,41 @@ class ConsumablesDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, 
         return context
 
 
+class ExportConsumable(View):
+    def get(self, *args, **kwargs):
+        resource = ConsumableResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumableCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cons_cat = cache.get('cons_cat')
+        if not cons_cat:
+            cons_cat = Categories.objects.all()
+            cache.set('cons_cat', cons_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cons_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Consumables.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = ConsumableResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
 # Комплектующие
 class AccessoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = 'consumables.view_accessories'
@@ -304,3 +342,38 @@ class AccessoriesDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, 
         c_def = self.get_user_context(title="Удалить комплектующее", selflink='consumables:accessories_list')
         context = dict(list(context.items()) + list(c_def.items()))
         return context
+
+
+class ExportAccessories(View):
+    def get(self, *args, **kwargs):
+        resource = AccessoriesResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportAccessoriesCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        acc_cat = cache.get('acc_cat')
+        if not acc_cat:
+            acc_cat = AccCat.objects.all()
+            cache.set('acc_cat', acc_cat, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=acc_cat)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Accessories.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = AccessoriesResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response

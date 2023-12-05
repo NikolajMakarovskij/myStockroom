@@ -1,7 +1,8 @@
 from django.urls import path, re_path
 from .views import (
                     DecommissionView, DecomCategoriesView, DisposalView, DispCategoriesView,
-                    add_decommission, remove_decommission, add_disposal, remove_disposal
+                    add_decommission, remove_decommission, add_disposal, remove_disposal,
+                    ExportDecomDevice, ExportDecomDeviceCategory, ExportDispDevice, ExportDispDeviceCategory
                     )
 
 urlpatterns = [
@@ -13,6 +14,9 @@ urlpatterns = [
 
     path('decom/add/<uuid:device_id>/', add_decommission, name='add_decom'),
     path('decom/remove/<uuid:devices_id>/', remove_decommission, name='remove_decom'),
+    path('decom/export/', ExportDecomDevice.as_view(), name='export_decom_device'),
+    path('decom/export/category/<slug:category_slug>', ExportDecomDeviceCategory.as_view(),
+         name='export_decom_device_category'),
 
 
     # Disposal
@@ -22,5 +26,8 @@ urlpatterns = [
 
     path('disposal/add/<uuid:devices_id>/', add_disposal, name='add_disp'),
     path('disposal/remove/<uuid:devices_id>/', remove_disposal, name='remove_disp'),
+    path('disposal/export/', ExportDispDevice.as_view(), name='export_disp_device'),
+    path('disposal/export/category/<slug:category_slug>', ExportDispDeviceCategory.as_view(),
+         name='export_disp_device_category'),
 
 ]

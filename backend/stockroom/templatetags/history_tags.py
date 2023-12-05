@@ -1,5 +1,8 @@
 from django import template
+from datetime import datetime
+import math
 
+from consumables.models import Consumables, Accessories
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
 from stockroom.models.devices import HistoryDev
@@ -74,6 +77,65 @@ def this_con_history(consumable_id):
         }
 
 
+@register.inclusion_tag('stock/consumption_list.html')
+def consumption(consumable_id):
+    cur_year = datetime.now()
+    history = History.objects.all()
+    consumables = Consumables.objects.all()
+    device_count = 0
+    device_name = ''
+    quantity = 0
+    if not consumables.filter(id=consumable_id):
+        pass
+    else:
+        consumable = consumables.filter(id=consumable_id).get()
+        quantity = consumable.quantity
+        if not consumable.device.all():
+            pass
+        else:
+            device_name = consumable.device.all().order_by('name').distinct('name')
+            device_count = consumable.device.count()
+
+    unit_history_all = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+    )
+    unit_history_last_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31"
+    )
+    unit_history_current_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+        dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
+    )
+    quantity_all = 0
+    quantity_last_year = 0
+    quantity_current_year = 0
+    for unit in unit_history_all:
+        quantity_all += unit.quantity
+    for unit in unit_history_last_year:
+        quantity_last_year += unit.quantity
+    for unit in unit_history_current_year:
+        quantity_current_year += unit.quantity
+    if quantity <= 2*quantity_last_year:
+        requirement = abs(2*quantity_last_year-quantity+quantity_current_year)
+    else:
+        requirement = 0
+    return {
+        'device_name': device_name,
+        'device_count': device_count,
+        'quantity_all': quantity_all,
+        'quantity_last_year': quantity_last_year,
+        'quantity_current_year': quantity_current_year,
+        'quantity': quantity,
+        'requirement': requirement
+    }
+
+
 @register.inclusion_tag('stock/history_short_list.html')
 def consumables_history():
     history_list = History.objects.all()[:5]
@@ -117,3 +179,61 @@ def accessories_history():
         "table_head": "История комплектующих",
         "no_history": "Комплектующее не использовались"
         }
+
+
+@register.inclusion_tag('stock/consumption_list.html')
+def consumption_acc(consumable_id):
+    cur_year = datetime.now()
+    history = HistoryAcc.objects.all()
+    consumables = Accessories.objects.all()
+    device_count = 0
+    device_name = ''
+    quantity = 0
+    if not consumables.filter(id=consumable_id):
+        pass
+    else:
+        consumable = consumables.filter(id=consumable_id).get()
+        quantity = consumable.quantity
+        if not consumable.device.all():
+            pass
+        else:
+            device_name = consumable.device.all().order_by('name').distinct('name')
+            device_count = consumable.device.count()
+    unit_history_all = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+    )
+    unit_history_last_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31"
+    )
+    unit_history_current_year = history.filter(
+        stock_model_id=consumable_id,
+        status='Расход',
+        dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+        dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31"
+    )
+    quantity_all = 0
+    quantity_last_year = 0
+    quantity_current_year = 0
+    for unit in unit_history_all:
+        quantity_all += unit.quantity
+    for unit in unit_history_last_year:
+        quantity_last_year += unit.quantity
+    for unit in unit_history_current_year:
+        quantity_current_year += unit.quantity
+    if quantity <= 2*quantity_last_year:
+        requirement = abs(2*quantity_last_year-quantity+quantity_current_year)
+    else:
+        requirement = 0
+    return {
+        'device_name': device_name,
+        'device_count': device_count,
+        'quantity_all': quantity_all,
+        'quantity_last_year': quantity_last_year,
+        'quantity_current_year': quantity_current_year,
+        'quantity': quantity,
+        'requirement': requirement
+    }

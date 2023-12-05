@@ -13,13 +13,38 @@
   <table class="table align-middle table-hover" style="text-align:center">
     <thead> 
       <tr>
-        <th scope="col" style="font-size: 32px;">Группы расходников не обнаружены</th>
+        {% if perms.consumables.can_export_consumable %}
+          <a class="text-secondary" href="{% url 'consumables:export_consumable' %}">
+            Экспорт
+          </a>
+        {% endif %}
       </tr>
     </thead>
   </table>
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
+        {% if perms.consumables.can_export_consumable %}
+          <div class="dropdown">
+            <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Экспорт
+            </button>
+            <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+              <li>
+                <a class="dropdown-item text-secondary" href="{% url 'consumables:export_consumable' %}">
+                  Все устройства
+                </a>
+              </li>
+              {% for item in menu_categories %}
+                <li>
+                  <a class="dropdown-item text-secondary"
+                    href="{% url 'consumables:export_consumable_category' item.slug %}">{{item.name}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'consumables:consumables_list' %}active{% endif %}" href="{% url 'consumables:consumables_list' %}">
               Все группы
@@ -53,7 +78,6 @@
           <th scope="col">Количество</th>
           <th scope="col">Разность</th>
           <th scope="col">На балансе</th>
-          <th scope="col">Расход за год</th>
           <th scope="col">Примечание</th>
         </tr>
       </thead>
@@ -102,7 +126,6 @@
               </table>
             </td>
           {% endif %}
-          <td>{{ each.consumption_year }}</td>
           {% if each.note %}
             <td>{{ each.note }}</td>
           {% else %}

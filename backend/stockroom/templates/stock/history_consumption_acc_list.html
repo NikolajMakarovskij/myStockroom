@@ -13,13 +13,38 @@
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
-          <th scope="col" style="font-size: 32px;">Группы не обнаружены</th>
+          {% if perms.stockacc.can_export_device %}
+            <a class="text-secondary" href="{% url 'stockroom:export_consumption_acc' %}">
+              Экспорт
+            </a>
+          {% endif %}
         </tr>
       </thead>
     </table>
   {% else %}
     <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
       <ul class="nav nav-tabs">
+        {% if perms.stockacc.can_export_device %}
+          <div class="dropdown">
+            <button class="btn btn-light text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Экспорт
+            </button>
+            <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+              <li>
+                <a class="dropdown-item text-secondary" href="{% url 'stockroom:export_consumption_acc' %}">
+                  Все устройства
+                </a>
+              </li>
+              {% for item in menu_categories %}
+                <li>
+                  <a class="dropdown-item text-secondary"
+                    href="{% url 'stockroom:export_consumption_acc_category' item.slug %}">{{item.name}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_consumption_acc_list' %}active{% endif %}" href="{% url 'stockroom:history_consumption_acc_list' %}">
               Расход
@@ -33,14 +58,14 @@
         {% for item in menu_categories %}
           <li class="nav-item ">
             <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
-              href="{% url 'stockroom:history_acc_category' item.slug %}">{{item.name}}
+              href="{% url 'stockroom:history_acc_consumption_category' item.slug %}">{{item.name}}
             </a>
           </li>
         {% endfor %}
       </ul>
     </nav>
   {% endif %}
-  {% if not historyacc_list %}
+  {% if not historyacc_list%}
     <table class="table align-middle table-hover" style="text-align:center">
       <thead> 
         <tr>
@@ -53,35 +78,21 @@
       <thead>
         <tr>
           <th scope="col">Комплектующее</th>
-          <th scope="col">Группа</th>
-          <th scope="col">Количество</th>
-          <th scope="col">Дата</th>
-          <th scope="col">Статус</th>
-          <th scope="col">Примечание</th>
-          <th scope="col">Пользователь</th>
+          <th scope="col">Устройство</th>
+          <th scope="col">Количество устройств</th>
+          <th scope="col">Расход за все время</th>
+          <th scope="col">Расход за прошлый год</th>
+          <th scope="col">Расход за текущий год</th>
+          <th scope="col">Количество на складе</th>
+          <th scope="col">Потребность</th>
         </tr>
       </thead>
     <tbody style="text-align:center">
       {% for each in historyacc_list %}
       <tr>
-        <td><a class="noDecoration" href="{% url 'consumables:accessories-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
-        <td>{{ each.categories}}</td>
-        <td>{{ each.quantity }}</td>
-        <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
-        <td>
-          {% if not each.device %}
-              {{ each.status }}
-          {% else %}
-              {{ each.status }} на устройство 
-              <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-            {% endif %}
-        </td>
-        {% if not each.note %}
-          <td></td>
-        {% else %}
-          <td>{{ each.note }}</td>
-        {% endif %}
-        <td>{{ each.user }}</td>
+        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
+        {% load history_tags %}
+        {% consumption_acc each.stock_model_id %}
       </tr>
       {% endfor %}
     </table>

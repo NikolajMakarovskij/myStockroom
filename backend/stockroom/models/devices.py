@@ -57,6 +57,7 @@ class StockDev (ModelMixin, models.Model):
             ('add_device_to_stock', 'Добавить на склада'),
             ('move_device', 'Переместить устройство'),
             ('add_history_to_device', 'Добавить историю'),
+            ('can_export_device', 'Экспорт устройств'),
         ]
 
 

@@ -4,13 +4,17 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from django.views.decorators.http import require_POST
 from core.utils import DataMixin
 from device.models import Device
 from stockroom.forms import StockAddForm, MoveDeviceForm, AddHistoryDeviceForm
 from stockroom.models.devices import StockDev, HistoryDev, CategoryDev
+from stockroom.resources import StockDevResource
 from stockroom.stock.stock import DevStock
+
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # Devices
@@ -238,3 +242,38 @@ def add_history_to_device(request, device_id):
                              extra_tags='Ошибка формы'
                              )
     return redirect('stockroom:stock_dev_list')
+
+
+class ExportStockDevice(View):
+    def get(self, *args, **kwargs):
+        resource = StockDevResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportStockDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_dev = cache.get('cat_dev')
+        if not cat_dev:
+            cat_dev = CategoryDev.objects.all()
+            cache.set('cat_dev', cat_dev, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_dev)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = StockDev.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = StockDevResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response

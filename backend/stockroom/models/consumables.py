@@ -56,6 +56,7 @@ class Stockroom (ModelMixin, models.Model):
             ('remove_consumables_from_stock', 'Удалить co склада'),
             ('add_consumables_to_stock', 'Добавить на склада'),
             ('add_consumables_to_device', 'Установить в устройство'),
+            ('can_export_device', 'Экспорт'),
         ]
 
 

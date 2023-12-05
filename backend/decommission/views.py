@@ -4,11 +4,15 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from core.utils import DataMixin
 from device.models import Device
 from .models import Decommission, CategoryDec, Disposal, CategoryDis
+from .resources import DecommissionResource, DisposalResource
 from .tasks import DecomTasks
+
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # Decommission
@@ -103,6 +107,41 @@ def remove_decommission(request, devices_id):
     return redirect('decommission:decom_list')
 
 
+class ExportDecomDevice(View):
+    def get(self, *args, **kwargs):
+        resource = DecommissionResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportDecomDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_decom = cache.get('cat_decom')
+        if not cat_decom:
+            cat_decom = CategoryDec.objects.all()
+            cache.set('cat_decom', cat_decom, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_decom)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Decommission.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = DecommissionResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
 # Disposal
 class DisposalView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = 'decommission.view_disposal'
@@ -192,3 +231,39 @@ def remove_disposal(request, devices_id):
                          extra_tags='Успешно удален'
                          )
     return redirect('decommission:disp_list')
+
+
+class ExportDispDevice(View):
+    def get(self, *args, **kwargs):
+        resource = DisposalResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportDispDeviceCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_disp = cache.get('cat_disp')
+        if not cat_disp:
+            cat_disp = CategoryDis.objects.all()
+            cache.set('cat_disp', cat_disp, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_disp)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = Disposal.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = DisposalResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+

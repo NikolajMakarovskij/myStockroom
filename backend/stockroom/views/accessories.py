@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from django.views.decorators.http import require_POST
 
 from consumables.models import Accessories
@@ -12,6 +12,10 @@ from core.utils import DataMixin
 from stockroom.forms import StockAddForm, ConsumableInstallForm
 from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
 from stockroom.stock.stock import AccStock
+from stockroom.resources import StockAccResource, AccessoriesConsumptionResource
+
+from django.http import HttpResponse
+from datetime import datetime
 
 
 # accessories
@@ -80,6 +84,77 @@ class StockAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
         return object_list
 
 
+class ExportStockAccessories(View):
+    def get(self, *args, **kwargs):
+        resource = StockAccResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportStockAccessoriesCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = StockAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
+        resource = StockAccResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumptionAccessories(View):
+    def get(self, *args, **kwargs):
+        resource = AccessoriesConsumptionResource()
+        dataset = resource.export()
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
+class ExportConsumptionAccessoriesCategory(View):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get(self, queryset=None, *args, **kwargs):
+        queryset = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug']
+                                             ).order_by('stock_model').distinct('stock_model')
+        resource = AccessoriesConsumptionResource()
+        dataset = resource.export(queryset, *args, **kwargs)
+        response = HttpResponse(dataset.xlsx, content_type="xlsx")
+        response['Content-Disposition'] = 'attachment; filename={filename}.{ext}'.format(
+            filename=F'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+            ext='xlsx'
+        )
+        return response
+
+
 # History
 class HistoryAccView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = 'stockroom.view_historyacc'
@@ -130,6 +205,63 @@ class HistoryAccCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, Data
 
     def get_queryset(self):
         object_list = HistoryAcc.objects.filter(categories__slug=self.kwargs['category_slug'])
+        return object_list
+
+
+class HistoryConsumptionAccView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_history'
+    template_name = 'stock/history_consumption_acc_list.html'
+    model = HistoryAcc
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(
+            title="Расход комплектующих по годам",
+            searchlink='stockroom:history_consumption_acc_search',
+            menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items())
+                       )
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query:
+            query = ''
+        object_list = HistoryAcc.objects.filter(
+            Q(stock_model__icontains=query) |
+            Q(categories__name__icontains=query) |
+            Q(device__icontains=query) |
+            Q(status__icontains=query) |
+            Q(dateInstall__icontains=query) |
+            Q(user__icontains=query)
+        ).order_by('stock_model').distinct('stock_model')
+        return object_list
+
+
+class HistoryAccConsumptionCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
+    permission_required = 'stockroom.view_historyacc'
+    template_name = 'stock/history_consumption_acc_list.html'
+    model = HistoryAcc
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        cat_acc = cache.get('cat_acc')
+        if not cat_acc:
+            cat_acc = CategoryAcc.objects.all()
+            cache.set('cat_acc', cat_acc, 300)
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Расход комплектующих по годам",
+                                      searchlink='stockroom:history_consumption_acc_search',
+                                      menu_categories=cat_acc)
+        context = dict(list(context.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        object_list = HistoryAcc.objects.filter(categories__slug=self.kwargs[
+            'category_slug']).order_by('stock_model').distinct('stock_model')
         return object_list
 
 

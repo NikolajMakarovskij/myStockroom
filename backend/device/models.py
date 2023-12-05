@@ -176,4 +176,5 @@ class Device(ModelMixin, models.Model):
             ('can_install_consumable', 'Установка расходника'),
             ('can_install_accessories', 'Установка комплектующего'),
             ('can_add_history', 'Добавление истории'),
+            ('can_export', 'Экспорт'),
         ]

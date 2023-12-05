@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'debug_toolbar',
     'django_select2',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -245,3 +246,9 @@ REST_FRAMEWORK = {
         '%d.%m.%y',  # '25.10.21'
     ],
 }
+
+# start import-export
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# end import-export
