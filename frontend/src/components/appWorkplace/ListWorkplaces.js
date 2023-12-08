@@ -21,11 +21,11 @@ const ListWorkplaces = (props) => {
                         <b>Пока ничего нет</b>
                     </td>
                 </tr>
-            ) : room.map((results, index) => (
+            ) : room.results.map(results => (
                     <tr>
-                        <td>{results[index].name}</td>
-                        <td>{results[index].floor}</td>
-                        <td>{results[index].building}</td>
+                        <td>{results.name}</td>
+                        <td>{results.floor}</td>
+                        <td>{results.building}</td>
                         <td>
                             <ModalWorkplace
                                 create={false}
