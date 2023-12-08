@@ -9,8 +9,8 @@ services:
       - ./backend:/backend
       - ./backend/static:/home/backend/web/static
       - ./backend/media:/home/backend/web/mediafiles
-    expose:
-      - 8010
+    ports:
+      - "8010:8010"
     env_file:
       - ./.env
     depends_on:
