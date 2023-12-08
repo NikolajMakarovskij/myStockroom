@@ -29,8 +29,8 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./database:/var/lib/postgresql/data
+      - ./backend/database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/database:/var/lib/postgresql/data
 
   angie:
     build: ./angie

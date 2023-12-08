@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  web:
+    build: ./
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
+    restart: always
+    volumes:
+      - ./:/backend
+      - ./static:/home/backend/web/static
+      - ./media:/home/backend/web/mediafiles
+    expose:
+      - 8010
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+
+
+  db:
+    image: postgres:14
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    restart: always
+    volumes:
+      - ./static:/home/backend/web/static
+      - ./media:/home/backend/web/mediafiles
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A backend worker -l info
+    volumes:
+      - ./:/backend
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - web
+
+  celery-beat:
+    build: .
+    command: celery -A backend beat -l info
+    restart: always
+    volumes:
+      - .:/backend
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - celery
+
+  flower:
+    build: .
+    command: celery -A backend flower --port=5555 --broker=redis://redis:6379/0
+    volumes:
+      - .:/backend
+    env_file:
+      - ./.env
+    ports:
+      - 5557:5555
+    depends_on:
+      - redis
+      - db
+      - celery
+
+
