@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="add to frontend branch gitignore">
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="update docker scripts">
       <change afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/reduild.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -33,9 +33,6 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="d3418e32-d256-4f92-8d2a-a5c7194b99b3" />
-  </component>
   <component name="GithubProjectSettings">
     <option name="branchProtectionPatterns">
       <list>
@@ -60,22 +57,32 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;frontend&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/makarovskiynv@admlbt.rf/myStockroom/frontend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/makarovskiynv@admlbt.rf/myStockroom/database/Init_db&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/database/Init_db" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-67fca87a943a-c986f194a52a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.11799.259" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -90,6 +97,14 @@
       <workItem from="1699509572004" duration="13835000" />
       <workItem from="1699599464708" duration="597000" />
       <workItem from="1699605856361" duration="39000" />
+      <workItem from="1701920809021" duration="246000" />
+      <workItem from="1701921093411" duration="535000" />
+      <workItem from="1701921641975" duration="57000" />
+      <workItem from="1701921709512" duration="11127000" />
+      <workItem from="1701934089588" duration="8952000" />
+      <workItem from="1702009672287" duration="139000" />
+      <workItem from="1702009874614" duration="317000" />
+      <workItem from="1702010216608" duration="49000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -128,6 +143,7 @@
     <MESSAGE value="add branch gitignore" />
     <MESSAGE value="fix path gitignore backend" />
     <MESSAGE value="add to frontend branch gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="add to frontend branch gitignore" />
+    <MESSAGE value="update docker scripts" />
+    <option name="LAST_COMMIT_MESSAGE" value="update docker scripts" />
   </component>
 </project>

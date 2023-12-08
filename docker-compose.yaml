@@ -7,23 +7,23 @@ services:
     restart: always
     volumes:
       - ./backend:/backend
-      - ./static:/home/backend/web/static
-      - ./media:/home/backend/web/mediafiles
-    ports:
-      - "8010:8010"
+      - ./backend/static:/home/backend/web/static
+      - ./backend/media:/home/backend/web/mediafiles
+    expose:
+      - 8010
     env_file:
       - ./.env
     depends_on:
       - db
       - redis
 
-  frontend:
+  react:
     build:
       context: ./frontend
     volumes:
-      #- ./frontend:/frontend
-      - ./static:/home/backend/web/static
-      - ./media:/home/backend/web/mediafiles
+      - ./frontend:/frontend
+      - ./backend/static:/home/backend/web/static
+      - ./backend/media:/home/backend/web/mediafiles
     env_file:
       - ./.env
     ports:
@@ -38,19 +38,19 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./database:/var/lib/postgresql/data
+      - ./backend/database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/database:/var/lib/postgresql/data
 
   nginx:
     build: ./nginx
     restart: always
     volumes:
-      - ./static:/home/backend/web/static
-      - ./media:/home/backend/web/mediafiles
+      - ./backend/static:/home/backend/web/static
+      - ./backend/media:/home/backend/web/mediafiles
     ports:
       - "80:80"
     depends_on:
-      - frontend
+      - react
       - web
 
   redis:
@@ -82,6 +82,7 @@ services:
     depends_on:
       - db
       - redis
+      - celery
 
   flower:
     build: ./backend
@@ -91,9 +92,11 @@ services:
     env_file:
       - ./.env
     ports:
-      - 5557:5555
+      - "5557:5555"
     depends_on:
       - redis
       - db
+      - web
+      - celery
 
 

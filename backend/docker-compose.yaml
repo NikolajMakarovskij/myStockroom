@@ -67,6 +67,7 @@ services:
     depends_on:
       - db
       - redis
+      - celery
 
   flower:
     build: .
@@ -80,5 +81,6 @@ services:
     depends_on:
       - redis
       - db
+      - celery
 
 
