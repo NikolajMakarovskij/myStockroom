@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="update docker scripts">
-      <change afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reduild.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/settings/deploy.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/settings/deploy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/settings/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend/settings/production.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +109,9 @@
       <workItem from="1702009672287" duration="139000" />
       <workItem from="1702009874614" duration="317000" />
       <workItem from="1702010216608" duration="49000" />
+      <workItem from="1702053989949" duration="1064000" />
+      <workItem from="1702114065852" duration="59000" />
+      <workItem from="1702189993913" duration="11304000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />

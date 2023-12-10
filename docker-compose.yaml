@@ -96,7 +96,6 @@ services:
     depends_on:
       - redis
       - db
-      - web
       - celery
 
 

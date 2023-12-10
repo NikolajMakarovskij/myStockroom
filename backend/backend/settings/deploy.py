@@ -192,11 +192,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
     'DATE_INPUT_FORMATS': [
         '%d.%m.%Y',  # '25.10.2021'
-        '%d.%m.%y',  # '25.10.21'
     ],
 }
 

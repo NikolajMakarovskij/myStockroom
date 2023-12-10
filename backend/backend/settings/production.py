@@ -231,7 +231,7 @@ CORS_ALLOWED_ORIGINS = [
 def render_calasses():
     return [
         'rest_framework.renderers.JSONRenderer',
-        #'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
         ]
 
 
@@ -239,8 +239,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': render_calasses(),
     'DEFAULT_PERMISSION_CLASSES': [
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
     'DATE_INPUT_FORMATS': [
         '%d.%m.%Y',  # '25.10.2021'
         '%d.%m.%y',  # '25.10.21'
