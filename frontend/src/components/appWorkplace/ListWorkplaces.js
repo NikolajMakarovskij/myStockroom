@@ -6,12 +6,16 @@ import RemoveWorkplace from "./RemoveWorkplace";
 const ListWorkplaces = (props) => {
     const {room} = props
     return (
-        <Table dark>
+        <Table align-middle caprion-top hover>
+            <caption top>Количество комнат {room.length}</caption>
             <thead align="center">
             <tr>
+                <th>№ П/П</th>
                 <th>Кабинет</th>
                 <th>Этаж</th>
                 <th>Здание</th>
+                <th>Рабочие места</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -21,12 +25,20 @@ const ListWorkplaces = (props) => {
                         <b>Пока ничего нет</b>
                     </td>
                 </tr>
-            ) : room.results.map(results => (
+            ) : room.map((results, index) => (
                     <tr>
-                        <td>{results.name}</td>
-                        <td>{results.floor}</td>
-                        <td>{results.building}</td>
-                        <td>
+                        <td align="center">{index + 1}</td>
+                        <td align="center">{results.name}</td>
+                        <td align="center">{results.floor}</td>
+                        <td align="center">{results.building}</td>
+                        <td align="center">{results.workplace.map((results, index) => (
+                            <tr>
+                                <td align="center">{index + 1}. </td>
+                                <td align="center">{results.name}</td>
+                            </tr>
+                        ))}
+                        </td>
+                        <td align="center">
                             <ModalWorkplace
                                 create={false}
                                 room={room}

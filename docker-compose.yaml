@@ -97,4 +97,6 @@ services:
     ports:
       - "5557:5555"
     depends_on:
+      - redis
+      - db
       - celery
