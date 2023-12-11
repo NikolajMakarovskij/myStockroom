@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -29,9 +24,9 @@ const menu = [
     {'title': "Комплектующие", 'url_name': 'consumables:accessories_list'},
     {'title': "Контрагенты", 'url_name': 'counterparty:counterparty'},
     {'title': "Баланс", 'url_name': 'accounting:accounting_index'},
-]
+];
 
-const drawerWidth = 240;
+
 const navItems = ['Склад', 'Админка', 'Пользователь или авторизация'];
 
 const darkTheme = createTheme({
@@ -41,26 +36,12 @@ const darkTheme = createTheme({
 });
 
 function Header(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText theme={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -70,7 +51,7 @@ function Header(props) {
     setAnchorEl(null);
   };
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+
 
   return (
     <Box sx={{ display: 'flex' }}>
