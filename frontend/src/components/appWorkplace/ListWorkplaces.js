@@ -3,11 +3,11 @@ import {Table} from "reactstrap";
 import ModalWorkplace from "./ModalWorkplace";
 import RemoveWorkplace from "./RemoveWorkplace";
 
-const ListWorkplaces = (props) => {
+const ListWorkplace = (props) => {
     const {room} = props
     return (
-        <Table align-middle caprion-top hover>
-            <caption top>Количество комнат {room.length}</caption>
+        <Table align-middle caprion-top hover >
+            <caption top>Количество комнат {room.length} </caption>
             <thead align="center">
             <tr>
                 <th>№ П/П</th>
@@ -59,4 +59,4 @@ const ListWorkplaces = (props) => {
     )
 }
 
-export default ListWorkplaces
+export default ListWorkplace
