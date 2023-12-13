@@ -1,29 +1,24 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import {AppBar, Box, Button, CssBaseline, IconButton, Menu, MenuItem, Toolbar, Typography} from '@mui/material/';
+import {Link,} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import Home from '../appHome/Home';
+import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 
 const menu = [
-    {'title': "Главная страница", 'url_name': 'core:index'},
-    {'title': "Раб. места", 'url_name': 'workplace:workplace_index'},
-    {'title': "Устройства", 'url_name': 'device:device_list'},
-    {'title': "Сотрудники", 'url_name': 'employee:employee_index'},
-    {'title': "Софт", 'url_name': 'software:software_index'},
-    {'title': "ЭЦП", 'url_name': 'signature:signature_list'},
-    {'title': "Склад", 'url_name': 'stockroom:stock_index'},
-    {'title': "Расходники", 'url_name': 'consumables:consumables_list'},
-    {'title': "Комплектующие", 'url_name': 'consumables:accessories_list'},
-    {'title': "Контрагенты", 'url_name': 'counterparty:counterparty'},
-    {'title': "Баланс", 'url_name': 'accounting:accounting_index'},
+    {'title': "Главная страница", 'url_name': Home, 'url_path': '/'},
+    {'title': "Раб. места", 'url_name': IndexWorkplace, 'url_path': '/workplace'},
+    //{'title': "Устройства", 'url_name': 'device:device_list', 'url_path': '/device' },
+    //{'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee' },
+    //{'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software' },
+    //{'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature' },
+    //{'title': "Склад", 'url_name': 'stockroom:stock_index', 'url_path': '/stockroom' },
+    //{'title': "Расходники", 'url_name': 'consumables:consumables_list', 'url_path': '/consumables' },
+    //{'title': "Комплектующие", 'url_name': 'consumables:accessories_list', 'url_path': '/accessories' },
+    //{'title': "Контрагенты", 'url_name': 'counterparty:counterparty', 'url_path': '/counterparty' },
+    //{'title': "Баланс", 'url_name': 'accounting:accounting_index', 'url_path': '/accounting'},
 ];
 
 
@@ -83,8 +78,8 @@ function Header(props) {
             }}
           >
             {menu.map((item) => (
-                  <MenuItem key={item.url_name}>
-                    {item.title}
+                <MenuItem key={item.url_path}>
+                    <Link to={item.url_path} element={item.url_name}>{item.title}</Link>
                   </MenuItem>
                 ))}
           </Menu>
@@ -102,7 +97,7 @@ function Header(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            Главная
+              <Link to='/' element={Home}>Главная</Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
