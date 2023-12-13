@@ -2,7 +2,7 @@ import React from "react";
 import {Fragment, useState} from "react";
 import {Button, Modal, ModalHeader, ModalFooter} from "reactstrap";
 import axios from "axios";
-import {API_URL} from "../../index";
+import {API_URL} from "../../../index";
 
 const RemoveWorkplace = (props) => {
     const [visible, setVisible] = useState(false)

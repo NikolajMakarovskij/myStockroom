@@ -2,7 +2,7 @@ import React  from 'react';
 import {useEffect, useState} from "react";
 import {Button, Form, FormGroup, Input, Label} from "reactstrap";
 import axios from "axios";
-import {API_URL} from "../../index";
+import {API_URL} from "../../../index";
 
 const FormWorkplace = (props) => {
     const [results, setWorkplaces] = useState({})

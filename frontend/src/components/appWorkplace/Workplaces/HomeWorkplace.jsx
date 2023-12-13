@@ -1,10 +1,9 @@
 import React from "react";
-import {Container, Row, Col} from "reactstrap";
+import {Container} from "reactstrap";
 import ListWorkplace from "./ListWorkplaces";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import ModalWorkplace from "./ModalWorkplace";
-import {API_URL} from "../../index";
+import {API_URL} from "../../../index";
 
 const HomeWorkplace = () => {
     const [room, setWorkplaces] = useState([])
@@ -31,19 +30,7 @@ const HomeWorkplace = () => {
 
     return (
         <Container style={{marginTop: "80px"}}>
-            <Row>
-                <Col>
-                    <ListWorkplace room={room} resetState={resetState} newWorkplace={false}/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <ModalWorkplace
-                    create={true}
-                    resetState={resetState}
-                    newWorkplace={true}/>
-                </Col>
-            </Row>
+            <ListWorkplace room={room} resetState={resetState} newWorkplace={false}/>
         </Container>
     )
 }

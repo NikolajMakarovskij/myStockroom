@@ -5,12 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="update docker scripts">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/HomeWorkplace.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/App.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Routers.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/Home.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/IndexWorkplace.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/MenuWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHome/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHome/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHome/Home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/FormWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/HomeWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ModalWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/RemoveWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +34,7 @@
       <list>
         <option value="Python Script" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -58,7 +70,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "frontend",
-    "last_opened_file_path": "/home/makarovskiynv@admlbt.rf/myStockroom/database/Init_db",
+    "last_opened_file_path": "/home/makarovskiynv@admlbt.rf/myStockroom/frontend/src/components/appWorkplace",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -71,11 +83,13 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace" />
       <recent name="$PROJECT_DIR$/database/Init_db" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -110,6 +124,8 @@
       <workItem from="1702053989949" duration="1064000" />
       <workItem from="1702114065852" duration="59000" />
       <workItem from="1702189993913" duration="11304000" />
+      <workItem from="1702369203197" duration="8405000" />
+      <workItem from="1702438235289" duration="28405000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -155,8 +171,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/HomeWorkplace.js</url>
-          <properties lambdaOrdinal="-1" />
+          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx</url>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
