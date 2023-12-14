@@ -5,9 +5,6 @@ from .models import Room, Workplace
 class WorkplaceSerializer(serializers.ModelSerializer):
     queryset = Workplace.objects.all()
 
-    def display_value(self, instance):
-        return '%s' % instance.name
-
     class Meta:
         model = Workplace
         fields = '__all__'

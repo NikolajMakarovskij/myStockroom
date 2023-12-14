@@ -110,13 +110,13 @@ TablePaginationActions.propTypes = {
 
 
 const ListWorkplace = (props) => {
-    const {room} = props
+    const {workplaces} = props
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - room.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - workplaces.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -145,7 +145,7 @@ const ListWorkplace = (props) => {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 100, { label: 'Все', value: -1 }]}
                                     colSpan={3}
-                                    count={room.length}
+                                    count={workplaces.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{
@@ -160,27 +160,29 @@ const ListWorkplace = (props) => {
                                 />
                             </TableRow>
                         </ThemeProvider>
-                        <StyledTableRow>
-                            <StyledTableCell>№ П/П</StyledTableCell>
-                            <StyledTableCell>Кабинет</StyledTableCell>
-                            <StyledTableCell>Этаж</StyledTableCell>
-                            <StyledTableCell>Здание</StyledTableCell>
-                            <StyledTableCell>Рабочие места</StyledTableCell>
+                        <StyledTableRow >
+                            <StyledTableCell align="center">№ П/П</StyledTableCell>
+                            <StyledTableCell align="center">Рабочие места</StyledTableCell>
+                            <StyledTableCell align="center">Кабинет</StyledTableCell>
+                            <StyledTableCell align="center">Этаж</StyledTableCell>
+                            <StyledTableCell align="center">Здание</StyledTableCell>
+                            <StyledTableCell align="center"></StyledTableCell>
+                            <StyledTableCell align="center"></StyledTableCell>
+                            <StyledTableCell align="center"></StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
-                    {!room || room.length === 0 ? (
+                    {!workplaces || workplaces.length === 0 ? (
                         <TableRow >
                             <TableCell colSpan="6" align="center">
                                 <b>Пока ничего нет</b>
                             </TableCell>
                         </TableRow>
                     ) : (rowsPerPage > 0
-                        ? room.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : room
+                        ? workplaces.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : workplaces
                         ).map((results, index) => (
                             <TableRow hover>
-                                <MenuWorkplace room={room} newWorkplace={true}/>
                                 <TableCell align="center">
                                     <IconButton
                                         aria-label="more"
@@ -211,14 +213,14 @@ const ListWorkplace = (props) => {
                                         <MenuItem onClick={handleCloseMenu}>
                                             <ModalWorkplace
                                                 create={false}
-                                                room={room}
+                                                workplace={workplaces}
                                                 resetState={props.resetState}
                                                 newWorkplace={props.newWorkplace}
                                             />
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseMenu}>
                                             <RemoveWorkplace
-                                                id={room.id}
+                                                id={results.id}
                                                 resetState={props.resetState}
                                             />
                                         </MenuItem>
@@ -226,14 +228,29 @@ const ListWorkplace = (props) => {
                                     {index + 1}
                                 </TableCell>
                                 <TableCell align="center">{results.name}</TableCell>
-                                <TableCell align="center">{results.floor}</TableCell>
-                                <TableCell align="center">{results.building}</TableCell>
-                                <TableCell align="center">{results.workplace.map((results, index) => (
-                                    <TableRow>
-                                        <TableCell align="center">{index + 1}. </TableCell>
-                                        <TableCell align="center">{results.name}</TableCell>
-                                    </TableRow>
-                                ))}
+                                <TableCell align="center">{results.room.name}</TableCell>
+                                <TableCell align="center">{results.room.floor}</TableCell>
+                                <TableCell align="center">{results.room.building}</TableCell>
+                                <TableCell align="center">
+                                            <ModalWorkplace
+                                                create={true}
+                                                resetState={props.resetState}
+                                                newWorkplace={true}
+                                            />
+                                </TableCell>
+                                <TableCell>
+                                            <ModalWorkplace
+                                                create={false}
+                                                workplaces={workplaces}
+                                                resetState={props.resetState}
+                                                newWorkplace={props.newWorkplace}
+                                            />
+                                </TableCell>
+                                <TableCell>
+                                            <RemoveWorkplace
+                                                id={results.id}
+                                                resetState={props.resetState}
+                                            />
                                 </TableCell>
                             </TableRow>
                         )
