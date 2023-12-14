@@ -2,8 +2,7 @@ import * as React from 'react';
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
-//import { Link} from "@mui/material";
-import {Route, Routes, Link } from "react-router-dom";
+import {Link } from "react-router-dom";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,14 +11,14 @@ const darkTheme = createTheme({
 });
 
 const HomeContent = [
-    {'title': "Склад", 'url_path': '/stock', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/warehouse.svg'},
-    {'title': "Расходники", 'url_path': '/consumables', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/consumables.svg'},
-    {'title': "Контрагенты", 'url_path': '/counterparty', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/post.svg'},
-    {'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://172.18.0.4/static/images/workplace.svg'},
-    {'title': "Устройства", 'url_path': '/device', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/device.svg'},
-    {'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/software.svg'},
-    {'title': "ЭЦП", 'url_path': '/signature', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/signature.svg'},
-    {'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://172.18.0.4/static/images/employee.svg'},
+    {'title': "Склад", 'url_path': '/stock', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/warehouse.svg'},
+    {'title': "Расходники", 'url_path': '/consumables', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/consumables.svg'},
+    {'title': "Контрагенты", 'url_path': '/counterparty', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/post.svg'},
+    {'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://172.18.0.2/static/images/workplace.svg'},
+    {'title': "Устройства", 'url_path': '/device', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/device.svg'},
+    {'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/software.svg'},
+    {'title': "ЭЦП", 'url_path': '/signature', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/signature.svg'},
+    {'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://172.18.0.2/static/images/employee.svg'},
 
 ];
 
