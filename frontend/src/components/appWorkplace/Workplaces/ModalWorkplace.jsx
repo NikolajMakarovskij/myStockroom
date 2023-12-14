@@ -1,11 +1,12 @@
 import React  from 'react';
 import {Fragment, useState} from "react";
-import {Button, Modal, ModalHeader, ModalBody} from "reactstrap";
+import {Modal, ModalHeader, ModalBody} from "reactstrap";
 import WorkplaceForm from "./FormWorkplace";
+import {Link } from "react-router-dom";
 
 const ModalWorkplace = (props) => {
     const [visible, setVisible] = useState(false)
-    var button = <Button onClick={() => toggle()}>Редактировать</Button>;
+    var button = <Link onClick={() => toggle()}>Редактировать</Link>;
 
     const toggle = () => {
         setVisible(!visible)
@@ -13,21 +14,21 @@ const ModalWorkplace = (props) => {
 
     if (props.create) {
         button = (
-            <Button
+            <Link
                 color="secondary"
                 className="float-right"
                 onClick={() => toggle()}
                 style={{minWidth: "200px"}}>
                 Добавить
-            </Button>
+            </Link>
         )
     }
     return (
-        <Fragment>
+        <Fragment  >
             {button}
-            <Modal isOpen={visible} toggle={toggle}>
+            <Modal style={{marginTop: "80px"}} isOpen={visible} toggle={toggle}>
                 <ModalHeader
-                    style={{justifyContent: "center"}}>{props.create ? "Добавить" : "Редактировать"}</ModalHeader>
+                    style={{justifyContent: "center" }}>{props.create ? "Добавить" : "Редактировать"}</ModalHeader>
                 <ModalBody>
                     <WorkplaceForm
                         results={props.results ? props.results : []}

@@ -17,10 +17,10 @@ const FormWorkplace = (props) => {
 
     useEffect(() => {
         if (!props.newWorkplace) {
-            setWorkplaces(Workplace => props.Workplace)
+            setWorkplaces(Workplace => props.workplaces)
         }
         // eslint-disable-next-line
-    }, [props.Workplace])
+    }, [props.workplaces])
 
     const defaultIfEmpty = value => {
         return value === "" ? "" : value;
@@ -29,7 +29,8 @@ const FormWorkplace = (props) => {
     const submitDataEdit = async (e) => {
         e.preventDefault();
         // eslint-disable-next-line
-        const result = await axios.put(API_URL + Workplace.id, Workplace, {headers: {'Content-Type': 'multipart/form-data'}})
+        const result = await axios.put(API_URL + 'workplace/api/v1/workplace/' + results.id + '/', results,
+            {headers: {'Content-Type': 'multipart/form-data'}})
             .then(() => {
                 props.resetState()
                 props.toggle()
@@ -42,7 +43,8 @@ const FormWorkplace = (props) => {
             results: results['results']
         }
         // eslint-disable-next-line
-        const result = await axios.post(API_URL, data, {headers: {'Content-Type': 'multipart/form-data'}})
+        const result = await axios.post(API_URL + 'workplace/api/v1/workplace/', data,
+            {headers: {'Content-Type': 'multipart/form-data'}})
             .then(() => {
                 props.resetState()
                 props.toggle()
@@ -51,7 +53,7 @@ const FormWorkplace = (props) => {
     return (
         <Form onSubmit={props.newWorkplace ? submitDataAdd : submitDataEdit}>
             <FormGroup>
-                <Label for="name">Кабинет:</Label>
+                <Label for="name">Рабочее место:</Label>
                 <Input
                     type="text"
                     name="name"
@@ -60,25 +62,16 @@ const FormWorkplace = (props) => {
                 />
             </FormGroup>
             <FormGroup>
-                <Label for="floor">Этаж:</Label>
+                <Label for="room">Кабинет:</Label>
                 <Input
-                    type="floor"
-                    name="floor"
+                    type="object"
+                    name="room"
                     onChange={onChange}
-                    defaultValue={defaultIfEmpty(results.floor)}
-                />
-            </FormGroup>
-            <FormGroup>
-                <Label for="building">Здание:</Label>
-                <Input
-                    type="buildingr"
-                    name="building"
-                    onChange={onChange}
-                    defaultValue={defaultIfEmpty(results.building)}
+                    defaultValue={defaultIfEmpty(results.room)}
                 />
             </FormGroup>
             <div style={{display: "flex", justifyContent: "space-between"}}>
-                <Button>Send</Button> <Button onClick={props.toggle}>Cancel</Button>
+                <Button>Отправить</Button> <Button onClick={props.toggle}>Отмена</Button>
             </div>
         </Form>
     )

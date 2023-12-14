@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-export const API_URL = "http://172.18.0.5:8010/workplace/api/v1/room/"
+export const API_URL = "http://172.18.0.6:8010/"
 export const API_STATIC_MEDIA = "http://172.18.0.4/static/"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

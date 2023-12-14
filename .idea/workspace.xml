@@ -5,23 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="update docker scripts">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/App.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Routers.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/Home.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/IndexWorkplace.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/MenuWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHeader/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHome/Home.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/FormWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/HomeWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ListWorkplaces.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/ModalWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/RemoveWorkplace.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/workplace/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,23 +54,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "frontend",
-    "last_opened_file_path": "/home/makarovskiynv@admlbt.rf/myStockroom/frontend/src/components/appWorkplace",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "ts.external.directory.path": "/home/makarovskiynv@admlbt.rf/pycharm-2023.2.4/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/makarovskiynv@admlbt.rf/myStockroom/frontend/src/components/appWorkplace&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/makarovskiynv@admlbt.rf/pycharm-2023.2.4/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace" />
@@ -126,6 +116,7 @@
       <workItem from="1702189993913" duration="11304000" />
       <workItem from="1702369203197" duration="8405000" />
       <workItem from="1702438235289" duration="28405000" />
+      <workItem from="1702525333397" duration="7962000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
