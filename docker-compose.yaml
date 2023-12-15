@@ -1,12 +1,8 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      target: dev
+  web:
+    build: ./backend
     hostname: backend
-    image: backend
-    container_name: backend
-    command: uv run gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
       - ./backend/src:/backend/src
@@ -22,9 +18,24 @@ services:
       - db
       - redis
 
+  react:
+    build:
+      context: ./frontend
+    hostname: frontend
+    volumes:
+      - ./frontend:/frontend
+      - ./backend/static:/home/backend/web/static
+      - ./backend/media:/home/backend/web/mediafiles
+    env_file:
+      - ./.env
+    ports:
+      - "3000:3000"
+    command: npm run start
+    depends_on:
+      - web
+
   db:
-    container_name: db
-    image: postgres:17-alpine
+    image: postgres:14
     restart: always
     env_file:
       - ./.env
@@ -36,8 +47,6 @@ services:
     build: ./angie
     restart: always
     hostname: stock
-    container_name: angie
-    image: angie
     volumes:
       - ./frontend:/frontend
       - ./backend/src/static:/home/backend/web/static

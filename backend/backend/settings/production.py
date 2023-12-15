@@ -40,11 +40,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -222,7 +221,8 @@ DECOM_SESSION_ID = 'decom'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://localhost/workplace/api/v1/room/',
+    'http://frontend:3000',
+    'http://stock',
 ]
 
 
