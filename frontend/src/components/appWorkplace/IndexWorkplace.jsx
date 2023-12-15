@@ -3,6 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
 import HomeWorkplace from "./Workplaces/HomeWorkplace";
+import HomeRoom from "./Rooms/HomeRoom";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,17 +13,17 @@ const darkTheme = createTheme({
 
 const WorkplaceContent = [
     {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': HomeWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
-    {'title': 'Помещение', 'url_path': '/workplace/room/list', 'url_name': 'HomeRoom', 'image': 'http://localhost/static/images/room.svg'},
+    {'title': 'Помещение', 'url_path': '/room/list', 'url_name': HomeRoom, 'image': 'http://localhost/static/images/room.svg'},
 
 ];
-
+export {WorkplaceContent}
 
 const IndexWorkplace = () => {
     return (
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {WorkplaceContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginTop: "80px"}}>
+                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200,}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}>
                                 <CardContent>
