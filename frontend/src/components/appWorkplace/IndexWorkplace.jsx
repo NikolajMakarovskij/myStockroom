@@ -11,8 +11,8 @@ const darkTheme = createTheme({
 });
 
 const WorkplaceContent = [
-    {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': HomeWorkplace, 'image': 'http://172.18.0.4/static/images/workplace.svg'},
-    {'title': 'Помещение', 'url_path': '/workplace/room/list', 'url_name': 'HomeRoom', 'image': 'http://172.18.0.4/static/images/room.svg'},
+    {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': HomeWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
+    {'title': 'Помещение', 'url_path': '/workplace/room/list', 'url_name': 'HomeRoom', 'image': 'http://localhost/static/images/room.svg'},
 
 ];
 
@@ -24,21 +24,19 @@ const IndexWorkplace = () => {
                 {WorkplaceContent.map((item) => (
                     <Grid item xs={12} sm={6} md={4} style={{marginTop: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200,}}>
-                            <Link to={item.url_path} element={item.url_name}>
-                                <CardActionArea >
-                                    <CardContent>
-                                        <Typography gutterBottom   component="div">
-                                            {item.title}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardMedia
-                                      component="iframe"
-                                      height="140px"
-                                      image={item.image}
-                                      alt={item.title}
-                                    />
-                                </CardActionArea>
-                            </Link>
+                            <CardActionArea component={Link} to={item.url_path} element={item.url_name}>
+                                <CardContent>
+                                    <Typography gutterBottom   component="div">
+                                        {item.title}
+                                    </Typography>
+                                </CardContent>
+                                <CardMedia
+                                    component="iframe"
+                                    height="140px"
+                                    image={item.image}
+                                    alt={item.title}
+                                />
+                            </CardActionArea>
                         </Card>
                     </Grid>
                 ))}

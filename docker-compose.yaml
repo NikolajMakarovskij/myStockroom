@@ -3,6 +3,7 @@ version: "3.9"
 services:
   web:
     build: ./backend
+    hostname: backend
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
@@ -20,6 +21,7 @@ services:
   react:
     build:
       context: ./frontend
+    hostname: frontend
     volumes:
       - ./frontend:/frontend
       - ./backend/static:/home/backend/web/static
@@ -44,6 +46,7 @@ services:
   nginx:
     build: ./nginx
     restart: always
+    hostname: stock
     volumes:
       - ./backend/static:/home/backend/web/static
       - ./backend/media:/home/backend/web/mediafiles
