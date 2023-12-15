@@ -29,7 +29,7 @@ const HomeWorkplace = () => {
     };
 
     return (
-        <Container style={{marginTop: "80px"}}>
+        <Container>
             <ListWorkplace workplaces={workplaces} resetState={resetState} newWorkplace={false}/>
         </Container>
     )
