@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate} from "react-router-dom";
+import {Container} from "reactstrap";
 
 const darkTheme = createTheme({
   palette: {
@@ -44,38 +45,41 @@ const CreateRoom = () => {
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
-                        <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
-                            <CustomTextField
-                                label='Кабинет'
-                                placeholder='Введите № кабинета'
-                                name='name'
-                                control={control}
-                                width={'30%'}
-                            />
-                            <CustomTextField
-                                label='Этаж'
-                                placeholder='Введите № этажа'
-                                name='floor'
-                                control={control}
-                                width={'30%'}
-                            />
-                            <CustomTextField
-                                label='Здание'
-                                placeholder='Введите название здания'
-                                name='building'
-                                control={control}
-                                width={'30%'}
-                            />
-                        </Box>
-                            <ThemeProvider theme={darkTheme}>
-                                <Box>
-                                    <Button variant='contained' type='submit' sx={{flexGrow:'1'}}>Сохранить</Button>
-                                    <Button variant='contained'>Отмена</Button>
-                                </Box>
-                            </ThemeProvider>
-
-                    </Grid>
+                    <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                        <CustomTextField
+                            label='Кабинет'
+                            placeholder='Введите № кабинета'
+                            name='name'
+                            control={control}
+                            width={'30%'}
+                        />
+                        <CustomTextField
+                            label='Этаж'
+                            placeholder='Введите № этажа'
+                            name='floor'
+                            control={control}
+                            width={'30%'}
+                        />
+                        <CustomTextField
+                            label='Здание'
+                            placeholder='Введите название здания'
+                            name='building'
+                            control={control}
+                            width={'30%'}
+                        />
+                    </Box>
+                    <Container>
+                        <ThemeProvider theme={darkTheme}>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Button variant='contained' type='submit'>Сохранить</Button>
+                                <Button variant='contained'>Отмена</Button>
+                            </Box>
+                        </ThemeProvider>
+                    </Container>
                 </Box>
             </form>
         </div>
