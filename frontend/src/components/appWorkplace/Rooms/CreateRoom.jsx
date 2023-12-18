@@ -1,10 +1,10 @@
-import {React, useEffect, useState} from 'react'
+import {React} from 'react'
 import { Box, Button, Typography, Grid } from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
-import {useNavigate} from 'react-router-dom'
-import {Container} from "reactstrap";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import AxiosInstanse from "../../Axios";
+import {useNavigate} from "react-router-dom";
 
 const darkTheme = createTheme({
   palette: {
@@ -13,13 +13,28 @@ const darkTheme = createTheme({
 });
 
 const CreateRoom = () => {
+    const navigate = useNavigate()
+    const defaultValues = {
+        name: '',
+        floor: '',
+        building: ''
+    }
     const {
         handleSubmit,
         reset,
         setValue,
         control,
-    } = useForm()
-    const submission = (data) => console.log(data)
+    } = useForm({defaultValues:defaultValues})
+    const submission = (data) => {
+        AxiosInstanse.post(`workplace/api/v1/room/`,{
+                name: data.name,
+                floor: data.floor,
+                building: data.building,
+        })
+        .then((res) => {
+            navigate(`/room/list`)
+        })
+    }
     return(
         <div>
             <form onSubmit={handleSubmit(submission)}>
