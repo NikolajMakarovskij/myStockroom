@@ -6,20 +6,21 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Home from "./Home";
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {Link, useLocation} from "react-router-dom";
+import {WorkplaceContent} from "../appWorkplace/IndexWorkplace";
 
 
 const menu = [
-    {'title': "Главная", 'url_name': Home, 'url_path': '/'},
-    {'title': "Раб. места", 'url_name': IndexWorkplace, 'url_path': '/workplace'},
-    {'title': "Устройства", 'url_name': 'device:device_list', 'url_path': '/device' },
-    {'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee' },
-    {'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software' },
-    {'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature' },
-    {'title': "Склад", 'url_name': 'stockroom:stock_index', 'url_path': '/stockroom' },
-    {'title': "Расходники", 'url_name': 'consumables:consumables_list', 'url_path': '/consumables' },
-    {'title': "Комплектующие", 'url_name': 'consumables:accessories_list', 'url_path': '/accessories' },
-    {'title': "Контрагенты", 'url_name': 'counterparty:counterparty', 'url_path': '/counterparty' },
-    {'title': "Баланс", 'url_name': 'accounting:accounting_index', 'url_path': '/accounting'},
+    {'title': "Главная", 'url_name': Home, 'url_path': '/', menu: []},
+    {'title': "Раб. места", 'url_name': IndexWorkplace, 'url_path': '/workplace', menu: WorkplaceContent},
+    {'title': "Устройства", 'url_name': 'device:device_list', 'url_path': '/device', menu: [] },
+    {'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee', menu: [] },
+    {'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software', menu: [] },
+    {'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature', menu: [] },
+    {'title': "Склад", 'url_name': 'stockroom:stock_index', 'url_path': '/stockroom', menu: [] },
+    {'title': "Расходники", 'url_name': 'consumables:consumables_list', 'url_path': '/consumables', menu: [] },
+    {'title': "Комплектующие", 'url_name': 'consumables:accessories_list', 'url_path': '/accessories', menu: [] },
+    {'title': "Контрагенты", 'url_name': 'counterparty:counterparty', 'url_path': '/counterparty', menu: [] },
+    {'title': "Баланс", 'url_name': 'accounting:accounting_index', 'url_path': '/accounting', menu: []},
 ];
 
 const navItems = ['Склад', 'Админка', 'Пользователь или авторизация'];
@@ -115,7 +116,7 @@ export default function NavBar(props) {
                     {customDrawer}
                 </Drawer>
             </ThemeProvider>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: '-80px' }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
                 {content}
             </Box>
