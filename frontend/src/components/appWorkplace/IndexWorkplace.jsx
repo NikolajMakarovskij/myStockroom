@@ -2,8 +2,8 @@ import * as React from 'react';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
-import HomeWorkplace from "./Workplaces/HomeWorkplace";
-import HomeRoom from "./Rooms/HomeRoom";
+import ListWorkplace from "./Workplaces/ListWorkplace";
+import ListRoom from "./Rooms/ListRoom";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,8 +12,8 @@ const darkTheme = createTheme({
 });
 
 const WorkplaceContent = [
-    {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': HomeWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
-    {'title': 'Помещение', 'url_path': '/room/list', 'url_name': HomeRoom, 'image': 'http://localhost/static/images/room.svg'},
+    {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': ListWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
+    {'title': 'Помещение', 'url_path': '/room/list', 'url_name': ListRoom, 'image': 'http://localhost/static/images/room.svg'},
 
 ];
 export {WorkplaceContent}

@@ -19,11 +19,7 @@ const ListWorkplace = () => {
 
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
-    /*const menuActions = [
-        {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
-        {'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
-        {'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
-    ]*/
+
     const GetData = () => {
         AxiosInstanse.get(`workplace/api/v1/workplace/`).then((res) => {
             setWorkplaces(res.data)
@@ -64,12 +60,20 @@ const ListWorkplace = () => {
                     columns={columns}
                     data={workplace}
                     localization={MRT_Localization_RU}
+                    enableColumnResizing={true}
                     positionPagination='both'
                     enableRowNumbers='true'
                     enableRowVirtualization='true'
                     enableRowActions
-                    renderRowActionMenuItems={({ row }) => [
-                       /* menuActions.map(
+                    renderRowActionMenuItems={({
+                        row,
+                        menuActions = [
+                            {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
+                            {'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
+                            {'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
+                        ], }) => [
+
+                        menuActions.map(
                             (item, index) => (
                             <MenuItem key={index} component={Link} to={item.path}>
                                 <IconButton color={item.color} >
@@ -77,37 +81,8 @@ const ListWorkplace = () => {
                                 </IconButton>
                                 {item.name}
                             </MenuItem>
-                        ))*/
-                        <MenuItem key='create' component={Link} to={`create`}>
-                            <IconButton color='success' >
-                                <AddIcon/>
-                            </IconButton>
-                            Создать
-                        </MenuItem>,
-                        <MenuItem key='edit' component={Link} to={`edit/${row.original.id}`}>
-                            <IconButton color='primary' >
-                                <EditIcon/>
-                            </IconButton>
-                            Редактировать
-                        </MenuItem>,
-                        <MenuItem key='edit' component={Link} to={`remove/${row.original.id}`}>
-                            <IconButton color='error' >
-                                <DeleteIcon/>
-                            </IconButton>
-                            Удалить
-                        </MenuItem>,
+                        ))
                     ]}
-                    /*renderToolbarInternalActions={() => (
-                        <Box>
-                            <IconButton
-                              onClick={() => {
-                                window.print();
-                              }}
-                            >
-                              <PrintIcon />
-                            </IconButton>
-                        </Box>
-                    )}*/
                 />
             }
 
