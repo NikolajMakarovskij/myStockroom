@@ -7,6 +7,7 @@ import HomeRoom from "../appWorkplace/Rooms/HomeRoom";
 import NavBar from "./NavBar";
 import CreateRoom from "../appWorkplace/Rooms/CreateRoom";
 import UpdateRoom from "../appWorkplace/Rooms/UpdateRoom";
+import RemoveRoom from "../appWorkplace/Rooms/RemoveRoom";
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -16,6 +17,7 @@ const Routers = createBrowserRouter([
     {path: "/room/list", element: [<NavBar drawerWidth={customWidth} content={<HomeRoom/>}/>],},
     {path: "/room/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
     {path: "/room/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
+    {path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
 ]);
 
 export {Routers}
