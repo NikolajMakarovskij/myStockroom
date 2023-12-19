@@ -1,10 +1,10 @@
-import {React} from 'react'
+import {React, useEffect, useState} from 'react'
 import { Box, Button, Typography, Grid } from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate,useParams} from "react-router-dom";
 import {Container} from "reactstrap";
 
 const darkTheme = createTheme({
@@ -13,20 +13,39 @@ const darkTheme = createTheme({
   },
 });
 
-const CreateRoom = () => {
+const UpdateRoom = () => {
+    const roomParam = useParams()
+    const roomId = roomParam.id
+    const [loading, setLoading] = useState(true)
+
+    const GetData = () => {
+        AxiosInstanse.get(`workplace/api/v1/room/${roomId}/`).then((res) => {
+            setValue('name',res.data.name)
+            setValue('floor',res.data.floor)
+            setValue('building',res.data.building)
+            setLoading(false)
+        })
+    }
+
+    useEffect(() =>{
+        GetData();
+    },[])
+
     const navigate = useNavigate()
     const defaultValues = {
         name: '',
         floor: '',
         building: ''
     }
+
+
     const {
         handleSubmit,
+        setValue,
         control,
     } = useForm({defaultValues:defaultValues})
-
     const submission = (data) => {
-        AxiosInstanse.post(`workplace/api/v1/room/`,{
+        AxiosInstanse.put(`workplace/api/v1/room/${roomId}/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
@@ -38,9 +57,9 @@ const CreateRoom = () => {
     return(
         <div>
             <form onSubmit={handleSubmit(submission)}>
-                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Добавить кабинет
+                        Редактировать кабинет
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
@@ -88,4 +107,4 @@ const CreateRoom = () => {
 
 }
 
-export default CreateRoom
+export default UpdateRoom
