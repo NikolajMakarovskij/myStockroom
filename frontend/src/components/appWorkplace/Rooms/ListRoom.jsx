@@ -1,14 +1,13 @@
-import {React, useEffect, useMemo, useState} from 'react'
+import {React, useEffect, useMemo, useState,} from 'react'
 import {
-  MaterialReactTable,
-  useMaterialReactTable,
+    MaterialReactTable,
 } from 'material-react-table';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate} from "react-router-dom";
-import {IconButton, MenuItem} from '@mui/material';
-import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { MRT_Localization_RU } from 'material-react-table/locales/ru';
+import {useNavigate, Link} from "react-router-dom";
+import {IconButton, MenuItem, Box} from '@mui/material';
+import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Print as PrintIcon } from '@mui/icons-material';
+import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 
 const darkTheme = createTheme({
   palette: {
@@ -21,8 +20,8 @@ const ListRoom = () => {
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
     const menuActions = [
-        {'name': 'Добавить', 'path': 'create', 'icon': <AddIcon/>, 'color': 'primary',},
-        {'name': 'Редактировать', 'path': 'update', 'icon': <EditIcon/>, 'color': 'primary',},
+        {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'primary',},
+        {'name': 'Редактировать', 'path': `edit/`, 'icon': <EditIcon/>, 'color': 'primary',},
         {'name': 'Удалить', 'path': 'delete', 'icon': <DeleteIcon/>, 'color': 'error',},
     ]
     const GetData = () => {
@@ -65,16 +64,41 @@ const ListRoom = () => {
                     enableRowVirtualization='true'
                     enableRowActions
                     renderRowActionMenuItems={({ row }) => [
-                        menuActions.map(
+                        /*menuActions.map(
                             (item, index) => (
-                            <MenuItem key={index} onClick={() => window.open(item.path)}>
-                                <IconButton color={item.color}>
+                            <MenuItem key={index} component={Link} to={item.path}>
+                                <IconButton color={item.color} >
                                     {item.icon}
                                 </IconButton>
                                 {item.name}
                             </MenuItem>
-                        ))
-                      ]}
+                        ))*/
+                        <MenuItem key='create' component={Link} to={`create`}>
+                            <IconButton color='primary' >
+                                <AddIcon/>
+                            </IconButton>
+                            Создать
+                        </MenuItem>,
+                        <MenuItem key='edit' component={Link} to={`edit/${row.original.id}`}>
+                            <IconButton color='primary' >
+                                <EditIcon/>
+                            </IconButton>
+                            Редактировать
+                        </MenuItem>
+
+
+                    ]}
+                    /*renderToolbarInternalActions={() => (
+                        <Box>
+                            <IconButton
+                              onClick={() => {
+                                window.print();
+                              }}
+                            >
+                              <PrintIcon />
+                            </IconButton>
+                        </Box>
+                    )}*/
                 />
             }
 
