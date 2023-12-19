@@ -4,20 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="add remove room">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" afterDir="false" />
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="refactor menu">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/ProgressBar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/workplace/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHome/Routers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHome/Routers.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/HomeRoom.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/MenuWorkplace.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +138,7 @@
       <workItem from="1702905434693" duration="1450000" />
       <workItem from="1702915139463" duration="1573000" />
       <workItem from="1702956163316" duration="13726000" />
-      <workItem from="1702976490078" duration="3168000" />
+      <workItem from="1702976490078" duration="11806000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -223,7 +220,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702970179519</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="refactor workplace views">
+      <option name="closed" value="true" />
+      <created>1702982373836</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702982373836</updated>
+    </task>
+    <task id="LOCAL-00012" summary="refactor menu">
+      <option name="closed" value="true" />
+      <created>1702986228308</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1702986228308</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,16 +266,13 @@
     <MESSAGE value="add room list" />
     <MESSAGE value="add update room" />
     <MESSAGE value="add remove room" />
-    <option name="LAST_COMMIT_MESSAGE" value="add remove room" />
+    <MESSAGE value="refactor workplace views" />
+    <MESSAGE value="refactor menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx</url>
-          <line>86</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx</url>
           <line>5</line>

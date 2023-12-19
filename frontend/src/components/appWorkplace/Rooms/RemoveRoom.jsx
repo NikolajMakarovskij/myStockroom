@@ -4,6 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
 import {Container} from "reactstrap";
+import LinearWithValueLabel from "../../appHome/ProgressBar";
 
 const darkTheme = createTheme({
   palette: {
@@ -39,7 +40,7 @@ const RemoveRoom = () => {
     }
     return(
         <div>
-            {loading ? <p>Загрузка данных...</p> :
+            {loading ? <LinearWithValueLabel/> :
             <div>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
