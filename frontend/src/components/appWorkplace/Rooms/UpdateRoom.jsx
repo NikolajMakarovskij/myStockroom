@@ -1,5 +1,5 @@
 import {React, useEffect, useState} from 'react'
-import { Box, Button, Typography, Grid } from '@mui/material'
+import { Box, Button, Typography,} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -16,10 +16,12 @@ const darkTheme = createTheme({
 const UpdateRoom = () => {
     const roomParam = useParams()
     const roomId = roomParam.id
+    const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
         AxiosInstanse.get(`workplace/api/v1/room/${roomId}/`).then((res) => {
+            setRooms(res.data)
             setValue('name',res.data.name)
             setValue('floor',res.data.floor)
             setValue('building',res.data.building)
@@ -29,7 +31,7 @@ const UpdateRoom = () => {
 
     useEffect(() =>{
         GetData();
-    },[])
+    },)
 
     const navigate = useNavigate()
     const defaultValues = {
@@ -56,10 +58,11 @@ const UpdateRoom = () => {
     }
     return(
         <div>
+            {loading ? <p>Загрузка данных...</p> :
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать кабинет
+                        Редактировать кабинет № {room.name}
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
@@ -99,7 +102,7 @@ const UpdateRoom = () => {
                         </ThemeProvider>
                     </Container>
                 </Box>
-            </form>
+            </form>}
         </div>
 
     )

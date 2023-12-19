@@ -2,28 +2,28 @@ import {React, useEffect, useMemo, useState,} from 'react'
 import {
     MaterialReactTable,
 } from 'material-react-table';
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+//import {createTheme} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate, Link} from "react-router-dom";
-import {IconButton, MenuItem, Box} from '@mui/material';
-import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Print as PrintIcon } from '@mui/icons-material';
+import {Link} from "react-router-dom";
+import {IconButton, MenuItem,} from '@mui/material';
+import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 
-const darkTheme = createTheme({
+/*const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
-});
+});*/
 
 const ListRoom = () => {
 
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
-    const menuActions = [
-        {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'primary',},
-        {'name': 'Редактировать', 'path': `edit/`, 'icon': <EditIcon/>, 'color': 'primary',},
-        {'name': 'Удалить', 'path': 'delete', 'icon': <DeleteIcon/>, 'color': 'error',},
-    ]
+    /*const menuActions = [
+        {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
+        {'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
+        {'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
+    ]*/
     const GetData = () => {
         AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
             setRooms(res.data)
@@ -64,7 +64,7 @@ const ListRoom = () => {
                     enableRowVirtualization='true'
                     enableRowActions
                     renderRowActionMenuItems={({ row }) => [
-                        /*menuActions.map(
+                       /* menuActions.map(
                             (item, index) => (
                             <MenuItem key={index} component={Link} to={item.path}>
                                 <IconButton color={item.color} >
@@ -74,7 +74,7 @@ const ListRoom = () => {
                             </MenuItem>
                         ))*/
                         <MenuItem key='create' component={Link} to={`create`}>
-                            <IconButton color='primary' >
+                            <IconButton color='success' >
                                 <AddIcon/>
                             </IconButton>
                             Создать
@@ -84,9 +84,13 @@ const ListRoom = () => {
                                 <EditIcon/>
                             </IconButton>
                             Редактировать
-                        </MenuItem>
-
-
+                        </MenuItem>,
+                        <MenuItem key='edit' component={Link} to={`remove/${row.original.id}`}>
+                            <IconButton color='error' >
+                                <DeleteIcon/>
+                            </IconButton>
+                            Удалить
+                        </MenuItem>,
                     ]}
                     /*renderToolbarInternalActions={() => (
                         <Box>
