@@ -4,15 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="update docker scripts">
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="add remove room">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/workplace/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/workplace/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appHome/Routers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appHome/Routers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/HomeRoom.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/FormWorkplace.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplaces.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/MenuWorkplace.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ModalWorkplace.jsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +51,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/frontend/package.json" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -54,31 +62,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/makarovskiynv@admlbt.rf/myStockroom/frontend/src/components/appWorkplace&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/makarovskiynv@admlbt.rf/pycharm-2023.2.4/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "frontend",
+    "last_opened_file_path": "/Users/nikolajmakarovskij/Desktop/myStockroom/frontend/src/components/appWorkplace/Workplaces",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors",
+    "ts.external.directory.path": "/Applications/PyCharm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces" />
       <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace" />
       <recent name="$PROJECT_DIR$/database/Init_db" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/appHome" />
       <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -86,7 +102,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-67fca87a943a-c986f194a52a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.11799.259" />
+        <option value="bundled-python-sdk-7a29c1521ef0-c986f194a52a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.11799.298" />
       </set>
     </attachedChunks>
   </component>
@@ -117,6 +133,15 @@
       <workItem from="1702369203197" duration="8405000" />
       <workItem from="1702438235289" duration="28405000" />
       <workItem from="1702525333397" duration="7962000" />
+      <workItem from="1702563124638" duration="2153000" />
+      <workItem from="1702571993101" duration="36000" />
+      <workItem from="1702610732482" duration="26624000" />
+      <workItem from="1702652315148" duration="6241000" />
+      <workItem from="1702869754271" duration="20663000" />
+      <workItem from="1702905434693" duration="1450000" />
+      <workItem from="1702915139463" duration="1573000" />
+      <workItem from="1702956163316" duration="13726000" />
+      <workItem from="1702976490078" duration="3168000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -134,7 +159,71 @@
       <option name="project" value="LOCAL" />
       <updated>1699445236552</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="refactor header and navigation">
+      <option name="closed" value="true" />
+      <created>1702644128342</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702644128342</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fix margin top errors">
+      <option name="closed" value="true" />
+      <created>1702655969342</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702655969342</updated>
+    </task>
+    <task id="LOCAL-00005" summary="create form fields">
+      <option name="closed" value="true" />
+      <created>1702657081825</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702657081825</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add form Crete Room">
+      <option name="closed" value="true" />
+      <created>1702881286419</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702881286419</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add axios">
+      <option name="closed" value="true" />
+      <created>1702894463292</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702894463292</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add room list">
+      <option name="closed" value="true" />
+      <created>1702916703016</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702916703016</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add update room">
+      <option name="closed" value="true" />
+      <created>1702965485920</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702965485920</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add remove room">
+      <option name="closed" value="true" />
+      <created>1702970179519</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1702970179519</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,14 +245,29 @@
     <MESSAGE value="fix path gitignore backend" />
     <MESSAGE value="add to frontend branch gitignore" />
     <MESSAGE value="update docker scripts" />
-    <option name="LAST_COMMIT_MESSAGE" value="update docker scripts" />
+    <MESSAGE value="refactor header and navigation" />
+    <MESSAGE value="Fix margin top errors" />
+    <MESSAGE value="create form fields" />
+    <MESSAGE value="add form Crete Room" />
+    <MESSAGE value="add axios" />
+    <MESSAGE value="add room list" />
+    <MESSAGE value="add update room" />
+    <MESSAGE value="add remove room" />
+    <option name="LAST_COMMIT_MESSAGE" value="add remove room" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/HomeWorkplace.jsx</url>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx</url>
+          <line>86</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx</url>
+          <line>5</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
