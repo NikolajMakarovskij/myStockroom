@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import {IconButton, MenuItem,} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
+import LinearWithValueLabel from "../../appHome/ProgressBar";
 
 /*const darkTheme = createTheme({
   palette: {
@@ -49,7 +50,7 @@ const ListRoom = () => {
 
     return(
         <div>
-            {loading ? <p>Загрузка данных...</p> :
+            {loading ? <LinearWithValueLabel/> :
                 <MaterialReactTable
                     columns={columns}
                     data={room}
