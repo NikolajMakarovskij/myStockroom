@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import {IconButton, MenuItem,} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
-import LinearWithValueLabel from "../../appHome/ProgressBar";
+import LinearIndeterminate from "../../appHome/ProgressBar";
 
 /*const darkTheme = createTheme({
   palette: {
@@ -56,7 +56,7 @@ const ListWorkplace = () => {
 
     return(
         <div>
-            {loading ? <LinearWithValueLabel/> :
+            {loading ? <LinearIndeterminate/> :
                 <MaterialReactTable
                     columns={columns}
                     data={workplace}
