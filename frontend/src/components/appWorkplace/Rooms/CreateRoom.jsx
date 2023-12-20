@@ -1,11 +1,13 @@
 import {React} from 'react'
 import { Box, Button, Typography} from '@mui/material'
-import CustomTextField from "../../Forms/TextField";
+import CustomTextField from '../../Forms/TextField';
 import {useForm} from 'react-hook-form'
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-import AxiosInstanse from "../../Axios";
-import {useNavigate} from "react-router-dom";
-import {Container} from "reactstrap";
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import AxiosInstanse from '../../Axios';
+import {useNavigate} from 'react-router-dom';
+import {Container} from 'reactstrap';
 
 const darkTheme = createTheme({
   palette: {
@@ -20,10 +22,19 @@ const CreateRoom = () => {
         floor: '',
         building: ''
     }
+
+    const schema = yup
+        .object({
+            name: yup.string().required('Обязательное поле'),
+            floor: yup.string(),
+            building: yup.string(),
+        })
+      .required()
+
     const {
         handleSubmit,
         control,
-    } = useForm({defaultValues:defaultValues})
+    } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = (data) => {
         AxiosInstanse.post(`workplace/api/v1/room/`,{
@@ -51,6 +62,7 @@ const CreateRoom = () => {
                             name='name'
                             control={control}
                             width={'30%'}
+                            maxLength='15'
                         />
                         <CustomTextField
                             label='Этаж'
@@ -58,6 +70,7 @@ const CreateRoom = () => {
                             name='floor'
                             control={control}
                             width={'30%'}
+                            maxLength='25'
                         />
                         <CustomTextField
                             label='Здание'
@@ -65,6 +78,7 @@ const CreateRoom = () => {
                             name='building'
                             control={control}
                             width={'30%'}
+                            maxLength='25'
                         />
                     </Box>
                     <Container>
@@ -74,11 +88,12 @@ const CreateRoom = () => {
                                 justifyContent="space-between"
                                 alignItems="center"
                             >
-                                <Button variant='contained' type='submit'>Сохранить</Button>
-                                <Button variant='contained'>Отмена</Button>
+                                <Button variant='contained' type='submit' >Сохранить</Button>
+                                <Button variant='contained' >Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Container>
+
                 </Box>
             </form>
         </div>

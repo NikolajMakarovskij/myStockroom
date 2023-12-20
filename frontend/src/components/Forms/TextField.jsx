@@ -3,30 +3,31 @@ import TextField from '@mui/material/TextField';
 import {Controller} from 'react-hook-form'
 
 export default function CustomTextField(props) {
-  const {label, width, placeholder, name, control} = props
-  return (
+    const {label, width, placeholder, name, control, maxLength} = props
+    return (
       
-      <Controller
-        name = {name}
-        control = {control}
-        render= {({
-            field:{onChange, value}, 
-            fieldState: { error },
-            formState,
-        }) => (
-            <TextField 
-            sx={{width:{width}}}
-            onChange={onChange}
-            value={value}
-            id="standard-basic" 
-            label={label}
-            variant="standard" 
-            placeholder = {placeholder}
-            error = {!!error}
-            helperText = {error?.message}
-            />
-        )
-        }
+        <Controller
+            name={name}
+            control={control}
+            maxLength={maxLength}
+            render={({
+                field:{onChange, value},
+                fieldState: { error },
+                formState,
+            }) => (
+                <TextField
+                    sx={{width:{width}}}
+                    onChange={onChange}
+                    value={value}
+                    id="standard-basic"
+                    label={label}
+                    variant="standard"
+                    placeholder = {placeholder}
+                    error = {!!error}
+                    helperText = {error?.message}
+                />
+            )
+            }
         />
   );
 }
