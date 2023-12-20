@@ -7,6 +7,7 @@ import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
 import {Container} from "reactstrap";
 import LinearIndeterminate from "../../appHome/ProgressBar";
+import SelectField from "../../Forms/SelectField";
 
 const darkTheme = createTheme({
   palette: {
@@ -17,21 +18,25 @@ const darkTheme = createTheme({
 const UpdateWorkplace = () => {
     const workplaceParam = useParams()
     const workplaceId = workplaceParam.id
-    const [workplace, setWorkplaces] = useState()
+    const [rooms, setRooms  ] = useState()
+    const [workplace, setWorkplaces ] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
         AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
             setWorkplaces(res.data)
             setValue('name',res.data.name)
-            setValue('room',res.data.room.name)
+            setValue('room',res.data.room)
+        })
+        AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+            setRooms(res.data)
             setLoading(false)
         })
     }
 
     useEffect(() =>{
         GetData();
-    },)
+    }, [])
 
     const navigate = useNavigate()
     const defaultValues = {
@@ -48,7 +53,7 @@ const UpdateWorkplace = () => {
     const submission = (data) => {
         AxiosInstanse.put(`workplace/api/v1/workplace/${workplaceId}/`,{
                 name: data.name,
-                room: data.room.id,
+                room: data.room,
         })
         .then((res) => {
             navigate(`/workplace/list`)
@@ -72,12 +77,12 @@ const UpdateWorkplace = () => {
                             control={control}
                             width={'30%'}
                         />
-                        <CustomTextField
+                        <SelectField
                             label='Кабинет'
-                            placeholder='Укажите № кабинета'
                             name='room'
                             control={control}
                             width={'30%'}
+                            options={rooms}
                         />
                     </Box>
                     <Container>
