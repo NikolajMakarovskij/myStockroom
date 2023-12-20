@@ -3,7 +3,6 @@ import { Box, Button, Typography} from '@mui/material'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
-import {Container} from "reactstrap";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 
 const darkTheme = createTheme({
@@ -53,7 +52,7 @@ const RemoveWorkplace = () => {
                             Вы уверены, что хотите удалить кабинет № {workplace.name}?
                         </Typography>
                     </ThemeProvider>
-                    <Container>
+                    <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
                                 display="flex"
@@ -65,7 +64,7 @@ const RemoveWorkplace = () => {
                                 <Button variant='contained' >Отмена</Button>
                             </Box>
                         </ThemeProvider>
-                    </Container>
+                    </Box>
                 </Box>
             </div>}
         </div>

@@ -1,0 +1,5 @@
+FROM node
+WORKDIR /frontend
+ADD *.json ./
+RUN npm i --force
+ADD . .

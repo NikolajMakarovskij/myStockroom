@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/App';
-import reportWebVitals from './reportWebVitals';
 
 export const API_STATIC_MEDIA = "http://localhost/static/"
 
@@ -13,4 +12,4 @@ root.render(
     </React.StrictMode>
 );
 
-reportWebVitals();
+

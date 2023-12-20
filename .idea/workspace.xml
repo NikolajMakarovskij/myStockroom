@@ -4,27 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="change color progress bar">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/BaseMRT.jsx" afterDir="false" />
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="migrate to vite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/workplace/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/CreateRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/CreateRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/reportWebVitals.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/reportWebVitals.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/setupTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/setupTests.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/middleware/setupProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/reportWebVitals.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/setupTests.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend2/public/robots.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +152,8 @@
       <workItem from="1702915139463" duration="1573000" />
       <workItem from="1702956163316" duration="13726000" />
       <workItem from="1702976490078" duration="14272000" />
-      <workItem from="1703042869787" duration="16361000" />
+      <workItem from="1703042869787" duration="21230000" />
+      <workItem from="1703081620074" duration="2986000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -276,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703047601709</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="migrate to vite">
+      <option name="closed" value="true" />
+      <created>1703067314817</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1703067314817</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,7 +326,8 @@
     <MESSAGE value="add progress bar" />
     <MESSAGE value="change progress bar" />
     <MESSAGE value="change color progress bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="change color progress bar" />
+    <MESSAGE value="migrate to vite" />
+    <option name="LAST_COMMIT_MESSAGE" value="migrate to vite" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -320,6 +336,10 @@
           <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx</url>
           <line>5</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx</url>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
