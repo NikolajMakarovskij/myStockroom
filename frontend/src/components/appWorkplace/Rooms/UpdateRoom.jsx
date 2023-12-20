@@ -34,7 +34,7 @@ const UpdateRoom = () => {
 
     useEffect(() =>{
         GetData();
-    },)
+    },[])
 
     const navigate = useNavigate()
     const defaultValues = {

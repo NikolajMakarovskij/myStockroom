@@ -4,17 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="refactor menu">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/ProgressBar.jsx" afterDir="false" />
+    <list default="true" id="43030eb3-5ae4-44d4-88ce-e45a9b294f17" name="Changes" comment="change color progress bar">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/appHome/BaseMRT.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/workplace/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/workplace/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dockerfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/ListRoom.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/RemoveRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Rooms/UpdateRoom.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/RemoveWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/CreateWorkplace.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/UpdateWorkplace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/reportWebVitals.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/reportWebVitals.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/setupTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/setupTests.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +58,6 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/frontend/package.json" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -59,28 +66,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "frontend",
-    "last_opened_file_path": "/Users/nikolajmakarovskij/Desktop/myStockroom/frontend/src/components/appWorkplace/Workplaces",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors",
-    "ts.external.directory.path": "/Applications/PyCharm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/nikolajmakarovskij/Desktop/myStockroom/frontend/src/components/appWorkplace/Workplaces&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/PyCharm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces" />
@@ -138,7 +145,8 @@
       <workItem from="1702905434693" duration="1450000" />
       <workItem from="1702915139463" duration="1573000" />
       <workItem from="1702956163316" duration="13726000" />
-      <workItem from="1702976490078" duration="11806000" />
+      <workItem from="1702976490078" duration="14272000" />
+      <workItem from="1703042869787" duration="16361000" />
     </task>
     <task id="LOCAL-00001" summary="add branch gitignore">
       <option name="closed" value="true" />
@@ -236,7 +244,39 @@
       <option name="project" value="LOCAL" />
       <updated>1702986228308</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add progress bar">
+      <option name="closed" value="true" />
+      <created>1703006149370</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1703006149370</updated>
+    </task>
+    <task id="LOCAL-00014" summary="change progress bar">
+      <option name="closed" value="true" />
+      <created>1703043814757</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1703043814757</updated>
+    </task>
+    <task id="LOCAL-00015" summary="change progress bar">
+      <option name="closed" value="true" />
+      <created>1703047571390</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1703047571390</updated>
+    </task>
+    <task id="LOCAL-00016" summary="change color progress bar">
+      <option name="closed" value="true" />
+      <created>1703047601709</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1703047601709</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,7 +308,10 @@
     <MESSAGE value="add remove room" />
     <MESSAGE value="refactor workplace views" />
     <MESSAGE value="refactor menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor menu" />
+    <MESSAGE value="add progress bar" />
+    <MESSAGE value="change progress bar" />
+    <MESSAGE value="change color progress bar" />
+    <option name="LAST_COMMIT_MESSAGE" value="change color progress bar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -276,7 +319,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/components/appWorkplace/Workplaces/ListWorkplace.jsx</url>
           <line>5</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
