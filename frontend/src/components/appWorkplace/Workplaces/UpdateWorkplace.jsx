@@ -5,7 +5,6 @@ import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
-import {Container} from "reactstrap";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import SelectField from "../../Forms/SelectField";
 
@@ -85,7 +84,7 @@ const UpdateWorkplace = () => {
                             options={rooms}
                         />
                     </Box>
-                    <Container>
+                    <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
                                 display="flex"
@@ -96,7 +95,7 @@ const UpdateWorkplace = () => {
                                 <Button variant='contained'>Отмена</Button>
                             </Box>
                         </ThemeProvider>
-                    </Container>
+                    </Box>
                 </Box>
             </form>}
         </div>

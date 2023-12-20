@@ -5,7 +5,6 @@ import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
-import {Container} from "reactstrap";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -103,7 +102,7 @@ const UpdateRoom = () => {
                             maxLength='25'
                         />
                     </Box>
-                    <Container>
+                    <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
                                 display="flex"
@@ -114,7 +113,7 @@ const UpdateRoom = () => {
                                 <Button variant='contained'>Отмена</Button>
                             </Box>
                         </ThemeProvider>
-                    </Container>
+                    </Box>
                 </Box>
             </form>}
         </div>

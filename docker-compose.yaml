@@ -26,13 +26,12 @@ services:
       - ./frontend:/frontend
       - ./backend/static:/home/backend/web/static
       - ./backend/media:/home/backend/web/mediafiles
+      - /frontend/node_modules
     env_file:
       - ./.env
     ports:
       - "3000:3000"
-    command: npm run start
-    depends_on:
-      - web
+    command: npm run dev
 
   db:
     image: postgres:14

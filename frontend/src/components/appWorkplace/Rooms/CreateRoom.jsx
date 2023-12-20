@@ -7,7 +7,6 @@ import * as yup from 'yup'
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import AxiosInstanse from '../../Axios';
 import {useNavigate} from 'react-router-dom';
-import {Container} from 'reactstrap';
 
 const darkTheme = createTheme({
   palette: {
@@ -81,7 +80,7 @@ const CreateRoom = () => {
                             maxLength='25'
                         />
                     </Box>
-                    <Container>
+                    <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
                                 display="flex"
@@ -92,7 +91,7 @@ const CreateRoom = () => {
                                 <Button variant='contained' >Отмена</Button>
                             </Box>
                         </ThemeProvider>
-                    </Container>
+                    </Box>
 
                 </Box>
             </form>
