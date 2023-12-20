@@ -7,6 +7,8 @@ import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
 import {Container} from "reactstrap";
 import LinearIndeterminate from "../../appHome/ProgressBar";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 const darkTheme = createTheme({
   palette: {
@@ -41,12 +43,20 @@ const UpdateRoom = () => {
         building: ''
     }
 
+    const schema = yup
+        .object({
+            name: yup.string().required('Обязательное поле'),
+            floor: yup.string(),
+            building: yup.string(),
+        })
+      .required()
 
     const {
         handleSubmit,
         setValue,
         control,
-    } = useForm({defaultValues:defaultValues})
+    } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
+
     const submission = (data) => {
         AxiosInstanse.put(`workplace/api/v1/room/${roomId}/`,{
                 name: data.name,
@@ -74,6 +84,7 @@ const UpdateRoom = () => {
                             name='name'
                             control={control}
                             width={'30%'}
+                            maxLength='15'
                         />
                         <CustomTextField
                             label='Этаж'
@@ -81,6 +92,7 @@ const UpdateRoom = () => {
                             name='floor'
                             control={control}
                             width={'30%'}
+                            maxLength='25'
                         />
                         <CustomTextField
                             label='Здание'
@@ -88,6 +100,7 @@ const UpdateRoom = () => {
                             name='building'
                             control={control}
                             width={'30%'}
+                            maxLength='25'
                         />
                     </Box>
                     <Container>
