@@ -60,7 +60,7 @@ export default function LinearWithValueLabel() {
 export default function LinearIndeterminate() {
   return (
     <Box sx={{ width: '100%' }}>
-      <LinearProgress />
+      <LinearProgress color="inherit" />
     </Box>
   );
 }
