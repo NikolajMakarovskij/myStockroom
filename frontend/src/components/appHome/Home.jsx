@@ -29,7 +29,7 @@ const Home = () => {
             <ThemeProvider theme={darkTheme}>
                 {HomeContent.map((item) => (
                     <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
-                        <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200,}}>
+                        <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}>
                                 <CardContent>
                                     <Typography gutterBottom   component="div">
@@ -37,6 +37,7 @@ const Home = () => {
                                     </Typography>
                                 </CardContent>
                                 <CardMedia
+                                    sx={{ border: 0 }}
                                     component="iframe"
                                     height="140px"
                                     image={item.image}
