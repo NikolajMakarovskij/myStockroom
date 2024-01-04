@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react'
-import { Box, Button, Typography} from '@mui/material'
+import { Box, Button, Typography, TextField} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -9,6 +9,8 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import SelectField from "../../Forms/SelectField";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import AutocompleteField from "../../Forms/AutocompleteField";
 
 const darkTheme = createTheme({
   palette: {
@@ -16,9 +18,19 @@ const darkTheme = createTheme({
   },
 });
 
+const options = [
+    {
+        id: '1', name: 'one'
+    },
+    {
+        id: '2', name: 'two'
+    }
+]
+
 const CreateWorkplace = () => {
 
     const [room, setRooms] = useState()
+    const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
@@ -79,12 +91,15 @@ const CreateWorkplace = () => {
                                 width={'30%'}
                                 maxlength='50'
                             />
-                            <SelectField
-                                label='Кабинет'
+                            <AutocompleteField
                                 name='room'
                                 control={control}
                                 width={'30%'}
                                 options={room}
+                                label='Выберите кабинет'
+                                placeholder='Выберите № кабинета'
+                                noOptionsText='Кабинеты не обнаружены'
+                                optionLabel={(option) => `${option.name} (здание: ${option.building}, этаж: ${option.floor})`}
                             />
                         </Box>
                         <Box>

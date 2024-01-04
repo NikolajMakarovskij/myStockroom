@@ -7,6 +7,7 @@ import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import SelectField from "../../Forms/SelectField";
+import AutocompleteField from "../../Forms/AutocompleteField.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -76,12 +77,15 @@ const UpdateWorkplace = () => {
                             control={control}
                             width={'30%'}
                         />
-                        <SelectField
-                            label='Кабинет'
+                        <AutocompleteField
                             name='room'
                             control={control}
                             width={'30%'}
                             options={rooms}
+                            label='Выберите кабинет'
+                            placeholder='Выберите № кабинета'
+                            noOptionsText='Кабинеты не обнаружены'
+                            optionLabel={(option) => `${option.name} (здание: ${option.building}, этаж: ${option.floor})`}
                         />
                     </Box>
                     <Box>

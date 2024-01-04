@@ -36,12 +36,13 @@ class RoomSerializer(serializers.ModelSerializer):
         }
 
 
-class WorkplaceModelSerializer(serializers.ModelSerializer):
+class WorkplaceListSerializer(serializers.ModelSerializer):
     queryset = Workplace.objects.all()
+    room = RoomSerializer(read_only=True)
 
     class Meta:
         model = Workplace
-        fields = ('id', 'name', 'room')
+        fields = '__all__'
         extra_kwargs = {
             'id': {'read_only': True}
         }
