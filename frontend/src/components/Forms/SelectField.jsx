@@ -43,7 +43,7 @@ export default function SelectField(props) {
                         }
                     </Select>
 
-                    <FormHelperText sx={{color:"#d32f2f"}}> {error?.message} </FormHelperText>
+                    <FormHelperText sx={{color:"#d32f2f"}}> {error.name ? true : false} </FormHelperText>
 
                 </FormControl>
 
