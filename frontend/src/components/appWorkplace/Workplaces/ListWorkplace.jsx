@@ -17,14 +17,12 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 });*/
 
 const ListWorkplace = () => {
-    const [room, setRoom] = useState()
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
         AxiosInstanse.get(`workplace/api/v1/workplace_list/`).then((res) => {
             setWorkplaces(res.data)
-            console.log(res.data)
             setLoading(false)
         })
     }
