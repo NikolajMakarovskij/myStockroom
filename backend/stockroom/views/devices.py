@@ -15,7 +15,7 @@ from stockroom.stock.stock import DevStock
 
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
-from ..serializers.devices import StockListSerializer
+from ..serializers.devices import StockDevListSerializer, StockDevCatSerializer
 
 from django.http import HttpResponse
 from datetime import datetime
@@ -83,9 +83,20 @@ class StockDevCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
         return object_list
 
 
+class StockDevCatListRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = CategoryDev.objects.all()
+    serializer_class = StockDevCatSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = CategoryDev.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
 class StockDevListRestView(DataMixin, viewsets.ModelViewSet):
     queryset = StockDev.objects.all()
-    serializer_class = StockListSerializer
+    serializer_class = StockDevListSerializer
     permission_classes = [permissions.AllowAny]
 
     def list(self, request):
