@@ -1,4 +1,4 @@
-import {React, useEffect, useMemo, useState,} from 'react'
+import {React, useEffect, useMemo, useState, useCallback} from 'react'
 import {
     MaterialReactTable,
 } from 'material-react-table';
@@ -21,12 +21,12 @@ const ListRoom = () => {
 
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+    const GetData = useCallback( async () => {
+        await AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
             setRooms(res.data)
             setLoading(false)
         })
-    }
+    })
 
     useEffect(() =>{
         GetData();

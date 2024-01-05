@@ -1,4 +1,4 @@
-import {React} from 'react'
+import {React, useCallback} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from '../../Forms/TextField';
 import {useForm} from 'react-hook-form'
@@ -35,8 +35,8 @@ const CreateRoom = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = (data) => {
-        AxiosInstanse.post(`workplace/api/v1/room/`,{
+    const submission = useCallback(async (data) => {
+        await AxiosInstanse.post(`workplace/api/v1/room/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
@@ -44,7 +44,7 @@ const CreateRoom = () => {
         .then((res) => {
             navigate(`/room/list`)
         })
-    }
+    })
     return(
         <div>
             <form onSubmit={handleSubmit(submission)}>

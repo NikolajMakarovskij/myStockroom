@@ -1,4 +1,4 @@
-import {React, useEffect, useMemo, useState,} from 'react'
+import {React, useEffect, useMemo, useState, useCallback} from 'react'
 import {
     MaterialReactTable,
 } from 'material-react-table';
@@ -20,12 +20,12 @@ const ListWorkplace = () => {
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/workplace_list/`).then((res) => {
+    const GetData = useCallback(async () => {
+         await AxiosInstanse.get(`workplace/api/v1/workplace_list/`).then((res) => {
             setWorkplaces(res.data)
             setLoading(false)
         })
-    }
+    })
 
     useEffect(() =>{
         GetData();

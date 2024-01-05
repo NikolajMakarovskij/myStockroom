@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react'
+import {React, useState, useEffect, useCallback} from 'react'
 import { Box, Button, Typography, TextField} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
@@ -63,15 +63,15 @@ const CreateWorkplace = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = (data) => {
-        AxiosInstanse.post(`workplace/api/v1/workplace/`,{
+    const submission =useCallback( async (data) => {
+        await AxiosInstanse.post(`workplace/api/v1/workplace/`,{
                 name: data.name,
                 room: data.room,
         })
         .then((res) => {
             navigate(`/workplace/list`)
         })
-    }
+    })
     return(
         <div>
             {loading ? <LinearIndeterminate/> :
