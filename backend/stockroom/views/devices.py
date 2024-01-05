@@ -13,6 +13,10 @@ from stockroom.models.devices import StockDev, HistoryDev, CategoryDev
 from stockroom.resources import StockDevResource
 from stockroom.stock.stock import DevStock
 
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from ..serializers.devices import StockListSerializer
+
 from django.http import HttpResponse
 from datetime import datetime
 
@@ -77,6 +81,17 @@ class StockDevCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
         object_list = StockDev.objects.filter(
             categories__slug=self.kwargs['category_slug']).select_related('stock_model')
         return object_list
+
+
+class StockDevListRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = StockDev.objects.all()
+    serializer_class = StockListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = StockDev.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 # History
