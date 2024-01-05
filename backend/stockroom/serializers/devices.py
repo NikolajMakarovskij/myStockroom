@@ -17,7 +17,7 @@ class StockDevSerializer(serializers.ModelSerializer):
         }
 
 
-class StockDevModelSerializer(serializers.ModelSerializer):
+class StockDevCatSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryDev
         fields = '__all__'
@@ -26,9 +26,9 @@ class StockDevModelSerializer(serializers.ModelSerializer):
         }
 
 
-class StockListSerializer(serializers.ModelSerializer):
+class StockDevListSerializer(serializers.ModelSerializer):
     queryset = Device.objects.all()
-    categories = StockDevModelSerializer(read_only=True)
+    categories = StockDevCatSerializer(read_only=True)
     stock_model = DeviceListSerializer(read_only=True)
 
     class Meta:

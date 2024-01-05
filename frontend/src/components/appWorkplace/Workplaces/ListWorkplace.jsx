@@ -53,7 +53,7 @@ const ListWorkplace = () => {
     );
 
     return(
-        <div>
+        <>
             {loading ? <LinearIndeterminate/> :
                 <MaterialReactTable
                     columns={columns}
@@ -85,7 +85,7 @@ const ListWorkplace = () => {
                 />
             }
 
-        </div>
+        </>
     )
 
 
