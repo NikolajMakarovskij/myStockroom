@@ -11,6 +11,7 @@ import RemoveRoom from "../appWorkplace/Rooms/RemoveRoom";
 import CreateWorkplace from "../appWorkplace/Workplaces/CreateWorkplace";
 import UpdateWorkplace from "../appWorkplace/Workplaces/UpdateWorkplace";
 import RemoveWorkplace from "../appWorkplace/Workplaces/RemoveWorkplace";
+import ListDevice from "../appDevice/ListDevice.jsx";
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -24,6 +25,10 @@ const Routers = createBrowserRouter([
     {path: "/room/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
     {path: "/room/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
     {path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
+    {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
+    //{path: "/room/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
+    //{path: "/room/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
+    //{path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
 ]);
 
 export {Routers}

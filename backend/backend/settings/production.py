@@ -221,7 +221,6 @@ DECOM_SESSION_ID = 'decom'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://frontend:3000',
     'http://stock',
 ]
 

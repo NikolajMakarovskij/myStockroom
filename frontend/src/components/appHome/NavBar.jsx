@@ -4,15 +4,17 @@ import {Box, Drawer, AppBar, CssBaseline, Toolbar, List, ListItem, ListItemButto
 } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu'
 import Home from "./Home";
-import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {Link, useLocation} from "react-router-dom";
+
+import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {WorkplaceContent} from "../appWorkplace/IndexWorkplace";
+import ListDevice from "../appDevice/ListDevice.jsx";
 
 
 const menu = [
     {'title': "Главная", 'url_name': Home, 'url_path': '/', menu: []},
     {'title': "Раб. места", 'url_name': IndexWorkplace, 'url_path': '/workplace', menu: WorkplaceContent},
-    {'title': "Устройства", 'url_name': 'device:device_list', 'url_path': '/device', menu: [] },
+    {'title': "Устройства", 'url_name': ListDevice, 'url_path': '/device/list', menu: [] },
     {'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee', menu: [] },
     {'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software', menu: [] },
     {'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature', menu: [] },

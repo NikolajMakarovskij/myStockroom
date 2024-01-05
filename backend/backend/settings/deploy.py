@@ -178,6 +178,13 @@ CSRF_TRUSTED_ORIGINS = ['http://0.0.0.0']
 STOCK_SESSION_ID = 'stock'
 DECOM_SESSION_ID = 'decom'
 
+# cores headers
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://stock',
+]
+
 
 # REST
 
