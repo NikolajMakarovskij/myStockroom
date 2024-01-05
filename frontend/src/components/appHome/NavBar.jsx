@@ -9,6 +9,8 @@ import {Link, useLocation} from "react-router-dom";
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {WorkplaceContent} from "../appWorkplace/IndexWorkplace";
 import ListDevice from "../appDevice/ListDevice.jsx";
+import IndexStock from "../appStock/IndexStock.jsx";
+import {StockContent} from "../appStock/IndexStock.jsx";
 
 
 const menu = [
@@ -18,14 +20,18 @@ const menu = [
     {'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee', menu: [] },
     {'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software', menu: [] },
     {'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature', menu: [] },
-    {'title': "Склад", 'url_name': 'stockroom:stock_index', 'url_path': '/stockroom', menu: [] },
+    {'title': "Склад", 'url_name': IndexStock, 'url_path': '/stock', menu: StockContent },
     {'title': "Расходники", 'url_name': 'consumables:consumables_list', 'url_path': '/consumables', menu: [] },
     {'title': "Комплектующие", 'url_name': 'consumables:accessories_list', 'url_path': '/accessories', menu: [] },
     {'title': "Контрагенты", 'url_name': 'counterparty:counterparty', 'url_path': '/counterparty', menu: [] },
     {'title': "Баланс", 'url_name': 'accounting:accounting_index', 'url_path': '/accounting', menu: []},
 ];
 
-const navItems = ['Склад', 'Админка', 'Пользователь или авторизация'];
+const navItems = [
+    {'title': "Склад", 'url_name': IndexStock, 'url_path': '/stock'},
+    {'title': "Админка", 'url_name': 'IndexStock', 'url_path': '/admin'},
+    {'title': "Пользователь или авторизация", 'url_name': 'IndexStock', 'url_path': ''},
+];
 
 const darkTheme = createTheme({
   palette: {
@@ -84,7 +90,7 @@ export default function NavBar(props) {
                         <Box sx={{ display: { xs: 'none', sm: 'block' }}} position='left'>
                             {navItems.map((item, index) => (
                                 <Button key={index} component={Link} to={item.url_path} selected={item.url_path === path}>
-                                    {item}
+                                    {item.title}
                                 </Button>
                             ))}
                         </Box>
