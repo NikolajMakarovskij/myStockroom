@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react'
+import {React, useEffect, useState, useCallback} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
@@ -17,12 +17,12 @@ const RemoveWorkplace = () => {
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
+    const GetData = useCallback(async () => {
+        await AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
             setWorkplaces(res.data)
             setLoading(false)
         })
-    }
+    })
 
     useEffect(() =>{
         GetData();

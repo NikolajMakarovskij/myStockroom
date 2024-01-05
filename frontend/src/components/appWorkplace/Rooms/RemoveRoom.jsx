@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react'
+import {React, useEffect, useState, useCallback} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
@@ -31,12 +31,12 @@ const RemoveRoom = () => {
     const navigate = useNavigate()
 
 
-    const submission = (data) => {
-        AxiosInstanse.delete(`workplace/api/v1/room/${roomId}/`)
+    const submission = useCallback(async (data) => {
+        await AxiosInstanse.delete(`workplace/api/v1/room/${roomId}/`)
         .then((res) => {
             navigate(`/room/list`)
         })
-    }
+    })
     return(
         <div>
             {loading ? <LinearIndeterminate/> :
