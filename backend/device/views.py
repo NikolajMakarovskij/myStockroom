@@ -4,13 +4,14 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
 
 from core.utils import DataMixin, FormMessageMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm, MoveDeviceForm, AddHistoryDeviceForm
 from .forms import DeviceForm
 from .models import Device, DeviceCat
-from .serializers import DeviceModelSerializer, DeviceCatModelSerializer
+from .serializers import DeviceSerializer, DeviceCatModelSerializer, DeviceListSerializer
 
 from django.http import HttpResponse
 from .resources import DeviceResource
@@ -99,9 +100,20 @@ class DeviceCategoryListView(LoginRequiredMixin, PermissionRequiredMixin, DataMi
 
 class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Device.objects.all()
-    serializer_class = DeviceModelSerializer
+    serializer_class = DeviceSerializer
     success_message = f"%(categories)s %(name)s успешно создано"
     error_message = f"%(categories)s %(name)s не удалось создать"
+
+
+class DeviceListRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = Device.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
