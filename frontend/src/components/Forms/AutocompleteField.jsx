@@ -36,8 +36,7 @@ export default function AutocompleteField(props) {
                             )}
                             onChange={(event, newValues) => {onChange(newValues ? newValues.id : null)}}
                         />
-                        <FormHelperText sx={{color:"#d32f2f"}}> {/*error?.message*/} </FormHelperText>
-                        <Typography>{value }</Typography>
+                        <FormHelperText sx={{color:"#d32f2f"}}> {error?.message} </FormHelperText>
                     </FormControl>
 
                 )}
