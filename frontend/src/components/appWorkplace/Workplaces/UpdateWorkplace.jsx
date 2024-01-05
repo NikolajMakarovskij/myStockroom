@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react'
+import {React, useEffect, useState, useCallback} from 'react'
 import { Box, Button, Typography,} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
@@ -6,7 +6,6 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
-import SelectField from "../../Forms/SelectField";
 import AutocompleteField from "../../Forms/AutocompleteField.jsx";
 
 const darkTheme = createTheme({
@@ -22,17 +21,17 @@ const UpdateWorkplace = () => {
     const [workplace, setWorkplaces ] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
+    const GetData = useCallback(async () => {
+        await AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
             setWorkplaces(res.data)
             setValue('name',res.data.name)
             setValue('room',res.data.room)
         })
-        AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+        await AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
             setRooms(res.data)
             setLoading(false)
         })
-    }
+    })
 
     useEffect(() =>{
         GetData();
