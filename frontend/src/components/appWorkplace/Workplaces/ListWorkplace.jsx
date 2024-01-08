@@ -64,6 +64,13 @@ const ListWorkplace = () => {
                     enableRowNumbers='true'
                     enableRowVirtualization='true'
                     enableRowActions
+                    initialState= {({pagination: { pageSize: (workplace.length), pageIndex: 0 }})}
+                    muiPaginationProps={({
+                        rowsPerPageOptions: [25, 50, 100,  workplace.length],
+                        showFirstButton: true,
+                        showLastButton: true,
+                        shape: 'rounded',
+                    })}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
