@@ -61,6 +61,13 @@ const ListRoom = () => {
                     enableRowNumbers='true'
                     enableRowVirtualization='true'
                     enableRowActions
+                    initialState= {({pagination: { pageSize: (room.length), pageIndex: 0 }})}
+                    muiPaginationProps={({
+                        rowsPerPageOptions: [25, 50, 100,  room.length],
+                        showFirstButton: true,
+                        showLastButton: true,
+                        shape: 'rounded',
+                    })}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [

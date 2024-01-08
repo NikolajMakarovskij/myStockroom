@@ -52,16 +52,18 @@ export default function ListStockDevices() {
     const [value, setValue] = useState(0);
     const [device, setDevices] = useState()
     const [category, setCategory] = useState('')
+    const [slug, setSlug] = useState(category ? category.slug : '')
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
         await AxiosInstanse.get(`stockroom/api/v1/stock_dev_list/`, {timeout: 1000*30}).then((res) => {
             setDevices(res.data)
-        })
-        await AxiosInstanse.get(`stockroom/api/v1/stock_dev_cat/`).then((res) => {
-            setCategory(res.data)
             setLoading(false)
         })
+        // await AxiosInstanse.get(`stockroom/api/v1/stock_dev_cat/`).then((res) => {
+        //     setCategory(res.data)
+        //     setLoading(false)
+        // })
 
     })
 
@@ -71,15 +73,15 @@ export default function ListStockDevices() {
 
   const handleChange = (event, newValue) => {
     if (
-      event.type !== 'click' ||
-      (event.type === 'click' && samePageLinkNavigation(event))
+        event.type !== 'click' ||
+        (event.type === 'click' && samePageLinkNavigation(event))
     ) {
-      setValue(newValue);
-      setCategory(newValue.slug)
+        setValue(newValue);
     }
   };
     const columns = useMemo(() => [
         {
+            id: 'stock_model',
             accessorKey: 'stock_model.name',
             header: 'Устройство',
         },
@@ -138,8 +140,8 @@ export default function ListStockDevices() {
         <>
             {loading ? <LinearIndeterminate/> :
                 (
-                    <Box>
-                        <Tabs
+                    <>
+                        {/*<Tabs
                             value={value}
                             onChange={handleChange}
                             aria-label="nav tabs example"
@@ -147,18 +149,27 @@ export default function ListStockDevices() {
                         >
                             <LinkTab label="Все" href="/stock/device/list" />
                             {category.map((cat, index) => (
-                                <LinkTab label={cat.name} href='/stock/device/list/{cat.slug}' key={index} />
+                                <LinkTab label={cat.name} href={cat.slug} key={index} />
                             ))}
-                        </Tabs>
+                        </Tabs>*/}
                         <MaterialReactTable
                             columns={columns}
                             data={device}
                             localization={MRT_Localization_RU}
                             enableColumnResizing={true}
+                            //paginationDisplayMode= 'pages'
                             positionPagination='both'
                             enableRowNumbers='true'
                             enableRowVirtualization='true'
                             enableRowActions
+                            initialState= {({pagination: { pageSize: (device.length), pageIndex: 0 }})}
+                            muiPaginationProps={({
+                                rowsPerPageOptions: [25, 50, 100,  device.length],
+                                color: 'secondary',
+                                showFirstButton: true,
+                                showLastButton: true,
+                                shape: 'rounded',
+                            })}
                             renderRowActionMenuItems={({row,
                                 menuActions = [
                                 //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
@@ -176,7 +187,7 @@ export default function ListStockDevices() {
                                 ))
                             ]}
                         />
-                    </Box>
+                    </>
                 )
             }
         </>
