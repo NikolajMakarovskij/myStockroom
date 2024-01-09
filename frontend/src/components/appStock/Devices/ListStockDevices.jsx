@@ -98,11 +98,11 @@ export default function ListStockDevices() {
             header: 'Количество',
         },
         {
-            accessorKey: 'serial',
+            accessorKey: 'stock_model.serial',
             header: 'Серийный №',
         },
         {
-            accessorKey: 'invent',
+            accessorKey: 'stock_model.invent',
             header: 'Инвентарный №',
         },
         {
