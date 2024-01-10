@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import AxiosInstanse from '../../Axios';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 
 const darkTheme = createTheme({
   palette: {
@@ -88,7 +88,7 @@ const CreateRoom = () => {
                                 alignItems="center"
                             >
                                 <Button variant='contained' type='submit' >Сохранить</Button>
-                                <Button variant='contained' >Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/room/list`} >Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>
