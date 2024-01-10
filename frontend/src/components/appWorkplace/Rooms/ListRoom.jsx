@@ -10,12 +10,8 @@ import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icon
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import BaseMRT from "../../appHome/BaseMRT";
+import MaterialReactTableList from "../../Tables/MaterialReactTableList";
 
-/*const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});*/
 
 const ListRoom = () => {
 
@@ -50,24 +46,11 @@ const ListRoom = () => {
     );
 
     return(
-        <div>
+        <>
             {loading ? <LinearIndeterminate/> :
-                <MaterialReactTable
+                <MaterialReactTableList
                     columns={columns}
                     data={room}
-                    localization={MRT_Localization_RU}
-                    enableColumnResizing={true}
-                    positionPagination='both'
-                    enableRowNumbers='true'
-                    enableRowVirtualization='true'
-                    enableRowActions
-                    initialState= {({pagination: { pageSize: (room.length), pageIndex: 0 }})}
-                    muiPaginationProps={({
-                        rowsPerPageOptions: [25, 50, 100,  room.length],
-                        showFirstButton: true,
-                        showLastButton: true,
-                        shape: 'rounded',
-                    })}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
@@ -75,7 +58,6 @@ const ListRoom = () => {
                             {'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
                             {'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
                         ], }) => [
-
                         menuActions.map(
                             (item, index) => (
                             <MenuItem key={index} component={Link} to={item.path}>
@@ -88,8 +70,7 @@ const ListRoom = () => {
                     ]}
                 />
             }
-
-        </div>
+        </>
     )
 
 

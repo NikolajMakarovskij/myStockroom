@@ -10,12 +10,9 @@ import {IconButton, MenuItem, Box, Tabs, Tab} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 import LinearIndeterminate from "../../appHome/ProgressBar.jsx";
+import MaterialReactTableList from "../../Tables/MaterialReactTableList";
 
-/*const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});*/
+
 function samePageLinkNavigation(event) {
   if (
     event.defaultPrevented ||
@@ -152,38 +149,24 @@ export default function ListStockDevices() {
                                 <LinkTab label={cat.name} href={cat.slug} key={index} />
                             ))}
                         </Tabs>*/}
-                        <MaterialReactTable
+                        <MaterialReactTableList
                             columns={columns}
                             data={device}
-                            localization={MRT_Localization_RU}
-                            enableColumnResizing={true}
-                            //paginationDisplayMode= 'pages'
-                            positionPagination='both'
-                            enableRowNumbers='true'
-                            enableRowVirtualization='true'
-                            enableRowActions
-                            initialState= {({pagination: { pageSize: (device.length), pageIndex: 0 }})}
-                            muiPaginationProps={({
-                                rowsPerPageOptions: [25, 50, 100,  device.length],
-                                color: 'secondary',
-                                showFirstButton: true,
-                                showLastButton: true,
-                                shape: 'rounded',
-                            })}
-                            renderRowActionMenuItems={({row,
+                            renderRowActionMenuItems={({
+                                row,
                                 menuActions = [
-                                //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
-                                //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
-                                //{'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
-                            ], }) => [
+                                    //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
+                                    //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
+                                    //{'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
+                                ], }) => [
                                 menuActions.map(
-                                    (item, index) => (
+                                (item, index) => (
                                     <MenuItem key={index} component={Link} to={item.path}>
-                                        <IconButton color={item.color} >
-                                            {item.icon}
-                                        </IconButton>
-                                        {item.name}
-                                    </MenuItem>
+                                    <IconButton color={item.color} >
+                                        {item.icon}
+                                    </IconButton>
+                                    {item.name}
+                                </MenuItem>
                                 ))
                             ]}
                         />
@@ -192,7 +175,4 @@ export default function ListStockDevices() {
             }
         </>
     )
-
-
-
 };

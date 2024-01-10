@@ -9,12 +9,8 @@ import {IconButton, MenuItem,} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 import LinearIndeterminate from "../appHome/ProgressBar";
+import MaterialReactTableList from "../Tables/MaterialReactTableList";
 
-/*const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});*/
 
 const ListDevice = () => {
     const [device, setDevices] = useState()
@@ -77,24 +73,11 @@ const ListDevice = () => {
     );
 
     return(
-        <div>
+        <>
             {loading ? <LinearIndeterminate/> :
-                <MaterialReactTable
+                <MaterialReactTableList
                     columns={columns}
                     data={device}
-                    localization={MRT_Localization_RU}
-                    enableColumnResizing={true}
-                    positionPagination='both'
-                    enableRowNumbers='true'
-                    enableRowVirtualization='true'
-                    enableRowActions
-                    initialState= {({pagination: { pageSize: (device.length), pageIndex: 0 }})}
-                    muiPaginationProps={({
-                        rowsPerPageOptions: [25, 50, 100,  device.length],
-                        showFirstButton: true,
-                        showLastButton: true,
-                        shape: 'rounded',
-                    })}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
@@ -102,7 +85,6 @@ const ListDevice = () => {
                             //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
                             //{'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
                         ], }) => [
-
                         menuActions.map(
                             (item, index) => (
                             <MenuItem key={index} component={Link} to={item.path}>
@@ -115,8 +97,7 @@ const ListDevice = () => {
                     ]}
                 />
             }
-
-        </div>
+        </>
     )
 
 
