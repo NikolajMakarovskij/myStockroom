@@ -4,7 +4,7 @@ import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import SelectField from "../../Forms/SelectField";
 import * as yup from "yup";
@@ -110,7 +110,7 @@ const CreateWorkplace = () => {
                                     alignItems="center"
                                 >
                                     <Button variant='contained' type='submit'>Сохранить</Button>
-                                    <Button variant='contained'>Отмена</Button>
+                                    <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
                                 </Box>
                             </ThemeProvider>
                         </Box>

@@ -2,7 +2,7 @@ import {React, useEffect, useState, useCallback} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate,useParams} from "react-router-dom";
+import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 
 const darkTheme = createTheme({
@@ -61,7 +61,7 @@ const RemoveWorkplace = () => {
                                 marginTop='20px'
                             >
                                 <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' >Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>

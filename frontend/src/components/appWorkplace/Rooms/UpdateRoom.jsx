@@ -4,7 +4,7 @@ import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
-import {useNavigate,useParams} from "react-router-dom";
+import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -110,7 +110,7 @@ const UpdateRoom = () => {
                                 alignItems="center"
                             >
                                 <Button variant='contained' type='submit'>Сохранить</Button>
-                                <Button variant='contained'>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/room/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>
