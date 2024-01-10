@@ -9,16 +9,21 @@ import {IconButton, MenuItem,} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 import LinearIndeterminate from "../appHome/ProgressBar";
-import MaterialReactTableList from "../Tables/MaterialReactTableList";
+import MaterialReactTableTabsList from "../Tables/MaterialReactTableTabsList";
 
 
 const ListDevice = () => {
     const [device, setDevices] = useState()
+    const [category, setCategory] = useState('')
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
          await AxiosInstanse.get(`device/api/v1/device_list/`, {timeout: 1000*30}).then((res) => {
             setDevices(res.data)
+           // setLoading(false)
+        })
+    await AxiosInstanse.get(`device/api/v1/device_cat/`).then((res) => {
+            setCategory(res.data)
             setLoading(false)
         })
     })
@@ -75,13 +80,14 @@ const ListDevice = () => {
     return(
         <>
             {loading ? <LinearIndeterminate/> :
-                <MaterialReactTableList
+                <MaterialReactTableTabsList
                     columns={columns}
                     data={device}
+                    category={category}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
-                            //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
+                            {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
                             //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
                             //{'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
                         ], }) => [
