@@ -1,15 +1,9 @@
 import {React, useEffect, useMemo, useState, useCallback} from 'react'
-import {
-    MaterialReactTable,
-} from 'material-react-table';
-//import {createTheme} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {Link} from "react-router-dom";
 import {IconButton, MenuItem} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
-import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 import LinearIndeterminate from "../../appHome/ProgressBar";
-import BaseMRT from "../../appHome/BaseMRT";
 import MaterialReactTableList from "../../Tables/MaterialReactTableList";
 
 

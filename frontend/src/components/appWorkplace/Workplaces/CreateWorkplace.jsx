@@ -6,10 +6,8 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate, Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
-import SelectField from "../../Forms/SelectField";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 import AutocompleteField from "../../Forms/AutocompleteField";
 
 const darkTheme = createTheme({

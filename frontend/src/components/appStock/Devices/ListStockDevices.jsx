@@ -1,14 +1,8 @@
 import {React, useMemo, useState, useCallback, useEffect,} from 'react'
-import PropTypes from 'prop-types';
-import {
-    MaterialReactTable,
-} from 'material-react-table';
-//import {createTheme} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {Link} from "react-router-dom";
-import {IconButton, MenuItem, Box, Tabs, Tab, Typography, createTheme, ThemeProvider, AppBar} from '@mui/material';
-import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
-import {MRT_Localization_RU} from 'material-react-table/locales/ru';
+import {IconButton, MenuItem} from '@mui/material';
+//import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import LinearIndeterminate from "../../appHome/ProgressBar.jsx";
 import MaterialReactTableTabsList from "../../Tables/MaterialReactTableTabsList";
 
@@ -21,7 +15,6 @@ export default function ListStockDevices() {
     const GetData = useCallback(async () => {
         await AxiosInstanse.get(`stockroom/api/v1/stock_dev_list/`, {timeout: 1000*30}).then((res) => {
             setDevices(res.data)
-            //setLoading(false)
         })
         await AxiosInstanse.get(`stockroom/api/v1/stock_dev_cat/`).then((res) => {
             setCategory(res.data)
