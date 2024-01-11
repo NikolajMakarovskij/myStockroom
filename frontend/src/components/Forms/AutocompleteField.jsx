@@ -1,7 +1,7 @@
-import {React, useState, useEffect} from 'react';
-import {TextField, FormControl, FormHelperText, Typography} from '@mui/material';
+import {React, useState} from 'react';
+import {TextField, FormControl, FormHelperText} from '@mui/material';
 import {Controller} from 'react-hook-form';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function AutocompleteField(props) {
 

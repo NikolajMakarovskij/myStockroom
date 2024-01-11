@@ -1,7 +1,6 @@
 import {React, useState} from 'react'
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
-import {IconButton, MenuItem, Box, Tabs, Tab, Typography, createTheme, ThemeProvider, AppBar} from '@mui/material';
+import {Box, Tabs, Tab, Typography, createTheme, ThemeProvider, AppBar} from '@mui/material';
 import MaterialReactTableList from "./MaterialReactTableList";
 
 const darkTheme = createTheme({
