@@ -32,6 +32,8 @@ services:
     ports:
       - "3000:3000"
     command: npm run dev
+    depends_on:
+      - web
 
   db:
     image: postgres:14
