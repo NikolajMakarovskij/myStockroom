@@ -5,6 +5,7 @@ import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import ListWorkplace from "../appWorkplace/Workplaces/ListWorkplace";
 import ListRoom from "../appWorkplace/Rooms/ListRoom";
 import NavBar from "./NavBar";
+import AuthApp from "../appAuth/AuthApp.jsx";
 import CreateRoom from "../appWorkplace/Rooms/CreateRoom";
 import UpdateRoom from "../appWorkplace/Rooms/UpdateRoom";
 import RemoveRoom from "../appWorkplace/Rooms/RemoveRoom";
@@ -18,6 +19,7 @@ import ListStockDevices from "../appStock/Devices/ListStockDevices.jsx";
 const customWidth = 200
 const Routers = createBrowserRouter([
     {path : "/", element: [<NavBar drawerWidth={customWidth} content={<Home/>}/> ],},
+    {path : "/auth", element: [<NavBar drawerWidth={customWidth} content={<AuthApp/>}/> ],},
     {path: "/workplace", element: [<NavBar drawerWidth={customWidth} content={<IndexWorkplace/>}/>],},
     {path: "/workplace/list", element: [<NavBar drawerWidth={customWidth} content={<ListWorkplace/>}/>],},
     {path: "/workplace/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateWorkplace/>}/>],},
