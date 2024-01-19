@@ -27,6 +27,11 @@ class DeviceListSerializer(serializers.ModelSerializer):
     workplace = WorkplaceListSerializer(read_only=True)
     categories = DeviceCatModelSerializer(read_only=True)
 
+    def get_queryset(self):
+
+        categories = self.request.categories
+        return Device.objects.filter(categories=categories)
+
     class Meta:
         model = Device
         fields = '__all__'

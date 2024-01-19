@@ -39,8 +39,8 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./backend/database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./backend/database:/var/lib/postgresql/data
+      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database:/var/lib/postgresql/data
 
   angie:
     build: ./angie
@@ -48,8 +48,8 @@ services:
     hostname: stock
     volumes:
       - ./frontend:/frontend
-      - ./backend/src/static:/home/backend/web/static
-      - ./backend/src/media:/home/backend/web/mediafiles
+      - ./backend/static:/home/backend/web/static
+      - ./backend/media:/home/backend/web/mediafiles
     ports:
       - "80:80"
     depends_on:

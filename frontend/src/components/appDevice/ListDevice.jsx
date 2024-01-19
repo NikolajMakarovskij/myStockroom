@@ -13,10 +13,10 @@ const ListDevice = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-         await AxiosInstanse.get(`device/api/v1/device_list/`, {timeout: 1000*30}).then((res) => {
+         await AxiosInstanse.get(`api/device/api/v1/device_list/`, {timeout: 1000*30}).then((res) => {
             setDevices(res.data)
         })
-    await AxiosInstanse.get(`device/api/v1/device_cat/`).then((res) => {
+    await AxiosInstanse.get(`api/device/api/v1/device_cat/`).then((res) => {
             setCategory(res.data)
             setLoading(false)
         })
