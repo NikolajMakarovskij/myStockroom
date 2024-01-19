@@ -73,7 +73,7 @@ import socket
 
 
 def show_toolbar(request):
-    return True
+    return False
 
 
 DEBUG_TOOLBAR_CONFIG = {
@@ -230,7 +230,7 @@ CORS_ALLOWED_ORIGINS = [
 def render_calasses():
     return [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        #'rest_framework.renderers.BrowsableAPIRenderer',
         ]
 
 

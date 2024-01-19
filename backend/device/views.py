@@ -116,6 +116,27 @@ class DeviceListRestView(DataMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class DeviceListCatRestView(DataMixin, viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Device.objects.all()
+        categories = self.request.query_params.get('categories')
+        if categories is not None:
+            queryset = queryset.filter(categories__slug=categories__slug)
+        return queryset
+
+    def list(self, request):
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
 class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = DeviceCat.objects.all()
     serializer_class = DeviceCatModelSerializer

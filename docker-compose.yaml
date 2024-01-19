@@ -39,14 +39,15 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./backend/database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./backend/database:/var/lib/postgresql/data
+      - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database:/var/lib/postgresql/data
 
   nginx:
     build: ./nginx
     restart: always
     hostname: stock
     volumes:
+      - ./frontend:/frontend
       - ./backend/static:/home/backend/web/static
       - ./backend/media:/home/backend/web/mediafiles
     ports:
