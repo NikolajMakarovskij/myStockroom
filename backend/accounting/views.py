@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
 from core.utils import menu, DataMixin, FormMessageMixin
 from .forms import AccountingForm, CategoriesForm
@@ -87,6 +87,7 @@ class AccountingCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, Data
 class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     queryset = Accounting.objects.all()
     serializer_class = AccountingModelSerializer
+    #permission_classes = [permissions.IsAuthenticated]
     success_message = f"%(categories)s %(name)s успешно создано"
     error_message = f"%(categories)s %(name)s не удалось создать"
 
