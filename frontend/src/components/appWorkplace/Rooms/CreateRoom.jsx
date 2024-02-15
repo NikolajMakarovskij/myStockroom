@@ -36,7 +36,7 @@ const CreateRoom = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.post(`workplace/api/v1/room/`,{
+        await AxiosInstanse.post(`workplace/room/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,

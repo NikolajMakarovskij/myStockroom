@@ -22,12 +22,12 @@ const UpdateWorkplace = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
+        await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
             setWorkplaces(res.data)
             setValue('name',res.data.name)
             setValue('room',res.data.room)
         })
-        await AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+        await AxiosInstanse.get(`workplace/room/`).then((res) => {
             setRooms(res.data)
             setLoading(false)
         })
@@ -50,7 +50,7 @@ const UpdateWorkplace = () => {
         control,
     } = useForm({defaultValues:defaultValues})
     const submission = (data) => {
-        AxiosInstanse.put(`workplace/api/v1/workplace/${workplaceId}/`,{
+        AxiosInstanse.put(`workplace/workplace/${workplaceId}/`,{
                 name: data.name,
                 room: data.room,
         })
