@@ -18,7 +18,7 @@ const RemoveRoom = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/room/${roomId}/`).then((res) => {
+        AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
             setRooms(res.data)
             setLoading(false)
         })
@@ -32,7 +32,7 @@ const RemoveRoom = () => {
 
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.delete(`workplace/api/v1/room/${roomId}/`)
+        await AxiosInstanse.delete(`workplace/room/${roomId}/`)
         .then((res) => {
             navigate(`/room/list`)
         })

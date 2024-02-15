@@ -4,7 +4,7 @@ from .views import DeviceListView, DeviceCategoryListView, DeviceDetailView, Dev
     ExportDevice, ExportDeviceCategory
 
 urlpatterns = [
-    path('api/v1/', include(router.urls)),
+    path('', include(router.urls)),
     path('', DeviceListView.as_view(), name='device_list'),
     path('search', DeviceListView.as_view(), name='device_search'),
     path('category/<slug:category_slug>', DeviceCategoryListView.as_view(), name='category'),

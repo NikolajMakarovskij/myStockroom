@@ -15,7 +15,7 @@ from stockroom.views.consumables import StockroomView, StockroomCategoriesView, 
 
 
 urlpatterns = [
-    path('api/v1/', include(router.urls)),
+    path('', include(router.urls)),
     path('', StockroomIndexView.as_view(), name='stock_index'),
 
     # Consumables

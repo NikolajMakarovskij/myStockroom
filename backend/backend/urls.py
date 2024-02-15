@@ -16,7 +16,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('decommission/', include(('decommission.urls', 'decommission'), namespace='decommission'), ),
-    path('stockroom/', include(('stockroom.urls', 'stockroom'), namespace='stockroom'), ),
+    path('api/stockroom/', include(('stockroom.urls', 'stockroom'), namespace='stockroom'), ),
     path('counterparty/', include(('counterparty.urls', 'counterparty'), namespace='counterparty'), ),
     path('signature/', include(('signature.urls', 'signature'), namespace='signature'), ),
     path('api/device/', include(('device.urls', 'device'), namespace='device'), ),
@@ -24,7 +24,7 @@ urlpatterns += [
     path('accounting/', include(('accounting.urls', 'accounting'), namespace='accounting'), ),
     path('software/', include(('software.urls', 'software'), namespace='software'), ),
     path('employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
-    path('workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),
+    path('api/workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),
     path('home/', include(('core.urls', 'core'), namespace='core'), ),
 
 

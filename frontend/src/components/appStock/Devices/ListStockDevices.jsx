@@ -13,10 +13,10 @@ export default function ListStockDevices() {
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`stockroom/api/v1/stock_dev_list/`, {timeout: 1000*30}).then((res) => {
+        await AxiosInstanse.get(`stockroom/stock_dev_list/`, {timeout: 1000*30}).then((res) => {
             setDevices(res.data)
         })
-        await AxiosInstanse.get(`stockroom/api/v1/stock_dev_cat/`).then((res) => {
+        await AxiosInstanse.get(`stockroom/stock_dev_cat/`).then((res) => {
             setCategory(res.data)
             setLoading(false)
         })

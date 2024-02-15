@@ -12,7 +12,7 @@ const ListRoom = () => {
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
     const GetData = useCallback( async () => {
-        await AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+        await AxiosInstanse.get(`workplace/room/`).then((res) => {
             setRooms(res.data)
             setLoading(false)
         })

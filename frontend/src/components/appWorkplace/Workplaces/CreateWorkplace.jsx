@@ -9,6 +9,7 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
+import Modal from "../../Modal/Modal.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -33,7 +34,7 @@ const CreateWorkplace = () => {
     const navigate = useNavigate()
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/room/`).then((res) => {
+        AxiosInstanse.get(`workplace/room/`).then((res) => {
             setRooms(res.data)
             console.log(res.data)
             setLoading(false)
@@ -62,7 +63,7 @@ const CreateWorkplace = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission =useCallback( async (data) => {
-        await AxiosInstanse.post(`workplace/api/v1/workplace/`,{
+        await AxiosInstanse.post(`workplace/workplace/`,{
                 name: data.name,
                 room: data.room,
         })

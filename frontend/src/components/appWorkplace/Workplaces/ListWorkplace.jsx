@@ -12,7 +12,7 @@ const ListWorkplace = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-         await AxiosInstanse.get(`workplace/api/v1/workplace_list/`).then((res) => {
+         await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
             setWorkplaces(res.data)
             setLoading(false)
         })

@@ -18,7 +18,7 @@ const RemoveWorkplace = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`workplace/api/v1/workplace/${workplaceId}/`).then((res) => {
+        await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
             setWorkplaces(res.data)
             setLoading(false)
         })
@@ -32,7 +32,7 @@ const RemoveWorkplace = () => {
 
 
     const submission = (data) => {
-        AxiosInstanse.delete(`workplace/api/v1/workplace/${workplaceId}/`)
+        AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`)
         .then((res) => {
             navigate(`/workplace/list`)
         })

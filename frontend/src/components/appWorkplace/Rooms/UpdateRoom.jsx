@@ -22,7 +22,7 @@ const UpdateRoom = () => {
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/api/v1/room/${roomId}/`).then((res) => {
+        AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
             setRooms(res.data)
             setValue('name',res.data.name)
             setValue('floor',res.data.floor)
@@ -57,7 +57,7 @@ const UpdateRoom = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.put(`workplace/api/v1/room/${roomId}/`,{
+        await AxiosInstanse.put(`workplace/room/${roomId}/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
