@@ -8,7 +8,6 @@ from django_select2.forms import ModelSelect2Widget, ModelSelect2MultipleWidget
 
 menu = [
     {'title': "Главная страница", 'url_name': 'core:index'},
-    {'title': "Раб. места", 'url_name': 'workplace:workplace_index'},
     {'title': "Устройства", 'url_name': 'device:device_list'},
     {'title': "Сотрудники", 'url_name': 'employee:employee_index'},
     {'title': "Софт", 'url_name': 'software:software_index'},
@@ -31,7 +30,7 @@ class DataMixin:
         side_menu = cache.get('side_menu')
         if not side_menu:
             side_menu = menu
-            cache.set('side_menu', side_menu, 3000)
+            cache.set('side_menu', side_menu, 30000)
         context = kwargs
         context['menu'] = side_menu
         context['query'] = self.request.GET.get('q')

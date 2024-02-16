@@ -9,7 +9,7 @@ from ..models import Device, DeviceCat
 @pytest.mark.django_db
 def test_list_url_exists_at_desired_location(auto_login_user):
     client, user = auto_login_user()
-    links = ['/device/', '/device/search']
+    links = ['/api/device/', '/api/device/search']
     for link in links:
         url = link
         response = client.get(url)
