@@ -1,7 +1,5 @@
 import json, pytest
-from django.urls import reverse
 from workplace.models import Room, Workplace
-#from .factories import RoomFactory, WorkplaceFactory
 from core.tests.test_login import auto_login_user
 
 
