@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
 from .models import Room, Workplace
-from .serializers import WorkplaceListSerializer, RoomModelSerializer, WorkplaceSerializer
+from .serializers import WorkplaceListSerializer, RoomModelSerializer, WorkplaceSerializer, RoomSerializer
 
 
 # Рабочие места
@@ -51,9 +51,20 @@ class WorkplaceRestView(viewsets.ModelViewSet):
 
 
 # Кабинеты
-class RoomRestView(viewsets.ViewSet):
+class RoomListRestView(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = Room.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class RoomRestView(viewsets.ViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
     permission_classes = [permissions.AllowAny]
 
     def list(self, request):
