@@ -1,4 +1,4 @@
-from .views import RoomRestView, WorkplaceRestView, WorkplaceListRestView
+from .views import RoomRestView, WorkplaceRestView, WorkplaceListRestView, RoomListRestView
 from rest_framework import routers
 
 from .views import RoomRestView, WorkplaceRestView
@@ -6,4 +6,5 @@ from .views import RoomRestView, WorkplaceRestView
 router = routers.SimpleRouter()
 router.register(r'room', RoomRestView)
 router.register(r'workplace', WorkplaceRestView)
+router.register(r'room_list', RoomListRestView)
 router.register(r'workplace_list', WorkplaceListRestView)

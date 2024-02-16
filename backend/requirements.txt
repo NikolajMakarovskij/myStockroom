@@ -29,6 +29,7 @@ sqlparse==0.4.4
 django-debug-toolbar==4.1.0
 pytest==7.4.0
 pytest-django==4.5.2
+pytest-factoryboy==2.5.1
 pytest-xdist==3.3.1
 pytest-cov==4.1.0
 django-select2==8.1.2
