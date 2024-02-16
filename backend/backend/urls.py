@@ -23,7 +23,7 @@ urlpatterns += [
     path('consumables/', include(('consumables.urls', 'consumables'), namespace='consumables'), ),
     path('accounting/', include(('accounting.urls', 'accounting'), namespace='accounting'), ),
     path('software/', include(('software.urls', 'software'), namespace='software'), ),
-    path('employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
+    path('api/employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
     path('api/workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),
     path('home/', include(('core.urls', 'core'), namespace='core'), ),
 
