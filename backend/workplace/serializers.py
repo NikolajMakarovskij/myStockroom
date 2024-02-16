@@ -31,6 +31,9 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = '__all__'
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
 
 
 class WorkplaceListSerializer(serializers.ModelSerializer):
