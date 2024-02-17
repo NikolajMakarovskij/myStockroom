@@ -3,6 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
 
+import ListEmployee from "./Employee/ListEmployee";
 import ListDepartament from "./Departament/ListDepartament";
 import ListPost from "./Post/ListPost";
 
@@ -13,7 +14,7 @@ const darkTheme = createTheme({
 });
 
 const EmployeeContent = [
-    {'title': 'Сотрудники', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/employee.svg'},
+    {'title': 'Сотрудники', 'url_path': '/employee/list', 'url_name': ListEmployee, 'image': 'http://localhost/static/images/employee.svg'},
     {'title': 'Должности', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/post.svg'},
     {'title': 'Отделы', 'url_path': '/departament/list', 'url_name': ListDepartament, 'image': 'http://localhost/static/images/departament.svg'},
 
