@@ -18,24 +18,19 @@ const darkTheme = createTheme({
 });
 
 const options = [
-    {
-        id: '1', name: 'one'
-    },
-    {
-        id: '2', name: 'two'
-    }
+
 ]
 
 const CreatePost = () => {
 
-    const [room, setRooms] = useState()
+    const [dep, setDeps] = useState()
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/room/`).then((res) => {
-            setRooms(res.data)
+        AxiosInstanse.get(`employee/departament/`).then((res) => {
+            setDeps(res.data)
             console.log(res.data)
             setLoading(false)
         })
@@ -47,13 +42,13 @@ const CreatePost = () => {
 
     const defaultValues = {
         name: '',
-        room: '',
+        departament: '',
     }
 
     const schema = yup
         .object({
             name: yup.string().required('Обязательное поле'),
-            room: yup.string(),
+            departament: yup.string(),
         })
       .required()
 
@@ -63,12 +58,12 @@ const CreatePost = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission =useCallback( async (data) => {
-        await AxiosInstanse.post(`workplace/workplace/`,{
+        await AxiosInstanse.post(`employee/post/`,{
                 name: data.name,
-                room: data.room,
+                departament: data.departament,
         })
         .then((res) => {
-            navigate(`/workplace/list`)
+            navigate(`/post/list`)
         })
     })
     return(
@@ -77,28 +72,28 @@ const CreatePost = () => {
                 <form onSubmit={handleSubmit(submission)}>
                     <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
                         <Typography>
-                            Добавить рабочее место
+                            Добавить должность
                         </Typography>
                     </Box>
                     <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
                         <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                             <CustomTextField
-                                label='Рабочее место'
-                                placeholder='Введите № рабочего места'
+                                label='Должность'
+                                placeholder='Введите должность'
                                 name='name'
                                 control={control}
                                 width={'30%'}
                                 maxlength='50'
                             />
                             <AutocompleteField
-                                name='room'
+                                name='departament'
                                 control={control}
                                 width={'30%'}
-                                options={room}
-                                label='Выберите кабинет'
-                                placeholder='Выберите № кабинета'
-                                noOptionsText='Кабинеты не обнаружены'
-                                optionLabel={(option) => `${option.name} (здание: ${option.building}, этаж: ${option.floor})`}
+                                options={dep}
+                                label='Выберите отдел'
+                                placeholder='Выберите отдел'
+                                noOptionsText='Отдел не обнаружен'
+                                optionLabel={(option) => `${option.name}`}
                             />
                         </Box>
                         <Box>
@@ -109,7 +104,7 @@ const CreatePost = () => {
                                     alignItems="center"
                                 >
                                     <Button variant='contained' type='submit'>Сохранить</Button>
-                                    <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
+                                    <Button variant='contained' component={Link} to={`/post/list`}>Отмена</Button>
                                 </Box>
                             </ThemeProvider>
                         </Box>

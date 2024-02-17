@@ -12,14 +12,14 @@ const darkTheme = createTheme({
 });
 
 const RemovePost = () => {
-    const workplaceParam = useParams()
-    const workplaceId = workplaceParam.id
-    const [workplace, setWorkplaces] = useState()
+    const postParam = useParams()
+    const postId = postParam.id
+    const [post, setPosts ] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
-            setWorkplaces(res.data)
+        await AxiosInstanse.get(`employee/post/${postId}/`).then((res) => {
+            setPosts(res.data)
             setLoading(false)
         })
     })
@@ -32,9 +32,9 @@ const RemovePost = () => {
 
 
     const submission = (data) => {
-        AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`)
+        AxiosInstanse.delete(`employee/post/${postId}/`)
         .then((res) => {
-            navigate(`/workplace/list`)
+            navigate(`/post/list`)
         })
     }
     return(
@@ -43,13 +43,13 @@ const RemovePost = () => {
             <div>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Удалить кабинет № {workplace.name}
+                        Удалить должность {post.name}
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
                     <ThemeProvider theme={darkTheme}>
                         <Typography>
-                            Вы уверены, что хотите удалить кабинет № {workplace.name}?
+                            Вы уверены, что хотите удалить должность {post.name}?
                         </Typography>
                     </ThemeProvider>
                     <Box>
@@ -61,7 +61,7 @@ const RemovePost = () => {
                                 marginTop='20px'
                             >
                                 <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/post/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>
