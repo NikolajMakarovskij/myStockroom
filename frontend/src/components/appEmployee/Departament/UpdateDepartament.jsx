@@ -16,17 +16,15 @@ const darkTheme = createTheme({
 });
 
 const UpdateDepartament = () => {
-    const roomParam = useParams()
-    const roomId = roomParam.id
-    const [room, setRooms] = useState()
+    const depParam = useParams()
+    const depId = depParam.id
+    const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
-            setRooms(res.data)
+        AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
+            setDeps(res.data)
             setValue('name',res.data.name)
-            setValue('floor',res.data.floor)
-            setValue('building',res.data.building)
             setLoading(false)
         })
     }
@@ -38,15 +36,11 @@ const UpdateDepartament = () => {
     const navigate = useNavigate()
     const defaultValues = {
         name: '',
-        floor: '',
-        building: ''
     }
 
     const schema = yup
         .object({
             name: yup.string().required('Обязательное поле'),
-            floor: yup.string(),
-            building: yup.string(),
         })
       .required()
 
@@ -57,13 +51,11 @@ const UpdateDepartament = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.put(`workplace/room/${roomId}/`,{
+        await AxiosInstanse.put(`employee/departament/${depId}/`,{
                 name: data.name,
-                floor: data.floor,
-                building: data.building,
         })
         .then((res) => {
-            navigate(`/room/list`)
+            navigate(`/departament/list`)
         })
     })
     return(
@@ -72,34 +64,18 @@ const UpdateDepartament = () => {
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать кабинет № {room.name}
+                        Редактировать отдел {dep.name}
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
                     <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                         <CustomTextField
-                            label='Кабинет'
-                            placeholder='Введите № кабинета'
+                            label='Отдел'
+                            placeholder='Введите название отдела'
                             name='name'
                             control={control}
-                            width={'30%'}
-                            maxLength='15'
-                        />
-                        <CustomTextField
-                            label='Этаж'
-                            placeholder='Введите № этажа'
-                            name='floor'
-                            control={control}
-                            width={'30%'}
-                            maxLength='25'
-                        />
-                        <CustomTextField
-                            label='Здание'
-                            placeholder='Введите название здания'
-                            name='building'
-                            control={control}
-                            width={'30%'}
-                            maxLength='25'
+                            width={'100%'}
+                            maxLength='50'
                         />
                     </Box>
                     <Box>
@@ -110,7 +86,7 @@ const UpdateDepartament = () => {
                                 alignItems="center"
                             >
                                 <Button variant='contained' type='submit'>Сохранить</Button>
-                                <Button variant='contained' component={Link} to={`/room/list`}>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/departament/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>

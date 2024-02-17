@@ -18,15 +18,11 @@ const CreateDepartament = () => {
     const navigate = useNavigate()
     const defaultValues = {
         name: '',
-        floor: '',
-        building: ''
     }
 
     const schema = yup
         .object({
             name: yup.string().required('Обязательное поле'),
-            floor: yup.string(),
-            building: yup.string(),
         })
       .required()
 
@@ -36,13 +32,11 @@ const CreateDepartament = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.post(`workplace/room/`,{
+        await AxiosInstanse.post(`employee/departament/`,{
                 name: data.name,
-                floor: data.floor,
-                building: data.building,
         })
         .then((res) => {
-            navigate(`/room/list`)
+            navigate(`/departament/list`)
         })
     })
     return(
@@ -50,34 +44,18 @@ const CreateDepartament = () => {
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Добавить кабинет
+                        Добавить отдел
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
                     <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                         <CustomTextField
-                            label='Кабинет'
-                            placeholder='Введите № кабинета'
+                            label='Отдел'
+                            placeholder='Введите название отдела'
                             name='name'
                             control={control}
-                            width={'30%'}
-                            maxLength='15'
-                        />
-                        <CustomTextField
-                            label='Этаж'
-                            placeholder='Введите № этажа'
-                            name='floor'
-                            control={control}
-                            width={'30%'}
-                            maxLength='25'
-                        />
-                        <CustomTextField
-                            label='Здание'
-                            placeholder='Введите название здания'
-                            name='building'
-                            control={control}
-                            width={'30%'}
-                            maxLength='25'
+                            width={'100%'}
+                            maxLength='50'
                         />
                     </Box>
                     <Box>
@@ -88,7 +66,7 @@ const CreateDepartament = () => {
                                 alignItems="center"
                             >
                                 <Button variant='contained' type='submit' >Сохранить</Button>
-                                <Button variant='contained' component={Link} to={`/room/list`} >Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/departament/list`} >Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>

@@ -12,14 +12,14 @@ const darkTheme = createTheme({
 });
 
 const RemoveDepartament = () => {
-    const roomParam = useParams()
-    const roomId = roomParam.id
-    const [room, setRooms] = useState()
+    const depParam = useParams()
+    const depId = depParam.id
+    const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = () => {
-        AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
-            setRooms(res.data)
+        AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
+            setDeps(res.data)
             setLoading(false)
         })
     }
@@ -32,9 +32,9 @@ const RemoveDepartament = () => {
 
 
     const submission = useCallback(async (data) => {
-        await AxiosInstanse.delete(`workplace/room/${roomId}/`)
+        await AxiosInstanse.delete(`employee/departament/${depId}/`)
         .then((res) => {
-            navigate(`/room/list`)
+            navigate(`/departament/list`)
         })
     })
     return(
@@ -43,13 +43,13 @@ const RemoveDepartament = () => {
             <div>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Удалить кабинет № {room.name}
+                        Удалить отдел {dep.name}
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
                     <ThemeProvider theme={darkTheme}>
                         <Typography>
-                            Вы уверены, что хотите удалить кабинет № {room.name}?
+                            Вы уверены, что хотите удалить отдел {dep.name}?
                         </Typography>
                     </ThemeProvider>
                     <Box>
@@ -61,7 +61,7 @@ const RemoveDepartament = () => {
                                 marginTop='20px'
                             >
                                 <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' component={Link} to={`/room/list`}>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/departament/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>
