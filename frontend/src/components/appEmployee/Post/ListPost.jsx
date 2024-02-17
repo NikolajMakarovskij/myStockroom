@@ -8,12 +8,12 @@ import MaterialReactTableList from "../../Tables/MaterialReactTableList";
 
 
 const ListPost = () => {
-    const [workplace, setWorkplaces] = useState()
+    const [post, setPosts] = useState()
     const [loading, setLoading] = useState(true)
 
     const GetData = useCallback(async () => {
-         await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
-            setWorkplaces(res.data)
+         await AxiosInstanse.get(`employee/post_list/`).then((res) => {
+            setPosts(res.data)
             setLoading(false)
         })
     })
@@ -25,19 +25,11 @@ const ListPost = () => {
     const columns = useMemo(() => [
         {
             accessorKey: 'name',
-            header: 'Рабочее место',
+            header: 'Должность',
         },
         {
-            accessorKey: 'room.name',
-            header: 'Кабинет',
-        },
-        {
-            accessorKey: 'room.floor',
-            header: 'Этаж',
-        },
-        {
-            accessorKey: 'room.building',
-            header: 'Здание',
+            accessorKey: 'departament.name',
+            header: 'Отдел',
         },
     ],
         [],
@@ -48,7 +40,7 @@ const ListPost = () => {
             {loading ? <LinearIndeterminate/> :
                 <MaterialReactTableList
                     columns={columns}
-                    data={workplace}
+                    data={post}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
