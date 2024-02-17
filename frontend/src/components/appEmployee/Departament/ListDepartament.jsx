@@ -9,11 +9,11 @@ import MaterialReactTableList from "../../Tables/MaterialReactTableList";
 
 const ListDepartament = () => {
 
-    const [room, setRooms] = useState()
+    const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
     const GetData = useCallback( async () => {
-        await AxiosInstanse.get(`workplace/room/`).then((res) => {
-            setRooms(res.data)
+        await AxiosInstanse.get(`employee/departament/`).then((res) => {
+            setDeps(res.data)
             setLoading(false)
         })
     })
@@ -25,15 +25,7 @@ const ListDepartament = () => {
     const columns = useMemo(() => [
         {
             accessorKey: 'name', //access nested data with dot notation
-            header: 'Кабинет',
-        },
-        {
-            accessorKey: 'floor',
-            header: 'Этаж',
-        },
-        {
-            accessorKey: 'building',
-            header: 'Здание',
+            header: 'Отдел',
         },
     ],
         [],
@@ -44,7 +36,7 @@ const ListDepartament = () => {
             {loading ? <LinearIndeterminate/> :
                 <MaterialReactTableList
                     columns={columns}
-                    data={room}
+                    data={dep}
                     renderRowActionMenuItems={({
                         row,
                         menuActions = [
