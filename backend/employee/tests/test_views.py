@@ -172,9 +172,9 @@ class TestEmployeeEndpoints:
         Workplace.objects.create(name='01')
         workplace = Workplace.objects.get(name='01')
         Employee.objects.bulk_create([
-            Employee(name='01'),
-            Employee(name='02'),
-            Employee(name='03', post=post, workplace=workplace),
+            Employee(name='01', surname='01', post=post, workplace=workplace),
+            Employee(name='02', surname='02'),
+            Employee(name='03', surname='03'),
         ])
         client, user = auto_login_user()
         response = client.get(
@@ -183,18 +183,18 @@ class TestEmployeeEndpoints:
         data = json.loads(response.content)
         assert response.status_code == 200
         assert len(data) == 3
-        assert data[0]['name'] == '03'
+        assert data[0]['name'] == '01'
         assert data[0]['post']['name'] == '01'
         assert data[0]['workplace']['name'] == '01'
         assert data[1]['name'] == '02'
-        assert data[2]['name'] == '01'
+        assert data[2]['name'] == '03'
 
     @pytest.mark.django_db
     def test_list_2(self, auto_login_user):
         Employee.objects.bulk_create([
-            Employee(name='01'),
-            Employee(name='02'),
-            Employee(name='03'),
+            Employee(name='01', surname='01'),
+            Employee(name='02', surname='02'),
+            Employee(name='03', surname='03'),
         ])
         client, user = auto_login_user()
         response = client.get(
@@ -203,9 +203,9 @@ class TestEmployeeEndpoints:
         data = json.loads(response.content)
         assert response.status_code == 200
         assert len(data) == 3
-        assert data[0]['name'] == '03'
+        assert data[0]['name'] == '01'
         assert data[1]['name'] == '02'
-        assert data[2]['name'] == '01'
+        assert data[2]['name'] == '03'
 
     @pytest.mark.django_db
     def test_create(self, auto_login_user):
