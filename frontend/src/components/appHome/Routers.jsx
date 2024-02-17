@@ -21,6 +21,10 @@ import ListPost from "../appEmployee/Post/ListPost";
 import CreatePost from "../appEmployee/Post/CreatePost";
 import RemovePost from "../appEmployee/Post/RemovePost";
 import UpdatePost from "../appEmployee/Post/UpdatePost";
+import ListEmployee from "../appEmployee/Employee/ListEmployee";
+import CreateEmployee from "../appEmployee/Employee/CreateEmployee";
+import UpdateEmployee from "../appEmployee/Employee/UpdateEmployee";
+import RemoveEmployee from "../appEmployee/Employee/RemoveEmployee";
 import ListDevice from "../appDevice/ListDevice";
 import IndexStock from "../appStock/IndexStock";
 import ListStockDevices from "../appStock/Devices/ListStockDevices";
@@ -42,6 +46,10 @@ const Routers = createBrowserRouter([
     {path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
     //Employee
     {path: "/employee", element: [<NavBar drawerWidth={customWidth} content={<IndexEmployee/>}/>],},
+    {path: "/employee/list", element: [<NavBar drawerWidth={customWidth} content={<ListEmployee/>}/>],},
+    {path: "/employee/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateEmployee/>}/>],},
+    {path: "/employee/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateEmployee/>}/>],},
+    {path: "/employee/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveEmployee/>}/>],},
     {path: "/departament/list", element: [<NavBar drawerWidth={customWidth} content={<ListDepartament/>}/>],},
     {path: "/departament/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateDepartament/>}/>],},
     {path: "/departament/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateDepartament/>}/>],},
