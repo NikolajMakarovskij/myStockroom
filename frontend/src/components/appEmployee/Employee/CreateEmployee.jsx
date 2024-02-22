@@ -17,9 +17,7 @@ const darkTheme = createTheme({
   },
 });
 
-const options = [
-
-]
+const options = []
 
 const CreateEmployee = () => {
     const [workplace, setWorkplaces] = useState()
@@ -28,7 +26,7 @@ const CreateEmployee = () => {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
-    const GetData = async() => {
+    const GetData = async () => {
         await AxiosInstanse.get(`employee/post_list/`).then((res) => {
             setPosts(res.data)
         })
@@ -53,12 +51,10 @@ const CreateEmployee = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
-            last_name: yup.string(),
-            surname: yup.string(),
-            workplace: yup.string(),
-            post: yup.string(),
-            employeeEmail: yup.string()
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
+            last_name: yup.string().max(50, 'Должно быть короче 50 символов'),
+            surname: yup.string().max(50, 'Должно быть короче 50 символов'),
+            employeeEmail: yup.string().email('Введите верный e-mail')
         })
       .required()
 
@@ -67,8 +63,8 @@ const CreateEmployee = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission =useCallback( async (data) => {
-        await AxiosInstanse.post(`employee/employee/`,{
+    const submission =useCallback( (data) => {
+        AxiosInstanse.post(`employee/employee/`,{
                 name: data.name,
                 last_name: data.last_name,
                 surname: data.surname,

@@ -22,7 +22,7 @@ const CreateDepartament = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
         })
       .required()
 
@@ -31,8 +31,8 @@ const CreateDepartament = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = useCallback(async (data) => {
-        await AxiosInstanse.post(`employee/departament/`,{
+    const submission = useCallback((data) => {
+        AxiosInstanse.post(`employee/departament/`,{
                 name: data.name,
         })
         .then((res) => {
