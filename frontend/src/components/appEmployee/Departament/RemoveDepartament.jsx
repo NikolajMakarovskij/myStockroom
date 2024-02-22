@@ -17,8 +17,8 @@ const RemoveDepartament = () => {
     const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
+    const GetData = async () => {
+        await AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
             setDeps(res.data)
             setLoading(false)
         })
@@ -30,9 +30,8 @@ const RemoveDepartament = () => {
 
     const navigate = useNavigate()
 
-
-    const submission = useCallback(async (data) => {
-        await AxiosInstanse.delete(`employee/departament/${depId}/`)
+    const submission = useCallback((data) => {
+        AxiosInstanse.delete(`employee/departament/${depId}/`)
         .then((res) => {
             navigate(`/departament/list`)
         })

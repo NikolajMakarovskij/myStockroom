@@ -6,6 +6,8 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField.jsx";
 
 const darkTheme = createTheme({
@@ -55,12 +57,20 @@ const UpdateEmployee = () => {
         employeeEmail: ''
     }
 
+    const schema = yup
+        .object({
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
+            last_name: yup.string().max(50, 'Должно быть короче 50 символов'),
+            surname: yup.string().max(50, 'Должно быть короче 50 символов'),
+            employeeEmail: yup.string().email('Введите верный e-mail')
+        })
+      .required()
 
     const {
         handleSubmit,
         setValue,
         control,
-    } = useForm({defaultValues:defaultValues})
+    } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
     const submission = (data) => {
         AxiosInstanse.put(`employee/employee/${emplId}/`,{
                 name: data.name,

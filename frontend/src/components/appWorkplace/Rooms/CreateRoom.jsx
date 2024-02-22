@@ -1,7 +1,7 @@
 import {React, useCallback} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from '../../Forms/TextField';
-import {useForm} from 'react-hook-form'
+import {useForm, Form} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import {createTheme, ThemeProvider} from '@mui/material/styles';
@@ -24,9 +24,9 @@ const CreateRoom = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
-            floor: yup.string(),
-            building: yup.string(),
+            name: yup.string().required('Обязательное поле').max(15, `Должно быть короче 15 символов`),
+            floor: yup.string().max(25, `Должно быть короче 25 символов`),
+            building: yup.string().max(25, `Должно быть короче 25 символов`),
         })
       .required()
 
@@ -35,8 +35,8 @@ const CreateRoom = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = useCallback(async (data) => {
-        await AxiosInstanse.post(`workplace/room/`,{
+    const submission = useCallback((data) => {
+        AxiosInstanse.post(`workplace/room/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
@@ -47,7 +47,9 @@ const CreateRoom = () => {
     })
     return(
         <div>
-            <form onSubmit={handleSubmit(submission)}>
+            <form
+                onSubmit={handleSubmit(submission)}
+            >
                 <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
                     <Typography>
                         Добавить кабинет

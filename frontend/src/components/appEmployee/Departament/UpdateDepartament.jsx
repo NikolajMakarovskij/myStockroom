@@ -21,8 +21,8 @@ const UpdateDepartament = () => {
     const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
+    const GetData = async () => {
+        await AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
             setDeps(res.data)
             setValue('name',res.data.name)
             setLoading(false)
@@ -40,7 +40,7 @@ const UpdateDepartament = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
         })
       .required()
 
@@ -50,8 +50,8 @@ const UpdateDepartament = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = useCallback(async (data) => {
-        await AxiosInstanse.put(`employee/departament/${depId}/`,{
+    const submission = useCallback((data) => {
+        AxiosInstanse.put(`employee/departament/${depId}/`,{
                 name: data.name,
         })
         .then((res) => {

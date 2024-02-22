@@ -17,14 +17,7 @@ const darkTheme = createTheme({
   },
 });
 
-const options = [
-    {
-        id: '1', name: 'one'
-    },
-    {
-        id: '2', name: 'two'
-    }
-]
+const options = []
 
 const CreateWorkplace = () => {
 
@@ -33,8 +26,8 @@ const CreateWorkplace = () => {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/room/`).then((res) => {
+    const GetData = async () => {
+        await AxiosInstanse.get(`workplace/room/`).then((res) => {
             setRooms(res.data)
             console.log(res.data)
             setLoading(false)
@@ -52,8 +45,7 @@ const CreateWorkplace = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
-            room: yup.string(),
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
         })
       .required()
 
@@ -62,8 +54,8 @@ const CreateWorkplace = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission =useCallback( async (data) => {
-        await AxiosInstanse.post(`workplace/workplace/`,{
+    const submission =useCallback( (data) => {
+        AxiosInstanse.post(`workplace/workplace/`,{
                 name: data.name,
                 room: data.room,
         })

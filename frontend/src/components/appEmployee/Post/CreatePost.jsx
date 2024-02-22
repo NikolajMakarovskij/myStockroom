@@ -28,8 +28,8 @@ const CreatePost = () => {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
-    const GetData = () => {
-        AxiosInstanse.get(`employee/departament/`).then((res) => {
+    const GetData = async () => {
+        await AxiosInstanse.get(`employee/departament/`).then((res) => {
             setDeps(res.data)
             console.log(res.data)
             setLoading(false)
@@ -47,8 +47,7 @@ const CreatePost = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
-            departament: yup.string(),
+            name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
         })
       .required()
 
@@ -57,8 +56,8 @@ const CreatePost = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission =useCallback( async (data) => {
-        await AxiosInstanse.post(`employee/post/`,{
+    const submission =useCallback( (data) => {
+        AxiosInstanse.post(`employee/post/`,{
                 name: data.name,
                 departament: data.departament,
         })

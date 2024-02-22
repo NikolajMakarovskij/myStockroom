@@ -21,8 +21,8 @@ const UpdateRoom = () => {
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
 
-    const GetData = () => {
-        AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
+    const GetData = async () => {
+        await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
             setRooms(res.data)
             setValue('name',res.data.name)
             setValue('floor',res.data.floor)
@@ -44,9 +44,9 @@ const UpdateRoom = () => {
 
     const schema = yup
         .object({
-            name: yup.string().required('Обязательное поле'),
-            floor: yup.string(),
-            building: yup.string(),
+            name: yup.string().required('Обязательное поле').max(15, `Должно быть короче 15 символов`),
+            floor: yup.string().max(25, `Должно быть короче 25 символов`),
+            building: yup.string().max(25, `Должно быть короче 25 символов`),
         })
       .required()
 
@@ -56,8 +56,8 @@ const UpdateRoom = () => {
         control,
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
-    const submission = useCallback(async (data) => {
-        await AxiosInstanse.put(`workplace/room/${roomId}/`,{
+    const submission = useCallback((data) => {
+        AxiosInstanse.put(`workplace/room/${roomId}/`,{
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
