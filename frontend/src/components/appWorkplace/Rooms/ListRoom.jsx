@@ -20,7 +20,7 @@ const ListRoom = () => {
 
         async function getData() {
             try {
-                await AxiosInstanse.get(`workplace/roomS/`).then((res) => {
+                await AxiosInstanse.get(`workplace/room/`).then((res) => {
                     setRooms(res.data)
                     setLoading(false)
                     setError(null)
