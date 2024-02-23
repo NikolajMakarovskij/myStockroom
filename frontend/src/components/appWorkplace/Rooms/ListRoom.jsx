@@ -18,9 +18,9 @@ const ListRoom = () => {
 
     useInterval(() => {
 
-        async function fetchData() {
+        async function getData() {
             try {
-                await AxiosInstanse.get(`workplace/room/`).then((res) => {
+                await AxiosInstanse.get(`workplace/roomS/`).then((res) => {
                     setRooms(res.data)
                     setLoading(false)
                     setError(null)
@@ -33,7 +33,7 @@ const ListRoom = () => {
                     setLoading(false);
               }
         }
-        fetchData();
+        getData();
     }, delay);
 
     const columns = useMemo(() => [
