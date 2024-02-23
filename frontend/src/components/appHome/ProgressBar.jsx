@@ -17,7 +17,7 @@ const BorderLinearProgress = styled(LinearProgress)(({theme}) => ({
 
 function LinearProgressWithLabel(props) {
     return(
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center'  }}>
             <Box sx={{ width: '100%', mr: 1 }}>
                 <BorderLinearProgress variant='determinate' {...props}/>
             </Box>
@@ -57,9 +57,9 @@ export default function LinearWithValueLabel() {
 }
  */
 
-export default function LinearIndeterminate() {
+export default function LinearIndeterminate({width}) {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: {width} }}>
       <LinearProgress color="inherit" />
     </Box>
   );
