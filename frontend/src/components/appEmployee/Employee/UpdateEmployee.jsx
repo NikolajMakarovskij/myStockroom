@@ -9,6 +9,7 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField.jsx";
+import useInterval from "../../Hooks/useInterval";
 
 const darkTheme = createTheme({
   palette: {
@@ -23,31 +24,44 @@ const UpdateEmployee = () => {
     const [post, setPosts] = useState()
     const [empl, setEmpls  ] = useState()
     const [loading, setLoading] = useState(true)
-
-    const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`employee/employee/${emplId}/`).then((res) => {
-            setEmpls(res.data)
-            setValue('name', res.data.name)
-            setValue('last_name', res.data.last_name)
-            setValue('surname', res.data.surname)
-            setValue('workplace', res.data.workplace)
-            setValue('post', res.data.post)
-            setValue('employeeEmail', res.data.employeeEmail)
-        }),
-        await AxiosInstanse.get(`employee/post_list/`).then((res) => {
-            setPosts(res.data)
-        }),
-        await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
-            setWorkplaces(res.data)
-            setLoading(false)
-        })
-    })
-
-    useEffect(() =>{
-        GetData();
-    }, [])
-
+    const [error, setError] = useState(null)
+    const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
+
+    useInterval(() => {
+
+        async function getData() {
+            try {
+                await AxiosInstanse.get(`employee/employee/${emplId}/`).then((res) => {
+                    setEmpls(res.data)
+                    setValue('name', res.data.name)
+                    setValue('last_name', res.data.last_name)
+                    setValue('surname', res.data.surname)
+                    setValue('workplace', res.data.workplace)
+                    setValue('post', res.data.post)
+                    setValue('employeeEmail', res.data.employeeEmail)
+                    setError(null)
+                }),
+                await AxiosInstanse.get(`employee/post_list/`).then((res) => {
+                    setPosts(res.data)
+                    setError(null)
+                })
+                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
+                    setWorkplaces(res.data)
+                    setLoading(false)
+                    setError(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoading(false);
+              }
+        }
+        getData();
+    }, delay);
+
     const defaultValues = {
         name: '',
         last_name: '',
@@ -122,6 +136,8 @@ const UpdateEmployee = () => {
                     </Box>
                     <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                         <AutocompleteField
+                            loading={loading}
+                            error={error}
                             name='post'
                             control={control}
                             width={'30%'}
@@ -132,6 +148,8 @@ const UpdateEmployee = () => {
                             optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
                         />
                         <AutocompleteField
+                            loading={loading}
+                            error={error}
                             name='workplace'
                             control={control}
                             width={'30%'}
