@@ -30,14 +30,12 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'crispy_forms',
     'crispy_bootstrap5',
-    'debug_toolbar',
     'django_select2',
     'import_export',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -209,7 +207,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
-CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', 'http://localhost' ]
+# auth
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = ['http://pc-050-106-1rv.admlbt.rf', 'http://0.0.0.0', 'http://localhost',  'http://localhost:3000']
+
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 STOCK_SESSION_ID = 'stock'
 DECOM_SESSION_ID = 'decom'
@@ -219,7 +226,7 @@ DECOM_SESSION_ID = 'decom'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
-
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
 
 # REST
@@ -227,13 +234,14 @@ CORS_ALLOW_CREDENTIALS = True
 def render_calasses():
     return [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        #'rest_framework.renderers.BrowsableAPIRenderer',
         ]
 
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': render_calasses(),
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
         #'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
