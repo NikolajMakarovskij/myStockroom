@@ -9,7 +9,7 @@ from .serializers import WorkplaceListSerializer, RoomModelSerializer, Workplace
 class WorkplaceListRestView(viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceListSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
         queryset = Workplace.objects.all()

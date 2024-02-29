@@ -5,7 +5,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('api/v1/auth/', include('rest_framework.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
@@ -25,7 +24,7 @@ urlpatterns += [
     path('software/', include(('software.urls', 'software'), namespace='software'), ),
     path('api/employee/', include(('employee.urls', 'employee'), namespace='employee'), ),
     path('api/workplace/', include(('workplace.urls', 'workplace'), namespace='workplace'), ),
-    path('home/', include(('core.urls', 'core'), namespace='core'), ),
+    path('api/', include(('core.urls', 'core'), namespace='core'), ),
 
 
 ]

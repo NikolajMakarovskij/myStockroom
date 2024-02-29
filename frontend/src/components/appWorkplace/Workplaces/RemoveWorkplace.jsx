@@ -38,9 +38,9 @@ const RemoveWorkplace = () => {
         })
     }
     return(
-        <div>
+        <>
             {loading ? <LinearIndeterminate/> :
-            <div>
+            <>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
                         Удалить кабинет № {workplace.name}
@@ -66,8 +66,8 @@ const RemoveWorkplace = () => {
                         </ThemeProvider>
                     </Box>
                 </Box>
-            </div>}
-        </div>
+            </>}
+        </>
 
     )
 
