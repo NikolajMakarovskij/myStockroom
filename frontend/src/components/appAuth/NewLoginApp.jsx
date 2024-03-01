@@ -12,37 +12,9 @@ import {useNavigate, Link} from 'react-router-dom';
 const LoginApp = () => {
     const [csrf, setCsrf] = useState();
     const [username, setUsername] = useState();
+    const [error, setError] = useState();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate()
-
-    const GetCSRF = useCallback(async () => {
-        await AxiosInstanse.get(`csrf/`,  {credentials: 'include'})
-            .then((res) => {
-                let csrfToken = res.headers.get("X-CSRFToken")
-                setCsrf(csrfToken)
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-
-    })
-
-    const GetSession = useCallback(async () => {
-        await AxiosInstanse.get(`session/`,  {credentials: 'include'}).then((res) => {
-            if (!res.data.isAuthenticated) {
-                setIsAuthenticated(true)
-                GetCSRF()
-            } else {
-                setIsAuthenticated(res.data.isAuthenticated)
-                setUsername(res.data.username)
-            }
-        })
-
-    })
-
-    useEffect(() =>{
-        GetSession();
-    },[])
 
     const defaultValues = {
             username: "",
@@ -61,23 +33,19 @@ const LoginApp = () => {
     } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
     const submission = useCallback((data) => {
-        AxiosInstanse.post(`login/`,{body: JSON.stringify({
+        AxiosInstanse.post(`login/`,
+            {
                 username: data.username,
                 password: data.password,
-        })},
-        {withCredentials: true},
-        {credentials: 'include'},
-        {headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-        }}
+            },
         )
         .then((res) => {
             navigate(`login/`)
         })
-            .catch((error) => {
-              console.log(error)
-            })
+        .catch((error) => {
+            setError(error.toJSON())
+            console.log(error)
+        })
     })
     return (
         <div>
@@ -118,6 +86,13 @@ const LoginApp = () => {
                                     maxLength='25'
                                 />
                             </Box>
+                            {!error ? <div></div> :
+                                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                                    <Typography color='error'>
+                                        {error.message}
+                                    </Typography>
+                                </Box>
+                            }
                             <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
                                 <Button variant='contained' type='submit' color='inherit'>Войти</Button>
                             </Box>
