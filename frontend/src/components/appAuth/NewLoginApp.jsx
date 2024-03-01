@@ -1,18 +1,13 @@
 import {React, useCallback, useEffect, useState} from 'react'
-import { Box, Button, Typography} from '@mui/material'
+import { Box, Button, Typography, Grid} from '@mui/material'
 import CustomTextField from '../Forms/TextField';
-import {useForm, Form} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {createTheme} from '@mui/material/styles';
 import AxiosInstanse from '../Axios';
 import {useNavigate, Link} from 'react-router-dom';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 const LoginApp = () => {
     const [csrf, setCsrf] = useState();
@@ -85,49 +80,51 @@ const LoginApp = () => {
             })
     })
     return (
-<div>
-            <form
-                onSubmit={handleSubmit(submission)}
+        <div>
+            <Grid
+                container
+                spacing={2}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ minHeight: '100vh' }}
             >
-                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
-                    <Typography>
-                        Авторизация
-                    </Typography>
-                </Box>
-                <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
-                    <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
-                        <CustomTextField
-                            label='Имя пользователя'
-                            placeholder='Введите имя пользователя'
-                            name='username'
-                            control={control}
-                            width={'30%'}
-                            maxLength='15'
-                        />
-                        <CustomTextField
-                            label='Пароль'
-                            placeholder='Введите пароль'
-                            name='password'
-                            type="password"
-                            control={control}
-                            width={'30%'}
-                            maxLength='25'
-                        />
-                    </Box>
-                    <Box>
-                        <ThemeProvider theme={darkTheme}>
-                            <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
-                                <Button variant='contained' type='submit' >Войти</Button>
+                <Grid item sx={3}>
+                    <form onSubmit={handleSubmit(submission)}>
+                        <Box sx={{display:'flex', width:'460px', borderRadius: 2, boxShadow:3, padding:4, flexDirection:'column'}}>
+                            <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                                <Typography>
+                                    Авторизация
+                                </Typography>
                             </Box>
-                        </ThemeProvider>
-                    </Box>
-
-                </Box>
-            </form>
+                            <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                                <CustomTextField
+                                    label='Имя пользователя'
+                                    placeholder='Введите имя пользователя'
+                                    name='username'
+                                    control={control}
+                                    width={'100%'}
+                                    maxLength='15'
+                                />
+                            </Box>
+                            <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                                <CustomTextField
+                                    label='Пароль'
+                                    placeholder='Введите пароль'
+                                    name='password'
+                                    type="password"
+                                    control={control}
+                                    width={'100%'}
+                                    maxLength='25'
+                                />
+                            </Box>
+                            <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                                <Button variant='contained' type='submit' color='inherit'>Войти</Button>
+                            </Box>
+                        </Box>
+                    </form>
+                </Grid>
+            </Grid>
         </div>
 
     )
