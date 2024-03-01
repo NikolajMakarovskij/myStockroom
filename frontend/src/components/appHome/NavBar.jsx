@@ -48,23 +48,10 @@ export default function NavBar(props) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
-    const GetCSRF = useCallback(async () => {
-        await AxiosInstanse.get(`csrf/`,  {credentials: 'include'})
-            .then((res) => {
-                let csrfToken = res.headers.get("X-CSRFToken")
-                setCsrf(csrfToken)
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-
-    })
-
     const GetSession = useCallback(async () => {
-        await AxiosInstanse.get(`session/`,  {credentials: 'include'}).then((res) => {
+        await AxiosInstanse.get(`session/`,  ).then((res) => {
             if (!res.data.isAuthenticated) {
                 setIsAuthenticated(true)
-                GetCSRF()
             } else {
                 setIsAuthenticated(res.data.isAuthenticated)
                 setUsername(res.data.username)
@@ -74,10 +61,9 @@ export default function NavBar(props) {
     })
 
     const Logout = useCallback(async () => {
-        await AxiosInstanse.get(`logout/`, {credentials: 'include'})
+        await AxiosInstanse.get(`logout/`)
             .then((res) => {
                 setIsAuthenticated(false);
-                getCSRF();
             })
             .catch((err) => {
                 console.log(err);
@@ -110,7 +96,7 @@ export default function NavBar(props) {
     )
     return (
         <div>
-            {!isAuthenticated ? <LoginApp/> :
+            {!isAuthenticated ? <NewLoginApp/> :
                 <Box sx={{display: 'flex'}}>
                     <CssBaseline/>
                     <ThemeProvider theme={darkTheme}>
