@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import AxiosInstanse from "./Axios";
+import AxiosInstanse from "../Axios.jsx";
 
 export default function useCSRF() {
     const [csrf, setCsrf] = useState();
