@@ -2,7 +2,7 @@ import React from "react";
 import {createBrowserRouter} from "react-router-dom";
 import Home from "./Home";
 import NavBar from "./NavBar";
-import AuthApp from "../appAuth/AuthApp.jsx";
+import LoginApp from "../appAuth/LoginApp";
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import ListWorkplace from "../appWorkplace/Workplaces/ListWorkplace";
 import CreateWorkplace from "../appWorkplace/Workplaces/CreateWorkplace";
@@ -33,7 +33,7 @@ const customWidth = 200
 const Routers = createBrowserRouter([
     //Home
     {path : "/", element: [<NavBar drawerWidth={customWidth} content={<Home/>}/> ],},
-    {path : "/auth", element: [<NavBar drawerWidth={customWidth} content={<AuthApp/>}/> ],},
+    //{path : "/login", element: [ ],},
     //Workplace
     {path: "/workplace", element: [<NavBar drawerWidth={customWidth} content={<IndexWorkplace/>}/>],},
     {path: "/workplace/list", element: [<NavBar drawerWidth={customWidth} content={<ListWorkplace/>}/>],},

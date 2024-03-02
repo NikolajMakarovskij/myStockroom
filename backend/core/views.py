@@ -1,13 +1,16 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .utils import menu
-from django.contrib.auth import get_user_model, login, logout
-from rest_framework.authentication import SessionAuthentication
+
+import json
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.views.decorators.http import require_POST
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
-from rest_framework import permissions, status
-from .validations import custom_validation, validate_email, validate_password
 
 
 # Главная
@@ -24,50 +27,52 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
         return context
 
 
-# User Auth
-class UserRegister(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request):
-        clean_data = custom_validation(request.data)
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+# AUTH
+def get_csrf(request):
+    response = JsonResponse({'detail': 'CSRF cookie set'})
+    response['X-CSRFToken'] = get_token(request)
+    return response
 
 
-class UserLogin(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
+@require_POST
+def login_view(request):
+    data = json.loads(request.body)
+    username = data.get('username')
+    password = data.get('password')
 
-    ##
-    def post(self, request):
-        data = request.data
-        assert validate_email(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
-            login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+    if username is None or password is None:
+        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
 
+    user = authenticate(username=username, password=password)
 
-class UserLogout(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = ()
+    if user is None:
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
 
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+    login(request, user)
+    return JsonResponse({'detail': 'Successfully logged in.'})
 
 
-class UserView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+def logout_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
 
-    ##
-    def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+    logout(request)
+    return JsonResponse({'detail': 'Successfully logged out.'})
+
+
+class SessionView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get(request, format=None):
+        return JsonResponse({'isAuthenticated': True, 'username': request.user.username})
+
+
+class WhoAmIView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get(request, format=None):
+        return JsonResponse({'username': request.user.username})
