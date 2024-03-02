@@ -13,6 +13,9 @@ import IndexStock from "../appStock/IndexStock.jsx";
 import {StockContent} from "../appStock/IndexStock.jsx";
 import AxiosInstanse from "../Axios";
 import LoginApp from "../appAuth/LoginApp";
+import useSession from "../appAuth/Hooks/useSession.jsx";
+import PrintError from "../Errors/Error";
+import useLogout from "../appAuth/Hooks/useLogout.jsx";
 
 
 const menu = [
@@ -37,40 +40,12 @@ const darkTheme = createTheme({
 
 
 export default function NavBar(props) {
+    const getSession = useSession()
+    const getLogout = useLogout()
     const {drawerWidth, content} = props
     const location = useLocation()
     const path = location.pathname
-
     const [open, setOpen] = useState(false);
-    const [username, setUsername] = useState();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-
-    const GetSession = useCallback(async () => {
-        await AxiosInstanse.get(`session/`,  ).then((res) => {
-            if (!res.data.isAuthenticated) {
-                setIsAuthenticated(true)
-            } else {
-                setIsAuthenticated(res.data.isAuthenticated)
-                setUsername(res.data.username)
-            }
-        })
-
-    })
-
-    const Logout = useCallback(async () => {
-        await AxiosInstanse.get(`logout/`)
-            .then((res) => {
-                setIsAuthenticated(false);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    })
-
-    useEffect(() =>{
-        GetSession();
-    },[])
 
     const changeOpenStatus = () => {
         setOpen(!open)
@@ -94,7 +69,7 @@ export default function NavBar(props) {
     )
     return (
         <div>
-            {!isAuthenticated ? <LoginApp/> :
+            {!getSession.isAuthenticated ? <LoginApp/> :
                 <Box sx={{display: 'flex'}}>
                     <CssBaseline/>
                     <ThemeProvider theme={darkTheme}>
@@ -115,9 +90,9 @@ export default function NavBar(props) {
                                 <Box sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}/>
                                 <Box sx={{display: {xs: 'none', sm: 'block'}}} position='left'>
                                     <Button key="username">
-                                        {username}
+                                        {getSession.username}
                                     </Button>
-                                    <Button key='logout' component={Link} to={`/`} onClick={Logout}>
+                                    <Button key='logout' component={Link} to={`/`} onClick={getLogout}>
                                         Выйти
                                     </Button>
                                 </Box>
