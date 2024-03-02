@@ -12,6 +12,7 @@ import AutocompleteField from "../../Forms/AutocompleteField";
 import Modal from "../../Modal/Modal";
 import useInterval from "../../Hooks/useInterval"
 import PrintError from "../../Errors/Error";
+import useCSRF from "../../Hooks/CSRF.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,7 +23,7 @@ const darkTheme = createTheme({
 const options = []
 
 const CreateWorkplace = () => {
-
+    const CSRF = useCSRF()
     const [room, setRooms] = useState()
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
@@ -70,7 +71,12 @@ const CreateWorkplace = () => {
         AxiosInstanse.post(`workplace/workplace/`,{
                 name: data.name,
                 room: data.room,
-        })
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
+            }
+        )
         .then((res) => {
             navigate(`/workplace/list`)
         })

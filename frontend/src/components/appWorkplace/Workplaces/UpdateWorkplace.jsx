@@ -11,6 +11,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField.jsx";
 import useInterval from "../../Hooks/useInterval"
 import PrintError from "../../Errors/Error";
+import useCSRF from "../../Hooks/CSRF.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,6 +20,7 @@ const darkTheme = createTheme({
 });
 
 const UpdateWorkplace = () => {
+    const CSRF = useCSRF()
     const workplaceParam = useParams()
     const workplaceId = workplaceParam.id
     const [rooms, setRooms  ] = useState()
@@ -73,6 +75,10 @@ const UpdateWorkplace = () => {
         AxiosInstanse.put(`workplace/workplace/${workplaceId}/`,{
                 name: data.name,
                 room: data.room,
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/workplace/list`)

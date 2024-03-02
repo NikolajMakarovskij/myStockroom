@@ -4,6 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
+import useCSRF from "../../Hooks/CSRF";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,6 +13,7 @@ const darkTheme = createTheme({
 });
 
 const RemoveWorkplace = () => {
+    const CSRF = useCSRF()
     const workplaceParam = useParams()
     const workplaceId = workplaceParam.id
     const [workplace, setWorkplaces] = useState()
@@ -32,7 +34,11 @@ const RemoveWorkplace = () => {
 
 
     const submission = (data) => {
-        AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`)
+        AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`,{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
+            })
         .then((res) => {
             navigate(`/workplace/list`)
         })
