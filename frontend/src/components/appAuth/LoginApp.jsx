@@ -1,107 +1,63 @@
-import React from "react";
-import { Box, Button, Typography, Grid, TextField} from '@mui/material'
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {React, useCallback, useEffect, useState} from 'react'
+import { Box, Button, Typography, Grid} from '@mui/material'
+import CustomTextField from '../Forms/TextField';
+import {useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import {createTheme} from '@mui/material/styles';
+import AxiosInstanse from '../Axios';
+import {useNavigate, Link} from 'react-router-dom';
+import useCSRF from "../CSRF";
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-});
 
-class LoginApp extends React.Component {
+const LoginApp = () => {
+    const CSRF = useCSRF()
+    const [username, setUsername] = useState();
+    const [error, setError] = useState();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate()
 
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            csrf: "",
+
+    const defaultValues = {
             username: "",
-            password: "",
-            error: "",
-            isAuthenticated: false,
-        };
+            password: ""
     }
 
-    componentDidMount = () => {
-        this.getSession();
-    }
+    const schema = yup
+        .object({
+            username: yup.string().required('Обязательное поле'),
+            password: yup.string().required('Обязательное поле')
+        }).required()
 
-    getCSRF = () => {
-        fetch("http://localhost/api/csrf/", {
-            credentials: "include",
-        })
-        .then((res) => {
-            let csrfToken = res.headers.get("X-CSRFToken");
-            this.setState({csrf: csrfToken});
-            console.log(csrfToken);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-
-    getSession = () => {
-        fetch("http://localhost/api/session/", {
-            credentials: "include",
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            if (data.isAuthenticated) {
-                this.setState({isAuthenticated: true});
-            } else {
-                this.setState({isAuthenticated: false});
-                this.getCSRF();
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
+    const {
+        handleSubmit,
+        control,
+    } = useForm({defaultValues:defaultValues, resolver: yupResolver(schema)})
 
 
-
-    handlePasswordChange = (event) => {
-        this.setState({password: event.target.value});
-    }
-
-    handleUserNameChange = (event) => {
-        this.setState({username: event.target.value});
-    }
-
-    isResponseOk(response) {
-        if (response.status >= 200 && response.status <= 299) {
-            return response.json();
-        } else {
-            throw Error(response.statusText);
-        }
-    }
-
-    login = (event) => {
-        event.preventDefault();
-        fetch("http://localhost/api/login/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": this.state.csrf,
+    const submission = useCallback((data) => {
+        AxiosInstanse.post(`login/`,
+            {
+                username: data.username,
+                password: data.password,
             },
-            credentials: "include",
-            body: JSON.stringify({username: this.state.username, password: this.state.password}),
+            {
+                headers: {
+                    'X-CSRFToken': CSRF
+                }
+            }
+        )
+        .then((res) => {
+            window.location.href=(`/`);
         })
-        .then(this.isResponseOk)
-        .then((data) => {
-            window.location.href=('http://localhost:3000/');
-            console.log(data);
-            this.setState({isAuthenticated: true, username: "", password: "", error: ""});
+        .catch((error) => {
+            setError(error)
+            console.log(error)
         })
-        .catch((err) => {
-            console.log(err);
-            this.setState({error: "Wrong username or password."});
-        });
-    }
-
-    render() {
-        return (
+    })
+    return (
+        <div>
             <Grid
                 container
                 spacing={2}
@@ -111,56 +67,51 @@ class LoginApp extends React.Component {
                 sx={{ minHeight: '100vh' }}
             >
                 <Grid item sx={3}>
-                    <form onSubmit={this.login} >
-                        <Box variant="standard" sx={{display:'flex', width:'460px', borderRadius: 2, boxShadow:3, padding:4, flexDirection:'column'}}>
-                            <Box sx={{display:'flex', justifyContent:'space-around', marginBottom:'40px'}}>
-                                <Typography variant='h5'>
+                    <form onSubmit={handleSubmit(submission)}>
+                        <Box sx={{display:'flex', width:'460px', borderRadius: 2, boxShadow:3, padding:4, flexDirection:'column'}}>
+                            <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                                <Typography>
                                     Авторизация
                                 </Typography>
                             </Box>
-                            <TextField
-                                id="username"
-                                name="username"
-                                type="text"
-                                className="form-control"
-                                label="Имя пользователя"
-                                variant="outlined"
-                                value={this.state.username}
-                                error={this.state.error}
-                                onChange={this.handleUserNameChange}
-                                sx={{
-                                    display:'flex',
-                                    justifyContent:'space-around',
-                                    marginBottom:'40px'
-                                }}
-                            />
-                            <TextField
-                                id="password"
-                                name="password"
-                                type="password"
-                                className="form-control"
-                                label="Пароль"
-                                variant="outlined"
-                                value={this.state.password}
-                                error={this.state.error}
-                                onChange={this.handlePasswordChange}
-                                sx={{
-                                    display:'flex',
-                                    justifyContent:'space-around',
-                                    marginBottom:'40px'
-                                }}
-                            />
+                            <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                                <CustomTextField
+                                    label='Имя пользователя'
+                                    placeholder='Введите имя пользователя'
+                                    name='username'
+                                    control={control}
+                                    width={'100%'}
+                                    maxLength='15'
+                                />
+                            </Box>
+                            <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                                <CustomTextField
+                                    label='Пароль'
+                                    placeholder='Введите пароль'
+                                    name='password'
+                                    type="password"
+                                    control={control}
+                                    width={'100%'}
+                                    maxLength='25'
+                                />
+                            </Box>
+                            {!error ? <div></div> :
+                                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                                    <Typography color='error'>
+                                        {error.message}
+                                    </Typography>
+                                </Box>
+                            }
                             <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
-                                <Button variant='contained' type="submit" color='inherit' className="btn btn-primary">
-                                    Войти
-                                </Button>
+                                <Button variant='contained' type='submit' color='inherit'>Войти</Button>
                             </Box>
                         </Box>
                     </form>
                 </Grid>
             </Grid>
-        );
-    }
+        </div>
+
+    )
 }
 
 export default LoginApp;

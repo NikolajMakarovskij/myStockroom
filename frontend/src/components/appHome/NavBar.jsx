@@ -13,7 +13,6 @@ import IndexStock from "../appStock/IndexStock.jsx";
 import {StockContent} from "../appStock/IndexStock.jsx";
 import AxiosInstanse from "../Axios";
 import LoginApp from "../appAuth/LoginApp";
-import NewLoginApp from "../appAuth/NewLoginApp.jsx";
 
 
 const menu = [
@@ -43,7 +42,6 @@ export default function NavBar(props) {
     const path = location.pathname
 
     const [open, setOpen] = useState(false);
-    const [csrf, setCsrf] = useState();
     const [username, setUsername] = useState();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -96,7 +94,7 @@ export default function NavBar(props) {
     )
     return (
         <div>
-            {!isAuthenticated ? <NewLoginApp/> :
+            {!isAuthenticated ? <LoginApp/> :
                 <Box sx={{display: 'flex'}}>
                     <CssBaseline/>
                     <ThemeProvider theme={darkTheme}>
