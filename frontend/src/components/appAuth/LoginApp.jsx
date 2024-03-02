@@ -7,7 +7,8 @@ import * as yup from 'yup'
 import {createTheme} from '@mui/material/styles';
 import AxiosInstanse from '../Axios';
 import {useNavigate, Link} from 'react-router-dom';
-import useCSRF from "../Hooks/CSRF.jsx";
+import useCSRF from "../Hooks/CSRF";
+import PrintError from "../Errors/Error";
 
 
 const LoginApp = () => {
@@ -95,11 +96,9 @@ const LoginApp = () => {
                                     maxLength='25'
                                 />
                             </Box>
-                            {!error ? <div></div> :
-                                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
-                                    <Typography color='error'>
-                                        {error.message}
-                                    </Typography>
+                            {!error ? <></> :
+                                <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                                    <PrintError error={error.message}/>
                                 </Box>
                             }
                             <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
