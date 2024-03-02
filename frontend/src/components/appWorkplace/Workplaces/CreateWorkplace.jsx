@@ -9,7 +9,9 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
-import Modal from "../../Modal/Modal.jsx";
+import Modal from "../../Modal/Modal";
+import useInterval from "../../Hooks/useInterval"
+import PrintError from "../../Errors/Error";
 
 const darkTheme = createTheme({
   palette: {
@@ -24,19 +26,29 @@ const CreateWorkplace = () => {
     const [room, setRooms] = useState()
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
-    const GetData = async () => {
-        await AxiosInstanse.get(`workplace/room/`).then((res) => {
-            setRooms(res.data)
-            console.log(res.data)
-            setLoading(false)
-        })
-    }
+    useInterval(() => {
 
-    useEffect(() =>{
-        GetData();
-    },[])
+        async function getData() {
+            try {
+                await AxiosInstanse.get(`workplace/room/`).then((res) => {
+                    setRooms(res.data)
+                    setLoading(false)
+                    setError(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoading(false);
+              }
+        }
+        getData();
+    }, delay);
 
     const defaultValues = {
         name: '',
@@ -64,8 +76,7 @@ const CreateWorkplace = () => {
         })
     })
     return(
-        <div>
-            {loading ? <LinearIndeterminate/> :
+
                 <form onSubmit={handleSubmit(submission)}>
                     <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
                         <Typography>
@@ -83,6 +94,8 @@ const CreateWorkplace = () => {
                                 maxlength='50'
                             />
                             <AutocompleteField
+                                loading={loading}
+                                error={error}
                                 name='room'
                                 control={control}
                                 width={'30%'}
@@ -107,8 +120,7 @@ const CreateWorkplace = () => {
                         </Box>
                     </Box>
                 </form>
-            }
-        </div>
+
 
     )
 

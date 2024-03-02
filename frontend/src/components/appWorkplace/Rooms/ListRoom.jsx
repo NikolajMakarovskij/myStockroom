@@ -5,22 +5,36 @@ import {IconButton, MenuItem} from '@mui/material';
 import {Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,} from '@mui/icons-material';
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import MaterialReactTableList from "../../Tables/MaterialReactTableList";
+import useInterval from "../../Hooks/useInterval"
+import PrintError from "../../Errors/Error";
 
 
 const ListRoom = () => {
 
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
-    const GetData = useCallback( async () => {
-        await AxiosInstanse.get(`workplace/room/`).then((res) => {
-            setRooms(res.data)
-            setLoading(false)
-        })
-    })
+    const [error, setError] = useState(null)
+    const [delay, setDelay] = useState(100)
 
-    useEffect(() =>{
-        GetData();
-    },[])
+    useInterval(() => {
+
+        async function getData() {
+            try {
+                await AxiosInstanse.get(`workplace/room/`).then((res) => {
+                    setRooms(res.data)
+                    setLoading(false)
+                    setError(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoading(false);
+              }
+        }
+        getData();
+    }, delay);
 
     const columns = useMemo(() => [
         {
@@ -42,6 +56,7 @@ const ListRoom = () => {
     return(
         <>
             {loading ? <LinearIndeterminate/> :
+                error ? <PrintError error={error}/> :
                 <MaterialReactTableList
                     columns={columns}
                     data={room}

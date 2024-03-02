@@ -9,7 +9,8 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
-import Modal from "../../Modal/Modal.jsx";
+import Modal from "../../Modal/Modal";
+import useInterval from "../../Hooks/useInterval";
 
 const darkTheme = createTheme({
   palette: {
@@ -24,21 +25,34 @@ const CreateEmployee = () => {
     const [post, setPosts] = useState()
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
-    const GetData = async () => {
-        await AxiosInstanse.get(`employee/post_list/`).then((res) => {
-            setPosts(res.data)
-        })
-        await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
-            setWorkplaces(res.data)
-            setLoading(false)
-        })
-    }
+    useInterval(() => {
 
-    useEffect(() =>{
-        GetData();
-    },[])
+        async function getData() {
+            try {
+                await AxiosInstanse.get(`employee/post_list/`).then((res) => {
+                    setPosts(res.data)
+                    setError(null)
+                    setDelay(5000)
+                })
+                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
+                    setWorkplaces(res.data)
+                    setLoading(false)
+                    setError(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoading(false);
+              }
+        }
+        getData();
+    }, delay);
 
     const defaultValues = {
         name: '',
@@ -114,6 +128,8 @@ const CreateEmployee = () => {
                         </Box>
                         <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                             <AutocompleteField
+                                loading={loading}
+                                error={error}
                                 name='post'
                                 control={control}
                                 width={'30%'}
@@ -124,6 +140,8 @@ const CreateEmployee = () => {
                                 optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
                             />
                             <AutocompleteField
+                                loading={loading}
+                                error={error}
                                 name='workplace'
                                 control={control}
                                 width={'30%'}

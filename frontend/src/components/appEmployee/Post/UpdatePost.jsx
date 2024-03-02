@@ -8,7 +8,8 @@ import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import AutocompleteField from "../../Forms/AutocompleteField.jsx";
+import AutocompleteField from "../../Forms/AutocompleteField";
+import useInterval from "../../Hooks/useInterval";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,22 +23,33 @@ const UpdatePost = () => {
     const [dep, setDeps  ] = useState()
     const [post, setPosts ] = useState()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [delay, setDelay] = useState(100)
 
-    const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`employee/post/${postId}/`).then((res) => {
-            setPosts(res.data)
-            setValue('name',res.data.name)
-            setValue('departament',res.data.departament)
-        })
-        await AxiosInstanse.get(`employee/departament/`).then((res) => {
-            setDeps(res.data)
-            setLoading(false)
-        })
-    })
+    useInterval(() => {
 
-    useEffect(() =>{
-        GetData();
-    }, [])
+        async function getData() {
+            try {
+                await AxiosInstanse.get(`employee/post/${postId}/`).then((res) => {
+                    setPosts(res.data)
+                    setValue('name',res.data.name)
+                    setValue('departament',res.data.departament)
+                })
+                await AxiosInstanse.get(`employee/departament/`).then((res) => {
+                    setDeps(res.data)
+                    setLoading(false)
+                    setError(null)
+                    setDelay(5000)
+                })
+                } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+                } finally {
+                    setLoading(false);
+                }
+        }
+        getData();
+    }, delay);
 
     const navigate = useNavigate()
     const defaultValues = {
@@ -84,6 +96,8 @@ const UpdatePost = () => {
                             width={'30%'}
                         />
                         <AutocompleteField
+                            loading={loading}
+                            error={error}
                             name='departament'
                             control={control}
                             width={'30%'}
