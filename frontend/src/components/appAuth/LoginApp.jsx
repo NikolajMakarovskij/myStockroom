@@ -13,12 +13,7 @@ import PrintError from "../Errors/Error";
 
 const LoginApp = () => {
     const CSRF = useCSRF()
-    const [username, setUsername] = useState();
     const [error, setError] = useState();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate()
-
-
 
     const defaultValues = {
             username: "",
