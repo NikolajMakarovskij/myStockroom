@@ -3,7 +3,7 @@ import datetime
 
 from django.contrib import messages
 from django.core.cache import cache
-from django.http import HttpResponse
+from rest_framework import permissions
 from django_select2.forms import ModelSelect2Widget, ModelSelect2MultipleWidget
 
 menu = [

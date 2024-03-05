@@ -38,17 +38,17 @@ const LoginApp = () => {
                 username: data.username,
                 password: data.password,
             },
-            {
-                headers: {
-                    'X-CSRFToken': CSRF
-                }
-            }
+            //{
+              //  headers: {
+                    //'X-CSRFToken': CSRF
+                //}
+            //}
         )
         .then((res) => {
             window.location.href=(`/`);
         })
         .catch((error) => {
-            setError(error)
+            setError(error.message)
             console.log(error)
         })
     })
@@ -62,7 +62,7 @@ const LoginApp = () => {
                 justifyContent="center"
                 sx={{ minHeight: '100vh' }}
             >
-                <Grid item sx={3}>
+                <Grid>
                     <form onSubmit={handleSubmit(submission)}>
                         <Box sx={{display:'flex', width:'460px', borderRadius: 2, boxShadow:3, padding:4, flexDirection:'column'}}>
                             <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
@@ -93,7 +93,7 @@ const LoginApp = () => {
                             </Box>
                             {!error ? <></> :
                                 <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
-                                    <PrintError error={error.message}/>
+                                    <PrintError error={error}/>
                                 </Box>
                             }
                             <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
