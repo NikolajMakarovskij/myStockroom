@@ -38,11 +38,11 @@ const LoginApp = () => {
                 username: data.username,
                 password: data.password,
             },
-            //{
-              //  headers: {
-                    //'X-CSRFToken': CSRF
-                //}
-            //}
+            {
+                headers: {
+                    'X-CSRFToken': CSRF
+                }
+            }
         )
         .then((res) => {
             window.location.href=(`/`);
