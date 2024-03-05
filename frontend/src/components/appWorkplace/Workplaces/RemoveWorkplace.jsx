@@ -19,13 +19,20 @@ const RemoveWorkplace = () => {
     const workplaceId = workplaceParam.id
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(false)
 
     const GetData = useCallback(async () => {
-        await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
-            setWorkplaces(res.data)
+        try {
+            await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
+                setWorkplaces(res.data)
+            })
+        } catch (error) {
+            setError(error.message);
+        } finally {
             setLoading(false)
-        })
+        }
+
     })
 
     useEffect(() =>{
@@ -48,19 +55,25 @@ const RemoveWorkplace = () => {
         });
     }
     return(
-        <>
-            {loading ? <LinearIndeterminate/> :
             <>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Удалить кабинет № {workplace.name}
+                        Удалить кабинет № {
+                            loading ? <LinearIndeterminate/> :
+                                error ? <PrintError error={error}/>
+                                    :workplace.name
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
                     <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
                         <ThemeProvider theme={darkTheme} >
                             <Typography>
-                                Вы уверены, что хотите удалить кабинет № {workplace.name}?
+                                Вы уверены, что хотите удалить кабинет № {
+                                        loading ? <LinearIndeterminate/> :
+                                            error ? <PrintError error={error}/>
+                                                :workplace.name
+                                    }?
                             </Typography>
                         </ThemeProvider>
                     </Box>
@@ -81,8 +94,7 @@ const RemoveWorkplace = () => {
                         </Box>
                     </ThemeProvider>
                 </Box>
-            </>}
-        </>
+            </>
 
     )
 
