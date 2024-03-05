@@ -8,7 +8,14 @@ from .test_login import auto_login_user
 @pytest.mark.django_db
 def test_url_exists_at_desired_location(auto_login_user):
     client, user = auto_login_user()
-    links = ['/home/']
+    links = [
+        'api/home/',
+        'api/csrf/',
+        'api/login/',
+        'api/logout/',
+        'api/session/',
+        'api/whoami/'
+    ]
     for link in links:
         url = link
         response = client.get(url)
