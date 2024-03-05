@@ -28,6 +28,7 @@ const CreateWorkplace = () => {
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [errorEdit, setErrorEdit] = useState(null)
     const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
@@ -79,7 +80,9 @@ const CreateWorkplace = () => {
         )
         .then((res) => {
             navigate(`/workplace/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
 
@@ -112,6 +115,11 @@ const CreateWorkplace = () => {
                                 optionLabel={(option) => `${option.name} (здание: ${option.building}, этаж: ${option.floor})`}
                             />
                         </Box>
+                        {!errorEdit ? <></> :
+                            <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                                <PrintError error={errorEdit}/>
+                            </Box>
+                        }
                         <Box>
                             <ThemeProvider theme={darkTheme}>
                                 <Box

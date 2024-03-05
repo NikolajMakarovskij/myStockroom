@@ -5,6 +5,7 @@ import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import useCSRF from "../../Hooks/CSRF";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,6 +19,7 @@ const RemoveWorkplace = () => {
     const workplaceId = workplaceParam.id
     const [workplace, setWorkplaces] = useState()
     const [loading, setLoading] = useState(true)
+    const [errorEdit, setErrorEdit] = useState(false)
 
     const GetData = useCallback(async () => {
         await AxiosInstanse.get(`workplace/workplace/${workplaceId}/`).then((res) => {
@@ -41,7 +43,9 @@ const RemoveWorkplace = () => {
             })
         .then((res) => {
             navigate(`/workplace/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     }
     return(
         <>
@@ -53,24 +57,29 @@ const RemoveWorkplace = () => {
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
-                    <ThemeProvider theme={darkTheme}>
-                        <Typography>
-                            Вы уверены, что хотите удалить кабинет № {workplace.name}?
-                        </Typography>
-                    </ThemeProvider>
-                    <Box>
-                        <ThemeProvider theme={darkTheme}>
-                            <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                marginTop='20px'
-                            >
-                                <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
-                            </Box>
+                    <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                        <ThemeProvider theme={darkTheme} >
+                            <Typography>
+                                Вы уверены, что хотите удалить кабинет № {workplace.name}?
+                            </Typography>
                         </ThemeProvider>
                     </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
+                    <ThemeProvider theme={darkTheme}>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            marginTop='20px'
+                        >
+                            <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
+                            <Button variant='contained' component={Link} to={`/workplace/list`}>Отмена</Button>
+                        </Box>
+                    </ThemeProvider>
                 </Box>
             </>}
         </>

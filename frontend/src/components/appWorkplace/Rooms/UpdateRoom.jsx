@@ -8,6 +8,8 @@ import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import PrintError from "../../Errors/Error.jsx";
+import useCSRF from "../../Hooks/CSRF.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -16,10 +18,12 @@ const darkTheme = createTheme({
 });
 
 const UpdateRoom = () => {
+    const CSRF = useCSRF()
     const roomParam = useParams()
     const roomId = roomParam.id
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
+    const [errorEdit, setErrorEdit] = useState(null)
 
     const GetData = async () => {
         await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
@@ -61,10 +65,16 @@ const UpdateRoom = () => {
                 name: data.name,
                 floor: data.floor,
                 building: data.building,
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/room/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
         <div>
@@ -102,6 +112,11 @@ const UpdateRoom = () => {
                             maxLength='25'
                         />
                     </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
                     <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box

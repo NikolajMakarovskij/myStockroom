@@ -246,7 +246,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-        #'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DATE_INPUT_FORMATS': [
         '%d.%m.%Y',  # '25.10.2021'

@@ -4,6 +4,8 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
+import PrintError from "../../Errors/Error.jsx";
+import useCSRF from "../../Hooks/CSRF.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,10 +14,12 @@ const darkTheme = createTheme({
 });
 
 const RemoveRoom = () => {
+    const CSRF = useCSRF()
     const roomParam = useParams()
     const roomId = roomParam.id
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
+    const [errorEdit, setErrorEdit] = useState(false)
 
     const GetData = async () => {
         await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
@@ -32,10 +36,16 @@ const RemoveRoom = () => {
 
 
     const submission = useCallback((data) => {
-        AxiosInstanse.delete(`workplace/room/${roomId}/`)
+        AxiosInstanse.delete(`workplace/room/${roomId}/`,{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
+        })
         .then((res) => {
             navigate(`/room/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
         <div>
@@ -47,11 +57,18 @@ const RemoveRoom = () => {
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
-                    <ThemeProvider theme={darkTheme}>
-                        <Typography>
-                            Вы уверены, что хотите удалить кабинет № {room.name}?
-                        </Typography>
-                    </ThemeProvider>
+                    <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                        <ThemeProvider theme={darkTheme}>
+                            <Typography>
+                                Вы уверены, что хотите удалить кабинет № {room.name}?
+                            </Typography>
+                        </ThemeProvider>
+                    </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
                     <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
