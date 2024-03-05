@@ -31,7 +31,6 @@ const UpdateWorkplace = () => {
     const [errorEdit, setErrorEdit] = useState(null)
     const [error, setError] = useState(null)
     const [delay, setDelay] = useState(100)
-    const [modal, setModal ] = useState(false)
 
     useInterval(() => {
 

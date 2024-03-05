@@ -19,13 +19,20 @@ const RemoveRoom = () => {
     const roomId = roomParam.id
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(false)
 
     const GetData = async () => {
-        await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
-            setRooms(res.data)
-            setLoading(false)
+        try {
+            await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
+                setRooms(res.data)
         })
+        }   catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     useEffect(() =>{
@@ -43,7 +50,8 @@ const RemoveRoom = () => {
         })
         .then((res) => {
             navigate(`/room/list`)
-        }).catch((error) => {
+        })
+        .catch((error) => {
             setErrorEdit(error.response.data.detail)
         });
     })
@@ -53,14 +61,22 @@ const RemoveRoom = () => {
             <div>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Удалить кабинет № {room.name}
+                        Удалить кабинет № {
+                            loading ? <LinearIndeterminate/> :
+                                error ? <PrintError error={error}/>
+                                    :room.name
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column',}}>
                     <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
                         <ThemeProvider theme={darkTheme}>
                             <Typography>
-                                Вы уверены, что хотите удалить кабинет № {room.name}?
+                                Вы уверены, что хотите удалить кабинет № {
+                                    loading ? <LinearIndeterminate/> :
+                                        error ? <PrintError error={error}/>
+                                            :room.name
+                                }?
                             </Typography>
                         </ThemeProvider>
                     </Box>

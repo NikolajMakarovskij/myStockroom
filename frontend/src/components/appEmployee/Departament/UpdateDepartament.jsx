@@ -8,6 +8,7 @@ import {useNavigate,useParams,Link} from "react-router-dom";
 import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import useCSRF from "../../Hooks/CSRF.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -16,10 +17,12 @@ const darkTheme = createTheme({
 });
 
 const UpdateDepartament = () => {
+    const CSRF = useCSRF()
     const depParam = useParams()
     const depId = depParam.id
     const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
+    const [errorEdit, setErrorEdit] = useState(null)
 
     const GetData = async () => {
         await AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
