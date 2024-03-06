@@ -10,6 +10,8 @@ import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
 import useInterval from "../../Hooks/useInterval";
+import useCSRF from "../../Hooks/CSRF.jsx";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,38 +20,54 @@ const darkTheme = createTheme({
 });
 
 const UpdatePost = () => {
+    const CSRF = useCSRF()
     const postParam = useParams()
     const postId = postParam.id
     const [dep, setDeps  ] = useState()
     const [post, setPosts ] = useState()
     const [loading, setLoading] = useState(true)
+    const [loadingData, setLoadingData] = useState(true)
     const [error, setError] = useState(null)
+    const [errorData, setErrorData] = useState(null)
+    const [errorEdit, setErrorEdit] = useState(null)
     const [delay, setDelay] = useState(100)
 
     useInterval(() => {
 
         async function getData() {
             try {
-                await AxiosInstanse.get(`employee/post/${postId}/`).then((res) => {
-                    setPosts(res.data)
-                    setValue('name',res.data.name)
-                    setValue('departament',res.data.departament)
-                })
                 await AxiosInstanse.get(`employee/departament/`).then((res) => {
                     setDeps(res.data)
-                    setLoading(false)
-                    setError(null)
+                    setErrorData(null)
                     setDelay(5000)
                 })
                 } catch (error) {
-                    setError(error.message);
+                    setErrorData(error.message);
                     setDelay(null)
                 } finally {
-                    setLoading(false);
+                    setLoadingData(false);
                 }
         }
         getData();
     }, delay);
+
+    async function getCurrentData() {
+        try {
+            await AxiosInstanse.get(`employee/post/${postId}/`).then((res) => {
+                    setPosts(res.data)
+                    setValue('name',res.data.name)
+                    setValue('departament',res.data.departament)
+            })
+        } catch (error) {
+            setError(error.message);
+            setDelay(null)
+        } finally {
+            setLoading(false)
+        }
+    }
+    useEffect(() => {
+        getCurrentData()
+    }, []);
 
     const navigate = useNavigate()
     const defaultValues = {
@@ -72,10 +90,17 @@ const UpdatePost = () => {
         AxiosInstanse.put(`employee/post/${postId}/`,{
                 name: data.name,
                 departament: data.departament,
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/post/list`)
         })
+        .catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     }
     return(
         <div>
@@ -83,7 +108,11 @@ const UpdatePost = () => {
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать должность {post.name}
+                        Редактировать должность {
+                            loading ? <LinearIndeterminate/> :
+                                error ? <PrintError error={error}/>
+                                    :post.name
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
@@ -96,8 +125,8 @@ const UpdatePost = () => {
                             width={'30%'}
                         />
                         <AutocompleteField
-                            loading={loading}
-                            error={error}
+                            loading={loadingData}
+                            error={errorData}
                             name='departament'
                             control={control}
                             width={'30%'}
@@ -108,6 +137,11 @@ const UpdatePost = () => {
                             optionLabel={(option) => `${option.name}`}
                         />
                     </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
                     <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box

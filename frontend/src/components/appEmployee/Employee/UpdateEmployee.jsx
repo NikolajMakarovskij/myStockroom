@@ -10,6 +10,8 @@ import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField.jsx";
 import useInterval from "../../Hooks/useInterval";
+import useCSRF from "../../Hooks/CSRF.jsx";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,49 +20,78 @@ const darkTheme = createTheme({
 });
 
 const UpdateEmployee = () => {
+    const CSRF = useCSRF()
     const emplParam = useParams()
     const emplId = emplParam.id
     const [workplace, setWorkplaces] = useState()
     const [post, setPosts] = useState()
     const [empl, setEmpls  ] = useState()
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [loadingWP, setLoadingWP] = useState(true)
+    const [loadingPost, setLoadingPost] = useState(true)
+    const [errorData, setErrorData] = useState(false)
+    const [errorWP, setErrorWP] = useState(false)
+    const [errorPost, setErrorPost] = useState(false)
+    const [errorEdit, setErrorEdit] = useState(false)
     const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
-    useInterval(() => {
 
-        async function getData() {
+    useInterval(() => {
+        async function getPost() {
             try {
-                await AxiosInstanse.get(`employee/employee/${emplId}/`).then((res) => {
-                    setEmpls(res.data)
-                    setValue('name', res.data.name)
-                    setValue('last_name', res.data.last_name)
-                    setValue('surname', res.data.surname)
-                    setValue('workplace', res.data.workplace)
-                    setValue('post', res.data.post)
-                    setValue('employeeEmail', res.data.employeeEmail)
-                    setError(null)
-                }),
                 await AxiosInstanse.get(`employee/post_list/`).then((res) => {
                     setPosts(res.data)
-                    setError(null)
-                })
-                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
-                    setWorkplaces(res.data)
-                    setLoading(false)
-                    setError(null)
+                    setErrorPost(null)
                     setDelay(5000)
                 })
               } catch (error) {
-                    setError(error.message);
+                    setErrorPost(error.message);
                     setDelay(null)
               } finally {
-                    setLoading(false);
+                    setLoadingPost(false);
               }
         }
-        getData();
+        async function getWp() {
+            try {
+                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
+                    setWorkplaces(res.data)
+                    setErrorWP(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setErrorWP(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoadingWP(false);
+              }
+        }
+        Promise.all([getPost(), getWp()])
     }, delay);
+
+    async function getCurrentData() {
+        try {
+            await AxiosInstanse.get(`employee/employee/${emplId}/`).then((res) => {
+                setEmpls(res.data)
+                setValue('name', res.data.name)
+                setValue('last_name', res.data.last_name)
+                setValue('surname', res.data.surname)
+                setValue('workplace', res.data.workplace)
+                setValue('post', res.data.post)
+                setValue('employeeEmail', res.data.employeeEmail)
+                setErrorData(false)
+            })
+        } catch (error) {
+            setErrorData(error.message);
+            setDelay(null)
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getCurrentData()
+    }, []);
 
     const defaultValues = {
         name: '',
@@ -76,7 +107,7 @@ const UpdateEmployee = () => {
             name: yup.string().required('Обязательное поле').max(50, 'Должно быть короче 50 символов'),
             last_name: yup.string().max(50, 'Должно быть короче 50 символов'),
             surname: yup.string().max(50, 'Должно быть короче 50 символов'),
-            employeeEmail: yup.string().email('Введите верный e-mail')
+            employeeEmail: yup.string().email('Введите верный e-mail').nullable(),
         })
       .required()
 
@@ -93,18 +124,27 @@ const UpdateEmployee = () => {
                 workplace: data.workplace,
                 post: data.post,
                 employeeEmail: data.employeeEmail
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/employee/list`)
         })
+        .catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     }
     return(
-        <div>
-            {loading ? <LinearIndeterminate/> :
+        <>
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать сотрудника {empl.surname} {empl.name} {empl.last_name}
+                         Редактировать сотрудника {loading ? <LinearIndeterminate/> :
+                             errorData ? <PrintError error={errorData}/>
+                                 :` ${empl.surname} ${empl.name} ${empl.last_name}`
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
@@ -136,8 +176,8 @@ const UpdateEmployee = () => {
                     </Box>
                     <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
                         <AutocompleteField
-                            loading={loading}
-                            error={error}
+                            loading={loadingPost}
+                            error={errorPost}
                             name='post'
                             control={control}
                             width={'30%'}
@@ -148,8 +188,8 @@ const UpdateEmployee = () => {
                             optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
                         />
                         <AutocompleteField
-                            loading={loading}
-                            error={error}
+                            loading={loadingWP}
+                            error={errorWP}
                             name='workplace'
                             control={control}
                             width={'30%'}
@@ -168,6 +208,11 @@ const UpdateEmployee = () => {
                             maxlength='50'
                         />
                     </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
                     <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box
@@ -181,8 +226,8 @@ const UpdateEmployee = () => {
                         </ThemeProvider>
                     </Box>
                 </Box>
-            </form>}
-        </div>
+            </form>
+        </>
 
     )
 

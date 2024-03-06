@@ -76,8 +76,7 @@ const CreateWorkplace = () => {
             headers: {
                     'X-CSRFToken': CSRF
                 }
-            }
-        )
+        })
         .then((res) => {
             navigate(`/workplace/list`)
         }).catch((error) => {
