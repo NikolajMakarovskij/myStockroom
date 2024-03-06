@@ -33,14 +33,13 @@ const RemoveWorkplace = () => {
             setLoading(false)
         }
 
-    })
+    });
 
     useEffect(() =>{
         GetData();
-    },)
+    },[])
 
     const navigate = useNavigate()
-
 
     const submission = (data) => {
         AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`,{

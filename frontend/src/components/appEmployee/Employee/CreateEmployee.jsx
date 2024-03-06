@@ -11,6 +11,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
 import Modal from "../../Modal/Modal";
 import useInterval from "../../Hooks/useInterval";
+import useCSRF from "../../Hooks/CSRF.jsx";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,37 +23,48 @@ const darkTheme = createTheme({
 const options = []
 
 const CreateEmployee = () => {
+    const CSRF = useCSRF()
     const [workplace, setWorkplaces] = useState()
     const [post, setPosts] = useState()
     const [value, setValues] = useState(options.id)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [loadingWP, setLoadingWP] = useState(true)
+    const [loadingPost, setLoadingPost] = useState(true)
+    const [errorWP, setErrorWP] = useState(null)
+    const [errorPost, setErrorPost] = useState(null)
+    const [errorEdit, setErrorEdit] = useState(null)
     const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
     useInterval(() => {
-
-        async function getData() {
+        async function getPost() {
             try {
                 await AxiosInstanse.get(`employee/post_list/`).then((res) => {
                     setPosts(res.data)
-                    setError(null)
-                    setDelay(5000)
-                })
-                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
-                    setWorkplaces(res.data)
-                    setLoading(false)
-                    setError(null)
+                    setErrorPost(null)
                     setDelay(5000)
                 })
               } catch (error) {
-                    setError(error.message);
+                    setErrorPost(error.message);
                     setDelay(null)
               } finally {
-                    setLoading(false);
+                    setLoadingPost(false);
               }
         }
-        getData();
+        async function getWp() {
+            try {
+                await AxiosInstanse.get(`workplace/workplace_list/`).then((res) => {
+                    setWorkplaces(res.data)
+                    setErrorWP(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setErrorWP(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoadingWP(false);
+              }
+        }
+        Promise.all([getPost(), getWp()])
     }, delay);
 
     const defaultValues = {
@@ -85,97 +98,106 @@ const CreateEmployee = () => {
                 workplace: data.workplace,
                 post: data.post,
                 employeeEmail: data.employeeEmail
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/employee/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
-        <div>
-            {loading ? <LinearIndeterminate/> :
-                <form onSubmit={handleSubmit(submission)}>
-                    <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
-                        <Typography>
-                            Добавить сотрудника
-                        </Typography>
+        <>
+            <form onSubmit={handleSubmit(submission)}>
+                <Box sx={{display:'flex', justifyContent:'center',width:'100%',  marginBottom:'10px'}}>
+                    <Typography>
+                        Добавить сотрудника
+                    </Typography>
+                </Box>
+                <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
+                    <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                        <CustomTextField
+                            label='Фамилия'
+                            placeholder='Введите фамилию'
+                            name='surname'
+                            control={control}
+                            width={'30%'}
+                            maxlength='50'
+                        />
+                        <CustomTextField
+                            label='Имя'
+                            placeholder='Введите имя'
+                            name='name'
+                            control={control}
+                            width={'30%'}
+                            maxlength='50'
+                        />
+                        <CustomTextField
+                            label='Отчество'
+                            placeholder='Введите отчество'
+                            name='last_name'
+                            control={control}
+                            width={'30%'}
+                            maxlength='50'
+                        />
                     </Box>
-                    <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
-                        <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
-                            <CustomTextField
-                                label='Фамилия'
-                                placeholder='Введите фамилию'
-                                name='surname'
-                                control={control}
-                                width={'30%'}
-                                maxlength='50'
-                            />
-                            <CustomTextField
-                                label='Имя'
-                                placeholder='Введите имя'
-                                name='name'
-                                control={control}
-                                width={'30%'}
-                                maxlength='50'
-                            />
-                            <CustomTextField
-                                label='Отчество'
-                                placeholder='Введите отчество'
-                                name='last_name'
-                                control={control}
-                                width={'30%'}
-                                maxlength='50'
-                            />
-                        </Box>
-                        <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
-                            <AutocompleteField
-                                loading={loading}
-                                error={error}
-                                name='post'
-                                control={control}
-                                width={'30%'}
-                                options={post}
-                                label='Выберите должность'
-                                placeholder='Выберите должность'
-                                noOptionsText='Должность не обнаружен'
-                                optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
-                            />
-                            <AutocompleteField
-                                loading={loading}
-                                error={error}
-                                name='workplace'
-                                control={control}
-                                width={'30%'}
-                                options={workplace}
-                                label='Выберите рабочее место'
-                                placeholder='Выберите рабочее место'
-                                noOptionsText='Рабочее место не обнаружен'
-                                optionLabel={(option) => `${option.name} (кабинет: ${option.room.name} здание: ${option.room.building})`}
-                            />
-                            <CustomTextField
-                                label='E-mail'
-                                placeholder='Введите email'
-                                name='employeeEmail'
-                                control={control}
-                                width={'30%'}
-                                maxlength='50'
-                            />
-                        </Box>
-                        <Box>
-                            <ThemeProvider theme={darkTheme}>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                >
-                                    <Button variant='contained' type='submit'>Сохранить</Button>
-                                    <Button variant='contained' component={Link} to={`/employee/list`}>Отмена</Button>
-                                </Box>
-                            </ThemeProvider>
-                        </Box>
+                    <Box sx={{display:'flex', width:'100%', justifyContent:'space-around', marginBottom:'40px'}}>
+                        <AutocompleteField
+                            loading={loadingPost}
+                            error={errorPost}
+                            name='post'
+                            control={control}
+                            width={'30%'}
+                            options={post}
+                            label='Выберите должность'
+                            placeholder='Выберите должность'
+                            noOptionsText='Должность не обнаружен'
+                            optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
+                        />
+                        <AutocompleteField
+                            loading={loadingWP}
+                            error={errorWP}
+                            name='workplace'
+                            control={control}
+                            width={'30%'}
+                            options={workplace}
+                            label='Выберите рабочее место'
+                            placeholder='Выберите рабочее место'
+                            noOptionsText='Рабочее место не обнаружен'
+                            optionLabel={(option) => `${option.name} (кабинет: ${option.room.name} здание: ${option.room.building})`}
+                        />
+                        <CustomTextField
+                            label='E-mail'
+                            placeholder='Введите email'
+                            name='employeeEmail'
+                            control={control}
+                            width={'30%'}
+                            maxlength='50'
+                        />
                     </Box>
-                </form>
-            }
-        </div>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
+                    <Box>
+                        <ThemeProvider theme={darkTheme}>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Button variant='contained' type='submit'>Сохранить</Button>
+                                <Button variant='contained' component={Link} to={`/employee/list`}>Отмена</Button>
+                            </Box>
+                        </ThemeProvider>
+                    </Box>
+                </Box>
+            </form>
+    </>
 
     )
 

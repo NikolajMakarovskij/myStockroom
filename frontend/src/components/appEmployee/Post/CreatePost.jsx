@@ -9,8 +9,9 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
-import Modal from "../../Modal/Modal";
 import useInterval from "../../Hooks/useInterval";
+import useCSRF from "../../Hooks/CSRF.jsx";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -23,11 +24,12 @@ const options = [
 ]
 
 const CreatePost = () => {
-
+    const CSRF = useCSRF()
     const [dep, setDeps] = useState()
     const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [errorEdit, setErrorEdit] = useState(null)
     const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
@@ -72,10 +74,16 @@ const CreatePost = () => {
         AxiosInstanse.post(`employee/post/`,{
                 name: data.name,
                 departament: data.departament,
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/post/list`)
-        })
+        }).catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
         <div>
@@ -109,6 +117,11 @@ const CreatePost = () => {
                                 optionLabel={(option) => `${option.name}`}
                             />
                         </Box>
+                        {!errorEdit ? <></> :
+                            <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                                <PrintError error={errorEdit}/>
+                            </Box>
+                        }
                         <Box>
                             <ThemeProvider theme={darkTheme}>
                                 <Box

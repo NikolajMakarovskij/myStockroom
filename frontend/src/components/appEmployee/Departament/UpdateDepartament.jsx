@@ -9,6 +9,7 @@ import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import useCSRF from "../../Hooks/CSRF.jsx";
+import PrintError from "../../Errors/Error.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,14 +23,21 @@ const UpdateDepartament = () => {
     const depId = depParam.id
     const [dep, setDeps] = useState()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(null)
 
     const GetData = async () => {
-        await AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
-            setDeps(res.data)
-            setValue('name',res.data.name)
+        try{
+            await AxiosInstanse.get(`employee/departament/${depId}/`).then((res) => {
+                setDeps(res.data)
+                setValue('name',res.data.name)
+            })
+        } catch (error) {
+            setError(error.message);
+        } finally {
             setLoading(false)
-        })
+        }
+
     }
 
     useEffect(() =>{
@@ -56,10 +64,17 @@ const UpdateDepartament = () => {
     const submission = useCallback((data) => {
         AxiosInstanse.put(`employee/departament/${depId}/`,{
                 name: data.name,
+        },{
+            headers: {
+                    'X-CSRFToken': CSRF
+                }
         })
         .then((res) => {
             navigate(`/departament/list`)
         })
+        .catch((error) => {
+            setErrorEdit(error.response.data.detail)
+        });
     })
     return(
         <div>
@@ -67,7 +82,11 @@ const UpdateDepartament = () => {
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать отдел {dep.name}
+                        Редактировать отдел {
+                            loading ? <LinearIndeterminate/> :
+                                error ? <PrintError error={error}/>
+                                    :dep.name
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
@@ -81,6 +100,11 @@ const UpdateDepartament = () => {
                             maxLength='50'
                         />
                     </Box>
+                    {!errorEdit ? <></> :
+                        <Box sx={{display:'flex',justifyContent:'space-around', marginBottom:'40px'}}>
+                            <PrintError error={errorEdit}/>
+                        </Box>
+                    }
                     <Box>
                         <ThemeProvider theme={darkTheme}>
                             <Box

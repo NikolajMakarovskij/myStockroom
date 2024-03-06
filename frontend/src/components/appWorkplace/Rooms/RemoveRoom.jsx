@@ -37,7 +37,7 @@ const RemoveRoom = () => {
 
     useEffect(() =>{
         GetData();
-    },)
+    },[])
 
     const navigate = useNavigate()
 
