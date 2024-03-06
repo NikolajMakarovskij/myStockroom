@@ -27,7 +27,7 @@ const RemoveRoom = () => {
             await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
                 setRooms(res.data)
         })
-        }   catch (error) {
+        } catch (error) {
             setError(error.message);
         } finally {
             setLoading(false)

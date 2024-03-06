@@ -23,16 +23,24 @@ const UpdateRoom = () => {
     const roomId = roomParam.id
     const [room, setRooms] = useState()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(null)
 
     const GetData = async () => {
-        await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
-            setRooms(res.data)
-            setValue('name',res.data.name)
-            setValue('floor',res.data.floor)
-            setValue('building',res.data.building)
+        try {
+            await AxiosInstanse.get(`workplace/room/${roomId}/`).then((res) => {
+                setRooms(res.data)
+                setValue('name',res.data.name)
+                setValue('floor',res.data.floor)
+                setValue('building',res.data.building)
+                setLoading(false)
+            })
+        } catch (error) {
+            setError(error.message);
+        } finally {
             setLoading(false)
-        })
+        }
+
     }
 
     useEffect(() =>{
@@ -82,7 +90,11 @@ const UpdateRoom = () => {
             <form onSubmit={handleSubmit(submission)}>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Редактировать кабинет № {room.name}
+                        Редактировать кабинет № {
+                            loading ? <LinearIndeterminate/> :
+                                error ? <PrintError error={error}/>
+                                    :room.name
+                        }
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', width:'100%', boxShadow:3, padding:4, flexDirection:'column'}}>
