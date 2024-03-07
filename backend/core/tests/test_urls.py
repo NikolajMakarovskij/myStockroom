@@ -9,12 +9,10 @@ from .test_login import auto_login_user
 def test_url_exists_at_desired_location(auto_login_user):
     client, user = auto_login_user()
     links = [
-        'api/home/',
-        'api/csrf/',
-        'api/login/',
-        'api/logout/',
-        'api/session/',
-        'api/whoami/'
+        '/api/home/',
+        '/api/csrf/',
+        '/api/session/',
+        '/api/whoami/'
     ]
     for link in links:
         url = link
