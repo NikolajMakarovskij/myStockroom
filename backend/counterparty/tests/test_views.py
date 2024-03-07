@@ -1,63 +1,79 @@
-from ..models import Manufacturer
-from django.urls import reverse
-from django.test import TestCase, Client
-from django.contrib.auth.models import User
+import json, pytest
+from counterparty.models import Manufacturer
+from core.tests.test_login import auto_login_user
+
+pytestmark = pytest.mark.django_db
 
 
-class ManufacturerViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+class TestManufacturerEndpoints:
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_manufacturer = 149
-        for manufacturer_num in range(number_of_manufacturer):
-            Manufacturer.objects.create(name='Christian %s' % manufacturer_num, )
-        assert Manufacturer.objects.count() == 149
+    endpoint = '/api/counterparty/manufacturer/'
 
-    def test_context_data_in_list(self):
-        links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Список производителей'},
-            {'data_key': 'searchlink', 'data_value': 'counterparty:manufacturer_search'},
-            {'data_key': 'add', 'data_value': 'counterparty:new-manufacturer'},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get('data_key') in resp.context)
-                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_manufacturer_list(self, auto_login_user):
+        Manufacturer.objects.bulk_create([
+            Manufacturer(name='01', country='Китай', production='Китай'),
+            Manufacturer(name='02'),
+            Manufacturer(name='03'),
+        ])
+        client, user = auto_login_user()
+        response = client.get(
+            self.endpoint
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == '01'
+        assert data[0]['country'] == 'Китай'
+        assert data[0]['production'] == 'Китай'
+        assert data[1]['name'] == '02'
+        assert data[2]['name'] == '03'
 
-    def test_context_data_in_detail(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Производитель'},
-            {'data_key': 'add', 'data_value': 'counterparty:new-manufacturer'},
-            {'data_key': 'update', 'data_value': 'counterparty:manufacturer-update'},
-            {'data_key': 'delete', 'data_value': 'counterparty:manufacturer-delete'},
-        ]
-        Manufacturer.objects.create(name='Christian_detail', )
-        model = Manufacturer.objects.get(name='Christian_detail', )
-        resp = self.client.get(reverse('counterparty:manufacturer-detail', kwargs={"pk": model.pk}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
+    @pytest.mark.django_db
+    def test_create_manufacturer(self, auto_login_user):
+        client, user = auto_login_user()
+        expected_json = {
+            'name': '04',
+            'country': 'Китай',
+            'production': 'Китай'
+        }
 
-    def test_pagination_is_ten(self):
-        links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['manufacturer_list']) == 20)
+        response = client.post(
+            self.endpoint,
+            data=expected_json,
+            format='json'
+        )
+        get_response = client.get(
+            self.endpoint
+        )
+        data = json.loads(get_response.content)
+        assert response.status_code == 200
+        assert data[0]['name'] == '04'
+        assert data[0]['country'] == 'Китай'
+        assert data[0]['production'] == 'Китай'
 
-    def test_lists_all_manufacturer(self):
-        links = ['counterparty:manufacturer_list', 'counterparty:manufacturer_search']
-        for link in links:
-            resp = self.client.get(reverse(link) + '?page=8')
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['manufacturer_list']) == 9)
+    @pytest.mark.django_db
+    def test_retrieve_manufacturer(self, auto_login_user):
+        client, user = auto_login_user()
+        Manufacturer.objects.get_or_create(name='10', country='Китай', production='Китай')
+        test_manufacturer = Manufacturer.objects.get(name='10')
+        url = f'{self.endpoint}{test_manufacturer.id}/'
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['name'] == '10'
+        assert json.loads(response.content)['country'] == 'Китай'
+        assert json.loads(response.content)['production'] == 'Китай'
+
+    @pytest.mark.django_db
+    def test_delete_manufacturer(self, auto_login_user):
+        client, user = auto_login_user()
+        Manufacturer.objects.get_or_create(name='10', country='Китай', production='Китай')
+        test_manufacturer = Manufacturer.objects.get(name='10')
+        url = f'{self.endpoint}{test_manufacturer.id}/'
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Manufacturer.objects.all().count() == 0

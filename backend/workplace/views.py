@@ -1,5 +1,4 @@
 from rest_framework import viewsets, permissions
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from .models import Room, Workplace
 from .serializers import WorkplaceListSerializer, RoomModelSerializer, WorkplaceSerializer, RoomSerializer
@@ -9,7 +8,6 @@ from .serializers import WorkplaceListSerializer, RoomModelSerializer, Workplace
 class WorkplaceListRestView(viewsets.ModelViewSet):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceListSerializer
-
 
     def list(self, request):
         queryset = Workplace.objects.all()
@@ -21,11 +19,6 @@ class WorkplaceRestView(viewsets.ModelViewSet):
     permission_classes = [permissions.DjangoModelPermissions]
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceSerializer
-    message = {
-        'success': 'false',
-        'message': 'У вас нет прав доступа. Обратитесь к адиминистратору',
-        'status_code': 403
-    }
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -33,8 +26,7 @@ class WorkplaceRestView(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         else:
-            return Response(serializer.errors, status=400, message='У вас нет прав доступа. Обратитесь к адиминистратору')
-
+            return Response(serializer.errors, status=400)
 
     def retrieve(self, request, pk=None):
         project = self.queryset.get(pk=pk)

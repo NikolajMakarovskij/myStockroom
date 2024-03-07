@@ -1,107 +1,41 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import Q
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-from core.utils import DataMixin, FormMessageMixin, menu
-from .forms import ManufacturerForm
 from .models import Manufacturer
+from rest_framework import viewsets
+from rest_framework.response import Response
+from .serializers import ManufacturerSerializer
 
 
-# Контрагенты
-class CounterpartyView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
-    template_name = 'counterparty/counterparty.html'
-    permission_required = 'counterparty.view_manufacturer'
+class ManufacturerRestView(viewsets.ViewSet):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Контрагенты, поставщики'
-        context['menu'] = menu
-        return context
+    def list(self, request):
+        queryset = Manufacturer.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
 
-# Производитель
-class ManufacturerListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
-    permission_required = 'counterparty.view_manufacturer'
-    model = Manufacturer
-    template_name = 'counterparty/manufacturer_list.html'
+    def retrieve(self, request, pk=None):
+        project = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(project)
+        return Response(serializer.data)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Список производителей", searchlink='counterparty:manufacturer_search',
-                                      add='counterparty:new-manufacturer', )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    def update(self, request, pk=None):
+        project = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(project, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
 
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if not query:
-            query = ''
-        object_list = Manufacturer.objects.filter(
-            Q(name__icontains=query) |
-            Q(country__icontains=query) |
-            Q(production__icontains=query)
-        )
-        return object_list
-
-
-class ManufacturerDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
-    permission_required = 'counterparty.view_manufacturer'
-    model = Manufacturer
-    template_name = 'counterparty/manufacturer_detail.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Производитель", add='counterparty:new-manufacturer',
-                                      update='counterparty:manufacturer-update',
-                                      delete='counterparty:manufacturer-delete')
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-
-class ManufacturerCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
-    permission_required = 'counterparty.add_manufacturer'
-    model = Manufacturer
-    form_class = ManufacturerForm
-    template_name = 'Forms/add.html'
-    success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = f"Производитель %(name)s успешно создан"
-    error_message = f"Производителя %(name)s не удалось создать"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить производителя", )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-
-class ManufacturerUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
-    permission_required = 'counterparty.change_manufacturer'
-    model = Manufacturer
-    template_name = 'Forms/add.html'
-    form_class = ManufacturerForm
-    success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = f"Производитель %(name)s успешно обновлен"
-    error_message = f"Производителя %(name)s не удалось обновить"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Редактировать производителя", )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-
-class ManufacturerDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
-    permission_required = 'counterparty.delete_manufacturer'
-    model = Manufacturer
-    template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('counterparty:manufacturer_list')
-    success_message = f"Производитель успешно удален"
-    error_message = f"Производителя не удалось удалить"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить производителя", selflink='counterparty:manufacturer_list')
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    def destroy(self, request, pk=None):
+        project = self.queryset.get(pk=pk)
+        project.delete()
+        return Response(status=204)
