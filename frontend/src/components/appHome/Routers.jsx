@@ -2,7 +2,6 @@ import React from "react";
 import {createBrowserRouter} from "react-router-dom";
 import Home from "./Home";
 import NavBar from "./NavBar";
-import LoginApp from "../appAuth/LoginApp";
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import ListWorkplace from "../appWorkplace/Workplaces/ListWorkplace";
 import CreateWorkplace from "../appWorkplace/Workplaces/CreateWorkplace";
@@ -28,12 +27,16 @@ import RemoveEmployee from "../appEmployee/Employee/RemoveEmployee";
 import ListDevice from "../appDevice/ListDevice";
 import IndexStock from "../appStock/IndexStock";
 import ListStockDevices from "../appStock/Devices/ListStockDevices";
+import IndexCounterparty from "../appCounterparty/IndexCounterparty";
+import ListManufacturer from "../appCounterparty/appManufacturer/ListManufacturer";
+import CreateManufacturer from "../appCounterparty/appManufacturer/CreateManufacturer";
+import RemoveManufacturer from "../appCounterparty/appManufacturer/RemoveManufacturer";
+import UpdateManufacturer from "../appCounterparty/appManufacturer/UpdateManufacturer";
 
 const customWidth = 200
 const Routers = createBrowserRouter([
     //Home
     {path : "/", element: [<NavBar drawerWidth={customWidth} content={<Home/>}/> ],},
-    //{path : "/login", element: [ ],},
     //Workplace
     {path: "/workplace", element: [<NavBar drawerWidth={customWidth} content={<IndexWorkplace/>}/>],},
     {path: "/workplace/list", element: [<NavBar drawerWidth={customWidth} content={<ListWorkplace/>}/>],},
@@ -58,18 +61,24 @@ const Routers = createBrowserRouter([
     {path: "/post/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreatePost/>}/>],},
     {path: "/post/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdatePost/>}/>],},
     {path: "/post/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemovePost/>}/>],},
+    //Counterparty
+    {path: "/counterparty", element: [<NavBar drawerWidth={customWidth} content={<IndexCounterparty/>}/>],},
+    {path: "/counterparty/manufacturer/list", element: [<NavBar drawerWidth={customWidth} content={<ListManufacturer/>}/>],},
+    {path: "/counterparty/manufacturer/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateManufacturer/>}/>],},
+    {path: "/counterparty/manufacturer/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateManufacturer/>}/>],},
+    {path: "/counterparty/manufacturer/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveManufacturer/>}/>],},
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
-    //{path: "/room/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
-    //{path: "/room/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
-    //{path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
+    //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
+    //{path: "/device/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
+    //{path: "/device/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
     //Stock
     {path: "/stock", element: [<NavBar drawerWidth={customWidth} content={<IndexStock/>}/>],},
     {path: "/stock/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListStockDevices/>}/>],},
     {path: "/stock/device/list/:slug", element: [<NavBar drawerWidth={customWidth} content={<ListStockDevices/>}/>],},
-    //{path: "/room/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
-    //{path: "/room/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
-    //{path: "/room/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
+    //{path: "/stock/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
+    //{path: "/stock/device/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
+    //{path: "/stock/device/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
 ]);
 
 export {Routers}
