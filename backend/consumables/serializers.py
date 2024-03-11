@@ -30,6 +30,7 @@ class ConsumablesListSerializer(serializers.ModelSerializer):
     consumable = AccountingModelSerializer(many=True, read_only=True)
     categories = CategoriesModelSerializer(read_only=True)
     manufacturer = ManufacturerSerializer(read_only=True)
+    difference = serializers.SerializerMethodField('get_difference')
 
     class Meta:
         model = Consumables
@@ -37,6 +38,13 @@ class ConsumablesListSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'read_only': True}
         }
+
+    def get_difference(self, obj=Meta.model):
+        quantity_all = 0
+        for each in obj.consumable.all():
+            quantity_all += each.quantity
+        difference = obj.quantity - quantity_all
+        return difference
 
 
 class AccCatModelSerializer(serializers.ModelSerializer):
@@ -54,6 +62,7 @@ class AccessoriesListModelSerializer(serializers.ModelSerializer):
     accessories = AccountingModelSerializer(many=True, read_only=True)
     categories = AccCatModelSerializer(read_only=True)
     manufacturer = ManufacturerSerializer(read_only=True)
+    difference = serializers.SerializerMethodField('get_difference')
 
     class Meta:
         model = Accessories
@@ -61,6 +70,13 @@ class AccessoriesListModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'read_only': True}
         }
+
+    def get_difference(self, obj=Meta.model):
+        quantity_all = 0
+        for each in obj.accessories.all():
+            quantity_all += each.quantity
+        difference = obj.quantity - quantity_all
+        return difference
 
 
 class AccessoriesModelSerializer(serializers.ModelSerializer):

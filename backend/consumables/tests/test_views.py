@@ -1,4 +1,5 @@
 from ..models import Categories, Consumables, AccCat, Accessories
+from accounting.models import Accounting
 from counterparty.models import Manufacturer
 import json, pytest
 from core.tests.test_login import auto_login_user
@@ -16,10 +17,11 @@ class TestConsumablesEndpoints:
         cat = Categories.objects.get(name='category_01')
         man = Manufacturer.objects.get(name='manufacturer')
         Consumables.objects.bulk_create([
-            Consumables(name='01', categories=cat, manufacturer=man),
+            Consumables(name='01', categories=cat, manufacturer=man, quantity=1),
             Consumables(name='02'),
             Consumables(name='03'),
         ])
+        Accounting.objects.get_or_create(name='category_01', quantity=2, consumable=Consumables.objects.get(name='01'))
         client, user = auto_login_user()
         response = client.get(
             '/api/consumables/consumable_list/'
@@ -31,6 +33,7 @@ class TestConsumablesEndpoints:
         assert data[0]['categories']['name'] == 'category_01'
         assert data[0]['categories']['slug'] == 'category_01'
         assert data[0]['manufacturer']['name'] == 'manufacturer'
+        assert data[0]['difference'] == -1
         assert data[1]['name'] == '02'
         assert data[2]['name'] == '03'
 
@@ -187,10 +190,11 @@ class TestAccessoriesEndpoints:
         cat = AccCat.objects.get(name='category_01')
         man = Manufacturer.objects.get(name='manufacturer')
         Accessories.objects.bulk_create([
-            Accessories(name='01', categories=cat, manufacturer=man),
+            Accessories(name='01', categories=cat, manufacturer=man, quantity=1),
             Accessories(name='02'),
             Accessories(name='03'),
         ])
+        Accounting.objects.get_or_create(name='category_01', quantity=2, accessories=Accessories.objects.get(name='01'))
         client, user = auto_login_user()
         response = client.get(
             '/api/consumables/accessories_list/'
@@ -202,6 +206,7 @@ class TestAccessoriesEndpoints:
         assert data[0]['categories']['name'] == 'category_01'
         assert data[0]['categories']['slug'] == 'category_01'
         assert data[0]['manufacturer']['name'] == 'manufacturer'
+        assert data[0]['difference'] == -1
         assert data[1]['name'] == '02'
         assert data[2]['name'] == '03'
 
