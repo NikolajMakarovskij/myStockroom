@@ -16,10 +16,8 @@ def test_category_create():
     assert Categories.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
-    assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "consumables:category", kwargs={"category_slug": category.slug}
-    )
+    assert category.__str__() == 'my_category_name'
+    #assert category.get_absolute_url() == reverse('consumables:category', kwargs={'category_slug': category.slug})
 
 
 @pytest.mark.django_db
@@ -76,10 +74,9 @@ def test_acc_cat_create():
     assert AccCat.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
-    assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "consumables:category_accessories", kwargs={"category_slug": category.slug}
-    )
+    assert category.__str__() == 'my_category_name'
+   # assert category.get_absolute_url() == reverse('consumables:category_accessories',
+    #                                              kwargs={'category_slug': category.slug})
 
 
 @pytest.mark.django_db

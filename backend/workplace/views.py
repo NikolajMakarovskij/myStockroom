@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Room, Workplace
 from .serializers import WorkplaceListSerializer, RoomModelSerializer, WorkplaceSerializer, RoomSerializer
@@ -16,7 +16,6 @@ class WorkplaceListRestView(viewsets.ModelViewSet):
 
 
 class WorkplaceRestView(viewsets.ModelViewSet):
-    permission_classes = [permissions.DjangoModelPermissions]
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceSerializer
 
