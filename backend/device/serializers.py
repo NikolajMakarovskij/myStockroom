@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from workplace.serializers import WorkplaceListSerializer
+from consumables.serializers import AccessoriesListModelSerializer, ConsumablesListSerializer
 from .models import DeviceCat, Device
-
 
 
 class DeviceCatModelSerializer(serializers.ModelSerializer):
@@ -26,6 +26,8 @@ class DeviceListSerializer(serializers.ModelSerializer):
     queryset = Device.objects.all()
     workplace = WorkplaceListSerializer(read_only=True)
     categories = DeviceCatModelSerializer(read_only=True)
+    consumables = ConsumablesListSerializer(many=True, read_only=True)
+    accessories = AccessoriesListModelSerializer(many=True, read_only=True)
 
     def get_queryset(self):
 

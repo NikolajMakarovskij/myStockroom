@@ -234,7 +234,7 @@ CORS_ALLOW_CREDENTIALS = True
 def render_calasses():
     return [
         'rest_framework.renderers.JSONRenderer',
-        #'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
         ]
 
 

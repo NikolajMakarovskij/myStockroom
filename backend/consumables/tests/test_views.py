@@ -1,220 +1,101 @@
 
-from django.test import TestCase, Client
 from ..models import Categories, Consumables, AccCat, Accessories
-from django.urls import reverse
-from django.contrib.auth.models import User
+from counterparty.models import Manufacturer
+import json, pytest
+from core.tests.test_login import auto_login_user
 
 
 # Расходники
-class ConsumablesViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+class TestConsumablesEndpoints:
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_consumables = 149
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(number_of_consumables):
-            Consumables.objects.create(name='Christian %s' % consumables_num,
-                                       categories=Categories.objects.get(slug="some_category"))
-        assert Consumables.objects.count() == 149
+    endpoint = '/api/consumables/consumable/'
 
-    def test_context_data_in_list(self):
-        links = ['consumables:consumables_list', 'consumables:consumables_search']
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Расходники'},
-            {'data_key': 'searchlink', 'data_value': 'consumables:consumables_search'},
-            {'data_key': 'add', 'data_value': 'consumables:new-consumables'},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get('data_key') in resp.context)
-                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_consumables_list(self, auto_login_user):
+        Categories.objects.get_or_create(name='category_01', slug='category_01')
+        Manufacturer.objects.get_or_create(name='manufacturer')
+        cat = Categories.objects.get(name='category_01')
+        man = Manufacturer.objects.get(name='manufacturer')
+        Consumables.objects.bulk_create([
+            Consumables(name='01', categories=cat, manufacturer=man),
+            Consumables(name='02'),
+            Consumables(name='03'),
+        ])
+        client, user = auto_login_user()
+        response = client.get(
+            '/api/consumables/consumable_list/'
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == '01'
+        assert data[0]['categories']['name'] == 'category_01'
+        assert data[0]['categories']['slug'] == 'category_01'
+        assert data[0]['manufacturer']['name'] == 'manufacturer'
+        assert data[1]['name'] == '02'
+        assert data[2]['name'] == '03'
 
-    def test_context_data_in_detail(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Расходник'},
-            {'data_key': 'add', 'data_value': 'consumables:new-consumables'},
-            {'data_key': 'update', 'data_value': 'consumables:consumables-update'},
-            {'data_key': 'delete', 'data_value': 'consumables:consumables-delete'},
-        ]
-        Consumables.objects.create(name='Christian_detail', )
-        model = Consumables.objects.get(name='Christian_detail', )
-        resp = self.client.get(reverse('consumables:consumables-detail', kwargs={"pk": model.pk}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_consumables_list_2(self, auto_login_user):
+        Consumables.objects.bulk_create([
+            Consumables(name='01'),
+            Consumables(name='02'),
+            Consumables(name='03'),
+        ])
+        client, user = auto_login_user()
+        response = client.get(
+            self.endpoint
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == '01'
+        assert data[1]['name'] == '02'
+        assert data[2]['name'] == '03'
 
-    def test_pagination_is_ten(self):
-        links = ['consumables:consumables_list', 'consumables:consumables_search']
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['consumables_list']) == 20)
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):
+        client, user = auto_login_user()
+        expected_json = {
+            'name': '04',
+            #'room': room.id
+        }
 
-    def test_lists_all_consumables(self):
-        links = ['consumables:consumables_list', 'consumables:consumables_search']
-        for link in links:
-            resp = self.client.get(reverse(link) + '?page=8')
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['consumables_list']) == 9)
+        response = client.post(
+            self.endpoint,
+            data=expected_json,
+            format='json'
+        )
+        get_response = client.get(
+            '/api/consumables/consumable_list/'
+        )
+        data = json.loads(get_response.content)
+        assert response.status_code == 200
+        assert data[0]['name'] == '04'
+        #assert data[0]['room']['name'] == '01'
+        #assert data[0]['room']['floor'] == '01'
+        #assert data[0]['room']['building'] == 'Главное'
 
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name='10')
+        test_cons =Consumables.objects.get(name='10')
+        url = f'{self.endpoint}{test_cons.id}/'
 
-class ConsumablesCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+        response = client.get(url)
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_consumables = 149
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(number_of_consumables):
-            Consumables.objects.create(name='Christian %s' % consumables_num,
-                                       categories=Categories.objects.get(slug="some_category"))
-        assert Consumables.objects.count() == 149
-        assert Categories.objects.count() == 1
+        assert response.status_code == 200
+        assert json.loads(response.content)['name'] == '10'
 
-    def test_context_data_in_category(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Расходники'},
-            {'data_key': 'searchlink', 'data_value': 'consumables:consumables_search'},
-            {'data_key': 'add', 'data_value': 'consumables:new-consumables'},
-        ]
-        resp = self.client.get(
-            reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name='10')
+        test_cons =Consumables.objects.get(name='10')
+        url = f'{self.endpoint}{test_cons.id}/'
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse('consumables:category', kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['consumables_list']) == 20)
+        response = client.delete(url)
 
-    def test_lists_all_categories(self):
-        resp = self.client.get(reverse('consumables:category', kwargs={
-            "category_slug": Categories.objects.get(slug="some_category")}) + '?page=8')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['consumables_list']) == 9)
-
-
-# Комплектующие
-class AccessoriesViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
-
-    @classmethod
-    def setUpTestData(cls):
-        number_of_accessories = 149
-        AccCat.objects.create(name="some_category", slug="some_category")
-        for accessories_num in range(number_of_accessories):
-            Accessories.objects.create(name='Christian %s' % accessories_num,
-                                       categories=AccCat.objects.get(slug="some_category"))
-        assert Accessories.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ['consumables:accessories_list', 'consumables:accessories_search']
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Комплектующие'},
-            {'data_key': 'searchlink', 'data_value': 'consumables:accessories_search'},
-            {'data_key': 'add', 'data_value': 'consumables:new-accessories'},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get('data_key') in resp.context)
-                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {'data_key': 'add', 'data_value': 'consumables:new-accessories'},
-            {'data_key': 'update', 'data_value': 'consumables:accessories-update'},
-            {'data_key': 'delete', 'data_value': 'consumables:accessories-delete'},
-        ]
-        Accessories.objects.create(name='Christian-detail')
-        model = Accessories.objects.get(name='Christian-detail', )
-        resp = self.client.get(reverse('consumables:accessories-detail', kwargs={"pk": model.pk}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
-
-    def test_pagination_is_ten(self):
-        links = ['consumables:accessories_list', 'consumables:accessories_search']
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['accessories_list']) == 20)
-
-    def test_lists_all_accessories(self):
-        links = ['consumables:accessories_list', 'consumables:accessories_search']
-        for link in links:
-            resp = self.client.get(reverse(link) + '?page=8')
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['accessories_list']) == 9)
-
-
-class AccessoriesCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
-
-    @classmethod
-    def setUpTestData(cls):
-        number_of_accessories = 149
-        AccCat.objects.create(name="some_category", slug="some_category")
-        for accessories_num in range(number_of_accessories):
-            Accessories.objects.create(name='Christian %s' % accessories_num,
-                                       categories=AccCat.objects.get(slug="some_category"))
-        assert Accessories.objects.count() == 149
-        assert AccCat.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Комплектующие'},
-            {'data_key': 'searchlink', 'data_value': 'consumables:accessories_search'},
-            {'data_key': 'add', 'data_value': 'consumables:new-accessories'},
-        ]
-        resp = self.client.get(reverse('consumables:category_accessories',
-                                       kwargs={"category_slug": AccCat.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
-
-    def test_pagination_is_ten(self):
-        resp = self.client.get(reverse('consumables:category_accessories',
-                                       kwargs={"category_slug": AccCat.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['accessories_list']) == 20)
-
-    def test_lists_all_categories(self):
-        resp = self.client.get(reverse('consumables:category_accessories', kwargs={
-            "category_slug": AccCat.objects.get(slug="some_category")}) + '?page=8')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['accessories_list']) == 9)
+        assert response.status_code == 204
+        assert Consumables.objects.all().count() == 0
