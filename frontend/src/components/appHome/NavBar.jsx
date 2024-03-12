@@ -19,17 +19,17 @@ import useLogout from "../appAuth/Hooks/useLogout.jsx";
 
 
 const menu = [
-    {'title': "Главная", 'url_name': Home, 'url_path': '/', menu: []},
-    {'title': "Раб. места", 'url_name': IndexWorkplace, 'url_path': '/workplace', menu: WorkplaceContent},
-    {'title': "Устройства", 'url_name': ListDevice, 'url_path': '/device/list', menu: [] },
-    {'title': "Сотрудники", 'url_name': 'employee:employee_index', 'url_path': '/employee', menu: [] },
-    {'title': "Софт", 'url_name': 'software:software_index', 'url_path': '/software', menu: [] },
-    {'title': "ЭЦП", 'url_name': 'signature:signature_list', 'url_path': '/signature', menu: [] },
-    {'title': "Склад", 'url_name': IndexStock, 'url_path': '/stock', menu: StockContent },
-    {'title': "Расходники", 'url_name': 'consumables:consumables_list', 'url_path': '/consumables', menu: [] },
-    {'title': "Комплектующие", 'url_name': 'consumables:accessories_list', 'url_path': '/accessories', menu: [] },
-    {'title': "Контрагенты", 'url_name': 'counterparty:counterparty', 'url_path': '/counterparty', menu: [] },
-    {'title': "Баланс", 'url_name': 'accounting:accounting_index', 'url_path': '/accounting', menu: []},
+    {'title': "Главная", 'url_path': '/', menu: []},
+    {'title': "Раб. места", 'url_path': '/workplace', menu: WorkplaceContent},
+    {'title': "Устройства", 'url_path': '/device/list', menu: [] },
+    {'title': "Сотрудники",'url_path': '/employee', menu: [] },
+    {'title': "Софт", 'url_path': '/software', menu: [] },
+    {'title': "ЭЦП", 'url_path': '/signature', menu: [] },
+    {'title': "Склад", 'url_path':'/stock', menu: StockContent },
+    {'title': "Расходники", 'url_path': '/consumables/list', menu: [] },
+    {'title': "Комплектующие", 'url_path': '/accessories', menu: [] },
+    {'title': "Контрагенты", 'url_path': '/counterparty', menu: [] },
+    {'title': "Баланс", 'url_path': '/accounting', menu: []},
 ];
 
 const darkTheme = createTheme({

@@ -32,6 +32,8 @@ import ListManufacturer from "../appCounterparty/appManufacturer/ListManufacture
 import CreateManufacturer from "../appCounterparty/appManufacturer/CreateManufacturer";
 import RemoveManufacturer from "../appCounterparty/appManufacturer/RemoveManufacturer";
 import UpdateManufacturer from "../appCounterparty/appManufacturer/UpdateManufacturer";
+import IndexConsumables from "../appConsumables/IndexConsumables.jsx";
+import ListConsumables from "../appConsumables/Consumables/ListConsumables.jsx";
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -67,6 +69,9 @@ const Routers = createBrowserRouter([
     {path: "/counterparty/manufacturer/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateManufacturer/>}/>],},
     {path: "/counterparty/manufacturer/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateManufacturer/>}/>],},
     {path: "/counterparty/manufacturer/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveManufacturer/>}/>],},
+    //Consumables
+    {path: "/consumables", element: [<NavBar drawerWidth={customWidth} content={<IndexConsumables/>}/>],},
+    {path: "/consumables/list", element: [<NavBar drawerWidth={customWidth} content={<ListConsumables/>}/>],},
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
     //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
