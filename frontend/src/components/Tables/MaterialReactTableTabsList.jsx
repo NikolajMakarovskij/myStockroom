@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MaterialReactTableTabsList({columns, data, category, renderRowActionMenuItems, ...props}) {
+export default function MaterialReactTableTabsList({columns, data, category, renderRowActionMenuItems, renderDetailPanel, ...props}) {
     const [slug, setSlug] = useState(category ? category.slug : '')
     const [value, setValue] = useState(0);
 
@@ -53,8 +53,8 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
     return(
         <>
             <ThemeProvider theme={darkTheme}>
-                <Box sx={{ bgcolor: 'background.paper' }}>
-                    <AppBar position="static">
+                <Box sx={{ bgcolor: 'background.paper',  borderRadius: '3px'}}>
+                    <AppBar position="static" sx={{borderRadius: '3px'}}>
                         <Tabs
                             value={value}
                             onChange={handleChange}
@@ -73,6 +73,23 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
                     columns={columns}
                     data={data}
                     renderRowActionMenuItems={renderRowActionMenuItems}
+                    enableExpandAll={false} //disable expand all button
+                    muiDetailPanelProps={() => ({
+                        sx: (theme) => ({
+                            backgroundColor:
+                                theme.palette.mode === 'dark'
+                                    ? 'rgba(255,210,244,0.1)'
+                                        : 'rgba(0,0,0,0.1)',
+                        }),
+                    })}
+                    muiExpandButtonProps={({ row, table }) => ({
+                        onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+                        sx: {
+                            transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
+                            transition: 'transform 0.2s',
+                        },
+                    })}
+                    renderDetailPanel={renderDetailPanel}
                 />
             </CustomTabPanel>
             {category.map((cat, index) => (
@@ -81,6 +98,23 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
                         columns={columns}
                         data={data.filter(item => item.categories ? item.categories.slug.includes(cat.slug) : false)}
                         renderRowActionMenuItems={renderRowActionMenuItems}
+                                            enableExpandAll={false} //disable expand all button
+                    muiDetailPanelProps={() => ({
+                        sx: (theme) => ({
+                            backgroundColor:
+                                theme.palette.mode === 'dark'
+                                    ? 'rgba(255,210,244,0.1)'
+                                        : 'rgba(0,0,0,0.1)',
+                        }),
+                    })}
+                    muiExpandButtonProps={({ row, table }) => ({
+                        onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+                        sx: {
+                            transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
+                            transition: 'transform 0.2s',
+                        },
+                    })}
+                    renderDetailPanel={renderDetailPanel}
                     />
                 </CustomTabPanel>
             ))}
