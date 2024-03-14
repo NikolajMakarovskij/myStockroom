@@ -132,7 +132,6 @@ const ListAccessories = () => {
                             defaultCollapseIcon={<ExpandMoreIcon />}
                             defaultExpandIcon={<ChevronRightIcon />}
                         >
-                            row.original
                             <TreeItem nodeId="1" label="На балансе">
                                 <TableContainer component={Paper}>
                                     <Table>
