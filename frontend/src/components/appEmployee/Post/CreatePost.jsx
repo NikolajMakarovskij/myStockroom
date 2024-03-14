@@ -1,15 +1,15 @@
 import {React, useState, useEffect, useCallback} from 'react'
 import { Box, Button, Typography, TextField} from '@mui/material'
-import CustomTextField from "../../Forms/TextField";
+import CustomTextField from "../../Forms/TextField.jsx";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import AxiosInstanse from "../../Axios";
+import AxiosInstanse from "../../Axios.jsx";
 import {useNavigate, Link} from "react-router-dom";
-import LinearIndeterminate from "../../appHome/ProgressBar";
+import LinearIndeterminate from "../../appHome/ProgressBar.jsx";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import AutocompleteField from "../../Forms/AutocompleteField";
-import useInterval from "../../Hooks/useInterval";
+import AutocompleteField from "../../Forms/AutocompleteField.jsx";
+import useInterval from "../../Hooks/useInterval.jsx";
 import useCSRF from "../../Hooks/CSRF.jsx";
 import PrintError from "../../Errors/Error.jsx";
 
