@@ -23,17 +23,18 @@ const IndexStock = () => {
             <ThemeProvider theme={darkTheme}>
                 {StockContent.map((item) => (
                     <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
-                        <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5}}>
-                            <CardActionArea component={Link} to={item.url_path} element={item.url_name}>
+                        <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
+                        display: 'flex'}}>
+                            <CardActionArea component={Link} to={item.url_path} element={item.url_name}
+                                            sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <CardContent>
                                     <Typography gutterBottom   component="div">
                                         {item.title}
                                     </Typography>
                                 </CardContent>
                                 <CardMedia
-                                    sx={{ border: 0 }}
-                                    component="iframe"
-                                    height="140px"
+                                    sx={{ border: 0, minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120,}}
+                                    component="img"
                                     image={item.image}
                                     alt={item.title}
                                 />
