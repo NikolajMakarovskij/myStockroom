@@ -27,7 +27,7 @@ const menu = [
     {'title': "ЭЦП", 'url_path': '/signature', menu: [] },
     {'title': "Склад", 'url_path':'/stock', menu: StockContent },
     {'title': "Расходники", 'url_path': '/consumables/list', menu: [] },
-    {'title': "Комплектующие", 'url_path': '/accessories', menu: [] },
+    {'title': "Комплектующие", 'url_path': '/accessories/list', menu: [] },
     {'title': "Контрагенты", 'url_path': '/counterparty', menu: [] },
     {'title': "Баланс", 'url_path': '/accounting', menu: []},
 ];
