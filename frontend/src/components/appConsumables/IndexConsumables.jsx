@@ -3,6 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
 import ListConsumables from "./Consumables/ListConsumables.jsx";
+import ListAccessories from "./Accounting/ListAccessories.jsx";
 
 
 const darkTheme = createTheme({
@@ -14,7 +15,7 @@ const darkTheme = createTheme({
 const ConsumablesContent = [
     {'title': 'Расходники', 'url_path': '/consumables/list', 'url_name': ListConsumables, 'image': 'http://localhost/static/images/consumables.svg'},
     {'title': 'Группы расходников', 'url_path': '/post/list', 'url_name': 'ListPost', 'image': 'http://localhost/static/images/post.svg'},
-    {'title': 'Комплектующие', 'url_path': '/departament/list', 'url_name': 'ListDepartament', 'image': 'http://localhost/static/images/accessories.svg'},
+    {'title': 'Комплектующие', 'url_path': '/accessories/list', 'url_name': ListAccessories, 'image': 'http://localhost/static/images/accessories.svg'},
     {'title': 'Группы комплектующих', 'url_path': '/departament/list', 'url_name': 'ListDepartament', 'image': 'http://localhost/static/images/post.svg'},
 ];
 export {ConsumablesContent}
