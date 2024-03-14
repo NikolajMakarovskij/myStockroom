@@ -112,9 +112,9 @@ const ListConsumables = () => {
                 renderRowActionMenuItems={({
                         row,
                         menuActions = [
-                            //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
-                            //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
-                            //{'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
+                            {'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
+                            {'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},
+                            {'name': 'Удалить', 'path': `remove/${row.original.id}`, 'icon': <DeleteIcon/>, 'color': 'error',},
                         ], }) => [
                         menuActions.map(
                             (item, index) => (
