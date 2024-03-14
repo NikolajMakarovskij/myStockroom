@@ -132,7 +132,7 @@ const ListConsumables = () => {
                             defaultCollapseIcon={<ExpandMoreIcon />}
                             defaultExpandIcon={<ChevronRightIcon />}
                         >
-                        {(row.original.consumable.length==0) ? <Typography>Не числится</Typography> :
+                        {(row.original.consumable.length==0) ? <></> :
                             <TreeItem nodeId="1" label="На балансе">
                                 <TableContainer component={Paper}>
                                     <Table>
