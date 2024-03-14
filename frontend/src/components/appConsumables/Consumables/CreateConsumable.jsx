@@ -213,11 +213,7 @@ const CreateConsumable = () => {
                         </Box>
                     </Box>
                 </form>
-
-
     )
-
-
 }
 
 export default CreateConsumable
