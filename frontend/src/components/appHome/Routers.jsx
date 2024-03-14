@@ -37,7 +37,10 @@ import ListConsumables from "../appConsumables/Consumables/ListConsumables";
 import CreateConsumable from "../appConsumables/Consumables/CreateConsumable";
 import UpdateConsumable from "../appConsumables/Consumables/UpdateConsumable";
 import RemoveConsumables from "../appConsumables/Consumables/RemoveConsumables";
-import ListAccessories from "../appConsumables/Accounting/ListAccessories";
+import ListAccessories from "../appConsumables/Accessories/ListAccessories";
+import CreateAccessories from "../appConsumables/Accessories/CreateAccessories";
+import UpdateAccessories from "../appConsumables/Accessories/UpdateAccessories";
+import RemoveAccessories from "../appConsumables/Accessories/RemoveAccessories";
 
 
 
@@ -82,6 +85,9 @@ const Routers = createBrowserRouter([
     {path: "/consumables/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateConsumable/>}/>],},
     {path: "/consumables/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveConsumables/>}/>],},
     {path: "/accessories/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccessories/>}/>],},
+    {path: "/accessories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccessories/>}/>],},
+    {path: "/accessories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccessories/>}/>],},
+    {path: "/accessories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccessories/>}/>],},
 
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},

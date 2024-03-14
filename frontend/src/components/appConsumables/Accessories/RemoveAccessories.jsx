@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 });
 
-const RemoveConsumables = () => {
+const RemoveAccessories = () => {
     const CSRF = useCSRF()
     const conParam = useParams()
     const conId = conParam.id
@@ -25,7 +25,7 @@ const RemoveConsumables = () => {
 
     const GetData = useCallback(async () => {
         try {
-            await AxiosInstanse.get(`consumables/consumable/${conId}/`).then((res) => {
+            await AxiosInstanse.get(`consumables/accessories/${conId}/`).then((res) => {
                 setConsumable(res.data)
             })
         } catch (error) {
@@ -42,13 +42,13 @@ const RemoveConsumables = () => {
     const navigate = useNavigate()
 
     const submission = (data) => {
-        AxiosInstanse.delete(`consumables/consumable/${conId}/`,{
+        AxiosInstanse.delete(`consumables/accessories/${conId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
         .then((res) => {
-            navigate(`/consumables/list`)
+            navigate(`/accessories/list`)
         })
         .catch((error) => {
             setErrorEdit(error.response.data.detail)
@@ -58,7 +58,7 @@ const RemoveConsumables = () => {
             <>
                 <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                     <Typography>
-                        Удалить расходник {
+                        Удалить комплектующее {
                         loading ? <LinearIndeterminate/> :
                             error ? <PrintError error={error}/>
                                 :` ${consumable.name}`
@@ -69,7 +69,7 @@ const RemoveConsumables = () => {
                     <Box sx={{display:'flex', justifyContent:'center', width:'100%',  marginBottom:'10px'}}>
                         <ThemeProvider theme={darkTheme}>
                             <Typography>
-                                Вы уверены, что хотите удалить расходник {loading ? <LinearIndeterminate/> :
+                                Вы уверены, что хотите удалить комплектующее {loading ? <LinearIndeterminate/> :
                                     error ? <PrintError error={error}/>
                                         :` ${consumable.name}`
                                 }?
@@ -90,7 +90,7 @@ const RemoveConsumables = () => {
                                 marginTop='20px'
                             >
                                 <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' component={Link} to={`/consumables/list`}>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/accessories/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>
@@ -99,4 +99,4 @@ const RemoveConsumables = () => {
     )
 }
 
-export default RemoveConsumables
+export default RemoveAccessories
