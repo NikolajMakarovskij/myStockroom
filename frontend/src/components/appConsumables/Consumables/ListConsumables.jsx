@@ -10,7 +10,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper
+    Paper, Typography
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import {TreeView, TreeItem } from '@mui/x-tree-view';
@@ -132,6 +132,7 @@ const ListConsumables = () => {
                             defaultCollapseIcon={<ExpandMoreIcon />}
                             defaultExpandIcon={<ChevronRightIcon />}
                         >
+                        {(row.original.consumable.length==0) ? <Typography>Не числится</Typography> :
                             <TreeItem nodeId="1" label="На балансе">
                                 <TableContainer component={Paper}>
                                     <Table>
@@ -176,6 +177,8 @@ const ListConsumables = () => {
                                     </Table>
                                 </TableContainer>
                             </TreeItem>
+                        }
+                        {(row.original.device.length==0) ? <></> :
                             <TreeItem nodeId="2" label="Устройства">
                                 <TableContainer component={Paper}>
                                     <Table>
@@ -194,12 +197,12 @@ const ListConsumables = () => {
                                                     ))}
                                                 </TableCell>
                                             </TableRow>
-
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
                             </TreeItem>
-                            {/*<TreeItem nodeId="3" label="История использования">
+                        }
+                        {/*<TreeItem nodeId="3" label="История использования">
                                 <TableContainer component={Paper}>
                                     <Table>
                                         <TableHead>
