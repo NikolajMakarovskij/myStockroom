@@ -50,7 +50,7 @@ const CreateManufacturer = () => {
                 }
         })
         .then((res) => {
-            navigate(`/counterparty/manufacturer/list`)
+            navigate(`/manufacturer/list`)
         })
         .catch((error) => {
             setErrorEdit(error.response.data.detail)
@@ -107,7 +107,7 @@ const CreateManufacturer = () => {
                                 alignItems="center"
                             >
                                 <Button variant='contained' type='submit' >Сохранить</Button>
-                                <Button variant='contained' component={Link} to={`/counterparty/manufacturer/list`} >Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/manufacturer/list`} >Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>

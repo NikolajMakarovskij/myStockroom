@@ -49,7 +49,7 @@ const RemoveManufacturer = () => {
                 }
         })
         .then((res) => {
-            navigate(`/counterparty/manufacturer/list`)
+            navigate(`/manufacturer/list`)
         })
         .catch((error) => {
             setErrorEdit(error.response.data.detail)
@@ -92,7 +92,7 @@ const RemoveManufacturer = () => {
                                 marginTop='20px'
                             >
                                 <Button variant='contained' color='error' onClick={submission}>Удалить</Button>
-                                <Button variant='contained' component={Link} to={`/counterparty/manufacturer/list`}>Отмена</Button>
+                                <Button variant='contained' component={Link} to={`/manufacturer/list`}>Отмена</Button>
                             </Box>
                         </ThemeProvider>
                     </Box>

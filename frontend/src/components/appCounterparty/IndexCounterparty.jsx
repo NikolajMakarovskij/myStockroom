@@ -11,7 +11,7 @@ const darkTheme = createTheme({
 });
 
 const CounterpartyContent = [
-    {'title': 'Производители', 'url_path': '/counterparty/manufacturer/list', 'url_name': 'ListManufacturer', 'image': 'http://localhost/static/images/manufacturer.svg'},
+    {'title': 'Производители', 'url_path': '/manufacturer/list', 'url_name': 'ListManufacturer', 'image': 'http://localhost/static/images/manufacturer.svg'},
 
 ];
 export {CounterpartyContent}
