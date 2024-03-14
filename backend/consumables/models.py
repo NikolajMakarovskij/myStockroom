@@ -1,9 +1,6 @@
 import uuid
-
 from django.db import models
 from django.urls import reverse
-from datetime import datetime
-
 from core.utils import ModelMixin
 from counterparty.models import Manufacturer
 

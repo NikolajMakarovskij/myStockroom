@@ -34,7 +34,12 @@ import RemoveManufacturer from "../appCounterparty/appManufacturer/RemoveManufac
 import UpdateManufacturer from "../appCounterparty/appManufacturer/UpdateManufacturer";
 import IndexConsumables from "../appConsumables/IndexConsumables";
 import ListConsumables from "../appConsumables/Consumables/ListConsumables";
+import CreateConsumable from "../appConsumables/Consumables/CreateConsumable";
+import UpdateConsumable from "../appConsumables/Consumables/UpdateConsumable";
+import RemoveConsumables from "../appConsumables/Consumables/RemoveConsumables";
 import ListAccessories from "../appConsumables/Accounting/ListAccessories";
+
+
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -66,14 +71,18 @@ const Routers = createBrowserRouter([
     {path: "/post/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemovePost/>}/>],},
     //Counterparty
     {path: "/counterparty", element: [<NavBar drawerWidth={customWidth} content={<IndexCounterparty/>}/>],},
-    {path: "/counterparty/manufacturer/list", element: [<NavBar drawerWidth={customWidth} content={<ListManufacturer/>}/>],},
-    {path: "/counterparty/manufacturer/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateManufacturer/>}/>],},
-    {path: "/counterparty/manufacturer/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateManufacturer/>}/>],},
-    {path: "/counterparty/manufacturer/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveManufacturer/>}/>],},
+    {path: "/manufacturer/list", element: [<NavBar drawerWidth={customWidth} content={<ListManufacturer/>}/>],},
+    {path: "/manufacturer/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateManufacturer/>}/>],},
+    {path: "/manufacturer/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateManufacturer/>}/>],},
+    {path: "/manufacturer/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveManufacturer/>}/>],},
     //Consumables
     {path: "/consumables", element: [<NavBar drawerWidth={customWidth} content={<IndexConsumables/>}/>],},
     {path: "/consumables/list", element: [<NavBar drawerWidth={customWidth} content={<ListConsumables/>}/>],},
+    {path: "/consumables/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateConsumable/>}/>],},
+    {path: "/consumables/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateConsumable/>}/>],},
+    {path: "/consumables/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveConsumables/>}/>],},
     {path: "/accessories/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccessories/>}/>],},
+
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
     //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},

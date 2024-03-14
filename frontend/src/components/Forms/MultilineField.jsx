@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import {Controller} from 'react-hook-form'
 
 export default function MultilineField(props) {
-    const {label, placeholder, width,name, control} = props
+    const {label, placeholder, width,name, control, rows} = props
     return (
         
         <Controller
@@ -22,7 +22,7 @@ export default function MultilineField(props) {
             multiline
             onChange={onChange}
             value={value}
-            rows={1}
+            rows={rows}
             variant="standard"
             placeholder = {placeholder}
             error = {!!error}
