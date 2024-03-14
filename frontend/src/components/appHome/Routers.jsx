@@ -37,10 +37,18 @@ import ListConsumables from "../appConsumables/Consumables/ListConsumables";
 import CreateConsumable from "../appConsumables/Consumables/CreateConsumable";
 import UpdateConsumable from "../appConsumables/Consumables/UpdateConsumable";
 import RemoveConsumables from "../appConsumables/Consumables/RemoveConsumables";
+import ListConsumablesCategory from "../appConsumables/ConsumablesCategories/ListConsumablesCategory";
+import CreateConsumableCategory from "../appConsumables/ConsumablesCategories/CreateConsumableCategory";
+import UpdateConsumableCategory from "../appConsumables/ConsumablesCategories/UpdateConsumableCategory";
+import RemoveConsumableCategory from "../appConsumables/ConsumablesCategories/RemoveConsumableCategory";
 import ListAccessories from "../appConsumables/Accessories/ListAccessories";
 import CreateAccessories from "../appConsumables/Accessories/CreateAccessories";
 import UpdateAccessories from "../appConsumables/Accessories/UpdateAccessories";
 import RemoveAccessories from "../appConsumables/Accessories/RemoveAccessories";
+import ListAccessoriesCategory from "../appConsumables/AccessoriesCategories/ListAccessoriesCategory";
+import CreateAccessoriesCategory from "../appConsumables/AccessoriesCategories/CreateAccessoriesCategory";
+import UpdateAccessoriesCategory from "../appConsumables/AccessoriesCategories/UpdateAccessoriesCategory";
+import RemoveAccessoriesCategory from "../appConsumables/AccessoriesCategories/RemoveAccessoriesCategory";
 
 
 
@@ -84,11 +92,19 @@ const Routers = createBrowserRouter([
     {path: "/consumables/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateConsumable/>}/>],},
     {path: "/consumables/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateConsumable/>}/>],},
     {path: "/consumables/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveConsumables/>}/>],},
+    {path: "/consumables/categories/list", element: [<NavBar drawerWidth={customWidth} content={<ListConsumablesCategory/>}/>],},
+    {path: "/consumables/categories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateConsumableCategory/>}/>],},
+    {path: "/consumables/categories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateConsumableCategory/>}/>],},
+    {path: "/consumables/categories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveConsumableCategory/>}/>],},
+    //Accessories
     {path: "/accessories/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccessories/>}/>],},
     {path: "/accessories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccessories/>}/>],},
     {path: "/accessories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccessories/>}/>],},
     {path: "/accessories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccessories/>}/>],},
-
+    {path: "/accessories/categories/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccessoriesCategory/>}/>],},
+    {path: "/accessories/categories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccessoriesCategory/>}/>],},
+    {path: "/accessories/categories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccessoriesCategory/>}/>],},
+    {path: "/accessories/categories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccessoriesCategory/>}/>],},
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
     //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
