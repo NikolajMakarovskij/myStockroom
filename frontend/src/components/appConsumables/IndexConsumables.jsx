@@ -3,7 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
 import ListConsumables from "./Consumables/ListConsumables.jsx";
-import ListAccessories from "./Accounting/ListAccessories.jsx";
+import ListAccessories from "./Accessories/ListAccessories.jsx";
 
 
 const darkTheme = createTheme({
