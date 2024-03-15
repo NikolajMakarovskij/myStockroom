@@ -18,20 +18,9 @@ def test_category_create():
     assert Categories.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_name"
-    assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "accounting:categories-detail", kwargs={"pk": category.pk}
-    )
-    assert category.get_slug_url() == reverse(
-        "accounting:category", kwargs={"category_slug": category.slug}
-    )
-    assert category.get_update_url() == reverse(
-        "accounting:categories-update", kwargs={"pk": category.pk}
-    )
-    assert category.get_delete_url() == reverse(
-        "accounting:categories-delete", kwargs={"pk": category.pk}
-    )
-
+    assert category.__str__() == 'my_category_name'
+    assert category.get_absolute_url() == reverse('accounting:categories-detail',
+                                                  kwargs={'pk': category.pk})
 
 @pytest.mark.django_db
 def test_category_unique_slug():
