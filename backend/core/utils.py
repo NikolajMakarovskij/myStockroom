@@ -12,7 +12,6 @@ menu = [
     {'title': "Софт", 'url_name': 'software:software_index'},
     {'title': "ЭЦП", 'url_name': 'signature:signature_list'},
     {'title': "Склад", 'url_name': 'stockroom:stock_index'},
-    {'title': "Баланс", 'url_name': 'accounting:accounting_index'},
 ]
 
 

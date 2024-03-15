@@ -33,15 +33,6 @@ class Categories(ModelMixin, models.Model):
     def get_absolute_url(self):
         return reverse('accounting:categories-detail', args=[str(self.id)])
 
-    def get_slug_url(self):
-        return reverse('accounting:category', kwargs={'category_slug': self.slug})
-
-    def get_update_url(self):
-        return reverse('accounting:categories-update', args=[str(self.id)])
-
-    def get_delete_url(self):
-        return reverse('accounting:categories-delete', args=[str(self.id)])
-
     class Meta:
         verbose_name = 'Группа расходников'
         verbose_name_plural = 'Группы расходников'

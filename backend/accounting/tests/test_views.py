@@ -1,160 +1,171 @@
-from django.test import TestCase, Client
 from ..models import Categories, Accounting
-from django.urls import reverse
-from django.contrib.auth.models import User
+from consumables.models import Consumables, Accessories
+import json, pytest
+from core.tests.test_login import auto_login_user
 
 
-# Расходники
-class AccountingViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+class TestAccountingEndpoints:
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_consumables = 149
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(number_of_consumables):
-            Accounting.objects.create(name='Christian %s' % consumables_num,
-                                      categories=Categories.objects.get(slug="some_category"))
-        assert Accounting.objects.count() == 149
+    endpoint = '/api/accounting/accounting/'
 
-    def test_context_data_in_list(self):
-        links = ['accounting:accounting_list', 'accounting:accounting_search']
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Баланс'},
-            {'data_key': 'searchlink', 'data_value': 'accounting:accounting_search'},
-            {'data_key': 'add', 'data_value': 'accounting:new-accounting'},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get('data_key') in resp.context)
-                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_accounting_list(self, auto_login_user):
+        Categories.objects.get_or_create(name='category_01', slug='category_01')
+        cat = Categories.objects.get(name='category_01')
+        Accounting.objects.bulk_create([
+            Accounting(name='01', categories=cat, quantity=3, cost=2.79),
+            Accounting(name='02'),
+            Accounting(name='03'),
+        ])
+        client, user = auto_login_user()
+        response = client.get(
+            '/api/accounting/accounting_list/'
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == '01'
+        assert data[0]['categories']['name'] == 'category_01'
+        assert data[0]['categories']['slug'] == 'category_01'
+        assert data[0]['costAll'] == 8.37
+        assert data[1]['name'] == '02'
+        assert data[2]['name'] == '03'
 
-    def test_context_data_in_detail(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Расходник'},
-            {'data_key': 'add', 'data_value': 'accounting:new-accounting'},
-            {'data_key': 'update', 'data_value': 'accounting:accounting-update'},
-            {'data_key': 'delete', 'data_value': 'accounting:accounting-delete'},
-        ]
-        Accounting.objects.create(name='Christian_detail', )
-        model = Accounting.objects.get(name='Christian_detail', )
-        resp = self.client.get(reverse('accounting:accounting-detail', kwargs={"pk": model.pk}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_accounting_list_2(self, auto_login_user):
+        Accounting.objects.bulk_create([
+            Accounting(name='01'),
+            Accounting(name='02'),
+            Accounting(name='03'),
+        ])
+        client, user = auto_login_user()
+        response = client.get(
+            self.endpoint
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == '01'
+        assert data[1]['name'] == '02'
+        assert data[2]['name'] == '03'
 
-    def test_pagination_is_ten(self):
-        links = ['accounting:accounting_list', 'accounting:accounting_search']
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['accounting_list']) == 20)
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name='category_01', slug='category_01')
+        cat = Categories.objects.get(name='category_01')
+        expected_json = {
+            'name': '04',
+            'categories': cat.id,
+        }
 
-    def test_lists_all_accounting(self):
-        links = ['accounting:accounting_list', 'accounting:accounting_search']
-        for link in links:
-            resp = self.client.get(reverse(link) + '?page=8')
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['accounting_list']) == 9)
+        response = client.post(
+            self.endpoint,
+            data=expected_json,
+            format='json'
+        )
+        get_response = client.get(
+            '/api/accounting/accounting_list/'
+        )
+        data = json.loads(get_response.content)
+        assert response.status_code == 200
+        assert data[0]['name'] == '04'
+        assert data[0]['categories']['name'] == 'category_01'
+        assert data[0]['categories']['slug'] == 'category_01'
 
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):
+        client, user = auto_login_user()
+        Accounting.objects.get_or_create(name='10')
+        test_acc =Accounting.objects.get(name='10')
+        url = f'{self.endpoint}{test_acc.id}/'
 
-class AccountingCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+        response = client.get(url)
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_consumables = 149
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(number_of_consumables):
-            Accounting.objects.create(name='Christian %s' % consumables_num,
-                                      categories=Categories.objects.get(slug="some_category"))
-        assert Accounting.objects.count() == 149
-        assert Categories.objects.count() == 1
+        assert response.status_code == 200
+        assert json.loads(response.content)['name'] == '10'
 
-    def test_context_data_in_category(self):
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Баланс'},
-            {'data_key': 'searchlink', 'data_value': 'accounting:accounting_search'},
-            {'data_key': 'add', 'data_value': 'accounting:new-accounting'},
-        ]
-        resp = self.client.get(
-            reverse('accounting:category',
-                    kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get('data_key') in resp.context)
-            self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):
+        client, user = auto_login_user()
+        Accounting.objects.get_or_create(name='10')
+        test_acc = Accounting.objects.get(name='10')
+        url = f'{self.endpoint}{test_acc.id}/'
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse('accounting:category',
-                    kwargs={"category_slug": Categories.objects.get(slug="some_category")}))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['accounting_list']) == 20)
+        response = client.delete(url)
 
-    def test_lists_all_categories(self):
-        resp = self.client.get(reverse('accounting:category', kwargs={
-            "category_slug": Categories.objects.get(slug="some_category")}) + '?page=8')
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue('is_paginated' in resp.context)
-        self.assertTrue(resp.context['is_paginated'] is True)
-        self.assertTrue(len(resp.context['accounting_list']) == 9)
+        assert response.status_code == 204
+        assert Accounting.objects.all().count() == 0
 
 
-# Комплектующие
-class CategoriesViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(User.objects.get_or_create(username='user', is_superuser=True, is_staff=True)[0])
+class TestCategoryEndpoints:
 
-    @classmethod
-    def setUpTestData(cls):
-        number_of_accessories = 149
-        for accessories_num in range(number_of_accessories):
-            Categories.objects.create(name='Christian %s' % accessories_num, slug='Christian %s' % accessories_num)
-        assert Categories.objects.count() == 149
+    endpoint = '/api/accounting/accounting_category/'
 
-    def test_context_data_in_list(self):
-        links = ['accounting:categories_list', 'accounting:categories_search']
-        context_data = [
-            {'data_key': 'title', 'data_value': 'Категории'},
-            {'data_key': 'searchlink', 'data_value': 'accounting:categories_search'},
-            {'data_key': 'add', 'data_value': 'accounting:new-categories'},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get('data_key') in resp.context)
-                self.assertTrue(resp.context[each.get('data_key')] == each.get('data_value'))
+    @pytest.mark.django_db
+    def test_categories_list(self, auto_login_user):
+        Categories.objects.get_or_create(name='category_01', slug='category_01'),
+        Categories.objects.get_or_create(name='category_02', slug='category_02'),
+        Categories.objects.get_or_create(name='category_03', slug='category_03'),
+        client, user = auto_login_user()
+        response = client.get(
+            self.endpoint
+        )
+        data = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]['name'] == 'category_01'
+        assert data[0]['slug'] == 'category_01'
+        assert data[1]['name'] == 'category_02'
+        assert data[1]['slug'] == 'category_02'
+        assert data[2]['name'] == 'category_03'
+        assert data[2]['slug'] == 'category_03'
 
-    def test_pagination_is_ten(self):
-        links = ['accounting:categories_list', 'accounting:categories_search']
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['categories_list']) == 20)
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):
+        client, user = auto_login_user()
+        expected_json = {
+            'name': '04',
+            'slug': '04',
+        }
 
-    def test_lists_all_accessories(self):
-        links = ['accounting:categories_list', 'accounting:categories_search']
-        for link in links:
-            resp = self.client.get(reverse(link) + '?page=8')
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue('is_paginated' in resp.context)
-            self.assertTrue(resp.context['is_paginated'] is True)
-            self.assertTrue(len(resp.context['categories_list']) == 9)
+        response = client.post(
+            self.endpoint,
+            data=expected_json,
+            format='json'
+        )
+        get_response = client.get(
+            self.endpoint
+        )
+        data = json.loads(get_response.content)
+        assert response.status_code == 200
+        assert data[0]['name'] == '04'
+        assert data[0]['slug'] == '04'
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name='10', slug='10')
+        test_cat = Categories.objects.get(name='10')
+        url = f'{self.endpoint}{test_cat.id}/'
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['name'] == '10'
+        assert json.loads(response.content)['slug'] == '10'
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name='10')
+        test_cat =Categories.objects.get(name='10')
+        url = f'{self.endpoint}{test_cat.id}/'
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Categories.objects.all().count() == 0
+
+
+
