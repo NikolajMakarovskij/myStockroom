@@ -1,6 +1,10 @@
 import {
     MaterialReactTable,
+    MRT_GlobalFilterTextField,
+    MRT_TablePagination,
+    MRT_ToolbarAlertBanner,
 } from 'material-react-table';
+import { Box } from '@mui/material'
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 
 export default function MaterialReactTableList ({columns, data, ...props}) {
@@ -11,9 +15,13 @@ export default function MaterialReactTableList ({columns, data, ...props}) {
                 {...props}
                 columns={columns}
                 data={data}
+                muiTableBodyProps={{align: 'center'}}
+                muiTableFooterProps={{align: 'center'}}
+                muiTableHeadCellProps={{align: 'center'}}
+                muiTableBodyCellProps={{align: 'center'}}
                 localization={MRT_Localization_RU}
                 enableColumnResizing={true}
-                positionPagination='both'
+                positionPagination='bottom'
                 enableRowNumbers='true'
                 enableRowVirtualization='true'
                 enableRowActions
