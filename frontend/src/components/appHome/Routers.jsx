@@ -58,6 +58,10 @@ import ListAccountingCategory from "../appAccounting/AccountingCategories/ListAc
 import CreateAccountingCategory from "../appAccounting/AccountingCategories/CreateAccountingCategory";
 import UpdateAccountingCategory from "../appAccounting/AccountingCategories/UpdateAccountingCategory";
 import RemoveAccountingCategory from "../appAccounting/AccountingCategories/RemoveAccountingCategory";
+import IndexSignature from "../appSignature/IndexSignature";
+import IndexSoftware from "../appSoftware/IndexSoftware";
+import ListOS from "../appSoftware/OS/ListOS";
+import ListSofware from "../appSoftware/Software/ListSofware";
 
 
 
@@ -136,6 +140,13 @@ const Routers = createBrowserRouter([
     //{path: "/stock/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
     //{path: "/stock/device/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
     //{path: "/stock/device/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
+
+    // Signature
+    {path: "/signature", element: [<NavBar drawerWidth={customWidth} content={<IndexSignature/>}/>],},
+    // SOFT
+    {path: "/software", element: [<NavBar drawerWidth={customWidth} content={<IndexSoftware/>}/>],},
+    {path: "/software/list", element: [<NavBar drawerWidth={customWidth} content={<ListSofware/>}/>],},
+    {path: "/os/list", element: [<NavBar drawerWidth={customWidth} content={<ListOS/>}/>],},
 ]);
 
 export {Routers}

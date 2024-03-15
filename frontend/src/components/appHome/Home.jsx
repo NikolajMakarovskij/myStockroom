@@ -8,6 +8,7 @@ import ListDevice from "../appDevice/ListDevice";
 import IndexStock from "../appStock/IndexStock";
 import IndexCounterparty from "../appCounterparty/IndexCounterparty";
 import IndexAccounting from "../appAccounting/IndexAccounting";
+import IndexSignature from "../appSignature/IndexSignature.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,7 +23,7 @@ const HomeContent = [
     {'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
     {'title': "Устройства", 'url_path': '/device/list', 'url_name': ListDevice, 'image': 'http://localhost/static/images/device.svg'},
     {'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://localhost/static/images/software.svg'},
-    {'title': "ЭЦП", 'url_path': '/signature', 'url_name': 'core:index', 'image': 'http://localhost/static/images/signature.svg'},
+    {'title': "ЭЦП", 'url_path': '/signature', 'url_name': IndexSignature, 'image': 'http://localhost/static/images/signature.svg'},
     {'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://localhost/static/images/employee.svg'},
     {'title': "Баланс", 'url_path': '/accounting', 'url_name': IndexAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
 ];
