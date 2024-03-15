@@ -49,6 +49,15 @@ import ListAccessoriesCategory from "../appConsumables/AccessoriesCategories/Lis
 import CreateAccessoriesCategory from "../appConsumables/AccessoriesCategories/CreateAccessoriesCategory";
 import UpdateAccessoriesCategory from "../appConsumables/AccessoriesCategories/UpdateAccessoriesCategory";
 import RemoveAccessoriesCategory from "../appConsumables/AccessoriesCategories/RemoveAccessoriesCategory";
+import IndexAccounting from "../appAccounting/IndexAccounting";
+import ListAccounting from "../appAccounting/Accounting/ListAccounting";
+import CreateAccounting from "../appAccounting/Accounting/CreateAccounting";
+import UpdateAccounting from "../appAccounting/Accounting/UpdateAccounting";
+import RemoveAccounting from "../appAccounting/Accounting/RemoveAccounting";
+import ListAccountingCategory from "../appAccounting/AccountingCategories/ListAccountingCategory";
+import CreateAccountingCategory from "../appAccounting/AccountingCategories/CreateAccountingCategory";
+import UpdateAccountingCategory from "../appAccounting/AccountingCategories/UpdateAccountingCategory";
+import RemoveAccountingCategory from "../appAccounting/AccountingCategories/RemoveAccountingCategory";
 
 
 
@@ -105,6 +114,16 @@ const Routers = createBrowserRouter([
     {path: "/accessories/categories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccessoriesCategory/>}/>],},
     {path: "/accessories/categories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccessoriesCategory/>}/>],},
     {path: "/accessories/categories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccessoriesCategory/>}/>],},
+    //Accounting
+    {path: "/accounting", element: [<NavBar drawerWidth={customWidth} content={<IndexAccounting/>}/>],},
+    {path: "/accounting/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccounting/>}/>],},
+    {path: "/accounting/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccounting/>}/>],},
+    {path: "/accounting/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccounting/>}/>],},
+    {path: "/accounting/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccounting/>}/>],},
+    {path: "/accounting/categories/list", element: [<NavBar drawerWidth={customWidth} content={<ListAccountingCategory/>}/>],},
+    {path: "/accounting/categories/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateAccountingCategory/>}/>],},
+    {path: "/accounting/categories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccountingCategory/>}/>],},
+    {path: "/accounting/categories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccountingCategory/>}/>],},
     //Device
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
     //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},

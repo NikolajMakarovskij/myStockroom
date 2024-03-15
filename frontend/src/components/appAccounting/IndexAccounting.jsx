@@ -2,11 +2,8 @@ import * as React from 'react';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {Link } from "react-router-dom";
-import ListConsumables from "./Consumables/ListConsumables";
-import ListAccessories from "./Accessories/ListAccessories";
-import ListConsumablesCategory from "./ConsumablesCategories/ListConsumablesCategory";
-import ListAccessoriesCategory from "./AccessoriesCategories/ListAccessoriesCategory";
-
+import ListAccounting from "./Accounting/ListAccounting";
+import ListAccountingCategory from "./AccountingCategories/ListAccountingCategory";
 
 const darkTheme = createTheme({
   palette: {
@@ -14,19 +11,17 @@ const darkTheme = createTheme({
   },
 });
 
-const ConsumablesContent = [
-    {'title': 'Расходники', 'url_path': '/consumables/list', 'url_name': ListConsumables, 'image': 'http://localhost/static/images/consumables.svg'},
-    {'title': 'Группы расходников', 'url_path': '/consumables/categories/list', 'url_name': ListConsumablesCategory, 'image': 'http://localhost/static/images/categories.svg'},
-    {'title': 'Комплектующие', 'url_path': '/accessories/list', 'url_name': ListAccessories, 'image': 'http://localhost/static/images/accessories.svg'},
-    {'title': 'Группы комплектующих', 'url_path': '/accessories/categories/list', 'url_name': ListAccessoriesCategory, 'image': 'http://localhost/static/images/categories.svg'},
+const AccountingContent = [
+    {'title': 'Баланс', 'url_path': '/accounting/list', 'url_name': ListAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
+    {'title': 'Категории', 'url_path': '/accounting/categories/list', 'url_name': ListAccountingCategory, 'image': 'http://localhost/static/images/categories.svg'},
 ];
-export {ConsumablesContent}
+export {AccountingContent}
 
-const IndexConsumables = () => {
+const IndexAccounting = () => {
     return (
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
-                {ConsumablesContent.map((item) => (
+                {AccountingContent.map((item) => (
                     <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                             display: 'flex'}}>
@@ -54,4 +49,4 @@ const IndexConsumables = () => {
     )
 }
 
-export default IndexConsumables;
+export default IndexAccounting;
