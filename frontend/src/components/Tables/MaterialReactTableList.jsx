@@ -1,10 +1,6 @@
 import {
     MaterialReactTable,
-    MRT_GlobalFilterTextField,
-    MRT_TablePagination,
-    MRT_ToolbarAlertBanner,
 } from 'material-react-table';
-import { Box } from '@mui/material'
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
 
 export default function MaterialReactTableList ({columns, data, ...props}) {
