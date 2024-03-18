@@ -19,6 +19,7 @@ class StockDev (ModelMixin, models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
         db_index=True,
+        related_name='stock',
         help_text="Введите название устройства",
         verbose_name="Устройство"
         )

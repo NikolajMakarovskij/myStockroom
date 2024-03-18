@@ -151,6 +151,16 @@ class Device(ModelMixin, models.Model):
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе"
     )
+    cost = models.FloatField(
+        blank=True, default=0,
+        help_text="Введите стоимость",
+        verbose_name="стоимость, \u20bd"
+    )
+    resource = models.IntegerField(
+        blank=True, default=0,
+        help_text="Введите выработанный ресурс",
+        verbose_name="Выработанный ресурс"
+    )
     note = models.TextField(
         max_length=1000,
         blank=True, null=True,
