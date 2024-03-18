@@ -8,7 +8,6 @@ from django_select2.forms import ModelSelect2Widget, ModelSelect2MultipleWidget
 
 menu = [
     {'title': "Главная страница", 'url_name': 'core:index'},
-    {'title': "Устройства", 'url_name': 'device:device_list'},
     {'title': "Софт", 'url_name': 'software:software_index'},
     {'title': "ЭЦП", 'url_name': 'signature:signature_list'},
     {'title': "Склад", 'url_name': 'stockroom:stock_index'},
