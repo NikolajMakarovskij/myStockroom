@@ -4,7 +4,7 @@ import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from '@m
 import {Link } from "react-router-dom";
 
 import IndexWorkplace from "../appWorkplace/IndexWorkplace";
-import ListDevice from "../appDevice/ListDevice";
+import IndexDevice from "../appDevice/IndexDevice";
 import IndexStock from "../appStock/IndexStock";
 import IndexCounterparty from "../appCounterparty/IndexCounterparty";
 import IndexAccounting from "../appAccounting/IndexAccounting";
@@ -21,7 +21,7 @@ const HomeContent = [
     {'title': "Расходники", 'url_path': '/consumables', 'url_name': 'core:index', 'image': 'http://localhost/static/images/consumables.svg'},
     {'title': "Контрагенты", 'url_path': '/counterparty', 'url_name': IndexCounterparty, 'image': 'http://localhost/static/images/post.svg'},
     {'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
-    {'title': "Устройства", 'url_path': '/device/list', 'url_name': ListDevice, 'image': 'http://localhost/static/images/device.svg'},
+    {'title': "Устройства", 'url_path': '/device', 'url_name': IndexDevice, 'image': 'http://localhost/static/images/device.svg'},
     {'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://localhost/static/images/software.svg'},
     {'title': "ЭЦП", 'url_path': '/signature', 'url_name': IndexSignature, 'image': 'http://localhost/static/images/signature.svg'},
     {'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://localhost/static/images/employee.svg'},

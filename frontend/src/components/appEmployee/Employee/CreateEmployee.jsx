@@ -154,7 +154,7 @@ const CreateEmployee = () => {
                             options={post}
                             label='Выберите должность'
                             placeholder='Выберите должность'
-                            noOptionsText='Должность не обнаружен'
+                            noOptionsText='Должность не обнаружена'
                             optionLabel={(option) => `${option.name} (отдел: ${option.departament.name})`}
                         />
                         <AutocompleteField
@@ -166,7 +166,7 @@ const CreateEmployee = () => {
                             options={workplace}
                             label='Выберите рабочее место'
                             placeholder='Выберите рабочее место'
-                            noOptionsText='Рабочее место не обнаружен'
+                            noOptionsText='Рабочее место не обнаружено'
                             optionLabel={(option) => `${option.name} (кабинет: ${option.room.name} здание: ${option.room.building})`}
                         />
                         <CustomTextField

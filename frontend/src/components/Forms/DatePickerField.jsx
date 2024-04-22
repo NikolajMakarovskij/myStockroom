@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {Controller} from 'react-hook-form'
 
 export default function DatePickerField(props) {
-  const {label, control, width,name} = props
+  const {label, control, width,name, id} = props
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         
@@ -19,7 +19,8 @@ export default function DatePickerField(props) {
         }) => (
 
             <DatePicker 
-                    label={label}  
+                    label={label}
+                    id={id}
                     sx={{width:{width}}} 
                     onChange={onChange}
                     value={value}

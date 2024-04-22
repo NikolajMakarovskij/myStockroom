@@ -62,7 +62,7 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
                         >
                             <Tab label="Все"  {...a11yProps(0)}/>
                             {category.map((cat, index) => (
-                                <Tab label={cat.name} {...a11yProps(index+1)} />
+                                <Tab key={cat.slug} label={cat.name} {...a11yProps(index+1)} />
                             ))}
                         </Tabs>
                     </AppBar>

@@ -24,7 +24,11 @@ import ListEmployee from "../appEmployee/Employee/ListEmployee";
 import CreateEmployee from "../appEmployee/Employee/CreateEmployee";
 import UpdateEmployee from "../appEmployee/Employee/UpdateEmployee";
 import RemoveEmployee from "../appEmployee/Employee/RemoveEmployee";
-import ListDevice from "../appDevice/ListDevice";
+import IndexDevice from "../appDevice/IndexDevice";
+import ListDevice from "../appDevice/Device/ListDevice";
+import CreateDevice from "../appDevice/Device/CreateDevice";
+import UpdateDevice from "../appDevice/Device/UpdateDevice";
+import RemoveDevice from "../appDevice/Device/RemoveDevice";
 import IndexStock from "../appStock/IndexStock";
 import ListStockDevices from "../appStock/Devices/ListStockDevices";
 import IndexCounterparty from "../appCounterparty/IndexCounterparty";
@@ -129,10 +133,11 @@ const Routers = createBrowserRouter([
     {path: "/accounting/categories/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateAccountingCategory/>}/>],},
     {path: "/accounting/categories/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveAccountingCategory/>}/>],},
     //Device
+    {path: "/device", element: [<NavBar drawerWidth={customWidth} content={<IndexDevice/>}/>],},
     {path: "/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListDevice/>}/>],},
-    //{path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateRoom/>}/>],},
-    //{path: "/device/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
-    //{path: "/device/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
+    {path: "/device/list/create", element: [<NavBar drawerWidth={customWidth} content={<CreateDevice/>}/>],},
+    {path: "/device/list/edit/:id", element: [<NavBar drawerWidth={customWidth} content={<UpdateDevice/>}/>],},
+    {path: "/device/list/remove/:id", element: [<NavBar drawerWidth={customWidth} content={<RemoveDevice/>}/>],},
     //Stock
     {path: "/stock", element: [<NavBar drawerWidth={customWidth} content={<IndexStock/>}/>],},
     {path: "/stock/device/list", element: [<NavBar drawerWidth={customWidth} content={<ListStockDevices/>}/>],},
