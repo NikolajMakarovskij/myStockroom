@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import {Controller} from 'react-hook-form'
 
 export default function CustomTextField(props) {
-    const {label, width, placeholder, name, control, maxLength, type} = props
+    const {label, width, placeholder, name, control, maxLength, type, id} = props
     return (
       
         <Controller
@@ -19,7 +19,7 @@ export default function CustomTextField(props) {
                     sx={{width:{width}}}
                     onChange={onChange}
                     value={value}
-                    id="standard-basic"
+                    id={id}
                     label={label}
                     variant="standard"
                     type={type}

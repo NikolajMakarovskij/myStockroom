@@ -24,7 +24,7 @@ export default function SelectField(props) {
                         name = {name}
                         control = {control}
                         render= {({
-                            field:{onChange,value},
+                            field:{onChange, value},
                             fieldState:{error},
                             formState,
                         }) => (

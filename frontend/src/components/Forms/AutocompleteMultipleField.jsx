@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import LinearIndeterminate from "../appHome/ProgressBar.jsx";
 import PrintError from "../Errors/Error.jsx";
 
-export default function AutocompleteField(props) {
+export default function AutocompleteMultipleField(props) {
 
     const {label, optionLabel, name, id, control, placeholder, width, options, noOptionsText, loading, error} = props;
     const [value, setValues] = useState([]);
@@ -27,22 +27,34 @@ export default function AutocompleteField(props) {
                         }) => (
                             <FormControl variant="standard" sx={{width: {width}}}>
                                 <Autocomplete
+                                    multiple
+                                    filterSelectedOptions
+                                    id={id}
                                     name={name}
-                                    value={value ? options.find((option) => {
-                                        return value === option.id
-                                    }) ?? null : null}
                                     options={options}
                                     getOptionLabel={optionLabel}
-                                    isOptionEqualToValue={(option, value) => option.id === value}
+                                    // не получается осилить возврат массива из id, по умолчанию value задан как []
+                                    /*value={value ? options.find((option) => {
+                                        return value === option.id // не возвращает массив
+                                    }) ?? [] : []}*/
+                                    value={value ? value : []} // возвращает весь массив объектов
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
                                     noOptionsText={noOptionsText}
-                                    id={id}
                                     disableCloseOnSelect
                                     renderInput={(params) => (
-                                        <TextField {...params} label={label} placeholder={placeholder} value={value}
-                                                   variant="standard"/>
+                                        <TextField
+                                            {...params}
+                                            label={label}
+                                            placeholder={placeholder}
+                                            inputRef={ref}
+                                            value={value}
+                                            variant="standard"/>
                                     )}
-                                    onChange={(event, newValues) => {
-                                        onChange(newValues ? newValues.id : null)
+                                    onChange={(event, newValue) => {
+                                        onChange(newValue ?
+                                         newValue : [])
+
+
                                     }}
                                 />
                                 <FormHelperText sx={{color: "#d32f2f"}}> {error?.message} </FormHelperText>

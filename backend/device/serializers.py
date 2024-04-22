@@ -28,7 +28,7 @@ class DeviceListSerializer(serializers.ModelSerializer):
     workplace = WorkplaceListSerializer(read_only=True)
     categories = DeviceCatModelSerializer(read_only=True)
     manufacturer = ManufacturerSerializer(read_only=True)
-    consumables = ConsumablesListSerializer(many=True, read_only=True)
+    consumable = ConsumablesListSerializer(many=True, read_only=True)
     accessories = AccessoriesListModelSerializer(many=True, read_only=True)
     accounting = serializers.SerializerMethodField('get_accounting')
 
