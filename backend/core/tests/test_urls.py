@@ -1,14 +1,14 @@
 import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
-from .test_login import auto_login_user
+from .test_login import auto_login_user  # noqa: F401
 
 
 # index
 @pytest.mark.django_db
-def test_url_exists_at_desired_location(auto_login_user):
+def test_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
-    links = ['/home/']
+    links = ["/home/"]
     for link in links:
         url = link
         response = client.get(url)
@@ -16,13 +16,11 @@ def test_url_exists_at_desired_location(auto_login_user):
 
 
 @pytest.mark.django_db
-def test_urls(auto_login_user):
+def test_urls(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
-    links = [
-        {'link': 'core:index', 'template': 'index.html'}
-    ]
+    links = [{"link": "core:index", "template": "index.html"}]
     for each in links:
-        url = reverse(each.get('link'))
+        url = reverse(each.get("link"))
         response = client.get(url)
         assert response.status_code == 200
-        assertTemplateUsed(response, each.get('template'))
+        assertTemplateUsed(response, each.get("template"))

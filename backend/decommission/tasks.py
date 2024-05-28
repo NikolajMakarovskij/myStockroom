@@ -29,7 +29,9 @@ class DecomTasks(Decom):
                     categories=Decom.add_category_decom(device_id),
                     date=datetime.date.today(),
                 )
-            DevStock.create_history_device(device_id, quantity, username, status_choice, note=None)
+            DevStock.create_history_device(
+                device_id, quantity, username, status_choice, note=None
+            )
             StockDev.objects.filter(stock_model=device_id).delete()
         else:
             pass
@@ -43,7 +45,9 @@ class DecomTasks(Decom):
         device_id = str(device_id)
         if Decommission.objects.filter(stock_model=device_id):
             Decommission.objects.filter(stock_model=device_id).delete()
-            DevStock.create_history_device(device_id, quantity, username, status_choice, note=None)
+            DevStock.create_history_device(
+                device_id, quantity, username, status_choice, note=None
+            )
 
     # Disposal
     @shared_task()
@@ -68,7 +72,9 @@ class DecomTasks(Decom):
                     categories=Decom.add_category_disp(device_id),
                     date=datetime.date.today(),
                 )
-            DevStock.create_history_device(device_id, quantity, username, status_choice, note=None)
+            DevStock.create_history_device(
+                device_id, quantity, username, status_choice, note=None
+            )
             Decommission.objects.filter(stock_model=device_id).delete()
         else:
             pass
@@ -83,4 +89,6 @@ class DecomTasks(Decom):
         device_id = str(device_id)
         if Disposal.objects.filter(stock_model=device_id):
             Disposal.objects.filter(stock_model=device_id).delete()
-            DevStock.create_history_device(device_id, quantity, username, status_choice, note=None)
+            DevStock.create_history_device(
+                device_id, quantity, username, status_choice, note=""
+            )
