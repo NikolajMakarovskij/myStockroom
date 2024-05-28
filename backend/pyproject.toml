@@ -111,7 +111,7 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.mypy]
-mypy_path = "../backend"
+mypy_path = "./backend"
 follow_imports = "silent"
 strict_optional = true
 warn_redundant_casts = true
@@ -134,8 +134,19 @@ plugins = [
 [mypy-pyproj]
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = [
+    "import_export.*",
+    "rest_framework.*",
+    ]
+ignore_missing_imports = true
+
+
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
 ]
 pythonpath = "./backend"
+
+[tool.django-stubs]
+django_settings_module = "backend.settings.production"
