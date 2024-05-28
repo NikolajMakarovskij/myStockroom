@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   web:
     build: ./
@@ -80,5 +78,3 @@ services:
     depends_on:
       - redis
       - db
-
-
