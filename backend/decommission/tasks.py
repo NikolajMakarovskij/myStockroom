@@ -90,5 +90,5 @@ class DecomTasks(Decom):
         if Disposal.objects.filter(stock_model=device_id):
             Disposal.objects.filter(stock_model=device_id).delete()
             DevStock.create_history_device(
-                device_id, quantity, username, status_choice, note=""
+                device_id, quantity, username, status_choice, note=None
             )
