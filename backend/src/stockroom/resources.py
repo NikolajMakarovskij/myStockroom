@@ -1,3 +1,6 @@
+from import_export import fields, resources
+from import_export.widgets import ForeignKeyWidget
+
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -14,16 +17,10 @@ from stockroom.models.devices import CategoryDev, StockDev
 
 @dataclass
 class BaseStockResource(resources.ModelResource):
-    """_BaseStockResource_
-    Resource defines how consumables | accessories form the stockroom are mapped to their export representations and handle exporting data.
+    """Class with stock base methods"""
 
-    Other parameters:
-            stock_model (type | None): _ForeignKey model for category field_
-            stock_category (type | None): _ForeignKey model for manufacturer field_
-    """
-
-    stock_model: type | None = None
-    stock_category: type | None = None
+    stock_model: dict = None
+    stock_category: dict = None
 
     name = fields.Field(
         column_name="Название",
