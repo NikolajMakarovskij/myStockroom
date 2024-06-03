@@ -1,5 +1,5 @@
 from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
+from import_export.widgets import ForeignKeyWidget
 
 from dataclasses import dataclass
 from device.models import Device
@@ -14,75 +14,66 @@ from datetime import datetime
 @dataclass
 class BaseStockResource(resources.ModelResource):
     """Class with stock base methods"""
+
     stock_model: dict = None
     stock_category: dict = None
 
     name = fields.Field(
-        column_name='Название',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='name')
+        column_name="Название",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="name"),
     )
     categories = fields.Field(
-        column_name='Категория',
-        attribute='categories',
-        widget=ForeignKeyWidget(stock_category, field='name')
+        column_name="Категория",
+        attribute="categories",
+        widget=ForeignKeyWidget(stock_category, field="name"),
     )
     manufacturer = fields.Field(
-        column_name='Производитель',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='manufacturer__name')
+        column_name="Производитель",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="manufacturer__name"),
     )
     serial = fields.Field(
-        column_name='Серийный номер',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='serial')
+        column_name="Серийный номер",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="serial"),
     )
     serialImg = fields.Field(
-        column_name='Фото серийного номера',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='serialImg')
+        column_name="Фото серийного номера",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="serialImg"),
     )
     invent = fields.Field(
-        column_name='Инвентарный номер',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='invent')
+        column_name="Инвентарный номер",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="invent"),
     )
     inventImg = fields.Field(
-        column_name='Фото инвентарного номера',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='inventImg')
+        column_name="Фото инвентарного номера",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="inventImg"),
     )
     description = fields.Field(
-        column_name='Описание',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='description')
+        column_name="Описание",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="description"),
     )
     quantity = fields.Field(
-        column_name='Количество',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='quantity')
+        column_name="Количество",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="quantity"),
     )
     note = fields.Field(
-        column_name='Примечание',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='note')
+        column_name="Примечание",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="note"),
     )
     dateAddToStock = fields.Field(
-        column_name='Дата поступления на склад',
-        attribute='dateAddToStock'
+        column_name="Дата поступления на склад", attribute="dateAddToStock"
     )
-    dateInstall = fields.Field(
-        column_name="Дата установки",
-        attribute='dateInstall'
-    )
-    rack = fields.Field(
-        column_name="Стеллаж",
-        attribute='rack'
-    )
-    shelf = fields.Field(
-        column_name="Полка",
-        attribute='shelf'
-    )
+    dateInstall = fields.Field(column_name="Дата установки", attribute="dateInstall")
+    rack = fields.Field(column_name="Стеллаж", attribute="rack")
+    shelf = fields.Field(column_name="Полка", attribute="shelf")
 
 
 class StockDevResource(BaseStockResource):
@@ -90,24 +81,24 @@ class StockDevResource(BaseStockResource):
     stock_category = CategoryDev
 
     hostname = fields.Field(
-        column_name='Имя хоста',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='hostname')
+        column_name="Имя хоста",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="hostname"),
     )
     ip_address = fields.Field(
-        column_name='IP адрес',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='ip_address')
+        column_name="IP адрес",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="ip_address"),
     )
     workplace = fields.Field(
-        column_name='Рабочее место',
-        attribute='stock_model',
-        widget=ForeignKeyWidget(stock_model, field='workplace__name')
+        column_name="Рабочее место",
+        attribute="stock_model",
+        widget=ForeignKeyWidget(stock_model, field="workplace__name"),
     )
 
     class Meta:
         model = StockDev
-        exclude = ['stock_model']
+        exclude = ["stock_model"]
 
 
 class StockConResource(BaseStockResource):
@@ -116,7 +107,7 @@ class StockConResource(BaseStockResource):
 
     class Meta:
         model = Stockroom
-        exclude = ['stock_model']
+        exclude = ["stock_model"]
 
 
 class StockAccResource(BaseStockResource):
@@ -125,7 +116,7 @@ class StockAccResource(BaseStockResource):
 
     class Meta:
         model = StockAcc
-        exclude = ['stock_model']
+        exclude = ["stock_model"]
 
 
 class ConsumableConsumptionResource(resources.ModelResource):
@@ -148,19 +139,29 @@ class ConsumableConsumptionResource(resources.ModelResource):
         column_name="Расход за текущий год",
     )
     quantity = fields.Field(
-        column_name='Остаток',
-        attribute='quantity',
+        column_name="Остаток",
+        attribute="quantity",
     )
     require = fields.Field(
-        column_name='Потребность',
+        column_name="Потребность",
     )
 
     def get_queryset(self):
-        return self._meta.model.objects.order_by('stock_model').distinct('stock_model')
+        return self._meta.model.objects.order_by("stock_model").distinct("stock_model")
 
     class Meta:
         model = History
-        exclude = ['id', 'stock_model_id', 'device', 'deviceId', 'categories', 'dateInstall', 'user', 'status', 'note']
+        exclude = [
+            "id",
+            "stock_model_id",
+            "device",
+            "deviceId",
+            "categories",
+            "dateInstall",
+            "user",
+            "status",
+            "note",
+        ]
 
     @staticmethod
     def dehydrate_stock_model(history):
@@ -187,12 +188,12 @@ class ConsumableConsumptionResource(resources.ModelResource):
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
-                devices = ''
+                devices = ""
             else:
-                devices = consumable.device.all().order_by('name').distinct('name')
+                devices = consumable.device.all().order_by("name").distinct("name")
                 for device in devices:
                     device_list.append(device.name)
-                devices = '|'.join(device_list)
+                devices = "|".join(device_list)
         return devices
 
     @staticmethod
@@ -216,7 +217,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
         history = History.objects.all()
         unit_history_all = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
         )
         for unit in unit_history_all:
             quantity_all += unit.quantity
@@ -230,9 +231,9 @@ class ConsumableConsumptionResource(resources.ModelResource):
         history = History.objects.all()
         unit_history_last_year = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
             dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
-            dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31"
+            dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
         )
         for unit in unit_history_last_year:
             quantity_last_year += unit.quantity
@@ -246,9 +247,9 @@ class ConsumableConsumptionResource(resources.ModelResource):
         history = History.objects.all()
         unit_history_current_year = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
             dateInstall__gte=f"{int(cur_year.strftime('%Y'))}-01-01",
-            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31"
+            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31",
         )
         for unit in unit_history_current_year:
             quantity_current_year += unit.quantity
@@ -256,12 +257,14 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_require(history):
-        QCY = int(ConsumableConsumptionResource.dehydrate_quantity_current_year(history))
+        QCY = int(
+            ConsumableConsumptionResource.dehydrate_quantity_current_year(history)
+        )
         QLY = int(ConsumableConsumptionResource.dehydrate_quantity_last_year(history))
         QS = int(ConsumableConsumptionResource.dehydrate_quantity(history))
 
-        if QS <= 2*QLY:
-            requirement = abs(2*QLY-QS+QCY)
+        if QS <= 2 * QLY:
+            requirement = abs(2 * QLY - QS + QCY)
         else:
             requirement = 0
         return requirement
@@ -287,19 +290,33 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         column_name="Расход за текущий год",
     )
     quantity = fields.Field(
-        column_name='Остаток',
-        attribute='quantity',
+        column_name="Остаток",
+        attribute="quantity",
     )
     require = fields.Field(
-        column_name='Потребность',
+        column_name="Потребность",
     )
 
     def get_queryset(self):
-        return self._meta.model.objects.filter(status='Расход').order_by('stock_model').distinct('stock_model')
+        return (
+            self._meta.model.objects.filter(status="Расход")
+            .order_by("stock_model")
+            .distinct("stock_model")
+        )
 
     class Meta:
         model = HistoryAcc
-        exclude = ['id', 'stock_model_id', 'device', 'deviceId', 'categories', 'dateInstall', 'user', 'status', 'note']
+        exclude = [
+            "id",
+            "stock_model_id",
+            "device",
+            "deviceId",
+            "categories",
+            "dateInstall",
+            "user",
+            "status",
+            "note",
+        ]
 
     @staticmethod
     def dehydrate_stock_model(historyacc):
@@ -326,12 +343,12 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
-                devices = ''
+                devices = ""
             else:
-                devices = consumable.device.all().order_by('name').distinct('name')
+                devices = consumable.device.all().order_by("name").distinct("name")
                 for device in devices:
                     device_list.append(device.name)
-                devices = '|'.join(device_list)
+                devices = "|".join(device_list)
         return devices
 
     @staticmethod
@@ -355,7 +372,7 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         history = HistoryAcc.objects.all()
         unit_history_all = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
         )
         for unit in unit_history_all:
             quantity_all += unit.quantity
@@ -369,9 +386,9 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         history = HistoryAcc.objects.all()
         unit_history_last_year = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
             dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
-            dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31"
+            dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
         )
         for unit in unit_history_last_year:
             quantity_last_year += unit.quantity
@@ -385,9 +402,9 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         history = HistoryAcc.objects.all()
         unit_history_current_year = history.filter(
             stock_model_id=id_,
-            status='Расход',
+            status="Расход",
             dateInstall__gte=f"{int(cur_year.strftime('%Y'))}-01-01",
-            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31"
+            dateInstall__lte=f"{int(cur_year.strftime('%Y'))}-12-31",
         )
         for unit in unit_history_current_year:
             quantity_current_year += unit.quantity
@@ -395,12 +412,16 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_require(historyacc):
-        QCY = int(AccessoriesConsumptionResource.dehydrate_quantity_current_year(historyacc))
-        QLY = int(AccessoriesConsumptionResource.dehydrate_quantity_last_year(historyacc))
+        QCY = int(
+            AccessoriesConsumptionResource.dehydrate_quantity_current_year(historyacc)
+        )
+        QLY = int(
+            AccessoriesConsumptionResource.dehydrate_quantity_last_year(historyacc)
+        )
         QS = int(AccessoriesConsumptionResource.dehydrate_quantity(historyacc))
 
-        if QS <= 2*QLY:
-            requirement = abs(2*QLY-QS+QCY)
+        if QS <= 2 * QLY:
+            requirement = abs(2 * QLY - QS + QCY)
         else:
             requirement = 0
         return requirement

@@ -1,22 +1,19 @@
 import pytest
-from django.urls import reverse
-from pytest_django.asserts import assertTemplateUsed
-from core.tests.test_login import auto_login_user
-from ..models import Categories, Consumables, Accessories, AccCat
+from core.tests.test_login import auto_login_user  # noqa: F401
 
 
 # Расходники
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(auto_login_user):
+def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
-        '/api/consumables/consumable/',
-        '/api/consumables/consumable_list/',
-        '/api/consumables/consumable_category/',
-        '/api/consumables/accessories/',
-        '/api/consumables/accessories_list/',
-        '/api/consumables/accessories_category/',
+        "/api/consumables/consumable/",
+        "/api/consumables/consumable_list/",
+        "/api/consumables/consumable_category/",
+        "/api/consumables/accessories/",
+        "/api/consumables/accessories_list/",
+        "/api/consumables/accessories_category/",
     ]
     for link in links:
         url = link
