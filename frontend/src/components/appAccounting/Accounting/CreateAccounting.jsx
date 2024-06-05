@@ -1,5 +1,5 @@
-import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Typography, TextField} from '@mui/material'
+import {React, useState, useCallback} from 'react'
+import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -124,7 +124,7 @@ const CreateAccounting = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/accounting/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

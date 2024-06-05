@@ -15,7 +15,6 @@ export default function DatePickerField(props) {
         render= {({
             field:{onChange, value}, 
             fieldState:{error}, 
-            formState,
         }) => (
 
             <DatePicker 

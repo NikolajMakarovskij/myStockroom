@@ -76,7 +76,7 @@ const ListAccounting = () => {
         {
             accessorKey: `cost`,
             header: 'Стоимость',
-            Cell: ({renderCellValue, row}) => (
+            Cell: ({row}) => (
                 <NumericFormat
                     value={row.original.cost}
                     displayType={"text"}
@@ -90,7 +90,7 @@ const ListAccounting = () => {
         {
             accessorKey: 'costAll',
             header: 'Общая стоимость',
-            Cell: ({renderCellValue, row}) => (
+            Cell: ({row}) => (
                 <NumericFormat
                     value={row.original.costAll}
                     displayType={"text"}

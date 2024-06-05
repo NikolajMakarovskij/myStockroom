@@ -42,13 +42,13 @@ const RemoveRoom = () => {
     const navigate = useNavigate()
 
 
-    const submission = useCallback((data) => {
+    const submission = useCallback(() => {
         AxiosInstanse.delete(`workplace/room/${roomId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/room/list`)
         })
         .catch((error) => {

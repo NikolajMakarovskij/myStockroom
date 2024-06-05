@@ -17,15 +17,15 @@ const darkTheme = createTheme({
 });
 
 const HomeContent = [
-    {'title': "Склад", 'url_path': '/stock', 'url_name': IndexStock, 'image': 'http://localhost/static/images/warehouse.svg'},
-    {'title': "Расходники", 'url_path': '/consumables', 'url_name': 'core:index', 'image': 'http://localhost/static/images/consumables.svg'},
-    {'title': "Контрагенты", 'url_path': '/counterparty', 'url_name': IndexCounterparty, 'image': 'http://localhost/static/images/post.svg'},
-    {'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
-    {'title': "Устройства", 'url_path': '/device', 'url_name': IndexDevice, 'image': 'http://localhost/static/images/device.svg'},
-    {'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://localhost/static/images/software.svg'},
-    {'title': "ЭЦП", 'url_path': '/signature', 'url_name': IndexSignature, 'image': 'http://localhost/static/images/signature.svg'},
-    {'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://localhost/static/images/employee.svg'},
-    {'title': "Баланс", 'url_path': '/accounting', 'url_name': IndexAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
+    {key: 'stock', 'title': "Склад", 'url_path': '/stock', 'url_name': IndexStock, 'image': 'http://localhost/static/images/warehouse.svg'},
+    {key: 'consumables', 'title': "Расходники", 'url_path': '/consumables', 'url_name': 'core:index', 'image': 'http://localhost/static/images/consumables.svg'},
+    {key: 'counterparty', 'title': "Контрагенты", 'url_path': '/counterparty', 'url_name': IndexCounterparty, 'image': 'http://localhost/static/images/post.svg'},
+    {key: 'workplace', 'title': "Рабочие места", 'url_path': '/workplace', 'url_name': IndexWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
+    {key: 'device', 'title': "Устройства", 'url_path': '/device', 'url_name': IndexDevice, 'image': 'http://localhost/static/images/device.svg'},
+    {key: 'software', 'title': "Софт", 'url_path': '/software', 'url_name': 'core:index', 'image': 'http://localhost/static/images/software.svg'},
+    {key: 'signature', 'title': "ЭЦП", 'url_path': '/signature', 'url_name': IndexSignature, 'image': 'http://localhost/static/images/signature.svg'},
+    {key: 'employee', 'title': "Сотрудники", 'url_path': '/employee', 'url_name': 'core:index', 'image': 'http://localhost/static/images/employee.svg'},
+    {key: 'accounting', 'title': "Баланс", 'url_path': '/accounting', 'url_name': IndexAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
 ];
 
 
@@ -34,7 +34,7 @@ const Home = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {HomeContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                         display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

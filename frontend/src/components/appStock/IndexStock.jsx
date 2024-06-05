@@ -11,7 +11,7 @@ const darkTheme = createTheme({
 });
 
 const StockContent = [
-    {'title': 'Устройста', 'url_path': '/stock/device/list', 'url_name': ListStockDevices, 'image': 'http://localhost/static/images/device.svg'},
+    {key: "devices_stock", 'title': 'Устройста', 'url_path': '/stock/device/list', 'url_name': ListStockDevices, 'image': 'http://localhost/static/images/device.svg'},
     //{'title': 'Помещение', 'url_path': '/room/list', 'url_name': ListRoom, 'image': 'http://localhost/static/images/room.svg'},
 
 ];
@@ -22,7 +22,7 @@ const IndexStock = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {StockContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                         display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

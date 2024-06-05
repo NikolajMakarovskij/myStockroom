@@ -1,34 +1,30 @@
-import {React, useState, useCallback, useEffect,} from 'react'
+import {React, useState} from 'react'
 import {Box, Drawer, AppBar, CssBaseline, Toolbar, List, ListItem, ListItemButton, ListItemText, Button, IconButton,
     createTheme, ThemeProvider
 } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu'
-import Home from "./Home";
 import {Link, useLocation} from "react-router-dom";
 
-import IndexWorkplace from "../appWorkplace/IndexWorkplace";
 import {WorkplaceContent} from "../appWorkplace/IndexWorkplace";
-import ListDevice from "../appDevice/Device/ListDevice.jsx";
-import IndexStock from "../appStock/IndexStock.jsx";
-import {StockContent} from "../appStock/IndexStock.jsx";
-import AxiosInstanse from "../Axios";
+import {StockContent} from "../appStock/IndexStock";
+import {EmployeeContent} from "../appEmployee/IndexEmployee"
 import LoginApp from "../appAuth/LoginApp";
 import useSession from "../appAuth/Hooks/useSession.jsx";
-import PrintError from "../Errors/Error";
 import useLogout from "../appAuth/Hooks/useLogout.jsx";
 
 
 const menu = [
     {id: 'menu_item_1', title: "Главная", url_path: '/', menu: []},
     {id: 'menu_item_2', title: "Раб. места", url_path: '/workplace', menu: WorkplaceContent},
-    {id: 'menu_item_3', title: "Устройства", url_path: '/device/list', menu: [] },
-    {id: 'menu_item_4', title: "Софт", url_path: '/software', menu: [] },
-    {id: 'menu_item_5', title: "ЭЦП", url_path: '/signature', menu: [] },
-    {id: 'menu_item_6', title: "Склад", url_path:'/stock', menu: StockContent },
-    {id: 'menu_item_7', title: "Расходники", url_path: '/consumables/list', menu: [] },
-    {id: 'menu_item_8', title: "Комплектующие", url_path: '/accessories/list', menu: [] },
-    {id: 'menu_item_9', title: "Контрагенты", url_path: '/counterparty', menu: [] },
-    {id: 'menu_item_10', title: "Баланс", url_path: '/accounting', menu: []},
+    {id: 'menu_item_3', title: "Устройства", url_path: '/device', menu: []},
+    {id: 'menu_item_4', title: "Сотрудники", url_path: '/employee', menu: EmployeeContent },
+    {id: 'menu_item_5', title: "Софт", url_path: '/software', menu: [] },
+    {id: 'menu_item_6', title: "ЭЦП", url_path: '/signature', menu: [] },
+    {id: 'menu_item_7', title: "Склад", url_path:'/stock', menu: StockContent },
+    {id: 'menu_item_8', title: "Расходники", url_path: '/consumables/list', menu: [] },
+    {id: 'menu_item_9', title: "Комплектующие", url_path: '/accessories/list', menu: [] },
+    {id: 'menu_item_10', title: "Контрагенты", url_path: '/counterparty', menu: [] },
+    {id: 'menu_item_11', title: "Баланс", url_path: '/accounting', menu: []},
 ];
 
 const darkTheme = createTheme({
@@ -55,7 +51,7 @@ export default function NavBar(props) {
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
                 <List>
-                    {menu.map((res, index) => (
+                    {menu.map((res) => (
                         <ListItem key={res.id} disablePadding>
                             <ListItemButton key={`button_${res.id}`} component={Link} to={res.url_path} selected={res.url_path === path}>
                                 <ListItemText primary={res.title} />

@@ -1,4 +1,4 @@
-import {React, useEffect, useState, useCallback} from 'react'
+import {React, useEffect, useState} from 'react'
 import { Box, Button, Typography,} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
@@ -25,7 +25,6 @@ const UpdateConsumableCategory = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(null)
-    const [delay, setDelay] = useState(100)
 
     async function getCurrentData() {
         try {
@@ -36,7 +35,6 @@ const UpdateConsumableCategory = () => {
             })
         } catch (error) {
             setError(error.message);
-            setDelay(null)
         } finally {
             setLoading(false)
         }
@@ -78,7 +76,7 @@ const UpdateConsumableCategory = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/consumables/categories/list`)
         })
         .catch((error) => {

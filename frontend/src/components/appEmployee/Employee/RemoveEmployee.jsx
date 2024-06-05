@@ -41,13 +41,13 @@ const RemoveEmployee = () => {
 
     const navigate = useNavigate()
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`employee/employee/${emplId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/employee/list`)
         })
         .catch((error) => {

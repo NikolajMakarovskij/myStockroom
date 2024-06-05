@@ -1,12 +1,10 @@
-import {React, useCallback, useEffect, useState} from 'react'
+import {React, useCallback, useState} from 'react'
 import { Box, Button, Typography, Grid} from '@mui/material'
 import CustomTextField from '../Forms/TextField';
 import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {createTheme} from '@mui/material/styles';
 import AxiosInstanse from '../Axios';
-import {useNavigate, Link} from 'react-router-dom';
 import useCSRF from "../Hooks/CSRF";
 import PrintError from "../Errors/Error";
 
@@ -44,7 +42,7 @@ const LoginApp = () => {
                 }
             }
         )
-        .then((res) => {
+        .then(() => {
             window.location.href=(`/`);
         })
         .catch((error) => {

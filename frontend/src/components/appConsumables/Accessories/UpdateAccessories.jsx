@@ -1,4 +1,4 @@
-import {React, useEffect, useState, useCallback} from 'react'
+import {React, useEffect, useState,} from 'react'
 import { Box, Button, Typography,} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
@@ -135,7 +135,7 @@ const UpdateAccessories = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/accessories/list`)
         })
         .catch((error) => {

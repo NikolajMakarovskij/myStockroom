@@ -42,8 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MaterialReactTableTabsList({columns, data, category, renderRowActionMenuItems, renderDetailPanel, ...props}) {
-    const [slug, setSlug] = useState(category ? category.slug : '')
+export default function MaterialReactTableTabsList({columns, data, category, renderRowActionMenuItems, renderDetailPanel, }) {
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -93,7 +92,7 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
                 />
             </CustomTabPanel>
             {category.map((cat, index) => (
-                <CustomTabPanel value={value} index={index+1}>
+                <CustomTabPanel key={index+1} value={value} index={index+1}>
                     <MaterialReactTableList
                         columns={columns}
                         data={data.filter(item => item.categories ? item.categories.slug.includes(cat.slug) : false)}

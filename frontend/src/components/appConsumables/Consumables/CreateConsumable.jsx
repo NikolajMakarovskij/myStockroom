@@ -1,5 +1,5 @@
-import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Typography, TextField} from '@mui/material'
+import {React, useState, useCallback} from 'react'
+import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -19,20 +19,15 @@ const darkTheme = createTheme({
   },
 });
 
-const options = []
-
 const CreateConsumable = () => {
     const CSRF = useCSRF()
     const [cat, setCat] = useState()
     const [MF, setMF] = useState()
-    const [value, setValues] = useState(options.id)
     const [errorEdit, setErrorEdit] = useState(null)
     const [loadingCat, setLoadingCat] = useState(true)
     const [errorCat, setErrorCat] = useState(null)
-    const [errorEditCat, setErrorEditCat] = useState(null)
     const [loadingMF, setLoadingMF] = useState(true)
     const [errorMF, setErrorMF] = useState(null)
-    const [errorEditMF, setErrorEditMF] = useState(null)
     const [delay, setDelay] = useState(100)
     const navigate = useNavigate()
 
@@ -107,7 +102,7 @@ const CreateConsumable = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/consumables/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

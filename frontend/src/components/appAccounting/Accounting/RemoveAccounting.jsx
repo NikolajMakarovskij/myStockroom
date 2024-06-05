@@ -41,13 +41,13 @@ const RemoveAccounting = () => {
 
     const navigate = useNavigate()
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`accounting/accounting/${accontingId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/accounting/list`)
         })
         .catch((error) => {

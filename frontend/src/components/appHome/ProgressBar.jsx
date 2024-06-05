@@ -16,6 +16,7 @@ const BorderLinearProgress = styled(LinearProgress)(({theme}) => ({
 }));
 
 function LinearProgressWithLabel(props) {
+    const {value} = props;
     return(
         <Box sx={{ display: 'flex', alignItems: 'center'  }}>
             <Box sx={{ width: '100%', mr: 1 }}>
@@ -24,7 +25,7 @@ function LinearProgressWithLabel(props) {
             <Box>
                 <Typography variant='body2' color='text.secondary'>
                     {`${Math.round(
-                        props.value,
+                        value,
                     )}%`}
                 </Typography>
             </Box>
@@ -32,7 +33,7 @@ function LinearProgressWithLabel(props) {
     );
 }
 
-LinearProgressWithLabel.prototype = {
+LinearProgressWithLabel.PropTypes = {
     value: PropTypes.number.isRequired,
 };
 
@@ -57,10 +58,14 @@ export default function LinearWithValueLabel() {
 }
  */
 
-export default function LinearIndeterminate({width}) {
-  return (
-    <Box sx={{ width: {width} }}>
-      <LinearProgress color="inherit" />
-    </Box>
-  );
+export default function LinearIndeterminate(props) {
+    const {width} = props;
+    return (
+        <Box sx={{ width: {width} }}>
+            <LinearProgress color="inherit" />
+        </Box>
+    );
 }
+LinearIndeterminate.PropTypes = {
+    width: PropTypes.node.isRequired,
+};

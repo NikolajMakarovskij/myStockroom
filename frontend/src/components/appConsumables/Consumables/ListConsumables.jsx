@@ -10,7 +10,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper, Typography
+    Paper, //Typography
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import {TreeView, TreeItem } from '@mui/x-tree-view';
@@ -126,7 +126,7 @@ const ListConsumables = () => {
                             </MenuItem>
                         ))
                     ]}
-                renderDetailPanel={({ row, consumableColumns }) =>
+                renderDetailPanel={({ row }) =>
                     row.original.consumable ? (
                         <TreeView sx={{width: '100%'}}
                             defaultCollapseIcon={<ExpandMoreIcon />}
@@ -193,7 +193,7 @@ const ListConsumables = () => {
                                                 <TableCell >{row.original.device.length}</TableCell>
                                                 <TableCell >
                                                     {row.original.device.map((item, index) => (
-                                                        <TableRow>{item}</TableRow>
+                                                        <TableRow key={index}>{item}</TableRow>
                                                     ))}
                                                 </TableCell>
                                             </TableRow>

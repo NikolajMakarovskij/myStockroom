@@ -6,7 +6,7 @@ export default function useLogout() {
 
         const Logout = useCallback(async () => {
             await AxiosInstanse.get(`logout/`)
-                .then((res) => {
+                .then(() => {
                     window.location.href=(`/`);
                 })
                 .catch((err) => {

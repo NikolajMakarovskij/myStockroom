@@ -11,7 +11,7 @@ const darkTheme = createTheme({
 });
 
 const CounterpartyContent = [
-    {'title': 'Производители', 'url_path': '/manufacturer/list', 'url_name': 'ListManufacturer', 'image': 'http://localhost/static/images/manufacturer.svg'},
+    {key: 'manufacturer', 'title': 'Производители', 'url_path': '/manufacturer/list', 'url_name': 'ListManufacturer', 'image': 'http://localhost/static/images/manufacturer.svg'},
 
 ];
 export {CounterpartyContent}
@@ -21,7 +21,7 @@ const IndexCounterparty = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {CounterpartyContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                             display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}
