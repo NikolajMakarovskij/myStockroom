@@ -1,4 +1,5 @@
 import {React} from 'react'
+import PropTypes from "prop-types";
 import {Typography, Alert, AlertTitle} from '@mui/material';
 
 export default function PrintError({error, width}) {
@@ -19,3 +20,8 @@ export default function PrintError({error, width}) {
         </Alert>
     )
 }
+
+PrintError.propTypes = {
+    width: PropTypes.string,
+    error: PropTypes.node,
+};

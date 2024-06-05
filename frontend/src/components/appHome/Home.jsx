@@ -40,7 +40,7 @@ const Home = () => {
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}
                                             sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <CardContent>
-                                    <Typography gutterBottom   component="div">
+                                    <Typography gutterBottom component="div">
                                         {item.title}
                                     </Typography>
                                 </CardContent>

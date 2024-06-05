@@ -1,9 +1,10 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import {Controller} from 'react-hook-form'
+import PropTypes from "prop-types";
 
 export default function MultilineField(props) {
-    const {label, placeholder, width,name, control, rows, id} = props
+    const {label, placeholder, width, name, control, rows, id} = props
     return (
         <Controller
             name = {name}
@@ -29,3 +30,13 @@ export default function MultilineField(props) {
         />
     );
   }
+
+MultilineField.propTypes = {
+    label: PropTypes.string, 
+    placeholder: PropTypes.string, 
+    width: PropTypes.string,
+    name: PropTypes.string,
+    control: PropTypes.node,
+    rows: PropTypes.number,
+    id: PropTypes.string,
+}  
