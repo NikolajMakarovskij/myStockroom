@@ -120,3 +120,11 @@ export default function MaterialReactTableTabsList({columns, data, category, ren
         </>
     )
 };
+
+MaterialReactTableTabsList.propTypes = {
+    columns: PropTypes.node,
+    data: PropTypes.node, 
+    category: PropTypes.node, 
+    renderRowActionMenuItems: PropTypes.node, 
+    renderDetailPanel: PropTypes.node
+}

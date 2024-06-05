@@ -1,4 +1,5 @@
 import {React, useState} from 'react'
+import PropTypes from "prop-types";
 import {Box, Drawer, AppBar, CssBaseline, Toolbar, List, ListItem, ListItemButton, ListItemText, Button, IconButton,
     createTheme, ThemeProvider
 } from '@mui/material/';
@@ -130,3 +131,8 @@ export default function NavBar(props) {
         </div>
     );
 }
+
+NavBar.propTypes = {
+    drawerWidth: PropTypes.string,
+    content: PropTypes.string,
+};

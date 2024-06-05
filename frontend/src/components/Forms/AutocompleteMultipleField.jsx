@@ -4,6 +4,7 @@ import {Controller} from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import LinearIndeterminate from "../appHome/ProgressBar.jsx";
 import PrintError from "../Errors/Error.jsx";
+import PropTypes from "prop-types";
 
 export default function AutocompleteMultipleField(props) {
 
@@ -59,4 +60,18 @@ export default function AutocompleteMultipleField(props) {
             }
         </>
     );
+}
+
+AutocompleteMultipleField.propTypes = {
+    label: PropTypes.string,
+    optionLabel: PropTypes.node, 
+    name: PropTypes.string, 
+    id: PropTypes.string,
+    control: PropTypes.node, 
+    placeholder: PropTypes.string, 
+    width: PropTypes.string, 
+    options: PropTypes.node, 
+    noOptionsText: PropTypes.node, 
+    loading: PropTypes.bool, 
+    error: PropTypes.node,
 }

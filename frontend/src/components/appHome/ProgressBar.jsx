@@ -33,7 +33,7 @@ function LinearProgressWithLabel(props) {
     );
 }
 
-LinearProgressWithLabel.PropTypes = {
+LinearProgressWithLabel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
@@ -58,14 +58,13 @@ export default function LinearWithValueLabel() {
 }
  */
 
-export default function LinearIndeterminate(props) {
-    const {width} = props;
+export default function LinearIndeterminate({width}) {
     return (
         <Box sx={{ width: {width} }}>
             <LinearProgress color="inherit" />
         </Box>
     );
 }
-LinearIndeterminate.PropTypes = {
-    width: PropTypes.node.isRequired,
+LinearIndeterminate.propTypes = {
+    width: PropTypes.string,
 };

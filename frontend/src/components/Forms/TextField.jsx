@@ -1,6 +1,7 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import {Controller} from 'react-hook-form'
+import PropTypes from "prop-types";
 
 export default function CustomTextField(props) {
     const {label, width, placeholder, name, control, maxLength, type, id} = props
@@ -30,4 +31,15 @@ export default function CustomTextField(props) {
             }
         />
   );
+}
+
+CustomTextField.propTypes = {
+    label: PropTypes.string, 
+    width: PropTypes.string, 
+    placeholder: PropTypes.string, 
+    name: PropTypes.string, 
+    control: PropTypes.node, 
+    maxLength: PropTypes.number, 
+    type: PropTypes.string, 
+    id: PropTypes.string, 
 }

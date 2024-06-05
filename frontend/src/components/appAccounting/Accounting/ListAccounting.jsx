@@ -76,8 +76,10 @@ const ListAccounting = () => {
         {
             accessorKey: `cost`,
             header: 'Стоимость',
+            // eslint-disable-next-line react/prop-types
             Cell: ({row}) => (
                 <NumericFormat
+                // eslint-disable-next-line react/prop-types
                     value={row.original.cost}
                     displayType={"text"}
                     decimalSeparator=","
@@ -90,8 +92,10 @@ const ListAccounting = () => {
         {
             accessorKey: 'costAll',
             header: 'Общая стоимость',
+            // eslint-disable-next-line react/prop-types
             Cell: ({row}) => (
                 <NumericFormat
+                // eslint-disable-next-line react/prop-types
                     value={row.original.costAll}
                     displayType={"text"}
                     decimalSeparator=","

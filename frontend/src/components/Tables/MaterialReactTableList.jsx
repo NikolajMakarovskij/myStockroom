@@ -1,7 +1,9 @@
+import * as React from 'react';
 import {
     MaterialReactTable,
 } from 'material-react-table';
 import {MRT_Localization_RU} from 'material-react-table/locales/ru';
+import PropTypes from "prop-types";
 
 export default function MaterialReactTableList ({columns, data, ...props}) {
 
@@ -32,3 +34,8 @@ export default function MaterialReactTableList ({columns, data, ...props}) {
         </>
     )
 };
+
+MaterialReactTableList.propTypes = {
+    columns: PropTypes.node,
+    data: PropTypes.node, 
+}

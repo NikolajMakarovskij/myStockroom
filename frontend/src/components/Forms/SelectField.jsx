@@ -7,6 +7,7 @@ import {Controller} from 'react-hook-form'
 import FormHelperText from '@mui/material/FormHelperText';
 import LinearIndeterminate from "../appHome/ProgressBar.jsx";
 import PrintError from "../Errors/Error.jsx";
+import PropTypes from "prop-types";
 
 export default function SelectField(props) {
   
@@ -47,3 +48,17 @@ export default function SelectField(props) {
     </>
   );
 };
+
+SelectField.propTypes = {
+    options: PropTypes.node, 
+    loading: PropTypes.bool,
+    error: PropTypes.node,
+    label: PropTypes.string, 
+    width: PropTypes.string, 
+    placeholder: PropTypes.string, 
+    name: PropTypes.string, 
+    control: PropTypes.node, 
+    maxLength: PropTypes.number, 
+    type: PropTypes.string, 
+    id: PropTypes.string, 
+}

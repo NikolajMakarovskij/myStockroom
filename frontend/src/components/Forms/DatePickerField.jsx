@@ -3,6 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {Controller} from 'react-hook-form'
+import PropTypes from "prop-types";
 
 export default function DatePickerField(props) {
   const {label, control, width,name, id} = props
@@ -37,4 +38,12 @@ export default function DatePickerField(props) {
 
     </LocalizationProvider>
   );
+}
+
+DatePickerField.propTypes = {
+    label: PropTypes.string,
+    control: PropTypes.node,
+    width: PropTypes.string,
+    name: PropTypes.string,
+    id: PropTypes.string,
 }
