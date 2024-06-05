@@ -1,4 +1,4 @@
-import {React, useEffect, useMemo, useState, useCallback} from 'react'
+import {React, useMemo, useState} from 'react'
 import AxiosInstanse from "../../Axios.jsx";
 import {Link} from "react-router-dom";
 import {
@@ -18,26 +18,50 @@ import MaterialReactTableTabsList from "../../Tables/MaterialReactTableTabsList.
 import {TreeItem, TreeView} from "@mui/x-tree-view";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import useInterval from "../../Hooks/useInterval";
+import PrintError from "../../Errors/Error";
 
 
 const ListDevice = () => {
     const [device, setDevices] = useState()
     const [category, setCategory] = useState('')
     const [loading, setLoading] = useState(true)
+    const [loadingCategory, setLoadingCategory] = useState(true)
+    const [error, setError] = useState(false)
+    const [errorCategory, setErrorCategory] = useState(false)
+    const [delay, setDelay] = useState(100)
 
-    const GetData = useCallback(async () => {
-         await AxiosInstanse.get(`/device/device_list/`, {timeout: 1000*30}).then((res) => {
-            setDevices(res.data)
-        })
-    await AxiosInstanse.get(`/device/device_cat/`).then((res) => {
-            setCategory(res.data)
-            setLoading(false)
-        })
-    })
-
-    useEffect(() =>{
-        GetData();
-    },[])
+    useInterval(() => {
+        async function getDevices() {
+            try {
+                await AxiosInstanse.get(`/device/device_list/`, {timeout: 1000*30}).then((res) => {
+                    setDevices(res.data)
+                    setError(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setError(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoading(false);
+              }
+        }
+        async function getCategory() {
+            try {
+                await AxiosInstanse.get(`/device/device_cat/`).then((res) => {
+                    setCategory(res.data)
+                    setErrorCategory(null)
+                    setDelay(5000)
+                })
+              } catch (error) {
+                    setErrorCategory(error.message);
+                    setDelay(null)
+              } finally {
+                    setLoadingCategory(false);
+              }
+        }
+        Promise.all([getCategory(), getDevices()])
+    }, delay);
 
     const columns = useMemo(() => [
         {
@@ -90,7 +114,10 @@ const ListDevice = () => {
 
     return(
         <>
-            {loading ? <LinearIndeterminate/> :
+            {loadingCategory ? <LinearIndeterminate/> :
+                errorCategory ? <PrintError error={errorCategory}/> :
+                    loading ? <LinearIndeterminate/> :
+                        error ? <PrintError error={error}/> :
                 <MaterialReactTableTabsList
                     columns={columns}
                     data={device}
