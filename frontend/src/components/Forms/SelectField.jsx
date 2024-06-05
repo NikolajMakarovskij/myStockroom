@@ -57,8 +57,8 @@ SelectField.propTypes = {
     width: PropTypes.string, 
     placeholder: PropTypes.string, 
     name: PropTypes.string, 
-    control: PropTypes.node, 
-    maxLength: PropTypes.number, 
+    control: PropTypes.object, 
+    maxLength: PropTypes.string, 
     type: PropTypes.string, 
     id: PropTypes.string, 
 }

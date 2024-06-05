@@ -36,6 +36,6 @@ export default function MaterialReactTableList ({columns, data, ...props}) {
 };
 
 MaterialReactTableList.propTypes = {
-    columns: PropTypes.node,
-    data: PropTypes.node, 
+    columns: PropTypes.array,
+    data: PropTypes.array, 
 }

@@ -133,6 +133,6 @@ export default function NavBar(props) {
 }
 
 NavBar.propTypes = {
-    drawerWidth: PropTypes.string,
-    content: PropTypes.string,
+    drawerWidth: PropTypes.number,
+    content: PropTypes.object,
 };

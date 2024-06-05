@@ -53,13 +53,13 @@ export default function AutocompleteField(props) {
 
 AutocompleteField.propTypes = {
     label: PropTypes.string,
-    optionLabel: PropTypes.node, 
+    optionLabel: PropTypes.func, 
     name: PropTypes.string, 
     id: PropTypes.string,
-    control: PropTypes.node, 
+    control: PropTypes.object, 
     placeholder: PropTypes.string, 
     width: PropTypes.string, 
-    options: PropTypes.node, 
+    options: PropTypes.array, 
     noOptionsText: PropTypes.node, 
     loading: PropTypes.bool, 
     error: PropTypes.node,
