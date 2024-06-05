@@ -36,7 +36,7 @@ MultilineField.propTypes = {
     placeholder: PropTypes.string, 
     width: PropTypes.string,
     name: PropTypes.string,
-    control: PropTypes.node,
+    control: PropTypes.object,
     rows: PropTypes.number,
     id: PropTypes.string,
 }  

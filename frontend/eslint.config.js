@@ -5,23 +5,22 @@ import { fixupConfigRules } from "@eslint/compat";
 
 export default [
   {
-  files: ["src/**/*jsx"], 
-  languageOptions: {
-    parserOptions: {
-      settings: {
-        react: {
-          version: 'detect'
+    settings: { react: { version: "detect" } },
+    files: ["src/**/*jsx"], 
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
         },
       },
-      ecmaFeatures: {
-        jsx: true,
+      globals: {
+        ...globals.browser,
       },
     },
-    globals: {
-      ...globals.browser,
-    },
+    rules: {
     },
   },
   pluginJs.configs.recommended,
   ...fixupConfigRules(pluginReactConfig),
+
 ];

@@ -42,7 +42,7 @@ export default function DatePickerField(props) {
 
 DatePickerField.propTypes = {
     label: PropTypes.string,
-    control: PropTypes.node,
+    control: PropTypes.object,
     width: PropTypes.string,
     name: PropTypes.string,
     id: PropTypes.string,
