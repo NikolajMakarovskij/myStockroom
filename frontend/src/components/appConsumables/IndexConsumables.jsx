@@ -15,10 +15,10 @@ const darkTheme = createTheme({
 });
 
 const ConsumablesContent = [
-    {'title': 'Расходники', 'url_path': '/consumables/list', 'url_name': ListConsumables, 'image': 'http://localhost/static/images/consumables.svg'},
-    {'title': 'Группы расходников', 'url_path': '/consumables/categories/list', 'url_name': ListConsumablesCategory, 'image': 'http://localhost/static/images/categories.svg'},
-    {'title': 'Комплектующие', 'url_path': '/accessories/list', 'url_name': ListAccessories, 'image': 'http://localhost/static/images/accessories.svg'},
-    {'title': 'Группы комплектующих', 'url_path': '/accessories/categories/list', 'url_name': ListAccessoriesCategory, 'image': 'http://localhost/static/images/categories.svg'},
+    {key: 'consumables', 'title': 'Расходники', 'url_path': '/consumables/list', 'url_name': ListConsumables, 'image': 'http://localhost/static/images/consumables.svg'},
+    {key: 'consumables_groups','title': 'Группы расходников', 'url_path': '/consumables/categories/list', 'url_name': ListConsumablesCategory, 'image': 'http://localhost/static/images/categories.svg'},
+    {key: 'accessories','title': 'Комплектующие', 'url_path': '/accessories/list', 'url_name': ListAccessories, 'image': 'http://localhost/static/images/accessories.svg'},
+    {key: 'accessories_groups','title': 'Группы комплектующих', 'url_path': '/accessories/categories/list', 'url_name': ListAccessoriesCategory, 'image': 'http://localhost/static/images/categories.svg'},
 ];
 export {ConsumablesContent}
 
@@ -27,7 +27,7 @@ const IndexConsumables = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {ConsumablesContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                             display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

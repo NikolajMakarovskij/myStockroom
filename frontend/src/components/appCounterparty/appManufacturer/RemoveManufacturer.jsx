@@ -42,13 +42,13 @@ const RemoveManufacturer = () => {
     const navigate = useNavigate()
 
 
-    const submission = useCallback((data) => {
+    const submission = useCallback(() => {
         AxiosInstanse.delete(`counterparty/manufacturer/${mnfId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/manufacturer/list`)
         })
         .catch((error) => {

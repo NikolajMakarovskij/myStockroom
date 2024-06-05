@@ -1,5 +1,4 @@
-import axios, * as others from 'axios';
-import {React, useState, useCallback, useEffect} from "react"
+import axios from 'axios';
 
 const baseUrl = 'http://localhost/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';

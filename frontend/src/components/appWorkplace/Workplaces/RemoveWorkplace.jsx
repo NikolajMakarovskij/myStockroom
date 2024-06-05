@@ -41,13 +41,13 @@ const RemoveWorkplace = () => {
 
     const navigate = useNavigate()
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`workplace/workplace/${workplaceId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
             })
-        .then((res) => {
+        .then(() => {
             navigate(`/workplace/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

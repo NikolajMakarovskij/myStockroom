@@ -12,8 +12,8 @@ const darkTheme = createTheme({
 });
 
 const WorkplaceContent = [
-    {'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': ListWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
-    {'title': 'Помещение', 'url_path': '/room/list', 'url_name': ListRoom, 'image': 'http://localhost/static/images/room.svg'},
+    {key: "workplace" ,'title': 'Рабочие места', 'url_path': '/workplace/list', 'url_name': ListWorkplace, 'image': 'http://localhost/static/images/workplace.svg'},
+    {key:"room", 'title': 'Помещение', 'url_path': '/room/list', 'url_name': ListRoom, 'image': 'http://localhost/static/images/room.svg'},
 
 ];
 export {WorkplaceContent}
@@ -23,7 +23,7 @@ const IndexWorkplace = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {WorkplaceContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                         display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

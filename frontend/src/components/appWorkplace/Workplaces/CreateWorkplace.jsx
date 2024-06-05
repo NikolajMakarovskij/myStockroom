@@ -1,15 +1,13 @@
-import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Typography, TextField} from '@mui/material'
+import {React, useState, useCallback} from 'react'
+import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AxiosInstanse from "../../Axios";
 import {useNavigate, Link} from "react-router-dom";
-import LinearIndeterminate from "../../appHome/ProgressBar";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import AutocompleteField from "../../Forms/AutocompleteField";
-import Modal from "../../Modal/Modal";
 import useInterval from "../../Hooks/useInterval"
 import PrintError from "../../Errors/Error";
 import useCSRF from "../../Hooks/CSRF.jsx";
@@ -20,12 +18,11 @@ const darkTheme = createTheme({
   },
 });
 
-const options = []
+
 
 const CreateWorkplace = () => {
     const CSRF = useCSRF()
     const [room, setRooms] = useState()
-    const [value, setValues] = useState(options.id)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [errorEdit, setErrorEdit] = useState(null)
@@ -77,7 +74,7 @@ const CreateWorkplace = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/workplace/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

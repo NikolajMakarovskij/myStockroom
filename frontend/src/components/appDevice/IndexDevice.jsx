@@ -12,7 +12,7 @@ const darkTheme = createTheme({
 });
 
 const DeviceContent = [
-    {'title': 'Устройства', 'url_path': '/device/list', 'url_name': ListDevice, 'image': 'http://localhost/static/images/device.svg'},
+    {key: 'device_list', 'title': 'Устройства', 'url_path': '/device/list', 'url_name': ListDevice, 'image': 'http://localhost/static/images/device.svg'},
     //{'title': 'Группы', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/post.svg'},
 ];
 export {DeviceContent}
@@ -22,7 +22,7 @@ const IndexDevice = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {DeviceContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                         display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

@@ -14,9 +14,9 @@ const darkTheme = createTheme({
 });
 
 const EmployeeContent = [
-    {'title': 'Сотрудники', 'url_path': '/employee/list', 'url_name': ListEmployee, 'image': 'http://localhost/static/images/employee.svg'},
-    {'title': 'Должности', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/post.svg'},
-    {'title': 'Отделы', 'url_path': '/departament/list', 'url_name': ListDepartament, 'image': 'http://localhost/static/images/departament.svg'},
+    {key: 'employee', 'title': 'Сотрудники', 'url_path': '/employee/list', 'url_name': ListEmployee, 'image': 'http://localhost/static/images/employee.svg'},
+    {key: 'post', 'title': 'Должности', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/post.svg'},
+    {key: 'departament', 'title': 'Отделы', 'url_path': '/departament/list', 'url_name': ListDepartament, 'image': 'http://localhost/static/images/departament.svg'},
 
 ];
 export {EmployeeContent}
@@ -26,7 +26,7 @@ const IndexEmployee = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {EmployeeContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                         display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

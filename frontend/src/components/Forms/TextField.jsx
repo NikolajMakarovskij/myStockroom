@@ -13,7 +13,6 @@ export default function CustomTextField(props) {
             render={({
                 field:{onChange, value},
                 fieldState: { error },
-                formState,
             }) => (
                 <TextField
                     sx={{width:{width}}}

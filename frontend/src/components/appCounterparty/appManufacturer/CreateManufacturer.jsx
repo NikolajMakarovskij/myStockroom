@@ -49,7 +49,7 @@ const CreateManufacturer = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/manufacturer/list`)
         })
         .catch((error) => {

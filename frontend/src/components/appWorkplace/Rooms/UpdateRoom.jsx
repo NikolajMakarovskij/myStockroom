@@ -78,7 +78,7 @@ const UpdateRoom = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/room/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

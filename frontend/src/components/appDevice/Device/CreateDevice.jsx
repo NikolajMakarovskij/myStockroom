@@ -1,5 +1,5 @@
-import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Typography, TextField} from '@mui/material'
+import {React, useState, useCallback} from 'react'
+import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from "../../Forms/TextField";
 import {useForm} from 'react-hook-form'
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -20,15 +20,12 @@ const darkTheme = createTheme({
   },
 });
 
-const options = []
-
 const CreateDevice = () => {
     const CSRF = useCSRF()
     const [category, setCategory] = useState('')
     const [MF, setMF] = useState()
     const [cons, setCons] = useState()
     const [acc, setAcc] = useState()
-    const [value, setValues] = useState(options.id)
     const [loadingCategory, setLoadingCategory] = useState(true)
     const [loadingMF, setLoadingMF] = useState(true)
     const [loadingCons, setLoadingCons] = useState(true)
@@ -157,7 +154,7 @@ const CreateDevice = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/device/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

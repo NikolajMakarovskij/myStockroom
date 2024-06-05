@@ -41,13 +41,13 @@ const RemoveDepartament = () => {
 
     const navigate = useNavigate()
 
-    const submission = useCallback((data) => {
+    const submission = useCallback(() => {
         AxiosInstanse.delete(`employee/departament/${depId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/departament/list`)
         })
         .catch((error) => {

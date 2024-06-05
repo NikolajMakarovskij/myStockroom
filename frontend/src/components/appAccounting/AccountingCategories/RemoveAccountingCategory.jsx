@@ -41,13 +41,13 @@ const RemoveAccountingCategory = () => {
     const navigate = useNavigate()
 
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`accounting/accounting_category/${catId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
             })
-        .then((res) => {
+        .then(() => {
             navigate(`/accounting/categories/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

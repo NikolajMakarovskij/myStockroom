@@ -1,7 +1,7 @@
 import {React, useCallback, useState} from 'react'
 import { Box, Button, Typography} from '@mui/material'
 import CustomTextField from '../../Forms/TextField';
-import {useForm, Form} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import {createTheme, ThemeProvider} from '@mui/material/styles';
@@ -49,7 +49,7 @@ const CreateRoom = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/room/list`)
         })
         .catch((error) => {

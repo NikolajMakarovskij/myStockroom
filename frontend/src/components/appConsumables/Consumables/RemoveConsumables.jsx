@@ -41,13 +41,13 @@ const RemoveConsumables = () => {
 
     const navigate = useNavigate()
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`consumables/consumable/${conId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/consumables/list`)
         })
         .catch((error) => {

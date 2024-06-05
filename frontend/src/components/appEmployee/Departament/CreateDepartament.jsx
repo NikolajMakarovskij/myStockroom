@@ -43,7 +43,7 @@ const CreateDepartament = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/departament/list`)
         })
         .catch((error) => {

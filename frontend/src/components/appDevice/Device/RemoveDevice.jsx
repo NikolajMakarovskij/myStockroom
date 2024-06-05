@@ -41,13 +41,13 @@ const RemoveDevice = () => {
 
     const navigate = useNavigate()
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`device/device/${deviceId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/device/list`)
         })
         .catch((error) => {

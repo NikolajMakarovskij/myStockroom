@@ -94,7 +94,7 @@ export default function ListStockDevices() {
                             data={device}
                             category={category}
                             renderRowActionMenuItems={({
-                                row,
+                                //row,
                                 menuActions = [
                                         //{'name': 'Добавить', 'path': `create`, 'icon': <AddIcon/>, 'color': 'success',},
                                         //{'name': 'Редактировать', 'path': `edit/${row.original.id}`, 'icon': <EditIcon/>, 'color': 'primary',},

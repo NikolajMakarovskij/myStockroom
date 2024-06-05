@@ -41,13 +41,13 @@ const RemoveConsumableCategory = () => {
     const navigate = useNavigate()
 
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`consumables/consumable_category/${catId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
             })
-        .then((res) => {
+        .then(() => {
             navigate(`/consumables/categories/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

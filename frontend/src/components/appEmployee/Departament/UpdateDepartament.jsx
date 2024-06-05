@@ -69,7 +69,7 @@ const UpdateDepartament = () => {
                     'X-CSRFToken': CSRF
                 }
         })
-        .then((res) => {
+        .then(() => {
             navigate(`/departament/list`)
         })
         .catch((error) => {

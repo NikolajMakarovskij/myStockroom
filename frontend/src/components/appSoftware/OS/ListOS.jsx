@@ -1,5 +1,5 @@
 import {React} from 'react'
-import {Typography, Paper, Grid, Alert, AlertTitle} from '@mui/material';
+import {Typography, Grid, Alert, AlertTitle} from '@mui/material';
 
 const ListOS = () => {
     return (

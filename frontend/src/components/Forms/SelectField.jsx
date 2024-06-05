@@ -10,11 +10,7 @@ import PrintError from "../Errors/Error.jsx";
 
 export default function SelectField(props) {
   
-    const [age, setAge] = React.useState('');
     const {label, name, control, width, options, loading, error} = props
-    const handleChange = (event) => {
-        setAge(event.target.value);
-    };
 
     return (
         <>
@@ -26,7 +22,6 @@ export default function SelectField(props) {
                         render= {({
                             field:{onChange, value},
                             fieldState:{error},
-                            formState,
                         }) => (
                             <FormControl variant="standard" sx={{ width:{width}}}>
                                 <InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>
@@ -38,8 +33,8 @@ export default function SelectField(props) {
                                     error = {!!error}
                                 >
                                     {
-                                        options.map((option) =>(
-                                            <MenuItem value={option.id}>{option.name} </MenuItem>
+                                        options.map((option, index) =>(
+                                            <MenuItem key={index} value={option.id}>{option.name} </MenuItem>
                                         ))
                                     }
                                 </Select>
@@ -49,5 +44,6 @@ export default function SelectField(props) {
                     />
 
             }
+    </>
   );
-}
+};

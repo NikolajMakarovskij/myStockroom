@@ -41,13 +41,13 @@ const RemovePost = () => {
     const navigate = useNavigate()
 
 
-    const submission = (data) => {
+    const submission = () => {
         AxiosInstanse.delete(`employee/post/${postId}/`,{
             headers: {
                     'X-CSRFToken': CSRF
                 }
             })
-        .then((res) => {
+        .then(() => {
             navigate(`/post/list`)
         }).catch((error) => {
             setErrorEdit(error.response.data.detail)

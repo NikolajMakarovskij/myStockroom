@@ -1,8 +1,7 @@
-import {React, useState} from 'react'
-import {Typography, Alert, AlertTitle, Paper, styled} from '@mui/material';
+import {React} from 'react'
+import {Typography, Alert, AlertTitle} from '@mui/material';
 
 export default function PrintError({error, width}) {
-    const [value, setValue] = useState(error)
     return(
         <Alert
             sx={{width: {width}}}
@@ -14,7 +13,7 @@ export default function PrintError({error, width}) {
                 variant="h5"
             >
                 <AlertTitle>Error</AlertTitle>
-                {value}
+                {error}
             </Typography>
 
         </Alert>

@@ -12,8 +12,8 @@ const darkTheme = createTheme({
 });
 
 const AccountingContent = [
-    {'title': 'Баланс', 'url_path': '/accounting/list', 'url_name': ListAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
-    {'title': 'Категории', 'url_path': '/accounting/categories/list', 'url_name': ListAccountingCategory, 'image': 'http://localhost/static/images/categories.svg'},
+    {key: 'accounting', 'title': 'Баланс', 'url_path': '/accounting/list', 'url_name': ListAccounting, 'image': 'http://localhost/static/images/accounting.svg'},
+    {key: 'accounting_groups', 'title': 'Категории', 'url_path': '/accounting/categories/list', 'url_name': ListAccountingCategory, 'image': 'http://localhost/static/images/categories.svg'},
 ];
 export {AccountingContent}
 
@@ -22,7 +22,7 @@ const IndexAccounting = () => {
         <Grid container style={{marginLeft: "50px"}}>
             <ThemeProvider theme={darkTheme}>
                 {AccountingContent.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
+                    <Grid key={item.key} item xs={12} sm={6} md={4} style={{marginBottom: "80px"}}>
                         <Card sx={{minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5,
                             display: 'flex'}}>
                             <CardActionArea component={Link} to={item.url_path} element={item.url_name}

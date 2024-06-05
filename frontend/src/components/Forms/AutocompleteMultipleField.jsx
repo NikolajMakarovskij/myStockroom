@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React} from 'react';
 import {TextField, FormControl, FormHelperText} from '@mui/material';
 import {Controller} from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -8,10 +8,6 @@ import PrintError from "../Errors/Error.jsx";
 export default function AutocompleteMultipleField(props) {
 
     const {label, optionLabel, name, id, control, placeholder, width, options, noOptionsText, loading, error} = props;
-    const [value, setValues] = useState([]);
-    const handleChange = (event) => {
-        setValues(event.target.value);
-    };
 
     return (
         <>
@@ -23,7 +19,6 @@ export default function AutocompleteMultipleField(props) {
                         render={({
                             field: {onChange, value, name, ref},
                             fieldState: {error},
-                            formState,
                         }) => (
                             <FormControl variant="standard" sx={{width: {width}}}>
                                 <Autocomplete
