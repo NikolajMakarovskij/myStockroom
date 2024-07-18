@@ -19,3 +19,19 @@ repos:
     -   id: eslint
         additional_dependencies:
         -   eslint-plugin-react@7.34.2
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v1.8.0'
+    hooks:
+    -   id: mypy
+-   repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+        - id: isort
+          name: isort (python)
+        - id: isort
+          name: isort (cython)
+          types: [ cython ]
+        - id: isort
+          name: isort (pyi)
+          types: [ pyi ]
+

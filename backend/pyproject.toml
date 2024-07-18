@@ -53,6 +53,7 @@ lint = [
     "mypy==1.10.0",
     "pre-commit==3.7.1",
     "isort==5.13.2",
+    "setuptools>=71.0.1",
     "django-stubs>=5.0.0",
 ]
 test = [
