@@ -370,6 +370,8 @@ CREATE TABLE public.device_device (
     "inventImg" character varying(100),
     description text,
     quantity integer NOT NULL,
+    cost double precision NOT NULL,
+    resource double precision NOT NULL,
     note text,
     categories_id uuid,
     manufacturer_id uuid,
