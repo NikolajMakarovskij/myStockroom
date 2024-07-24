@@ -6,9 +6,9 @@ services:
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
-      - ./:/backend
-      - ./static:/home/backend/web/static
-      - ./media:/home/backend/web/mediafiles
+      - ./src:/backend/src
+      - ./src/static:/home/backend/web/static
+      - ./src/media:/home/backend/web/mediafiles
     expose:
       - 8010
     env_file:
@@ -31,8 +31,8 @@ services:
     build: ./nginx
     restart: always
     volumes:
-      - ./static:/home/backend/web/static
-      - ./media:/home/backend/web/mediafiles
+      - ./src/static:/home/backend/web/static
+      - ./src/media:/home/backend/web/mediafiles
     ports:
       - 80:80
     depends_on:
@@ -48,7 +48,7 @@ services:
       context: .
     command: celery -A backend worker -l info
     volumes:
-      - ./:/backend
+      - ./src:/backend/src
     env_file:
       - ./.env
     depends_on:
@@ -61,7 +61,7 @@ services:
     command: celery -A backend beat -l info
     restart: always
     volumes:
-      - .:/backend
+      - ./src:/backend/src
     env_file:
       - ./.env
     depends_on:
@@ -73,7 +73,7 @@ services:
     build: .
     command: celery -A backend flower --port=5555 --broker=redis://redis:6379/0
     volumes:
-      - .:/backend
+      - ./src:/backend/src
     env_file:
       - ./.env
     ports:
