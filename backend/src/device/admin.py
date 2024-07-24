@@ -1,15 +1,11 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin  # type: ignore [import-untyped]
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Device, DeviceCat
 
 
 @admin.register(Device)
 class DeviceAdmin(ImportExportModelAdmin):
-    """_DeviceAdmin_
-    Add model to admin panel
-    """
-
     list_display = [
         "name",
         "description",
@@ -36,10 +32,6 @@ class DeviceAdmin(ImportExportModelAdmin):
 
 @admin.register(DeviceCat)
 class DeviceCatAdmin(ImportExportModelAdmin):
-    """_DeviceCatAdmin_
-    Add categories model to admin panel
-    """
-
     list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}

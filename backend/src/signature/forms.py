@@ -9,16 +9,6 @@ from .models import Signature
 
 
 class ConWidget(BaseModelSelect2WidgetMixin):
-    """_ConWidget_
-    Autocomplete plugin for the consumable selection field
-
-    Returns:
-        empty_label (str): _value of empty_label_
-        model (Consumables):
-        querysets (Consumables): _returns querysets of model in form_
-        search_fields (list[str]): _fields of the model to search for are specified_
-    """
-
     empty_label = "--выбрать--"
     model = Consumables
     queryset = Consumables.objects.all().order_by("name")
@@ -35,16 +25,6 @@ class ConWidget(BaseModelSelect2WidgetMixin):
 
 
 class DeviceWidget(BaseModelSelect2WidgetMixin):
-    """_DeviceWidget_
-    Autocomplete plugin for the device selection field
-
-    Returns:
-        empty_label (str): _value of empty_label_
-        model (Device):
-        querysets (Device): _returns querysets of model in form_
-        search_fields (list[str]): _fields of the model to search for are specified_
-    """
-
     empty_label = "--выбрать--"
     model = Device
     queryset = Device.objects.all().order_by("name")
@@ -64,16 +44,6 @@ class DeviceWidget(BaseModelSelect2WidgetMixin):
 
 
 class EmployeeWidget(BaseModelSelect2WidgetMixin):
-    """_EmployeeWidget_
-    Autocomplete plugin for the employee selection field
-
-    Returns:
-        empty_label (str): _value of empty_label_
-        model (Employee):
-        querysets (Employee): _returns querysets of model in form_
-        search_fields (list[str]): _fields of the model to search for are specified_
-    """
-
     empty_label = "--выбрать--"
     model = Employee
     queryset = Employee.objects.all().order_by("name")
@@ -91,19 +61,8 @@ class EmployeeWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SignatureForm(forms.ModelForm):  # type: ignore[type-arg]
-    """_SignatureForm_"""
-
+class SignatureForm(forms.ModelForm):
     class Meta:
-        """_Class returns form of Signature model_
-
-        Returns:
-            model (Signature):
-            fields (list[str]): _returns fields of model in form_
-            widgets (dict[str,str]): _returns widgets of model in form_
-            error_messages (str): _returns error messages of model field in form_
-        """
-
         model = Signature
         fields = [
             "name",

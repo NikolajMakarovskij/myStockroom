@@ -7,13 +7,6 @@ from core.utils import ModelMixin
 
 
 class Room(ModelMixin, models.Model):
-    """_Room_:
-    Room model
-
-    Returns:
-       Room (Room): _description_
-    """
-
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
@@ -36,38 +29,20 @@ class Room(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Room __str__ _: _returns name of model_
-
-        Returns:
-            Room__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Room url_
-
-        Returns:
-            Room__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("workplace:room-detail", args=[str(self.id)])
 
     class Meta:
-        """_Room Meta_: _model settings_"""
-
         verbose_name = "Кабинет"
         verbose_name_plural = "Кабинеты"
         ordering = ["name", "building"]
 
 
 class Workplace(ModelMixin, models.Model):
-    """_Workplace_:
-    Workplace model
-
-    Returns:
-       Workplace (Workplace): _description_
+    """
+    Модель рабочего места. Используется в workstation
     """
 
     id = models.UUIDField(
@@ -89,27 +64,12 @@ class Workplace(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Workplace __str__ _: _returns name of model_
-
-        Returns:
-            Workplace__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Workplace url_
-
-        Returns:
-            Workplace__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("workplace:workplace-detail", args=[str(self.id)])
 
     class Meta:
-        """_Workplace Meta_: _model settings_"""
-
         verbose_name = "Рабочее место"
         verbose_name_plural = "Рабочие места"
         ordering = ["room__building", "name"]

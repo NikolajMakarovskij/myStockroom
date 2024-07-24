@@ -9,11 +9,8 @@ from counterparty.models import Manufacturer
 
 # Расходники
 class Categories(ModelMixin, models.Model):
-    """_Categories_:
-    Consumables categories model
-
-    Returns:
-        Categories (Categories): _description_
+    """
+    Модель группы для расходников.
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -29,38 +26,20 @@ class Categories(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Categories __str__ _: _returns name of model_
-
-        Returns:
-            Categories__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Categories get self url_
-
-        Returns:
-            Categories__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
         return reverse("consumables:category", kwargs={"category_slug": self.slug})
 
     class Meta:
-        """_Categories Meta_: _model settings_"""
-
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
 
 
 class Consumables(ModelMixin, models.Model):
-    """_Consumables_:
-    Consumables model
-
-    Returns:
-        Consumables (Consumables): _description_
+    """
+    Модель расходников
     """
 
     id = models.UUIDField(
@@ -138,40 +117,12 @@ class Consumables(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Consumables __str__ _: _returns name of model_
-
-        Returns:
-            Consumables__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Consumables url_
-
-        Returns:
-            Consumables__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("consumables:consumables-detail", args=[str(self.id)])
 
-    def get_difference(self) -> int:
-        """_Consumables get_difference_:
-        Returns the difference between the quantity on stock and in balance
-
-        Returns:
-            difference (int): _self.quantity - sum(self.consumable.quantity)_
-        """
-        quantity_all = 0
-        for each in self.consumable.all():  # type: ignore[attr-defined]
-            quantity_all += each.quantity
-        difference = self.quantity - quantity_all
-        return difference
-
     class Meta:
-        """_Consumables Meta_: _model settings_"""
-
         verbose_name = "Расходник"
         verbose_name_plural = "Расходники"
         ordering = ["name", "categories"]
@@ -183,11 +134,8 @@ class Consumables(ModelMixin, models.Model):
 
 # Комплектующие /// accessories
 class AccCat(ModelMixin, models.Model):
-    """_AccCat_:
-    Accessories categories model
-
-    Returns:
-        AccCat (AccCat): _description_
+    """
+    Модель группы для комплектующих.
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -203,40 +151,22 @@ class AccCat(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_AccCat __str__ _: _returns name of model_
-
-        Returns:
-            AccCat__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_AccCat get self url_
-
-        Returns:
-            AccCat__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
         return reverse(
             "consumables:category_accessories", kwargs={"category_slug": self.slug}
         )
 
     class Meta:
-        """_AccCat Meta_: _model settings_"""
-
         verbose_name = "Группа комплектующих"
         verbose_name_plural = "Группы комплектующих"
         ordering = ["name"]
 
 
 class Accessories(ModelMixin, models.Model):
-    """_Accessories_:
-    Accessories model
-
-    Returns:
-        Accessories (Accessories): _description_
+    """
+    Модель комплектующих
     """
 
     id = models.UUIDField(
@@ -314,40 +244,12 @@ class Accessories(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Accessories __str__ _: _returns name of model_
-
-        Returns:
-            Accessories__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Accessories get self url_
-
-        Returns:
-            Accessories__slug (str): _returns url by slug_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("consumables:accessories-detail", args=[str(self.id)])
 
-    def get_difference(self) -> int:
-        """_Accessories get_difference_:
-        Returns the difference between the quantity on stock and in balance
-
-        Returns:
-            difference (int): _self.quantity - sum(self.accessories.quantity)_
-        """
-        quantity_all = 0
-        for each in self.accessories.all():  # type: ignore[attr-defined]
-            quantity_all += each.quantity
-        difference = self.quantity - quantity_all
-        return difference
-
     class Meta:
-        """_Accessories Meta_: _model settings_"""
-
         verbose_name = "Комплектующее"
         verbose_name_plural = "Комплектующие"
         ordering = ["name", "categories"]

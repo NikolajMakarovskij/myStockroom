@@ -1,37 +1,60 @@
 from rest_framework import serializers
 
+from consumables.serializers import (
+    AccessoriesListModelSerializer,
+    ConsumablesListSerializer,
+)
+from counterparty.serializers import ManufacturerSerializer
+from workplace.serializers import WorkplaceListSerializer
+
 from .models import Device, DeviceCat
 
 
-class DeviceCatModelSerializer(serializers.ModelSerializer[DeviceCat]):
-    """_CategoriesModelSerializer_ Serialize the model of device categories to JSON"""
-
+class DeviceCatModelSerializer(serializers.ModelSerializer):
     class Meta:
-        """_Class returns JSON of device categories model_
-
-        Returns:
-            model (DeviceCat):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
-
         model = DeviceCat
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class DeviceModelSerializer(serializers.ModelSerializer[Device]):
-    """_ConsumablesModelSerializer_ Serialize the model of device to JSON"""
-
+class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
-        """_Class returns JSON of device model_
-
-        Returns:
-            model (Device):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
-
         model = Device
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
+
+
+class DeviceListSerializer(serializers.ModelSerializer):
+    queryset = Device.objects.all()
+    workplace = WorkplaceListSerializer(read_only=True)
+    categories = DeviceCatModelSerializer(read_only=True)
+    manufacturer = ManufacturerSerializer(read_only=True)
+    consumable = ConsumablesListSerializer(many=True, read_only=True)
+    accessories = AccessoriesListModelSerializer(many=True, read_only=True)
+    accounting = serializers.SerializerMethodField("get_accounting")
+
+    def get_queryset(self):
+        categories = self.request.categories
+        return Device.objects.filter(categories=categories)
+
+    class Meta:
+        model = Device
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
+
+    def get_accounting(self, obj=Meta.model):
+        from decommission.models import Decommission, Disposal
+        from stockroom.models.devices import StockDev
+
+        if not StockDev.objects.filter(stock_model=obj.id):
+            if not Decommission.objects.filter(stock_model=obj.id):
+                if not Disposal.objects.filter(stock_model=obj.id):
+                    account = "Н"
+                else:
+                    account = "У"
+            else:
+                account = "С"
+        else:
+            account = "Б"
+
+        return account

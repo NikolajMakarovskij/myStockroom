@@ -1,9 +1,16 @@
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
-    path("api/v1/auth/", include("rest_framework.urls")),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("select2/", include("django_select2.urls")),
     path("admin/", admin.site.urls),
 ]
@@ -14,11 +21,11 @@ urlpatterns += [
         include(("decommission.urls", "decommission"), namespace="decommission"),
     ),
     path(
-        "stockroom/",
+        "api/stockroom/",
         include(("stockroom.urls", "stockroom"), namespace="stockroom"),
     ),
     path(
-        "counterparty/",
+        "api/counterparty/",
         include(("counterparty.urls", "counterparty"), namespace="counterparty"),
     ),
     path(
@@ -26,15 +33,15 @@ urlpatterns += [
         include(("signature.urls", "signature"), namespace="signature"),
     ),
     path(
-        "device/",
+        "api/device/",
         include(("device.urls", "device"), namespace="device"),
     ),
     path(
-        "consumables/",
+        "api/consumables/",
         include(("consumables.urls", "consumables"), namespace="consumables"),
     ),
     path(
-        "accounting/",
+        "api/accounting/",
         include(("accounting.urls", "accounting"), namespace="accounting"),
     ),
     path(
@@ -42,15 +49,15 @@ urlpatterns += [
         include(("software.urls", "software"), namespace="software"),
     ),
     path(
-        "employee/",
+        "api/employee/",
         include(("employee.urls", "employee"), namespace="employee"),
     ),
     path(
-        "workplace/",
+        "api/workplace/",
         include(("workplace.urls", "workplace"), namespace="workplace"),
     ),
     path(
-        "home/",
+        "api/",
         include(("core.urls", "core"), namespace="core"),
     ),
 ]

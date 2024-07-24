@@ -12,32 +12,13 @@ from .models import Signature
 
 
 class SignatureListView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_SignatureListView_
-    List of signature instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Signature): _base model for list_
-    """
-
     permission_required = "signature.view_signature"
-    paginate_by = DataMixin.paginate
     model = Signature
     template_name = "signature/signature_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create signature_
-        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="ЭЦП",
@@ -48,11 +29,6 @@ class SignatureListView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Signature): _description_
-        """
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -83,29 +59,15 @@ class SignatureDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     DataMixin,
-    FormMixin,  # type: ignore[type-arg]
-    generic.DetailView,  # type: ignore[type-arg]
+    FormMixin,
+    generic.DetailView,
 ):
-    """_SignatureDetailView_
-    Detail of signature instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Signature): _base model for list_
-    """
-
     permission_required = "signature.view_signature"
     model = Signature
     template_name = "signature/signature_detail.html"
     form_class = ConsumableInstallForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete signature instance_
-        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="ЭЦП",
@@ -118,24 +80,8 @@ class SignatureDetailView(
 
 
 class SignatureCreate(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    CreateView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
 ):
-    """_SignatureCreate_
-    Create signature instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Signature): _base model for list_
-        form_class (SignatureForm): _form class to view_
-        success_message (str):
-        error_message (str):
-    """
-
     permission_required = "signature.add_signature"
     model = Signature
     form_class = SignatureForm
@@ -145,11 +91,6 @@ class SignatureCreate(
     error_message = "ЭЦП %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title_
-        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Добавить ЭЦП",
@@ -159,24 +100,8 @@ class SignatureCreate(
 
 
 class SignatureUpdate(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    UpdateView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
 ):
-    """_SignatureUpdate_
-    Update signature instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Signature): _base model for list_
-        form_class (SignatureForm): _form class to view_
-        success_message (str):
-        error_message (str):
-    """
-
     permission_required = "signature.change_signature"
     model = Signature
     template_name = "Forms/add.html"
@@ -186,12 +111,6 @@ class SignatureUpdate(
     error_message = "ЭЦП %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title_
-        """
-
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Редактировать ЭЦП",
@@ -200,25 +119,9 @@ class SignatureUpdate(
         return context
 
 
-class SignatureDelete(  # type: ignore[misc]
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    DeleteView,  # type: ignore[type-arg]
+class SignatureDelete(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
-    """_SignatureDelete_
-    Delete signature instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Signature): _base model for list_
-        success_url (str): _switches to url in case of successful deletion_
-        success_message (str):
-        error_message (str):
-    """
-
     permission_required = "signature.delete_signature"
     model = Signature
     template_name = "Forms/delete.html"
@@ -227,11 +130,6 @@ class SignatureDelete(  # type: ignore[misc]
     error_message = "ЭЦП не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to signature list_
-        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Удалить ЭЦП", selflink="signature:signature_list"

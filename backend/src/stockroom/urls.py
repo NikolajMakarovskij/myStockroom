@@ -47,7 +47,7 @@ from stockroom.views.index import StockroomIndexView
 from .routers import router
 
 urlpatterns = [
-    path("api/v1/", include(router.urls)),
+    path("", include(router.urls)),
     path("", StockroomIndexView.as_view(), name="stock_index"),
     # Consumables
     path("stockroom/", StockroomView.as_view(), name="stock_list"),

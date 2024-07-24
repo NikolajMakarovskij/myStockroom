@@ -19,32 +19,13 @@ from .tasks import DecomTasks
 
 # Decommission
 class DecommissionView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_DecommissionView_
-    List of Decommission instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Decommission): _base model for list_
-    """
-
     permission_required = "decommission.view_decommission"
-    paginate_by = DataMixin.paginate
     template_name = "decom/decom_list.html"
     model = Decommission
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
-        """
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
@@ -59,11 +40,6 @@ class DecommissionView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Decommission): _description_
-        """
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -82,32 +58,13 @@ class DecommissionView(
 
 
 class DecomCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_DecomCategoriesView_
-    List of Decommission instances filtered by categories
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Decommission): _base model for list_
-    """
-
     permission_required = "decommission.view_decommission"
-    paginate_by = DataMixin.paginate
     template_name = "decom/decom_list.html"
     model = Decommission
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
-        """
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
@@ -122,11 +79,6 @@ class DecomCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Decommission): _filtered by categories_
-        """
         object_list = Decommission.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         ).select_related(
@@ -138,17 +90,6 @@ class DecomCategoriesView(
 @login_required
 @permission_required("decommission.add_to_decommission", raise_exception=True)
 def add_decommission(request, device_id):
-    """_add_decommission_
-    View for the task "add_device_decom"
-
-    Args:
-        request (request): _description_
-        device_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to decommission list_
-    """
-
     from decommission.tasks import DecomTasks
 
     username = request.user.username
@@ -177,16 +118,6 @@ def add_decommission(request, device_id):
 @login_required
 @permission_required("decommission.remove_from_decommission", raise_exception=True)
 def remove_decommission(request, devices_id):
-    """_remove_decommission_
-    View for the task "remove_decommission"
-
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to decommission list_
-    """
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
     DecomTasks.remove_decom(
@@ -202,19 +133,7 @@ def remove_decommission(request, devices_id):
 
 
 class ExportDecomDevice(View):
-    """_ExportDecomDevice_
-    Returns an Excel file with all records of Decommission from the database
-    """
-
     def get(self, *args, **kwargs):
-        """extracts all records of Decommission from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
-        """
         resource = DecommissionResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -228,34 +147,17 @@ class ExportDecomDevice(View):
 
 
 class ExportDecomDeviceCategory(View):
-    """_ExportConsumableCategory_
-    Returns an Excel file with filtered records by categories of Decommission from the database
-    """
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to decommission list_
-        """
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
             cache.set("cat_decom", cat_decom, 300)
-        context = super().get_context_data(**kwargs)  # type: ignore[misc]
-        c_def = self.get_user_context(menu_categories=cat_decom)  # type: ignore[attr-defined]
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_decom)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        """extracts filtered records by categories of Decommission from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
-        """
         queryset = Decommission.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -273,32 +175,13 @@ class ExportDecomDeviceCategory(View):
 
 # Disposal
 class DisposalView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_DisposalView_
-    List of Disposal instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Disposal): _base model for list_
-    """
-
     permission_required = "decommission.view_disposal"
-    paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
     model = Disposal
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
-        """
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
             cat_disp = CategoryDis.objects.all()
@@ -313,11 +196,6 @@ class DisposalView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Disposal): _description_
-        """
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -336,32 +214,13 @@ class DisposalView(
 
 
 class DispCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_DispCategoriesView_
-    List of Disposal instances filtered by categories
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Disposal): _base model for list_
-    """
-
     permission_required = "decommission.view_disposal"
-    paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
     model = Disposal
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
-        """
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
             cat_disp = CategoryDis.objects.all()
@@ -376,11 +235,6 @@ class DispCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Disposal): _filtered by categories_
-        """
         object_list = Disposal.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         ).select_related(
@@ -392,16 +246,6 @@ class DispCategoriesView(
 @login_required
 @permission_required("decommission.add_to_disposal", raise_exception=True)
 def add_disposal(request, devices_id):
-    """_add_disposal_
-    View for the task "add_device_disp"
-
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to disposal list_
-    """
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
 
@@ -428,17 +272,6 @@ def add_disposal(request, devices_id):
 @login_required
 @permission_required("decommission.remove_from_disposal", raise_exception=True)
 def remove_disposal(request, devices_id):
-    """_remove_disposal_
-    View for the task "remove_disp"
-
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to disposal list_
-    """
-
     username = request.user.username
     device = get_object_or_404(Device, id=devices_id)
     DecomTasks.remove_disp.delay(
@@ -454,19 +287,7 @@ def remove_disposal(request, devices_id):
 
 
 class ExportDispDevice(View):
-    """_ExportDecomDevice_
-    Returns an Excel file with all records of Disposal from the database
-    """
-
     def get(self, *args, **kwargs):
-        """extracts all records of Disposal from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (DisposalResource): _dict of Disposal for export into an xlsx file_
-        """
         resource = DisposalResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -480,34 +301,17 @@ class ExportDispDevice(View):
 
 
 class ExportDispDeviceCategory(View):
-    """_ExportConsumableCategory_
-    Returns an Excel file with filtered records by categories of Disposal from the database
-    """
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to disposal list_
-        """
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
             cat_disp = CategoryDis.objects.all()
             cache.set("cat_disp", cat_disp, 300)
-        context = super().get_context_data(**kwargs)  # type: ignore[misc]
-        c_def = self.get_user_context(menu_categories=cat_disp)  # type: ignore[attr-defined]
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=cat_disp)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        """extracts filtered records by categories of Disposal from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (DisposalResource): _dict of Disposal for export into an xlsx file_
-        """
         queryset = Disposal.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )

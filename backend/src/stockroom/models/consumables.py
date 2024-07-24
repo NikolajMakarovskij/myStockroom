@@ -9,13 +9,10 @@ from core.utils import ModelMixin
 
 # Consumables
 class Stockroom(ModelMixin, models.Model):
-    """_Stockroom_:
+    """
     Expansion of the stock_model model for the warehouse.
-    The nomenclature of the stock_model of the warehouse and the directory may differ;
-    however, the quantity of each stock_model must match.
-
-    Returns:
-        Stockroom (Stockroom): The stockroom consumables model
+    The nomenclature of the stock_model of the warehouse and the directory may differ,
+    however, the quantity of each stock_model must match
     """
 
     stock_model = models.OneToOneField(
@@ -49,8 +46,6 @@ class Stockroom(ModelMixin, models.Model):
     )
 
     class Meta:
-        """_Stockroom Meta_: _model settings_"""
-
         verbose_name = "Склад Расходников"
         verbose_name_plural = "Склад Расходников"
         ordering = ["rack", "shelf"]
@@ -63,11 +58,8 @@ class Stockroom(ModelMixin, models.Model):
 
 
 class StockCat(ModelMixin, models.Model):
-    """_StockCat_:
-    stock_model categories
-
-    Returns:
-        StockCat (StockCat): _description_
+    """
+    Group model for stock_model
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -83,38 +75,20 @@ class StockCat(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_StockCat __str__ _: _returns name of model_
-
-        Returns:
-            StockCat__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_StockCat get self url_
-
-        Returns:
-            StockCat__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
         return reverse("stockroom:category", kwargs={"category_slug": self.slug})
 
     class Meta:
-        """_StockCat Meta_: _model settings_"""
-
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
 
 
 class History(models.Model):
-    """_History_:
+    """
     Model for storing the history of the use of stock_model
-
-    Returns:
-        History (History): The stockroom model
     """
 
     id = models.UUIDField(
@@ -172,8 +146,6 @@ class History(models.Model):
     )
 
     class Meta:
-        """_History Meta_: _model settings_"""
-
         verbose_name = "История расходников"
         verbose_name_plural = "История расходников"
         ordering = ["-dateInstall", "stock_model"]

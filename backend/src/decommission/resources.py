@@ -1,15 +1,11 @@
-from import_export import fields, resources  # type: ignore[import-untyped]
-from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
+from import_export import fields, resources
+from import_export.widgets import ForeignKeyWidget
 
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from device.models import Device
 
 
 class DecommissionResource(resources.ModelResource):
-    """_DecommissionResource_
-    Resource defines how Decommission are mapped to their export representations and handle exporting data.
-    """
-
     stock_model = fields.Field(
         column_name="Название",
         attribute="stock_model",
@@ -78,17 +74,11 @@ class DecommissionResource(resources.ModelResource):
     date = fields.Field(column_name="Дата", attribute="date")
 
     class Meta:
-        """_DecommissionResource Meta_: _resource settings_"""
-
         model = Decommission
         exclude = ["stock_model"]
 
 
 class DisposalResource(resources.ModelResource):
-    """_DisposalResource_
-    Resource defines how Disposal are mapped to their export representations and handle exporting data.
-    """
-
     name = fields.Field(
         column_name="Название",
         attribute="stock_model",
@@ -157,7 +147,5 @@ class DisposalResource(resources.ModelResource):
     date = fields.Field(column_name="Дата", attribute="date")
 
     class Meta:
-        """_DisposalResource Meta_: _resource settings_"""
-
         model = Disposal
         exclude = ["stock_model"]

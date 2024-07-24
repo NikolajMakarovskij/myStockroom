@@ -1,85 +1,77 @@
 from rest_framework import serializers
 
+# from device.serializers import DeviceListSerializer
+from accounting.serializers import AccountingModelSerializer
+from counterparty.serializers import ManufacturerSerializer
+
 from .models import AccCat, Accessories, Categories, Consumables
-from device.models import Device
-from accounting.models import Accounting
 
 
-class CategoriesModelSerializer(serializers.ModelSerializer[Categories]):
-    """_CategoriesModelSerializer_ Serialize consumables categories model to JSON"""
-
+class CategoriesModelSerializer(serializers.ModelSerializer):
     class Meta:
-        """_Class returns JSON of consumables categories model_
-
-        Returns:
-            model (Categories):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
-
         model = Categories
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class ConsumablesModelSerializer(serializers.ModelSerializer[Consumables]):
-    """_ConsumablesModelSerializer_ Serialize consumables model to JSON
-
-    Other parameters:
-        device (StringRelatedField): _returns device_
-        consumable (StringRelatedField): _returns consumables_
-    """
-
-    device: serializers.StringRelatedField[Device] = serializers.StringRelatedField(
-        many=True
-    )
-    consumable: serializers.StringRelatedField[Accounting] = (
-        serializers.StringRelatedField(many=True)
-    )
-
+class ConsumablesModelSerializer(serializers.ModelSerializer):
     class Meta:
-        """_Class returns JSON of consumables model_
-
-        Returns:
-            model (Consumables):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
-
         model = Consumables
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccCatModelSerializer(serializers.ModelSerializer[AccCat]):
-    """_AccCatModelSerializer_ Serialize accessories categories model to JSON"""
+class ConsumablesListSerializer(serializers.ModelSerializer):
+    queryset = Consumables.objects.all()
+    device = serializers.StringRelatedField(many=True, read_only=True)
+    consumable = AccountingModelSerializer(many=True, read_only=True)
+    categories = CategoriesModelSerializer(read_only=True)
+    manufacturer = ManufacturerSerializer(read_only=True)
+    difference = serializers.SerializerMethodField("get_difference")
 
     class Meta:
-        """_Class returns JSON of accessories categories model_
+        model = Consumables
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
-        Returns:
-            model (AccCat):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
+    def get_difference(self, obj=Meta.model):
+        quantity_all = 0
+        for each in obj.consumable.all():
+            quantity_all += each.quantity
+        difference = obj.quantity - quantity_all
+        return difference
 
+
+class AccCatModelSerializer(serializers.ModelSerializer):
+    class Meta:
         model = AccCat
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccessoriesModelSerializer(serializers.ModelSerializer[Accessories]):
-    """_AccessoriesModelSerializer_ Serialize accessories model to JSON"""
+class AccessoriesListModelSerializer(serializers.ModelSerializer):
+    queryset = Accessories.objects.all()
+    device = serializers.StringRelatedField(many=True, read_only=True)
+    accessories = AccountingModelSerializer(many=True, read_only=True)
+    categories = AccCatModelSerializer(read_only=True)
+    manufacturer = ManufacturerSerializer(read_only=True)
+    difference = serializers.SerializerMethodField("get_difference")
 
     class Meta:
-        """_Class returns JSON of accessories model_
+        model = Accessories
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
-        Returns:
-            model (Accessories):
-            fields (list[str]): _returns fields of model in form_
-            extra_kwargs (dict[str,list[str]): _returns settings of fields_
-        """
+    def get_difference(self, obj=Meta.model):
+        quantity_all = 0
+        for each in obj.accessories.all():
+            quantity_all += each.quantity
+        difference = obj.quantity - quantity_all
+        return difference
 
+
+class AccessoriesModelSerializer(serializers.ModelSerializer):
+    class Meta:
         model = Accessories
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}

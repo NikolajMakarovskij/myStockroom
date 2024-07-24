@@ -16,38 +16,18 @@ from core.utils import DataMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.resources import ConsumableConsumptionResource, StockConResource
-from stockroom.serializers import StockModelSerializer
+from stockroom.serializers.consumables import StockModelSerializer
 from stockroom.stock.stock import ConStock
 
 
 class StockroomView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_StockroomView_
-    List of stockroom consumables instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Stockroom): _base model for list_
-    """
-
     permission_required = "stockroom.view_stockroom"
-    paginate_by = DataMixin.paginate
     template_name = "stock/stock_list.html"
     model = Stockroom
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -62,12 +42,6 @@ class StockroomView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Stockroom): _description_
-        """
-
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -101,33 +75,13 @@ class StockroomView(
 
 
 class StockroomCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_StockroomCategoriesView_
-    List of consumables instances filtered by categories
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Stockroom): _base model for list_
-    """
-
     permission_required = "stockroom.view_stockroom"
-    paginate_by = DataMixin.paginate
     template_name = "stock/stock_list.html"
     model = Stockroom
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -142,12 +96,6 @@ class StockroomCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Stockroom): _filtered by categories_
-        """
-
         object_list = (
             Stockroom.objects.filter(categories__slug=self.kwargs["category_slug"])
             .select_related("stock_model", "stock_model__categories")
@@ -157,32 +105,13 @@ class StockroomCategoriesView(
         return object_list
 
 
-class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
-    """_StockRestView_ Stockroom consumables API view
-
-    Other parameters:
-        queryset (Stockroom): _description_
-        serializer_class (StockModelSerializer): _description_
-    """
-
+class StockRestView(DataMixin, viewsets.ModelViewSet):
     queryset = Stockroom.objects.all()
     serializer_class = StockModelSerializer
 
 
 class ExportStockConsumable(View):
-    """_ExportStockConsumable_
-    Returns an Excel file with all records of stockroom consumables from the database
-    """
-
     def get(self, *args, **kwargs):
-        """extracts all records of stockroom consumables from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (StockConResource): _dict of consumables for export into an xlsx file_
-        """
         resource = StockConResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -196,35 +125,17 @@ class ExportStockConsumable(View):
 
 
 class ExportStockConsumableCategory(View):
-    """_ExportStockConsumableCategory_
-    Returns an Excel file with filtered records by categories of stockroom consumables from the database
-    """
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to stockroom consumables list_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)  # type: ignore[misc]
-        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        """extracts filtered records by categories of stockroom consumables from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (StockConResource): _dict of stockroom consumables for export into an xlsx file_
-        """
         queryset = (
             Stockroom.objects.filter(categories__slug=self.kwargs["category_slug"])
             .order_by("stock_model")
@@ -244,31 +155,13 @@ class ExportStockConsumableCategory(View):
 
 # History
 class HistoryView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_HistoryView_
-    Returns a list of all records of history of stockroom consumables from the database
-
-    Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
-    """
-
     permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
     template_name = "stock/history_list.html"
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to stockroom consumables list, list of categories_
-        """
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -283,12 +176,6 @@ class HistoryView(
         return context
 
     def get_queryset(self):
-        """_returns queryset_
-
-        Returns:
-            object_list (History): _returns queryset_
-        """
-
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -304,31 +191,13 @@ class HistoryView(
 
 
 class HistoryCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_HistoryCategoriesView_
-    Returns a list of with filtered records by categories of history of stockroom consumables from the database
-
-    Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
-    """
-
     permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
     template_name = "stock/history_list.html"
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to history of stockroom consumables list_
-        """
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -343,12 +212,6 @@ class HistoryCategoriesView(
         return context
 
     def get_queryset(self):
-        """_returns queryset_
-
-        Returns:
-            object_list (History): _returns queryset_
-        """
-
         object_list = History.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -356,32 +219,13 @@ class HistoryCategoriesView(
 
 
 class HistoryConsumptionView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_HistoryConsumptionView_
-    Returns a list of with all records of consumption of stockroom consumables from the database
-
-    Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the HistoryAcc_
-    """
-
     permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
     template_name = "stock/history_consumption_list.html"
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom consumables list_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -396,12 +240,6 @@ class HistoryConsumptionView(
         return context
 
     def get_queryset(self):
-        """_returns queryset_
-
-        Returns:
-            object_list (History): _returns queryset_
-        """
-
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -421,32 +259,13 @@ class HistoryConsumptionView(
 
 
 class HistoryConsumptionCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    """_HistoryConsumptionCategoriesView_
-    Returns a list of with filtered records by categories of consumption of stockroom consumables from the database
-
-    Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
-    """
-
     permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
     template_name = "stock/history_consumption_list.html"
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom consumables list_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
@@ -461,12 +280,6 @@ class HistoryConsumptionCategoriesView(
         return context
 
     def get_queryset(self):
-        """_returns queryset_
-
-        Returns:
-            object_list (HistoryAcc): _returns queryset_
-        """
-
         object_list = (
             History.objects.filter(categories__slug=self.kwargs["category_slug"])
             .order_by("stock_model")
@@ -476,21 +289,7 @@ class HistoryConsumptionCategoriesView(
 
 
 class ExportConsumptionConsumable(View):
-    """_ExportConsumptionConsumable_
-    Returns an Excel file with all records of consumption of stockroom consumables from the database
-    """
-
     def get(self, *args, **kwargs):
-        """
-        extracts all records of consumption of stockroom consumables from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (ConsumableConsumptionResource): _dict of consumables for export into an xlsx file_
-        """
-
         resource = ConsumableConsumptionResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -504,36 +303,17 @@ class ExportConsumptionConsumable(View):
 
 
 class ExportConsumptionConsumableCategory(View):
-    """_ExportConsumptionConsumableCategory_
-    Returns an Excel file with filtered records by categories of consumption of stockroom consumables from the database
-    """
-
     def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to stockroom consumables list_
-        """
-
         stock_cat = cache.get("stock_cat")
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)  # type: ignore[misc]
-        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(menu_categories=stock_cat)
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get(self, queryset=None, *args, **kwargs):
-        """
-        extracts filtered records by categories of consumption of stockroom consumables from the database and converts them into an xlsx file
-
-        Returns:
-            response (HttpResponse): _returns xlsx file_
-
-        Other parameters:
-            resource (ConsumableConsumptionResource): _dict of consumables for export into an xlsx file_
-        """
         queryset = History.objects.filter(categories__slug=self.kwargs["category_slug"])
         resource = ConsumableConsumptionResource()
         dataset = resource.export(queryset, *args, **kwargs)
@@ -552,22 +332,6 @@ class ExportConsumptionConsumableCategory(View):
 @login_required
 @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
 def stock_add_consumable(request, consumable_id):
-    """
-    adds consumables to the stockroom
-
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
-
-    Returns:
-        redirect (request): _stockroom:stock_list_
-
-    Other parameters:
-        username (str): _username of the user model_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (StockAddForm): _form for adding consumables to the stock_
-    """
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
     stock = ConStock
@@ -601,23 +365,6 @@ def stock_add_consumable(request, consumable_id):
 @login_required
 @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
 def stock_remove_consumable(request, consumable_id):
-    """
-    remove consumables from the stockroom
-
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
-
-    Returns:
-        redirect (request): _stockroom:stock_list_
-
-    Other parameters:
-        username (str): _username of the user model_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (remove_from_stock): _form for removing consumables from the stock_
-    """
-
     username = request.user.username
     consumable = get_object_or_404(Consumables, id=consumable_id)
     stock = ConStock
@@ -635,23 +382,6 @@ def stock_remove_consumable(request, consumable_id):
 @login_required
 @permission_required("stockroom.add_consumables_to_device", raise_exception=True)
 def device_add_consumable(request, consumable_id):
-    """
-    adds consumables to the device
-
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
-
-    Returns:
-        redirect (request): _stockroom:stock_list_
-
-    Other parameters:
-        username (str): _username of the user model_
-        get_device_id (UUID): _id of the device_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (StockAddForm): _form for adding consumables to the device_
-    """
     username = request.user.username
     get_device_id = request.session["get_device_id"]
     consumable = get_object_or_404(Consumables, id=consumable_id)

@@ -1,72 +1,22 @@
-from typing import List
-
 from django import forms
 
 from core.utils import BaseModelSelect2WidgetMixin
 from device.models import Device
 from workplace.models import Workplace
 
-consumable_score: int = 11
-CONSUMABLE_QUANTITY_CHOICES: List[tuple[int, str]] = [
-    (i, str(i)) for i in range(0, consumable_score)
-]
-"""_CONSUMABLE_QUANTITY_CHOICES_
-
-Other parameters:
-    consumable_score (int):
-
-Returns:
-    choices (List[tuple[int, str]]): _quantity_
-"""
-
-rack_score: int = 10
-RACK_QUANTITY_CHOICES: List[tuple[int, str]] = [
-    (i, str(i)) for i in range(1, rack_score)
-]
-"""_RACK_QUANTITY_CHOICES_
-
-Other parameters:
-    rack_score (int):
-
-Returns:
-    choices (List[tuple[int, str]]): _quantity_
-"""
-
-shelf_score: int = 20
-SHELF_QUANTITY_CHOICES: List[tuple[int, str]] = [
-    (i, str(i)) for i in range(1, shelf_score)
-]
-"""_SHELF_QUANTITY_CHOICES_
-
-Other parameters:
-    shelf_score (int):
-
-Returns:
-    choices (List[tuple[int, str]]): _quantity_
-"""
-
-device_score: int = 5
-DEVICE_QUANTITY_CHOICES: List[tuple[int, str]] = [
-    (i, str(i)) for i in range(1, device_score)
-]
-"""_DEVICE_QUANTITY_CHOICES_
-
-Other parameters:
-    device_score (int):
-
-Returns:
-    choices (List[tuple[int, str]]): _quantity_
-"""
+consumable_score = 11
+CONSUMABLE_QUANTITY_CHOICES = [(i, str(i)) for i in range(0, consumable_score)]
+rack_score = 10
+RACK_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, rack_score)]
+shelf_score = 20
+SHELF_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, shelf_score)]
+device_score = 5
+DEVICE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, device_score)]
 
 
 class StockAddForm(forms.Form):
-    """_StockAddForm_
-    the class returns a form for adding Accessories, Consumables or Device to the Stockroom
-
-    Returns:
-        quantity (TypedChoiceField): _quantity_
-        number_rack (TypedChoiceField): _rack number_
-        number_shelf (TypedChoiceField): _shelf number_
+    """
+    Форма добавляет расходник на склад. Добавляется в template и DetailView расходника
     """
 
     quantity = forms.TypedChoiceField(
@@ -96,12 +46,8 @@ class StockAddForm(forms.Form):
 
 
 class ConsumableInstallForm(forms.Form):
-    """_ConsumableInstallForm_
-    the class returns a form for adding Accessories or Consumables to the Device
-
-    Returns:
-        quantity (TypedChoiceField): _quantity_
-        note (CharField): _note_
+    """
+    Форма использования расходника в технике. Добавляется в template и DetailView техники
     """
 
     quantity = forms.TypedChoiceField(
@@ -122,11 +68,8 @@ class ConsumableInstallForm(forms.Form):
 
 
 class AddHistoryDeviceForm(forms.Form):
-    """_AddHistoryDeviceForm_
-    the class returns a form for adding history to the Device
-
-    Returns:
-        note (CharField): _note_
+    """
+    Форма добавления истории устройства. Добавляется в template и DetailView техники
     """
 
     note = forms.CharField(
@@ -139,16 +82,6 @@ class AddHistoryDeviceForm(forms.Form):
 
 
 class WorkplaceWidget(BaseModelSelect2WidgetMixin):
-    """_WorkplaceWidget_
-    Autocomplete plugin for the workplace selection field
-
-    Returns:
-        empty_label (str): _value of empty_label_
-        model (Workplace):
-        querysets (Workplace): _returns querysets of model in form_
-        search_fields (list[str]): _fields of the model to search for are specified_
-    """
-
     empty_label = "--выбрать--"
     model = Workplace
     queryset = Workplace.objects.all().order_by("name")
@@ -160,18 +93,8 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class MoveDeviceForm(forms.ModelForm):  # type: ignore[type-arg]
-    """_MoveDeviceFor_"""
-
+class MoveDeviceForm(forms.ModelForm):
     class Meta:
-        """_Class returns form to moves the device to the workplace_
-
-        Returns:
-            model (Device):
-            fields (list[str]): _returns fields of model in form_
-            widgets (dict[str,str]): _returns widgets of model in form_
-        """
-
         model = Device
         fields = ["workplace", "note"]
         widgets = {

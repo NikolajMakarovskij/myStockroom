@@ -7,19 +7,9 @@ from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.stock.base_stock import BaseStock
 from workplace.models import Workplace
-from uuid import UUID
 
 
 class ConStock(BaseStock):
-    """Class with stockroom consumables methods
-
-    Other parameters:
-        base_model (Consumables): _description_
-        stock_model (Stockroom): _description_
-        stock_category (StockCat): _description_
-        history_model (History): _description_
-    """
-
     base_model = Consumables
     stock_model = Stockroom
     stock_category = StockCat
@@ -27,15 +17,6 @@ class ConStock(BaseStock):
 
 
 class AccStock(BaseStock):
-    """Class with stockroom accessories methods
-
-    Other parameters:
-        base_model (Accessories): _description_
-        stock_model (StockAcc): _description_
-        stock_category (CategoryAcc): _description_
-        history_model (HistoryAcc): _description_
-    """
-
     base_model = Accessories
     stock_model = StockAcc
     stock_category = CategoryAcc
@@ -43,43 +24,25 @@ class AccStock(BaseStock):
 
 
 class DevStock(BaseStock):
-    """Class with stockroom device methods
-
-    Other parameters:
-        base_model (Device): _description_
-        stock_model (StockDev): _description_
-        stock_category (CategoryDev): _description_
-        history_model (HistoryDev): _description_
-    """
-
     base_model = Device
     stock_model = StockDev
     stock_category = CategoryDev
     history_model = HistoryDev
 
+    """Class with stock methods for device"""
+
     @classmethod
     def create_history_device(
-        cls, model_id: UUID, quantity: int, username: str, status_choice: str, note: str
-    ) -> HistoryDev:
-        """Creating an entry in the history of stockroom device model
-
-        Args:
-            model_id (UUID): _stockroom model id_
-            quantity (int): _description_
-            username (str): _getting from session_
-            note (str): _description_
-            status_choice (str): _description_
-
-        Returns:
-            History (HistoryDev): _Adding instance in database_
-        """
+        cls, model_id: str, quantity: int, username: str, status_choice: str, note: str
+    ) -> None:
+        """Creating an entry in the history of stock_model"""
         model = cls.base_model.objects.get(id=model_id)
         category = cls.add_category(model_id)
         if not note:
-            note = ""
+            note = None
         else:
             note = note
-        history = cls.history_model.objects.create(  # type: ignore[misc]
+        history = cls.history_model.objects.create(
             stock_model=model.name,
             stock_model_id=model.id,
             quantity=quantity,
@@ -93,16 +56,10 @@ class DevStock(BaseStock):
 
     @classmethod
     def add_to_stock_device(
-        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=""
+        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None
     ) -> None:
-        """Add a stockroom device to the stock or update it quantity.
-
-        Args:
-            model_id (UUID): _stockroom model id_
-            quantity (int): _description_
-            number_rack (int): _description_
-            number_shelf (int): _description_
-            username (str): _getting from session_
+        """
+        Add a stock_model to the stock or update its quantity.
         """
 
         model = cls.base_model.objects.get(id=model_id)
@@ -120,7 +77,7 @@ class DevStock(BaseStock):
             model_instance.update(quantity=model_quantity)
             stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            cls.stock_model.objects.create(  # type: ignore[misc]
+            cls.stock_model.objects.create(
                 stock_model=model,
                 categories=categories,
                 dateAddToStock=datetime.date.today(),
@@ -129,36 +86,29 @@ class DevStock(BaseStock):
             )
             model_instance.update(quantity=int(quantity))
         cls.create_history_device(
-            model_id, quantity, username, status_choice="Приход", note=""
+            model_id, quantity, username, status_choice="Приход", note=None
         )
 
     @classmethod
-    def remove_device_from_stock(cls, model_id: UUID, quantity=0, username="") -> None:
-        """Remove device from the stock
-
-        Args:
-            model_id (UUID): _stockroom model id_
-            quantity (int): _description_
-            username (str): _getting from session_
+    def remove_device_from_stock(
+        cls, model_id: str, quantity=0, username=None, status_choice="Удаление"
+    ) -> None:
+        """
+        Delete device from the stock
         """
         model_instance = cls.stock_model.objects.filter(stock_model=model_id)
         if model_instance:
             model_instance.delete()
             cls.create_history_device(
-                model_id, quantity, username, status_choice="Удаление", note=""
+                model_id, quantity, username, status_choice, note=None
             )
 
     @classmethod
     def move_device(
-        cls, model_id: UUID, workplace_id: UUID, username="", note=""
+        cls, model_id: str, workplace_id: str, username=None, note=None
     ) -> None:
-        """Move device
-
-        Args:
-            model_id (UUID): _stockroom model id_
-            workplace_id (UUID): _workplace model id_
-            username (str): _description_
-            note (str): _getting from session_
+        """
+        Move device
         """
         model_instance = cls.base_model.objects.filter(id=model_id)
         stock_model_instance = cls.stock_model.objects.filter(stock_model=model_id)

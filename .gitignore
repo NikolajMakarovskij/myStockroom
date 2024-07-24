@@ -1,6 +1,6 @@
 *.DS_Store
 node_modules/
-**/migrations/
+#**/migrations/
 **/database/pgdata/
 **/database/Init_db/
 pgadmin-data/_data/azurecredentialcache
@@ -9,10 +9,8 @@ pgadmin-data/_data/storage
 pgadmin-data/_data/pgadmin4.db
 .vscode/settings.json
 .pytest_cache
-/backend/media/
-/backend/static/
-/static/
-/media/
+**/static/
+**/media/
 .coverage
 env/
 **/__pycache__/

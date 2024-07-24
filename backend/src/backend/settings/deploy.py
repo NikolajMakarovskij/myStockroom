@@ -7,7 +7,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
-ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))  # type: ignore[union-attr]
+
+ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))
 
 INSTALLED_APPS = [
     "rest_framework",
@@ -56,7 +57,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_BEAT_SCHEDULE: dict[list[str], str] = {}
+CELERY_BEAT_SCHEDULE = {}
 
 # end celery
 
@@ -125,7 +126,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATE_FORMAT = ["%d.%m.%Y"]
+DATE_FORMAT = "%d.%m.%Y"
 
 # end region settings
 # start file settings
@@ -153,7 +154,7 @@ CACHES = {
     "select2": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis:6379/2",
-        "db": "16",
+        "db": "15",
     },
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -176,6 +177,13 @@ CSRF_TRUSTED_ORIGINS = ["http://0.0.0.0"]
 STOCK_SESSION_ID = "stock"
 DECOM_SESSION_ID = "decom"
 
+# cores headers
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://stock",
+]
+
 
 # REST
 
@@ -188,14 +196,15 @@ def render_calasses():
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": render_calasses(),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication"
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         # 'rest_framework.permissions.IsAuthenticated',
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
     "DATE_INPUT_FORMATS": [
         "%d.%m.%Y",  # '25.10.2021'
-        "%d.%m.%y",  # '25.10.21'
     ],
 }
 

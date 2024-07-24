@@ -8,10 +8,8 @@ from core.utils import ModelMixin
 
 
 class Categories(ModelMixin, models.Model):
-    """_Categories_ The group model for consumables on the balance sheet in accounting.
-
-    Returns:
-        Categories (Categories): _returns object "Categories"_
+    """
+    Модель группы для расходников на балансе в бухгалтерии.
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -27,72 +25,20 @@ class Categories(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Categories __str__ _: _returns name of model_
-
-        Returns:
-            Categories__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Categories url_
-
-        Returns:
-            Categories__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("accounting:categories-detail", args=[str(self.id)])
 
-    def get_slug_url(self):
-        """_Categories slug url_
-
-        Returns:
-            Categories__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse("accounting:category", kwargs={"category_slug": self.slug})
-
-    def get_update_url(self):
-        """_Categories update url_
-
-        Returns:
-            Categories__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-
-        return reverse("accounting:categories-update", args=[str(self.id)])
-
-    def get_delete_url(self):
-        """_Categories delete url_
-
-        Returns:
-            Categories__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-
-        return reverse("accounting:categories-delete", args=[str(self.id)])
-
     class Meta:
-        """_Categories Meta_: _model settings_"""
-
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
 
 
 class Accounting(ModelMixin, models.Model):
-    """_Accounting_: _Accounting model_
-
-    Returns:
-         Accounting (Accounting): _returns object "Categories"_
+    """
+    Accounting model
     """
 
     id = models.UUIDField(
@@ -158,36 +104,16 @@ class Accounting(ModelMixin, models.Model):
     )
 
     def __str__(self):
-        """_Accounting __str__ _: _returns name of model_
-
-        Returns:
-            Accounting__name (str): _returns name_
-        """
         return self.name
 
     def get_absolute_url(self):
-        """_Accounting get self url_
-
-        Returns:
-            Accounting__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
         return reverse("accounting:accounting-detail", args=[str(self.id)])
 
     def get_cost_all(self):
-        """_Accounting cost_all_: _returns cost all consumables or accessories_
-
-        Returns:
-            cost_all (float): _Accounting__cost * Accounting__quantity_
-        """
         cost_all = self.cost * self.quantity
         return float("{:.2f}".format(cost_all))
 
     class Meta:
-        """_Accounting Meta_: _model settings_"""
-
         verbose_name = "На балансе"
         verbose_name_plural = "На балансе"
         ordering = ["-account", "name"]
