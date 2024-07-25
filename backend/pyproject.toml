@@ -12,6 +12,7 @@ dependencies = [
     "diff-match-patch==20230430",
     "Django >=4.1.6,<=5",
     "djangorestframework==3.14.0",
+    "djangorestframework-simplejwt>=5.2.2",
     "markdown==3.4.3",
     "django-filter==23.2",
     "gunicorn==22.0.0",
@@ -106,7 +107,7 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.isort]
-profile = "ruff"
+profile = "black"
 line_length = 88
 multi_line_output = 4
 skip_gitignore = true
@@ -115,11 +116,11 @@ skip_glob = [
     "**/settings/*",
 ]
 src_paths = [
-    "./backend",
+    "./src",
 ]
 
 [tool.mypy]
-mypy_path = "./backend"
+mypy_path = "./src"
 follow_imports = "normal"
 disallow_any_generics = true
 check_untyped_defs = true
@@ -143,7 +144,7 @@ ignore_missing_imports = true
 addopts = [
     "--import-mode=importlib",
 ]
-pythonpath = "./backend"
+pythonpath = "./src"
 
 [tool.django-stubs]
 django_settings_module = "backend.settings.production"

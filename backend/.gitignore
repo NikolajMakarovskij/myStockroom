@@ -1,0 +1,7 @@
+.pytest_cache
+.coverage
+env/
+**/__pycache__/
+**.ruff_cache/
+/backend/celerybeat-schedule
+.venv
