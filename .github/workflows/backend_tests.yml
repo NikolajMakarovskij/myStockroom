@@ -38,6 +38,6 @@ jobs:
       - name: Linting ruff
         run: docker exec backend pdm run ruff check .
       - name: Linting isort
-        run:  docker exec backend pdm run isort --check-only
+        run:  docker exec backend pdm run isort --check-only .
       - name: Run tests
         run: docker exec backend pdm run pytest --cov
