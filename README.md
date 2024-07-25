@@ -79,11 +79,11 @@ ___
 7. Авторизуйтесь с данными указанными в п. 5. 
 `Если программа разворачивалась с тестовой БД, будет доступен пользователь: login: admin password: admin`.
 8. Бэкап
-    ```bash
     <pre>
-    docker exec <a href="docker-compose.yaml?plain=1#L39">container_name</a> pg_dump -U [SQL_USER](.env?plain=1#L6) -W [SQL_DATABASE](.env?plain=1#L5) > init_db_$(date +\%Y-\%m-\%d).sql 
+        ```bash
+        docker exec <a href="docker-compose.yaml?plain=1#L39">container_name</a> pg_dump -U <a href=".env?plain=1#L6">SQL_USER</a> -W <a href=".env?plain=1#L5">SQL_DATABASE </a> > init_db_$(date +\%Y-\%m-\%d).sql 
+        ```
     </pre>
-    ```
 </details>
 
 ___
