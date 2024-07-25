@@ -72,9 +72,11 @@ ___
 3. Дождитесь сборки и запуска контейнеров;
 4. После запуска контейнеров откройте новое окно консоли;
 5. Для создания суперпользователя введите: 
-   ```bash
-   docker exec -it  backend-web-1 python3 manage.py createsuperuser
-   ```
+    <pre>
+        ```bash
+        docker exec -it  <a href="docker-compose.yaml?plain=1#L5">container_name</a> python3 manage.py createsuperuser
+        ```
+    </pre>
 6. Перейдите по адресу [0.0.0.0/home/](http://0.0.0.0/home/) или [localhost/home/](http://localhost/home/);
 7. Авторизуйтесь с данными указанными в п. 5. 
 `Если программа разворачивалась с тестовой БД, будет доступен пользователь: login: admin password: admin`.
