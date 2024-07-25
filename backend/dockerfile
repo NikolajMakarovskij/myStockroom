@@ -1,15 +1,9 @@
-ARG PYTHON_BASE=3.13-slim-bookworm
+ARG PYTHON_BASE=3.12-slim
 # build stage
 FROM python:$PYTHON_BASE AS builder
-
-# install uv
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-
-# Ensure the installed binary is on the `PATH`
-ENV PATH="/root/.local/bin/:$PATH"
-
+# build base image
+RUN pip install -U pdm
+ENV PDM_CHECK_UODATE=false
 # set work directory
 WORKDIR /backend/src
 WORKDIR /backend/src
@@ -19,10 +13,28 @@ ENV PYTHONUNBUFFERED 1
 # install psycopg2 dependencies
 RUN apt-get update \
     && apt-get install -y postgresql-server-dev-all gcc python3-dev musl-dev
-# install dependencies
-RUN pip install --upgrade pip
-COPY ../requirements.txt ../pyproject.toml ../pdm.lock ../entrypoint.sh ../
-RUN pip3 install -r ../requirements.txt
-ENTRYPOINT ["/backend/entrypoint.sh" ]
-# copy project
-COPY src/ src/
+COPY ../pyproject.toml ../pdm.lock ../README.md ../.dockerignore ../LICENSE ../
+RUN cd ..
+RUN pdm lock
+
+# run dev stage
+FROM builder AS dev
+# add git folder for isort check
+RUN apt-get install git-all -y
+RUN cd ..
+RUN git init
+# retrieve packages from build stage
+COPY --from=builder /backend/.venv /backend/.venv
+RUN pdm install --check --dev
+
+ENV PATH="/backend/.venv/bin:$PATH"
+
+# run prod stage
+FROM builder AS prod
+
+# retrieve packages from build stage
+COPY --from=builder /backend/.venv /backend/.venv
+RUN pdm install --check --prod --no-editable
+COPY ./src /backend/src
+
+ENV PATH="/backend/.venv/bin:$PATH"

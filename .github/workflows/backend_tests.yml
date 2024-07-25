@@ -2,7 +2,7 @@ name:
 
 on:
   push:
-    branch: [backend]
+    branch: [backend, frontend]
   pull_request:
     branch: [master]
 
@@ -35,9 +35,9 @@ jobs:
           PGDATA: "/var/lib/postgresql/data/pgdata"
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
-      - name: Check types backend
-        run: docker exec backend uv run mypy .
-      - name: Linting backend
-        run: docker exec backend uv run ruff check .
+      - name: Linting ruff
+        run: docker exec backend pdm run ruff check .
+      - name: Linting isort
+        run:  docker exec backend pdm run isort --check-only
       - name: Run tests
-        run: docker exec backend pytest --cov
+        run: docker exec backend pdm run pytest --cov

@@ -11,12 +11,12 @@ then
     echo "Старт!"
 fi
 echo "Выполняем миграции"
-uv run manage.py makemigrations
+pdm run manage.py makemigrations
 sleep 1
-uv run manage.py migrate
+pdm run manage.py migrate
 sleep 1
 echo "Собираем статику"
-uv run manage.py collectstatic <<EOF
+pdm run manage.py collectstatic <<EOF
 yes
 EOF
 exec "$@"

@@ -14,10 +14,9 @@ pgadmin-data/_data/pgadmin4.db
 .coverage
 env/
 **/__pycache__/
+**.ruff_cache/
 
 /venv/
 **.idea/
 .env.dev
-
-# celery
-celerybeat*
+.venv
