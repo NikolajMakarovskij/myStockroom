@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: isbang/compose-action@v2.0.1
         with:
-          compose-file: "./docker-compose.yaml"
+          compose-file: ".docker-compose.yaml"
         env:
           DEBUG: 1
           SECRET_KEY: foo
@@ -40,4 +40,4 @@ jobs:
       - name: Linting backend
         run: docker exec backend uv run ruff check .
       - name: Run tests
-        run: docker exec backend uv run pytest --cov
+        run: docker exec backend pytest --cov
