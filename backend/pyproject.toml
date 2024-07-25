@@ -1,6 +1,6 @@
 [project]
 name = "stockroom"
-version = "0.7.0"
+version = "0.8.0"
 description = "The project is designed to maintain a database with equipment and consumables"
 authors = [
     {name = "Makarovskiy Nikolay", email = "adrameleh666@gmail.com"},
