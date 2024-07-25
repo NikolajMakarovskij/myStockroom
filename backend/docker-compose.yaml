@@ -2,6 +2,7 @@ services:
   web:
     build: ./
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
+    container_name: backend
     restart: always
     volumes:
       - ./:/backend
@@ -18,6 +19,7 @@ services:
 
   db:
     image: postgres:14
+    container_name: db
     restart: always
     env_file:
       - ./.env
@@ -27,6 +29,7 @@ services:
 
   nginx:
     build: ./nginx
+    container_name: nginx
     restart: always
     volumes:
       - ./static:/home/backend/web/static
@@ -38,10 +41,12 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: redis
     restart: always
 
   celery:
     restart: always
+    container_name: celery
     build:
       context: .
     command: celery -A backend worker -l info
@@ -57,6 +62,7 @@ services:
   celery-beat:
     build: .
     command: celery -A backend beat -l info
+    container_name: celery-beat
     restart: always
     volumes:
       - .:/backend
@@ -69,6 +75,7 @@ services:
   flower:
     build: .
     command: celery -A backend flower --port=5555 --broker=redis://redis:6379/0
+    container_name: flower
     volumes:
       - .:/backend
     env_file:
