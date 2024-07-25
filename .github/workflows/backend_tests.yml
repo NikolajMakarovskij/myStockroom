@@ -35,9 +35,9 @@ jobs:
           PGDATA: "/var/lib/postgresql/data/pgdata"
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
-      - name: Linting ruff
+      - name: Linting backend
         run: docker exec backend pdm run ruff check .
-      - name: Linting isort
-        run:  docker exec backend pdm run isort --check-only .
+      - name: Linting frontend
+        run:  docker exec frontend npx eslint
       - name: Run tests
         run: docker exec backend pdm run pytest --cov
