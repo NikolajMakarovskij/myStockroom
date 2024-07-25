@@ -5,6 +5,9 @@
 
 ##### [Documentation](https://nikolajmakarovskij.gitlab.io/stockroom/)
 
+##### Основной репозиторий [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### Зеркало [https://github.com/NikolajMakarovskij/myStockroom](https://github.com/NikolajMakarovskij/myStockroom)
+
 ___
 ## About
 <details>
