@@ -93,7 +93,7 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
 5. Для создания суперпользователя введите: 
     <pre>
         ```bash
-        docker exec -it  <a href="docker-compose.yaml?plain=1#L5">container_name</a> python3 manage.py createsuperuser
+        docker exec -it  <a href="backend/docker-compose.yaml?plain=1#L5">container_name</a> python3 manage.py createsuperuser
         ```
     </pre>
 6. Перейдите по адресу [0.0.0.0/home/](http://0.0.0.0/home/) или [localhost/home/](http://localhost/home/);
