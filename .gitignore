@@ -16,6 +16,7 @@ env/
 **/__pycache__/
 **.ruff_cache/
 
+/backend/celerybeat-schedule
 /venv/
 **.idea/
 .env.dev
