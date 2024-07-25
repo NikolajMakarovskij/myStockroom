@@ -75,6 +75,10 @@ ___
 6. Перейдите по адресу [0.0.0.0/home/](http://0.0.0.0/home/) или [localhost/home/](http://localhost/home/);
 7. Авторизуйтесь с данными указанными в п. 5. 
 `Если программа разворачивалась с тестовой БД, будет доступен пользователь: login: admin password: admin`.
+8. Бэкап
+    ```bash
+    docker exec container_name pg_dump -U username -W base_name > init_db_$(date +\%Y-\%m-\%d).sql 
+    ```
 </details>
 
 ___
