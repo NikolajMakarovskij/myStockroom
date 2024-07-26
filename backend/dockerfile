@@ -1,17 +1,43 @@
-# pull official base image
-FROM python:3.12-rc-bullseye
+ARG PYTHON_BASE=3.12-slim
+# build stage
+FROM python:$PYTHON_BASE AS builder
+# build base image
+RUN pip install -U pdm
+ENV PDM_CHECK_UODATE=false
 # set work directory
-WORKDIR /backend
+WORKDIR /backend/src
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 # install psycopg2 dependencies
 RUN apt-get update \
     && apt-get install -y postgresql-server-dev-all gcc python3-dev musl-dev
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip3 install -r requirements.txt
+COPY ../pyproject.toml ../pdm.lock ../README.md ../.dockerignore ../entrypoint.sh ../LICENSE ../
+RUN cd ..
+RUN pdm lock
+
+# run dev stage
+FROM builder AS dev
+# add git folder for isort check
+RUN apt-get install git-all -y
+RUN cd ..
+RUN git init
+# retrieve packages from build stage
+#COPY --from=builder /backend/.venv /backend/.venv
+RUN pdm install --check --dev
+
+ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]
-# copy project
-COPY . .
+
+
+# run prod stage
+FROM builder AS prod
+
+# retrieve packages from build stage
+COPY --from=builder /backend/.venv /backend/.venv
+RUN pdm install --check --prod --no-editable
+COPY ./src /backend/src
+
+ENV PATH="/backend/.venv/bin:$PATH"
+ENTRYPOINT ["/backend/entrypoint.sh" ]
+

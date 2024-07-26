@@ -1,5 +1,8 @@
 # **Склад**
 
+##### Основной репозиторий [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### Зеркало [https://github.com/NikolajMakarovskij/myStockroom](https://github.com/NikolajMakarovskij/myStockroom)
+
 ___
 ## О программе
 <details>
@@ -88,12 +91,16 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
 3. Дождитесь сборки и запуска контейнеров;
 4. После запуска контейнеров откройте новое окно консоли;
 5. Для создания суперпользователя введите: 
-   ```bash
-   docker exec -it  backend-web-1 python3 manage.py createsuperuser
-   ```
+    <pre>
+        docker exec -it  <a href="backend/docker-compose.yaml?plain=1#L05">container_name</a> python3 manage.py createsuperuser
+    </pre>
 6. Перейдите по адресу [0.0.0.0/home/](http://0.0.0.0/home/) или [localhost/home/](http://localhost/home/);
 7. Авторизуйтесь с данными указанными в п. 5. 
 `Если программа разворачивалась с тестовой БД, будет доступен пользователь: login: admin password: admin`.
+8. Бэкап
+    <pre>
+        docker exec <a href="backend/docker-compose.yaml?plain=1#L22">container_name</a> pg_dump -U <a href=".env?plain=1#L6">SQL_USER</a> -W <a href=".env?plain=1#L5">SQL_DATABASE </a> > init_db_$(date +\%Y-\%m-\%d).sql
+    </pre>
 </details>
 
 ___
