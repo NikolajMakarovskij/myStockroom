@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.core.cache import cache
-from django_select2.forms import ModelSelect2Widget, ModelSelect2MultipleWidget
+from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
 menu = [
     {"title": "Главная страница", "url_name": "core:index"},

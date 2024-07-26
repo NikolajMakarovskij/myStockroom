@@ -1,24 +1,25 @@
-from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import login_required, permission_required
-from django.core.cache import cache
-from django.db.models import Q
-from django.shortcuts import redirect, get_object_or_404
-from django.views import generic, View
-from django.views.decorators.http import require_POST
+from datetime import datetime
+
 from core.utils import DataMixin
 from device.models import Device
-from stockroom.forms import StockAddForm, MoveDeviceForm, AddHistoryDeviceForm
-from stockroom.models.devices import StockDev, HistoryDev, CategoryDev
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View, generic
+from django.views.decorators.http import require_POST
+from rest_framework import permissions, viewsets
+from rest_framework.response import Response
+
+from stockroom.forms import AddHistoryDeviceForm, MoveDeviceForm, StockAddForm
+from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.resources import StockDevResource
 from stockroom.stock.stock import DevStock
 
-from rest_framework import viewsets, permissions
-from rest_framework.response import Response
-from ..serializers.devices import StockDevListSerializer, StockDevCatSerializer
-
-from django.http import HttpResponse
-from datetime import datetime
+from ..serializers.devices import StockDevCatSerializer, StockDevListSerializer
 
 
 # Devices
