@@ -99,8 +99,8 @@ exclude = [
     "site-packages",
     "venv",
     "__pycache__",
-    "static/"
-    "static/"
+    "static/",
+    "media/"
 ]
 
 
@@ -117,6 +117,8 @@ skip_gitignore = true
 skip_glob = [
     "**/migrations/*",
     "**/settings/*",
+    "**/static/*",
+    "**/media/*"
 ]
 src_paths = [
     "./src",

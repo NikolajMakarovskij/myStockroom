@@ -6,5 +6,5 @@ env/
 **.mypy_cache/
 /backend/celerybeat-schedule
 .venv
-src/static
-src/media
+#src/static
+#src/media
