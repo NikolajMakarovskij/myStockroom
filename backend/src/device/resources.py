@@ -86,4 +86,3 @@ class DeviceResource(resources.ModelResource):
 
         model = Device
         exclude = ["id", "login", "pwd"]
-        exclude = ["id", "login", "pwd"]

@@ -160,4 +160,3 @@ class Os(ModelMixin, models.Model):
         verbose_name = "Операционная система"
         verbose_name_plural = "Операционные системы"
         ordering = ["name"]
-        ordering = ["name"]

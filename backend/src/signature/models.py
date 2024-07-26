@@ -93,13 +93,8 @@ class Signature(ModelMixin, models.Model):
 
     class Meta:
         """_Signature Meta_: _model settings_"""
-
         verbose_name = "ЭЦП"
         verbose_name_plural = "ЭЦП"
-        ordering = [
-            "periodOpen",
-            "periodClose",
-        ]
         ordering = [
             "periodOpen",
             "periodClose",
