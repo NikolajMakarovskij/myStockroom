@@ -15,6 +15,7 @@ class SignatureListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "signature.view_signature"
+    paginate_by = DataMixin.paginate
     model = Signature
     template_name = "signature/signature_list.html"
 

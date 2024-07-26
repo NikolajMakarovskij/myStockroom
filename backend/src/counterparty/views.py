@@ -29,6 +29,7 @@ class ManufacturerListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "counterparty.view_manufacturer"
+    paginate_by = DataMixin.paginate
     model = Manufacturer
     template_name = "counterparty/manufacturer_list.html"
 

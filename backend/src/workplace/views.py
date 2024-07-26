@@ -29,6 +29,7 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
 # Рабочие места
 class WorkplaceListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = 'workplace.view_workplace'
+    paginate_by = DataMixin.paginate
     model = Workplace
     template_name = 'workplace/workplace_list.html'
 
@@ -121,6 +122,7 @@ class WorkplaceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, Fo
 # Кабинеты
 class RoomListView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
     permission_required = 'workplace.view_room'
+    paginate_by = DataMixin.paginate
     model = Room
     template_name = 'workplace/room_list.html'
 

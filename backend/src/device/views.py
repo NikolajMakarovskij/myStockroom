@@ -24,6 +24,7 @@ class DeviceListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = ("device.view_device",)
+    paginate_by = DataMixin.paginate
     model = Device
     template_name = "device/device_list.html"
 
@@ -73,6 +74,7 @@ class DeviceCategoryListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     model = Device.objects
+    paginate_by = DataMixin.paginate
     template_name = "device/device_list.html"
     permission_required = ("device.view_device",)
 

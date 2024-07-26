@@ -44,6 +44,7 @@ class ConsumablesView(
 ):
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
+    paginate_by = DataMixin.paginate
     model = Consumables
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -93,6 +94,7 @@ class ConsumablesCategoriesView(
 ):
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
+    paginate_by = DataMixin.paginate
     model = Consumables.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -267,6 +269,7 @@ class AccessoriesView(
 ):
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
+    paginate_by = DataMixin.paginate
     model = Accessories
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -316,6 +319,7 @@ class AccessoriesCategoriesView(
 ):
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
+    paginate_by = DataMixin.paginate
     model = Accessories.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):

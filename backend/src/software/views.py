@@ -25,6 +25,7 @@ class SoftwareListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "software.view_software"
+    paginate_by = DataMixin.paginate
     model = Software
     template_name = "software/software_list.html"
 
@@ -134,6 +135,7 @@ class OSListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "software.view_os"
+    paginate_by = DataMixin.paginate
     model = Os
     template_name = "software/OS_list.html"
 

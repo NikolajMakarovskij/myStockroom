@@ -37,6 +37,7 @@ class AccountingView(
 ):
     permission_required = "accounting.view_accounting"
     template_name = "accounting/accounting_list.html"
+    paginate_by = DataMixin.paginate
     model = Accounting
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -77,6 +78,7 @@ class AccountingCategoriesView(
 ):
     permission_required = "accounting.view_accounting"
     template_name = "accounting/accounting_list.html"
+    paginate_by = DataMixin.paginate
     model = Accounting.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -194,6 +196,7 @@ class CategoryView(
 ):
     permission_required = "accounting.view_category"
     template_name = "accounting/categories_list.html"
+    paginate_by = DataMixin.paginate
     model = Categories
 
     def get_context_data(self, *, object_list=None, **kwargs):

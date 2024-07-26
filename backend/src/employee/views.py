@@ -26,6 +26,7 @@ class EmployeeListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "employee.view_employee"
+    paginate_by = DataMixin.paginate
     model = Employee
     template_name = "employee/employee_list.html"
 
@@ -64,6 +65,7 @@ class EmployeeDetailView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
 ):
     permission_required = "employee.view_employee"
+    paginate_by = DataMixin.paginate
     model = Employee
     template_name = "employee/employee_detail.html"
 
@@ -143,6 +145,7 @@ class PostListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "employee.view_post"
+    paginate_by = DataMixin.paginate
     model = Post
     template_name = "employee/post_list.html"
 
@@ -249,6 +252,7 @@ class DepartamentListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "employee.view_departament"
+    paginate_by = DataMixin.paginate
     model = Departament
     template_name = "employee/departament_list.html"
 

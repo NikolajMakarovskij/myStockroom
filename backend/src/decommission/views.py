@@ -22,6 +22,7 @@ class DecommissionView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "decommission.view_decommission"
+    paginate_by = DataMixin.paginate
     template_name = "decom/decom_list.html"
     model = Decommission
 
@@ -61,6 +62,7 @@ class DecomCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "decommission.view_decommission"
+    paginate_by = DataMixin.paginate
     template_name = "decom/decom_list.html"
     model = Decommission
 
@@ -178,6 +180,7 @@ class DisposalView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "decommission.view_disposal"
+    paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
     model = Disposal
 
@@ -217,6 +220,7 @@ class DispCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "decommission.view_disposal"
+    paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
     model = Disposal
 

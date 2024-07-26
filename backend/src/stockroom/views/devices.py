@@ -23,6 +23,7 @@ class StockDevView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "stockroom.view_stockdev"
+    paginate_by = DataMixin.paginate
     template_name = "stock/stock_dev_list.html"
     model = StockDev
 
@@ -69,6 +70,7 @@ class StockDevCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "stockroom.view_stockdev"
+    paginate_by = DataMixin.paginate
     template_name = "stock/stock_dev_list.html"
     model = StockDev
 
@@ -98,6 +100,7 @@ class HistoryDevView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "stockroom.view_historydev"
+    paginate_by = DataMixin.paginate
     template_name = "stock/history_dev_list.html"
     model = HistoryDev
 
@@ -133,6 +136,7 @@ class HistoryDevCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "stockroom.view_historydev"
+    paginate_by = DataMixin.paginate
     template_name = "stock/history_dev_list.html"
     model = HistoryDev
 
