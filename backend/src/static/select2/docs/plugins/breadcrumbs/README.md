@@ -7,7 +7,7 @@ It is particularly useful if you are using Grav to run a blog.
 
 # Installation
 
-Installing the Breadcrumbs plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file. 
+Installing the Breadcrumbs plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
 
 ## GPM Installation (Preferred)
 
@@ -33,7 +33,7 @@ The `breadcrumbs` plugin doesn't require any configuration. The moment you insta
 
 Something you might want to do is to override the look and feel of the breadcrumbs, and with Grav it is super easy.
 
-Copy the template file [breadcrumbs.html.twig](templates/partials/breadcrumbs.html.twig) into the `templates` folder of your custom theme, and that is it. 
+Copy the template file [breadcrumbs.html.twig](templates/partials/breadcrumbs.html.twig) into the `templates` folder of your custom theme, and that is it.
 
 ```
 /your/site/grav/user/themes/custom-theme/templates/partials/breadcrumbs.html.twig
@@ -79,4 +79,3 @@ link_trailing: false
 ```
 
 Options are pretty self explanatory.
-

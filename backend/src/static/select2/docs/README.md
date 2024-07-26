@@ -44,4 +44,3 @@ Visit the local installation in your browser!  For example, http://localhost/sel
 ## Credits
 
 Favicons were generated with https://realfavicongenerator.net/
-

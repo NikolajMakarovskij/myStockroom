@@ -37,7 +37,7 @@ Select2 will respond to the <code>disabled</code> attribute on `<select>` elemen
 
 $(".js-example-disabled").select2();
 $(".js-example-disabled-multi").select2();
-  
+
 $(".js-programmatic-enable").on("click", function () {
   $(".js-example-disabled").prop("disabled", false);
   $(".js-example-disabled-multi").prop("disabled", false);

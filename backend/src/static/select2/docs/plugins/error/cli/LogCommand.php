@@ -127,4 +127,3 @@ class LogCommand extends ConsoleCommand
         return implode("\n", $output);
     }
 }
-

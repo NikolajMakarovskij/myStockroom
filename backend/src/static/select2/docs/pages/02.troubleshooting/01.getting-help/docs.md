@@ -12,7 +12,7 @@ Having trouble getting Select2 working on your website? Is it not working togeth
 
 1. Join our [forums](https://forums.select2.org), graciously hosted by [NextGI](https://nextgi.com) and start a new topic.
 2. Search [Stack Overflow](http://stackoverflow.com/questions/tagged/jquery-select2?sort=votes)  **carefully** for existing questions that might address your issue. If you need to open a new question, make sure to include the `jquery-select2` tag.
-3. Ask in the `#select2` channel on `chat.freenode.net` or use the [web irc client.](https://webchat.freenode.net/?channels=select2) 
+3. Ask in the `#select2` channel on `chat.freenode.net` or use the [web irc client.](https://webchat.freenode.net/?channels=select2)
 
 >>>> Do **NOT** use the GitHub issue tracker for general support and troubleshooting questions.  The issue tracker is **only** for bug reports with a [minimal, complete, and verifiable example](https://stackoverflow.com/help/mcve) and feature requests.  Use the forums instead.
 

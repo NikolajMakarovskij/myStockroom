@@ -10,4 +10,3 @@ process:
 ---
 
 {{ 'PLUGIN_ERROR.ERROR_MESSAGE'|t }}
-

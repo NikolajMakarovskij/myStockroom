@@ -38,10 +38,10 @@ The options that you create should have `selected="selected"` set so Select2 and
 In past versions of Select2 the `matcher` callback processed options at every level, which limited the control that you had when displaying results, especially in cases where there was nested data. The `matcher` function was only given the individual option, even if it was a nested options, without any context.
 
 With the new [matcher function](/searching), only the root-level options are matched and matchers are expected to limit the results of any children options that they contain. This allows developers to customize how options within groups can be displayed, and modify how the results are returned.
- 
+
 ### Wrapper for old-style `matcher` callbacks
 
-For backwards compatibility, a wrapper function has been created that allows old-style matcher functions to be converted to the new style. 
+For backwards compatibility, a wrapper function has been created that allows old-style matcher functions to be converted to the new style.
 
 This wrapper function is only bundled in the [full version of Select2](/getting-started/builds-and-modules).  You can retrieve the function from the `select2/compat/matcher` module, which should just wrap the old matcher function.
 

@@ -36,7 +36,7 @@ Note that when tagging is enabled the user can select from the pre-existing opti
 ## Tagging with multi-value select boxes
 
 Tagging can also be used in multi-value select boxes. In the example below, we set the `multiple="multiple"` attribute on a Select2 control that also has `tags: true` enabled:
-  
+
 <div class="s2-example">
   <p>
     <select class="js-example-tags form-control" multiple="multiple">

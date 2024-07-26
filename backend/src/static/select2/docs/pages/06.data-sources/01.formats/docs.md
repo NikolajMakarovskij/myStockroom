@@ -98,8 +98,8 @@ When options are to be generated in `<optgroup>` sections, options should be nes
 ```
 {
   "results": [
-    { 
-      "text": "Group 1", 
+    {
+      "text": "Group 1",
       "children" : [
         {
             "id": 1,
@@ -111,8 +111,8 @@ When options are to be generated in `<optgroup>` sections, options should be nes
         }
       ]
     },
-    { 
-      "text": "Group 2", 
+    {
+      "text": "Group 2",
       "children" : [
         {
             "id": 3,

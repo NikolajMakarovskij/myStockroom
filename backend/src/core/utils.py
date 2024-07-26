@@ -114,12 +114,11 @@ class FormMessageMixin:
     added messages in form
     """
 
-    success_message = ""
-    debug_message = ""
-    info_message = ""
-    warning_message = ""
-    error_message = ""
-    success_url = ""
+    success_message: str = ""
+    debug_message: str = ""
+    info_message: str = ""
+    warning_message: str = ""
+    error_message: str = ""
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -132,7 +131,7 @@ class FormMessageMixin:
             if error_message:
                 messages.error(self.request, error_message)
         else:
-            if success_message:
+            if debug_message:
                 messages.debug(self.request, debug_message)
             if info_message:
                 messages.info(self.request, info_message)

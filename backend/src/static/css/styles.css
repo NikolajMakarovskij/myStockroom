@@ -15,7 +15,7 @@
     outline: lightgreen auto 5px ;
 }
 .navmenu{
-    color: #ffffff;   
+    color: #ffffff;
 }
 .navmenu>ul{
     list-style-type: none
@@ -46,7 +46,7 @@
 .btn-primary:visited{
     background-color: rgba(128, 128, 128, 0.850) !important;
     border-color: rgba(128, 128, 128, 0.850) !important
-}     
+}
 .btn-primary:hover,
 .btn-primary:focus{
     background-color: rgba(128, 128, 128, 0.750) !important;
@@ -54,7 +54,7 @@
 }
 .bodybackground {
     background-color: rgba(228, 224, 224, 0.278);
-    text-decoration-color: hsl(207, 7%, 30%); 
+    text-decoration-color: hsl(207, 7%, 30%);
 }
 .login{
     display: flex;
@@ -64,13 +64,13 @@
 }
 .login_content{
     margin: auto;
-    
+
 }
 .table_login{
     border: none;
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
-    text-decoration-color: hsl(207, 7%, 30%);    
+    text-decoration-color: hsl(207, 7%, 30%);
 }
 .td_login{
     padding: 0px 20px 20px 20px;
@@ -78,18 +78,18 @@
 .form_login{
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
-    text-decoration-color: hsl(207, 7%, 30%); 
+    text-decoration-color: hsl(207, 7%, 30%);
     border-radius: 3px;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);    
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);
 }
 .button_login{
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
-    text-decoration-color: hsl(207, 7%, 30%); 
+    text-decoration-color: hsl(207, 7%, 30%);
     margin: 0px 20px 20px 20px;
     border-radius: 5px;
     border-style: none;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);    
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 10%);
 }
 .button_login:hover {
     transform: scale(1.25,1.25);
@@ -111,10 +111,10 @@
     height: 200px;
     border: solid;
     border-radius: 5px;
-    box-shadow: 5px 10px 20px rgba(0,0,0,0.3), -5px -10px 20px rgba(255,255,255,0.5);   
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.3), -5px -10px 20px rgba(255,255,255,0.5);
 }
 .square:hover {
-    transform: scale(1.25,1.25);   
+    transform: scale(1.25,1.25);
 }
 .square:active{
     transform: scale(1.2,1.2);
@@ -150,7 +150,7 @@ a.button_link:hover {
 }
 .mtop{
     margin-top: 20px;
-    
+
 }
 
 .pagination {
@@ -197,13 +197,13 @@ a.button_link:hover {
 }
 
 .noDecoration,
-.noDecoration:active, 
+.noDecoration:active,
 .noDecoration:hover {
     text-decoration: none;
     color: hsl(207, 7%, 30%);
 }
 .noDecorationMenu,
-.noDecorationMenu:active, 
+.noDecorationMenu:active,
 .noDecorationMenu:hover {
     text-decoration: none;
     color: #f8f9fa;

@@ -6,7 +6,7 @@
 
 # Installation
 
-Installing the Highlight plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file. 
+Installing the Highlight plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
 
 ## GPM Installation (Preferred)
 
@@ -94,7 +94,7 @@ Further, you can also enable line numbers on a specific page, or globally (in hi
         lines: true
     ---
 
-Valid theme options include: 
+Valid theme options include:
 
 |                        |                          |                           |
 | :--------------------- | :--------------------    | -----------------------   |
