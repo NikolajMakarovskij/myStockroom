@@ -1,6 +1,6 @@
 name: Django Actions
 
-on: 
+on:
   push:
     branch: [backend]
   pull_request:

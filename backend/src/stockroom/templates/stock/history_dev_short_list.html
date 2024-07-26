@@ -9,7 +9,7 @@
         <div class="accordion-body">
             {% if not history_dev_list %}
                 <table class="table align-middle table-hover" style="text-align:center">
-                <thead> 
+                <thead>
                     <tr>
                     <th scope="col" style="font-size: 32px;">{{no_history}}</th>
                     </tr>
@@ -45,7 +45,7 @@
                 </table>
             {% endif %}
             <div class="d-flex justify-content-center input-group mt-3 ">
-                <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text" 
+                <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
                 href="{% url 'stockroom:history_dev_list' %}">
                     Больше
                 </a>

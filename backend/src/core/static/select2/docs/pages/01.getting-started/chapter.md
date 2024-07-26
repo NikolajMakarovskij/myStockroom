@@ -11,7 +11,7 @@ twig_first: true
 
 # Select2
 
-The jQuery replacement for select boxes 
+The jQuery replacement for select boxes
 
 <div class="s2-docs-featurette">
     <a class="button" href="https://forums.select2.org">Forums</a>

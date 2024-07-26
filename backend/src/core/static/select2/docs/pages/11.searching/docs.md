@@ -32,16 +32,16 @@ function matchCustom(params, data) {
     if (data.text.indexOf(params.term) > -1) {
       var modifiedData = $.extend({}, data, true);
       modifiedData.text += ' (matched)';
-   
+
       // You can return modified objects from here
       // This includes matching the `children` how you want in nested data sets
       return modifiedData;
     }
-   
+
     // Return `null` if the term should not be displayed
     return null;
 }
-    
+
 $(".js-example-matcher").select2({
   matcher: matchCustom
 });

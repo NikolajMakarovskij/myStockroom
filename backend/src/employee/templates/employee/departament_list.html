@@ -2,10 +2,10 @@
 
 {% block content %}
 {% load static %}
-<div class="table-responsive"> 
+<div class="table-responsive">
     <caption>
       <h1 style="text-align:center" >{{title}}</h1>
-    </caption> 
+    </caption>
 <!--search block-->
     {%include 'search/search.html' %}
 <!--block content-->
@@ -27,7 +27,7 @@
   </table>
     {% else %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Отделы не обнаружены</th>
         </tr>
@@ -35,7 +35,6 @@
     </table>
     {% endif %}
   </div>
-<!--block pagination-->  
+<!--block pagination-->
   {%include 'pagination/pagination.html' %}
 {% endblock %}
- 

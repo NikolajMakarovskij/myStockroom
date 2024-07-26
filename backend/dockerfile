@@ -40,4 +40,3 @@ COPY ./src /backend/src
 
 ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]
-

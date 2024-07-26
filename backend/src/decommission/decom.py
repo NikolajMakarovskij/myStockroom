@@ -36,7 +36,7 @@ class Decom(object):
             else:
                 device_category = CategoryDec.objects.create(
                     name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug
+                    slug=Device.objects.get(id=device_id).categories.slug,
                 )
         return device_category
 
@@ -52,6 +52,6 @@ class Decom(object):
             else:
                 device_category = CategoryDis.objects.create(
                     name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug
+                    slug=Device.objects.get(id=device_id).categories.slug,
                 )
         return device_category

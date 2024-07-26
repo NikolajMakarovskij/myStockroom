@@ -2,7 +2,7 @@
   {% if messages %}
     {% for message in messages %}
       {% if message.tags %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}   
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
           <div id="toast" class="toast show bg-success text-dark bg-opacity-75" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header text-dark bg-success bg-opacity-75">
         {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
@@ -16,7 +16,7 @@
             <div class="toast-header text-dark bg-warning bg-opacity-75">
         {% endif %}
       {% else %}
-        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">   
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
       {% endif %}
             <strong class="me-auto">{{message.extra_tags}}</strong>
@@ -24,8 +24,8 @@
           </div>
           <div  id="toast-body" class="toast-body shadow-lg" >
             {{ message }}
-          </div>  
-        </div> 
+          </div>
+        </div>
     {% endfor %}
-  {% endif %}  
+  {% endif %}
 </div>

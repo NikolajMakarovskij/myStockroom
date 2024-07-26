@@ -110,7 +110,7 @@
 }
 
 // 2009 - box-orient ( horizontal | vertical | inline-axis | block-axis)
-//      - box-direction (normal | reverse)      
+//      - box-direction (normal | reverse)
 // 2011 - flex-direction (row | row-reverse | column | column-reverse)
 // 2012 - flex-direction (row | row-reverse | column | column-reverse)
 @mixin flex-direction($value: row) {
@@ -255,7 +255,7 @@
 
     @if $value == "flex-start" {
         $alt-value: start;
-    }    
+    }
 
     @elseif $value == "flex-end" {
         $alt-value: end;
@@ -266,9 +266,9 @@
 
     // 2012
     @include prefixer(align-items, $value, webkit moz ms o spec);
-    
+
     // 2011 (IE 10)
-    -ms-flex-align: $alt-value;    
+    -ms-flex-align: $alt-value;
 }
 
 // 2011 - flex-item-align (auto | start | end | center | baseline | stretch)
@@ -278,7 +278,7 @@
     $value-2011: $value;
     @if $value == "flex-start" {
         $value-2011: start;
-    }    
+    }
 
     @elseif $value == "flex-end" {
         $value-2011: end;
@@ -298,7 +298,7 @@
     $value-2011: $value;
     @if $value == "flex-start" {
         $value-2011: start;
-    }    
+    }
 
     @elseif $value == "flex-end" {
         $value-2011: end;

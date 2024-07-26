@@ -2,16 +2,16 @@
 
 {% block content %}
   {% load static %}
-    <div class="table-responsive"> 
+    <div class="table-responsive">
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
-      </caption> 
+      </caption>
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           {% if perms.stockacc.can_export_device %}
             <a class="text-secondary" href="{% url 'stockroom:export_consumption_acc' %}">
@@ -67,7 +67,7 @@
   {% endif %}
   {% if not historyacc_list%}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Истории не обнаружено</th>
         </tr>
@@ -98,6 +98,6 @@
     </table>
   {% endif %}
   </div>
-<!--block pagination-->  
+<!--block pagination-->
   {%include 'pagination/pagination.html' %}
 {% endblock %}

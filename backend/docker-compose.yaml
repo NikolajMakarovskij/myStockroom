@@ -1,6 +1,6 @@
 services:
   web:
-    build: 
+    build:
       context: ./
       target: dev
     hostname: backend
@@ -52,7 +52,7 @@ services:
     restart: always
     image: backend-web
     container_name: celery
-    build: 
+    build:
       context: ./
       target: dev
     command: pdm run celery -A backend worker -l info
@@ -67,7 +67,7 @@ services:
 
   celery-beat:
     image: backend-web
-    build: 
+    build:
       context: ./
       target: dev
     command: pdm run celery -A backend beat -l info
@@ -83,7 +83,7 @@ services:
 
   flower:
     image: backend-web
-    build: 
+    build:
       context: ./
       target: dev
     command: pdm run celery -A backend flower --port=5555 --broker=redis://redis:6379/0

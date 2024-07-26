@@ -14,74 +14,90 @@ from .serializers import AccountingModelSerializer, CategoriesModelSerializer
 
 
 # Index
-class AccountingIndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
+class AccountingIndexView(
+    LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView
+):
     """
     Home
     """
-    template_name = 'accounting/accounting_index.html'
-    permission_required = 'accounting.view_accounting'
+
+    template_name = "accounting/accounting_index.html"
+    permission_required = "accounting.view_accounting"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Расходники и комплектующие'
-        context['menu'] = menu
+        context["title"] = "Расходники и комплектующие"
+        context["menu"] = menu
         return context
 
 
 # Accounting
-class AccountingView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
-    permission_required = 'accounting.view_accounting'
-    template_name = 'accounting/accounting_list.html'
+class AccountingView(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+):
+    permission_required = "accounting.view_accounting"
+    template_name = "accounting/accounting_list.html"
     model = Accounting
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        acn_cat = cache.get('acn_cat')
+        acn_cat = cache.get("acn_cat")
         if not acn_cat:
             acn_cat = Categories.objects.all()
-            cache.set('acn_cat', acn_cat, 300)
+            cache.set("acn_cat", acn_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=acn_cat)
+        c_def = self.get_user_context(
+            title="Баланс",
+            searchlink="accounting:accounting_search",
+            add="accounting:new-accounting",
+            menu_categories=acn_cat,
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get("q")
         if not query:
-            query = ''
+            query = ""
         object_list = Accounting.objects.filter(
-            Q(name__icontains=query) |
-            Q(account__icontains=query) |
-            Q(consumable__name__icontains=query) |
-            Q(accessories__name__icontains=query) |
-            Q(categories__name__icontains=query) |
-            Q(code__icontains=query) |
-            Q(quantity__icontains=query) |
-            Q(cost__icontains=query) |
-            Q(note__icontains=query)
-        ).select_related('categories', 'consumable', 'accessories')
+            Q(name__icontains=query)
+            | Q(account__icontains=query)
+            | Q(consumable__name__icontains=query)
+            | Q(accessories__name__icontains=query)
+            | Q(categories__name__icontains=query)
+            | Q(code__icontains=query)
+            | Q(quantity__icontains=query)
+            | Q(cost__icontains=query)
+            | Q(note__icontains=query)
+        ).select_related("categories", "consumable", "accessories")
         return object_list
 
 
-class AccountingCategoriesView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
-    permission_required = 'accounting.view_accounting'
-    template_name = 'accounting/accounting_list.html'
+class AccountingCategoriesView(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+):
+    permission_required = "accounting.view_accounting"
+    template_name = "accounting/accounting_list.html"
     model = Accounting.objects
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        acn_cat = cache.get('acn_cat')
+        acn_cat = cache.get("acn_cat")
         if not acn_cat:
             acn_cat = Categories.objects.all()
-            cache.set('acn_cat', acn_cat, 300)
+            cache.set("acn_cat", acn_cat, 300)
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Баланс", searchlink='accounting:accounting_search',
-                                      add='accounting:new-accounting', menu_categories=acn_cat)
+        c_def = self.get_user_context(
+            title="Баланс",
+            searchlink="accounting:accounting_search",
+            add="accounting:new-accounting",
+            menu_categories=acn_cat,
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        object_list = Accounting.objects.filter(categories__slug=self.kwargs['category_slug']).select_related(
-            'categories', 'consumable', 'accessories')
+        object_list = Accounting.objects.filter(
+            categories__slug=self.kwargs["category_slug"]
+        ).select_related("categories", "consumable", "accessories")
         return object_list
 
 
@@ -98,38 +114,50 @@ class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class AccountingDetailView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView):
-    permission_required = 'accounting.view_accounting'
+class AccountingDetailView(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+):
+    permission_required = "accounting.view_accounting"
     model = Accounting
-    template_name = 'accounting/accounting_detail.html'
+    template_name = "accounting/accounting_detail.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Расходник", add='accounting:new-accounting',
-                                      update='accounting:accounting-update', delete='accounting:accounting-delete')
+        c_def = self.get_user_context(
+            title="Расходник",
+            add="accounting:new-accounting",
+            update="accounting:accounting-update",
+            delete="accounting:accounting-delete",
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
 
-class AccountingCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
-    permission_required = 'accounting.add_accounting'
+class AccountingCreate(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+):
+    permission_required = "accounting.add_accounting"
     model = Accounting
     form_class = AccountingForm
-    template_name = 'Forms/add.html'
+    template_name = "Forms/add.html"
     success_message = "Расходник %(name)s успешно создан"
     error_message = "Расходник %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить расходник", )
+        c_def = self.get_user_context(
+            title="Добавить расходник",
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
 
-class AccountingUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
-    permission_required = 'accounting.change_accounting'
+class AccountingUpdate(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+):
+    permission_required = "accounting.change_accounting"
     model = Accounting
-    template_name = 'Forms/add.html'
+    template_name = "Forms/add.html"
     form_class = AccountingForm
     success_message = "Расходник %(name)s успешно обновлен"
     error_message = "Расходник %(name)s не удалось обновить"
@@ -141,38 +169,47 @@ class AccountingUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, F
         return context
 
 
-class AccountingDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
-    permission_required = 'accounting.delete_accounting'
+class AccountingDelete(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+):
+    permission_required = "accounting.delete_accounting"
     model = Accounting
-    template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('accounting:accounting_list')
+    template_name = "Forms/delete.html"
+    success_url = reverse_lazy("accounting:accounting_list")
     success_message = "Расходник успешно удален"
     error_message = "Расходник не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить расходник", selflink='accounting:accounting_list')
+        c_def = self.get_user_context(
+            title="Удалить расходник", selflink="accounting:accounting_list"
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
 
 # Categories
-class CategoryView(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView):
-    permission_required = 'accounting.view_category'
-    template_name = 'accounting/categories_list.html'
+class CategoryView(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+):
+    permission_required = "accounting.view_category"
+    template_name = "accounting/categories_list.html"
     model = Categories
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Категории", searchlink='accounting:categories_search',
-                                      add='accounting:new-categories')
+        c_def = self.get_user_context(
+            title="Категории",
+            searchlink="accounting:categories_search",
+            add="accounting:new-categories",
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get("q")
         if not query:
-            query = ''
+            query = ""
         object_list = Categories.objects.filter(Q(name__icontains=query))
         return object_list
 
@@ -188,28 +225,34 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class CategoryCreate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView):
-    permission_required = 'accounting.add_category'
+class CategoryCreate(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+):
+    permission_required = "accounting.add_category"
     model = Categories
     form_class = CategoriesForm
-    template_name = 'Forms/add.html'
-    success_url = reverse_lazy('accounting:categories_list')
+    template_name = "Forms/add.html"
+    success_url = reverse_lazy("accounting:categories_list")
     success_message = "Категория %(name)s успешно создан"
     error_message = "Категорию %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить категорию", )
+        c_def = self.get_user_context(
+            title="Добавить категорию",
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
 
-class CategoryUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView):
-    permission_required = 'accounting.update_category'
+class CategoryUpdate(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+):
+    permission_required = "accounting.update_category"
     model = Categories
-    template_name = 'Forms/add.html'
+    template_name = "Forms/add.html"
     form_class = CategoriesForm
-    success_url = reverse_lazy('accounting:categories_list')
+    success_url = reverse_lazy("accounting:categories_list")
     success_message = "Категория %(name)s успешно обновлен"
     error_message = "Категорию %(name)s не удалось обновить"
 
@@ -220,16 +263,20 @@ class CategoryUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, For
         return context
 
 
-class CategoryDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
-    permission_required = 'accounting.delete_category'
+class CategoryDelete(
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+):
+    permission_required = "accounting.delete_category"
     model = Categories
-    template_name = 'Forms/delete.html'
-    success_url = reverse_lazy('accounting:categories_list')
+    template_name = "Forms/delete.html"
+    success_url = reverse_lazy("accounting:categories_list")
     success_message = "Категория успешно удалена"
     error_message = "Категорию не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Удалить категорию", selflink='accounting:categories_list')
+        c_def = self.get_user_context(
+            title="Удалить категорию", selflink="accounting:categories_list"
+        )
         context = dict(list(context.items()) + list(c_def.items()))
         return context

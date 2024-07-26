@@ -2,16 +2,16 @@
 
 {% block content %}
   {% load static %}
-    <div class="table-responsive"> 
+    <div class="table-responsive">
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
-      </caption> 
+      </caption>
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
   <table class="table align-middle table-hover" style="text-align:center">
-    <thead> 
+    <thead>
       <tr>
         {% if perms.accessories.can_export_consumable %}
           <a class="text-secondary" href="{% url 'consumables:export_accessories' %}">
@@ -62,7 +62,7 @@
   {% endif %}
   {% if not accessories_list%}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Комплектующие не обнаружены</th>
         </tr>
@@ -85,7 +85,7 @@
       {% for each in accessories_list %}
       <tr>
         <td><a class="noDecoration" href="{{ each.get_absolute_url }}">{{ each.name }}</a></td>
-        {% if each.description %}  
+        {% if each.description %}
           <td>{{ each.description}}</td>
         {% else %}
           <td></td>
@@ -126,7 +126,7 @@
               </table>
             </td>
           {% endif %}
-        {% if each.note %}  
+        {% if each.note %}
           <td>{{ each.note}}</td>
         {% else %}
           <td></td>
@@ -138,6 +138,6 @@
 
     {% endif %}
   </div>
-<!--block pagination-->  
+<!--block pagination-->
   {%include 'pagination/pagination.html' %}
 {% endblock %}

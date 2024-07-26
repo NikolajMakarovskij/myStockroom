@@ -2,16 +2,16 @@
 
 {% block content %}
   {% load static %}
-    <div class="table-responsive"> 
+    <div class="table-responsive">
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
-      </caption> 
+      </caption>
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Группы не обнаружены</th>
         </tr>
@@ -42,7 +42,7 @@
   {% endif %}
   {% if not historyacc_list %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Истории не обнаружено</th>
         </tr>
@@ -72,7 +72,7 @@
           {% if not each.device %}
               {{ each.status }}
           {% else %}
-              {{ each.status }} на устройство 
+              {{ each.status }} на устройство
               <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
             {% endif %}
         </td>
@@ -87,6 +87,6 @@
     </table>
   {% endif %}
   </div>
-<!--block pagination-->  
+<!--block pagination-->
   {%include 'pagination/pagination.html' %}
 {% endblock %}

@@ -64,20 +64,42 @@ class EmployeeWidget(BaseModelSelect2WidgetMixin):
 class SignatureForm(forms.ModelForm):
     class Meta:
         model = Signature
-        fields = ['name', 'licenseKeyFileOpen', 'licenseKeyFileClose', 'periodOpen', 'periodClose', 'employeeRegister',
-                  'employeeStorage', 'workstation', 'storage']
+        fields = [
+            "name",
+            "licenseKeyFileOpen",
+            "licenseKeyFileClose",
+            "periodOpen",
+            "periodClose",
+            "employeeRegister",
+            "employeeStorage",
+            "workstation",
+            "storage",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyFileOpen': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyFileClose': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
-            'periodOpen': forms.DateInput(format='%Y-%m-%d',
-                                          attrs={'class': 'datepicker form-control form-control-lg  ', 'type': 'date'}),
-            'periodClose': forms.DateInput(format='%Y-%m-%d',
-                                           attrs={'class': 'datepicker form-control form-control-lg  ',
-                                                  'type': 'date'}),
-            'employeeRegister': EmployeeWidget,
-            'employeeStorage': EmployeeWidget,
-            'workstation': DeviceWidget,
-            'storage': ConWidget,
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "licenseKeyFileOpen": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyFileClose": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "periodOpen": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={
+                    "class": "datepicker form-control form-control-lg  ",
+                    "type": "date",
+                },
+            ),
+            "periodClose": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={
+                    "class": "datepicker form-control form-control-lg  ",
+                    "type": "date",
+                },
+            ),
+            "employeeRegister": EmployeeWidget,
+            "employeeStorage": EmployeeWidget,
+            "workstation": DeviceWidget,
+            "storage": ConWidget,
             # 'quantity': forms.NumberInput(attrs={'class': 'form-control form-control-lg'}),
         }

@@ -62,7 +62,7 @@ $.fn.select2.defaults.set('amdLanguageBase', 'select2/i18n/');
 
 Specifies the base AMD loader path to be used for select2 dependency resolution. This option typically doesn't need to be changed, but is available for situations where module names may change as a result of certain build environments.
 
-#### `amdLanguageBase` 
+#### `amdLanguageBase`
 
 Specifies the base AMD loader language path to be used for select2 language file resolution. This option typically doesn't need to be changed, but is available for situations where module names may change as a result of certain build environments.
 

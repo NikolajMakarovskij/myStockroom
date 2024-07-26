@@ -30,12 +30,12 @@ You can use `.find` to select the option if it already exists, and create it oth
 // Set the value, creating a new option if necessary
 if ($('#mySelect2').find("option[value='" + data.id + "']").length) {
     $('#mySelect2').val(data.id).trigger('change');
-} else { 
+} else {
     // Create a DOM Option and pre-select by default
     var newOption = new Option(data.text, data.id, true, true);
     // Append it to the select
     $('#mySelect2').append(newOption).trigger('change');
-} 
+}
 ```
 
 ## Selecting options
@@ -56,7 +56,7 @@ $('#mySelect2').trigger('change'); // Notify any JS components that the value ch
 
 Select2 will listen for the `change` event on the `<select>` element that it is attached to. When you make any external changes that need to be reflected in Select2 (such as changing the value), you should trigger this event.
 
-### Preselecting options in an remotely-sourced (AJAX) Select2 
+### Preselecting options in an remotely-sourced (AJAX) Select2
 
 For Select2 controls that receive their data from an [AJAX source](/data-sources/ajax), using `.val()` will not work.  The options won't exist yet, because the AJAX request is not fired until the control is opened and/or the user begins searching.  This is further complicated by server-side filtering and pagination - there is no guarantee when a particular item will actually be loaded into the Select2 control!
 

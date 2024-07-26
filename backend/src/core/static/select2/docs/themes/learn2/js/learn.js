@@ -207,7 +207,7 @@ jQuery(document).ready(function() {
             });
         }
     });
-    
+
     // allow keyboard control for prev/next links
     jQuery(function() {
         jQuery('.nav-prev').click(function(){
@@ -228,7 +228,7 @@ jQuery(document).ready(function() {
       if(e.which == '39') {
         jQuery('.nav.nav-next').click();
       }
-    });     
+    });
 
 });
 

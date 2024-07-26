@@ -20,15 +20,15 @@
             {% endfor %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             {{ form.media.js }}
-        <div class="row">   
+        <div class="row">
         <div class="d-flex justify-content-center input-group mt-3 mr-1">
             {%if selflink%}
-            <a class="btn btn-lg btn-outline-dark bg-gradient input-group-text" 
+            <a class="btn btn-lg btn-outline-dark bg-gradient input-group-text"
                 href="{% url selflink %}">
                     Назад
             </a>
             {%elif deplink%}
-            <a class="btn btn-lg btn-outline-dark bg-gradient input-group-text" 
+            <a class="btn btn-lg btn-outline-dark bg-gradient input-group-text"
                 href="{% url deplink %}">
                     К списку баз
             </a>

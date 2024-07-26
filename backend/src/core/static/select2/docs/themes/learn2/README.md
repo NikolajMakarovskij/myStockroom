@@ -6,7 +6,7 @@ Learn2 is the default [Grav Learn](http://learn.getgrav.org) theme. Simple, fast
 
 # Installation
 
-Installing the Learn2 theme can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the theme with a simple terminal command, while the manual method enables you to do so via a zip file. 
+Installing the Learn2 theme can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the theme with a simple terminal command, while the manual method enables you to do so via a zip file.
 
 The theme is designed to be used to provide a documentation site. You can see this in action at [](http://learn.getgrav.org)
 

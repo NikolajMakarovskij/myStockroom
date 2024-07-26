@@ -41,18 +41,22 @@ class DepartamentWidget(BaseModelSelect2WidgetMixin):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['surname', 'name',  'last_name', 'workplace', 'post', 'employeeEmail']
+        fields = ["surname", "name", "last_name", "workplace", "post", "employeeEmail"]
         widgets = {
-            'surname': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'workplace': WorkplaceWidget,
-            'post': PostWidget,
-            'employeeEmail': forms.EmailInput(attrs={'class': 'form-control form-control-lg'}),
+            "surname": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "last_name": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "workplace": WorkplaceWidget,
+            "post": PostWidget,
+            "employeeEmail": forms.EmailInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
         }
         error_messages = {
-            'employeeEmail': {
-                'unique': "Такой адрес почты уже существует",
+            "employeeEmail": {
+                "unique": "Такой адрес почты уже существует",
             },
         }
 
@@ -60,17 +64,22 @@ class EmployeeForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['name', 'departament', ]
+        fields = [
+            "name",
+            "departament",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'departament': DepartamentWidget,
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "departament": DepartamentWidget,
         }
 
 
 class DepartamentForm(forms.ModelForm):
     class Meta:
         model = Departament
-        fields = ['name', ]
+        fields = [
+            "name",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
         }

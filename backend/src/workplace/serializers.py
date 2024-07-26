@@ -7,14 +7,12 @@ class WorkplaceSerializer(serializers.ModelSerializer):
     queryset = Workplace.objects.all()
 
     def display_value(self, instance):
-        return '%s' % instance.name
+        return "%s" % instance.name
 
     class Meta:
         model = Workplace
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class RoomModelSerializer(serializers.ModelSerializer):
@@ -23,10 +21,8 @@ class RoomModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -34,10 +30,8 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class WorkplaceModelSerializer(serializers.ModelSerializer):
@@ -46,8 +40,5 @@ class WorkplaceModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Workplace
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
-
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}

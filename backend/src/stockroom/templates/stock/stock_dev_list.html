@@ -2,16 +2,16 @@
 
 {% block content %}
   {% load static %}
-    <div class="table-responsive"> 
+    <div class="table-responsive">
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
-      </caption> 
+      </caption>
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <td>
             {% if perms.stockdev.can_export_device %}
@@ -65,7 +65,7 @@
   {% endif %}
   {% if not stockdev_list %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Устройства не обнаружены</th>
         </tr>
@@ -126,7 +126,7 @@
   </table>
 {% endif %}
   </div>
-  <!--block pagination-->  
+  <!--block pagination-->
   {%include 'pagination/pagination.html' %}
   <!--block history-->
   {% load history_tags %}

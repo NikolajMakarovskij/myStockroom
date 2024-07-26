@@ -12,32 +12,24 @@ from ..models import Consumables, Device, DeviceCat
 @pytest.mark.django_db
 def test_device_category_create():
     """Тестирует создание записи в базе данных для модели DeviceCat приложения Device"""
-    DeviceCat.objects.create(
-        name="my_category_name",
-        slug="my_category_slug"
-    )
+    DeviceCat.objects.create(name="my_category_name", slug="my_category_slug")
     category = DeviceCat.objects.get(name="my_category_name")
     assert DeviceCat.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse('device:category', kwargs={'category_slug': category.slug})
+    assert category.get_absolute_url() == reverse(
+        "device:category", kwargs={"category_slug": category.slug}
+    )
 
 
 @pytest.mark.django_db
 def test_device_category_unique_slug():
     """Тестирует наличие дублирования в поле slug приложение Device"""
     with pytest.raises(IntegrityError):
-        DeviceCat.objects.create(
-            name="my_category_1",
-            slug="my_category"
-        )
+        DeviceCat.objects.create(name="my_category_1", slug="my_category")
 
-        assert (DeviceCat.objects.create(
-            name="my_category_2",
-            slug="my_category"
-        )
-        )
+        assert DeviceCat.objects.create(name="my_category_2", slug="my_category")
 
 
 @pytest.mark.django_db
@@ -61,7 +53,7 @@ def test_device_create():
         description="some_description",
         workplace=Workplace.objects.get(name="device_workplace"),
         quantity=0,
-        note="some_note"
+        note="some_note",
     )
 
     device = Device.objects.get(name="device_name")
@@ -85,4 +77,6 @@ def test_device_create():
     assert device.quantity == 0
     assert device.note == "some_note"
     assert device.__str__() == "device_name"
-    assert device.get_absolute_url() == reverse('device:device-detail', kwargs={'pk': device.pk})
+    assert device.get_absolute_url() == reverse(
+        "device:device-detail", kwargs={"pk": device.pk}
+    )

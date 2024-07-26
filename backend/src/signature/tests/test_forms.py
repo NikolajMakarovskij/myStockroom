@@ -13,10 +13,7 @@ def test_signature_form_valid():
     Device.objects.create(name="Acer C27")
     Consumables.objects.create(
         name="T7741",
-        categories=ConCat.objects.create(
-            name="Накопители",
-            slug="storages"
-        )
+        categories=ConCat.objects.create(name="Накопители", slug="storages"),
     )
     form_data = {
         "name": "signature_name",
@@ -25,7 +22,7 @@ def test_signature_form_valid():
         "employeeRegister": Employee.objects.get(name="some_employee_1"),
         "employeeStorage": Employee.objects.get(name="some_employee_2"),
         "workstation": Device.objects.get(name="Acer C27"),
-        "storage": Consumables.objects.get(name="T7741")
+        "storage": Consumables.objects.get(name="T7741"),
     }
     form = SignatureForm(data=form_data)
     assert form.is_valid() is True
@@ -41,7 +38,7 @@ def test_signature_form_date_open_incorrect():
     }
     form = SignatureForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_mes] == form.errors['periodOpen']
+    assert [err_mes] == form.errors["periodOpen"]
 
 
 @pytest.mark.django_db
@@ -54,4 +51,4 @@ def test_signature_form_date_close_incorrect():
     }
     form = SignatureForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_mes] == form.errors['periodClose']
+    assert [err_mes] == form.errors["periodClose"]

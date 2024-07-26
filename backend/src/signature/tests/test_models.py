@@ -20,7 +20,7 @@ def test_signature_create():
         employeeRegister=Employee.objects.get(name="some_employee_1"),
         employeeStorage=Employee.objects.get(name="some_employee_2"),
         workstation=Device.objects.get(name="Acer C27"),
-        storage=Consumables.objects.get(name="storage")
+        storage=Consumables.objects.get(name="storage"),
     )
     signature = Signature.objects.get(name="signature_name")
     assert Signature.objects.count() == 1
@@ -32,4 +32,6 @@ def test_signature_create():
     assert signature.workstation.name == "Acer C27"
     assert signature.storage.name == "storage"
     assert signature.__str__() == "signature_name"
-    assert signature.get_absolute_url() == reverse('signature:signature-detail', kwargs={'pk': signature.pk})
+    assert signature.get_absolute_url() == reverse(
+        "signature:signature-detail", kwargs={"pk": signature.pk}
+    )

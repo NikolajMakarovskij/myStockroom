@@ -19,19 +19,28 @@ class RoomWidget(BaseModelSelect2WidgetMixin):
 class WorkplaceForm(forms.ModelForm):
     class Meta:
         model = Workplace
-        fields = ['name', 'room', ]
+        fields = [
+            "name",
+            "room",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'room': RoomWidget
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "room": RoomWidget,
         }
 
 
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['name', 'floor', 'building', ]
+        fields = [
+            "name",
+            "floor",
+            "building",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'floor': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'building': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "floor": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "building": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
         }

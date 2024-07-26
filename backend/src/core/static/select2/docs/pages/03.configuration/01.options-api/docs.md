@@ -6,7 +6,7 @@ taxonomy:
 
 This is a list of all the Select 2 configuration options.
 
-| Option | Type | Default | Description | 
+| Option | Type | Default | Description |
 | ------ | ---- | ------- | ----------- |
 | `adaptContainerCssClass` | | | |
 | `adaptDropdownCssClass` | | | |

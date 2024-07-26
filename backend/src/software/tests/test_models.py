@@ -25,7 +25,9 @@ def test_software_create():
     assert soft.bitDepth == "x64"
     assert soft.licenseKeyText == "Key_354ygar"
     assert soft.__str__() == "my_software_name"
-    assert soft.get_absolute_url() == reverse('software:software-detail', kwargs={'pk': soft.pk})
+    assert soft.get_absolute_url() == reverse(
+        "software:software-detail", kwargs={"pk": soft.pk}
+    )
 
 
 @pytest.mark.django_db
@@ -47,4 +49,6 @@ def test_os_create():
     assert os_vars.bitDepth == "x64"
     assert os_vars.licenseKeyText == "Key_354ygar"
     assert os_vars.__str__() == "my_OS_name"
-    assert os_vars.get_absolute_url() == reverse('software:OS-detail', kwargs={'pk': os_vars.pk})
+    assert os_vars.get_absolute_url() == reverse(
+        "software:OS-detail", kwargs={"pk": os_vars.pk}
+    )

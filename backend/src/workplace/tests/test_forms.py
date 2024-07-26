@@ -20,11 +20,11 @@ def test_room_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "",
+        "name": "",
     }
     form = WorkplaceForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_name] == form.errors['name']
+    assert [err_name] == form.errors["name"]
 
 
 @pytest.mark.django_db
@@ -33,8 +33,8 @@ def test_workplace_form_valid():
     Room.objects.create(name="my_room")
 
     form_data = {
-        'name': "my_consumable",
-        'room': Room.objects.get(name="my_room"),
+        "name": "my_consumable",
+        "room": Room.objects.get(name="my_room"),
     }
     form = WorkplaceForm(data=form_data)
     assert form.is_valid() is True
@@ -45,8 +45,8 @@ def test_workplace_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "",
+        "name": "",
     }
     form = WorkplaceForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_name] == form.errors['name']
+    assert [err_name] == form.errors["name"]

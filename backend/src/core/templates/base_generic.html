@@ -24,29 +24,29 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-        {% if user.is_superuser %}  
+        {% if user.is_superuser %}
         <div class="nav-item  col-1 text-light">
           <a class="noDecorationMenu" href="/admin/">
             <h5>админка</h5>
           </a>
         </div>
-        {% endif %} 
-        <div class="nav-item col-1 ">        
+        {% endif %}
+        <div class="nav-item col-1 ">
           <a class="noDecorationMenu " href="{% url 'stockroom:stock_index' %}">
             <h5>Склад</h5>
           </a>
-        </div>  
-        <div class="nav-item col-1 text-light">        
+        </div>
+        <div class="nav-item col-1 text-light">
           <h5 class="">
             {{ user.get_username }}
           </h5>
-        </div>  
+        </div>
         <div class="nav-item">
           <a href="{% url 'login' %}" class="btn btn-primary bg-secondary">
             Выход
           </a>
         </div>
-    </div> 
+    </div>
   </nav>
 <!-- side navigation -->
 {% block sidemenu %}
@@ -70,13 +70,13 @@
 
     <div class="col ">
       {% block content %}
-      
+
       {% endblock %}
       {%include 'toast.html' %}
       <a  class="btn  btn-ligt btn-out position-fixed bottom-0 end-0 p-3" href="#">
         <div>
           Наверх
-        </div>  
+        </div>
       </a>
     </div>
   </div>

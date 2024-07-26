@@ -20,8 +20,8 @@ def test_manufacturer_form_name_invalid():
     """Тест на наличие названия"""
     err_mes = "Обязательное поле."
     form_data = {
-        'name': "",
+        "name": "",
     }
     form = ManufacturerForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_mes] == form.errors['name']
+    assert [err_mes] == form.errors["name"]
