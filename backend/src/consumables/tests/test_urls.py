@@ -76,7 +76,7 @@ def test_consumable_category_url(auto_login_user): # noqa F811
 
 # category
 @pytest.mark.django_db
-def test_consumable_category_url(auto_login_user): # noqa F811
+def test_accessories_category_url(auto_login_user): # noqa F811
     client, user = auto_login_user()
     AccCat.objects.create(name="some_category", slug="some_category")
     url = reverse('consumables:category_accessories',

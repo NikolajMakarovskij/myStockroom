@@ -1,5 +1,6 @@
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
+from import_export import fields, resources  # type: ignore [import-untyped]
+from import_export.widgets import (  # type: ignore [import-untyped]
+    ForeignKeyWidget, ManyToManyWidget,)
 
 from consumables.models import Accessories, Consumables
 from counterparty.models import Manufacturer

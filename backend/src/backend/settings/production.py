@@ -74,7 +74,7 @@ DEBUG_TOOLBAR_PANELS = [
 
 
 def show_toolbar(request):
-    return True
+    return False
 
 
 DEBUG_TOOLBAR_CONFIG = {
@@ -96,7 +96,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE: dict[list, str] = {}
 
 # end celery
 
@@ -193,8 +193,8 @@ CACHES = {
     },
     "select2": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/2",
-        "db": "16",
+        "LOCATION": "redis://redis:6379/1",
+        "db": "15",
     },
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

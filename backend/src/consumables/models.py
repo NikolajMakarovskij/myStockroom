@@ -13,11 +13,11 @@ class Categories(ModelMixin, models.Model):
     Модель группы для расходников.
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
-    name = models.CharField(
+    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug = models.SlugField(
+    slug: models.SlugField = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,
@@ -42,16 +42,16 @@ class Consumables(ModelMixin, models.Model):
     Модель расходников
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=150,
         unique=True,
         help_text="Введите название",
         verbose_name="Название",
     )
-    categories = models.ForeignKey(
+    categories: models.ForeignKey = models.ForeignKey(
         "Categories",
         on_delete=models.SET_NULL,
         blank=True,
@@ -59,35 +59,35 @@ class Consumables(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="Группа",
     )
-    serial = models.CharField(
+    serial: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите серийный номер",
         verbose_name="Серийный номер",
     )
-    serialImg = models.ImageField(
+    serialImg: models.ImageField = models.ImageField(
         upload_to="сonsumables/serial/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Фото серийного номера",
     )
-    invent = models.CharField(
+    invent: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите инвентаризационный номер",
         verbose_name="Инвентарный номер",
     )
-    inventImg = models.ImageField(
+    inventImg: models.ImageField = models.ImageField(
         upload_to="сonsumables/invent/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Фото инвентарного номера",
     )
-    manufacturer = models.ForeignKey(
+    manufacturer: models.ForeignKey = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -95,20 +95,20 @@ class Consumables(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    quantity = models.IntegerField(
+    quantity: models.IntegerField = models.IntegerField(
         blank=True,
         default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
     )
-    description = models.TextField(
+    description: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,
         help_text="Введите описание",
         verbose_name="Описание",
     )
-    note = models.TextField(
+    note: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,
@@ -124,7 +124,7 @@ class Consumables(ModelMixin, models.Model):
 
     def get_difference(self) -> int:
         quantity_all = 0
-        for each in self.consumable.all():
+        for each in self.consumable.all(): # type: ignore[attr-defined]
             quantity_all += each.quantity
         difference = self.quantity - quantity_all
         return difference
@@ -145,11 +145,11 @@ class AccCat(ModelMixin, models.Model):
     Модель группы для комплектующих.
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
-    name = models.CharField(
+    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug = models.SlugField(
+    slug: models.SlugField = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,
@@ -176,16 +176,16 @@ class Accessories(ModelMixin, models.Model):
     Модель комплектующих
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=150,
         unique=True,
         help_text="Введите название",
         verbose_name="Название",
     )
-    categories = models.ForeignKey(
+    categories: models.ForeignKey = models.ForeignKey(
         "AccCat",
         on_delete=models.SET_NULL,
         blank=True,
@@ -193,35 +193,35 @@ class Accessories(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="Группа",
     )
-    serial = models.CharField(
+    serial: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите серийный номер",
         verbose_name="Серийный номер",
     )
-    serialImg = models.ImageField(
+    serialImg: models.ImageField = models.ImageField(
         upload_to="accessories/serial/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Фото серийного номера",
     )
-    invent = models.CharField(
+    invent: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите инвентаризационный номер",
         verbose_name="Инвентарный номер",
     )
-    inventImg = models.ImageField(
+    inventImg: models.ImageField = models.ImageField(
         upload_to="accessories/invent/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Фото инвентарного номера",
     )
-    manufacturer = models.ForeignKey(
+    manufacturer: models.ForeignKey = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -229,20 +229,20 @@ class Accessories(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    quantity = models.IntegerField(
+    quantity: models.IntegerField = models.IntegerField(
         blank=True,
         default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
     )
-    description = models.TextField(
+    description: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,
         help_text="Введите описание",
         verbose_name="Описание",
     )
-    note = models.TextField(
+    note: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,
@@ -258,7 +258,7 @@ class Accessories(ModelMixin, models.Model):
 
     def get_difference(self) -> int:
         quantity_all = 0
-        for each in self.accessories.all():
+        for each in self.accessories.all(): # type: ignore[attr-defined]
             quantity_all += each.quantity
         difference = self.quantity - quantity_all
         return difference

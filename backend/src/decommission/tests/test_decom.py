@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from decommission.decom import Decom
 from decommission.models import CategoryDec, CategoryDis
+from device.models import Device, DeviceCat
 
 
 def create_session(client):
@@ -16,9 +17,9 @@ def create_session(client):
     return client
 
 
-def create_devices() -> dict:
+def create_devices() -> Device:
     """Service function. Creates a category and device"""
-    from device.models import Device, DeviceCat
+    
 
     if Device.objects.filter(name="my_consumable").aexists():
         DeviceCat.objects.create(name="my_category", slug="my_category")
@@ -35,7 +36,6 @@ def create_devices() -> dict:
 @pytest.mark.django_db
 def test_decom_no_category():
     """Checks the operation of the add_category_decom method of the Decom class"""
-    from device.models import Device
 
     Device.objects.create(name="my_consumable")
     device = Device.objects.get(name="my_consumable")
@@ -62,7 +62,6 @@ def test_decom_add_category():
 @pytest.mark.django_db
 def test_disp_no_category():
     """Checks the operation of the add_category_disp method of the Decom class"""
-    from device.models import Device
 
     Device.objects.create(name="my_consumable")
     device = Device.objects.get(name="my_consumable")

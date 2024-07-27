@@ -121,7 +121,7 @@ class EmployeeUpdate(
         return context
 
 
-class EmployeeDelete(
+class EmployeeDelete(# type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "employee.delete_employee"
@@ -228,7 +228,7 @@ class PostUpdate(
         return context
 
 
-class PostDelete(
+class PostDelete(# type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "employee.delete_post"
@@ -333,7 +333,7 @@ class DepartamentUpdate(
         return context
 
 
-class DepartamentDelete(
+class DepartamentDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "employee.delete_departament"

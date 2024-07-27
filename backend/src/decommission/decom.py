@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.conf import settings
 
 from decommission.models import CategoryDec, CategoryDis
@@ -25,7 +27,7 @@ class Decom(object):
         self.session.modified = True
 
     # Decommission
-    def add_category_decom(device_id: str) -> dict:
+    def add_category_decom(device_id: str) -> Any | None: # type: ignore[misc]
         """Get category"""
         if not Device.objects.get(id=device_id).categories:
             device_category = None
@@ -41,7 +43,7 @@ class Decom(object):
         return device_category
 
     # Disposal
-    def add_category_disp(device_id: str) -> dict:
+    def add_category_disp(device_id: str) -> Any | None: # type: ignore[misc]
         """Get category"""
         if not Device.objects.get(id=device_id).categories:
             device_category = None

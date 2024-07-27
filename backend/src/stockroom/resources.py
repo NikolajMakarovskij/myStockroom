@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
 
 from consumables.models import Accessories, Consumables
 from device.models import Device
@@ -15,8 +15,8 @@ from stockroom.models.devices import CategoryDev, StockDev
 class BaseStockResource(resources.ModelResource):
     """Class with stock base methods"""
 
-    stock_model: dict = None
-    stock_category: dict = None
+    stock_model: type | None = None
+    stock_category: type | None = None
 
     name = fields.Field(
         column_name="Название",

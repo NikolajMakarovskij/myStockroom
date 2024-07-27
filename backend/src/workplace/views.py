@@ -104,7 +104,9 @@ class WorkplaceUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, Fo
         return context
 
 
-class WorkplaceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class WorkplaceDelete(# type: ignore[misc]
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    ):
     permission_required = 'workplace.delete_workplace'
     model = Workplace
     template_name = 'Forms/delete.html'
@@ -196,7 +198,7 @@ class RoomUpdate(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMes
         return context
 
 
-class RoomDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):
+class RoomDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView):# type: ignore[misc]
     permission_required = 'workplace.delete_room'
     model = Room
     template_name = 'Forms/delete.html'

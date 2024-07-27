@@ -1,5 +1,5 @@
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
 
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from device.models import Device

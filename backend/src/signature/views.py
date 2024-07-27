@@ -120,7 +120,7 @@ class SignatureUpdate(
         return context
 
 
-class SignatureDelete(
+class SignatureDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "signature.delete_signature"

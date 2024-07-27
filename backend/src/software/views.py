@@ -111,7 +111,7 @@ class SoftwareUpdate(
         return context
 
 
-class SoftwareDelete(
+class SoftwareDelete(# type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_software"
@@ -219,7 +219,7 @@ class OSUpdate(
         return context
 
 
-class OSDelete(
+class OSDelete(# type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_os"

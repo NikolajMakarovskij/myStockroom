@@ -1,5 +1,10 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Model
+from django.db.models.query import QuerySet
+
+from consumables.models import AccCat, Accessories, Categories, Consumables
+from device.models import Device, DeviceCat
 
 
 def create_session(client):
@@ -12,9 +17,9 @@ def create_session(client):
     return client
 
 
-def create_consumable() -> dict:
+def create_consumable() -> Model:
     """Service function. Creates a category and a stock_model"""
-    from consumables.models import Categories, Consumables
+
 
     if Consumables.objects.filter(name="my_consumable").aexists():
         Categories.objects.create(name="my_category", slug="my_category")
@@ -27,9 +32,8 @@ def create_consumable() -> dict:
     return get_consumable
 
 
-def create_accessories() -> dict:
+def create_accessories() -> Model:
     """Service function. Creates a category and stock_model"""
-    from consumables.models import AccCat, Accessories
 
     if Accessories.objects.filter(name="my_consumable").aexists():
         AccCat.objects.create(name="my_category", slug="my_category")
@@ -42,9 +46,8 @@ def create_accessories() -> dict:
     return get_accessories
 
 
-def create_devices() -> dict:
+def create_devices() -> Model:
     """Service function. Creates a category and stock_model"""
-    from device.models import Device, DeviceCat
 
     if Device.objects.filter(name="my_consumable").aexists():
         DeviceCat.objects.create(name="my_category", slug="my_category")
@@ -57,9 +60,9 @@ def create_devices() -> dict:
     return get_device
 
 
-def add_consumables_in_devices(consumable: dict, accessories: dict) -> dict:
+def add_consumables_in_devices(consumable: Model, accessories: Model) -> QuerySet[Device, Device]:
     """Service function. Creates a category, stock_model and stock_model. Return stock_model"""
-    from device.models import Device
+    
 
     Device.objects.bulk_create(
         [
@@ -72,11 +75,11 @@ def add_consumables_in_devices(consumable: dict, accessories: dict) -> dict:
         pass
     else:
         for device in Device.objects.all():
-            device.consumable.set([consumable.id])
+            device.consumable.set([consumable.id])  # type: ignore[attr-defined]
     if not accessories:
         pass
     else:
         for device in Device.objects.all():
-            device.accessories.set([accessories.id])
+            device.accessories.set([accessories.id]) # type: ignore[attr-defined]
     get_devices = Device.objects.all()
     return get_devices

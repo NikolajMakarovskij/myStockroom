@@ -79,7 +79,7 @@ class AccountingCategoriesView(
     permission_required = "accounting.view_accounting"
     template_name = "accounting/accounting_list.html"
     paginate_by = DataMixin.paginate
-    model = Accounting.objects
+    model = Accounting
 
     def get_context_data(self, *, object_list=None, **kwargs):
         acn_cat = cache.get("acn_cat")
@@ -171,9 +171,9 @@ class AccountingUpdate(
         return context
 
 
-class AccountingDelete(
+class AccountingDelete(# type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-):
+    ):  
     permission_required = "accounting.delete_accounting"
     model = Accounting
     template_name = "Forms/delete.html"
@@ -266,9 +266,9 @@ class CategoryUpdate(
         return context
 
 
-class CategoryDelete(
+class CategoryDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-):
+    ):
     permission_required = "accounting.delete_category"
     model = Categories
     template_name = "Forms/delete.html"

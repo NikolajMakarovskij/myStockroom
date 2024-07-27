@@ -11,8 +11,8 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
 
 
 class ConsumablesModelSerializer(serializers.ModelSerializer):
-    device = serializers.StringRelatedField(many=True)
-    consumable = serializers.StringRelatedField(many=True)
+    device: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
+    consumable: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Consumables

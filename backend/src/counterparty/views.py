@@ -114,7 +114,7 @@ class ManufacturerUpdate(
         return context
 
 
-class ManufacturerDelete(
+class ManufacturerDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "counterparty.delete_manufacturer"

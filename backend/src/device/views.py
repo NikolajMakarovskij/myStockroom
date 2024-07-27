@@ -73,7 +73,7 @@ class DeviceListView(
 class DeviceCategoryListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
-    model = Device.objects
+    model = Device
     paginate_by = DataMixin.paginate
     template_name = "device/device_list.html"
     permission_required = ("device.view_device",)
@@ -206,7 +206,7 @@ class DeviceUpdate(
         return context
 
 
-class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):
+class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):# type: ignore[misc]
     permission_required = ("device.delete_device",)
     model = Device
     template_name = "Forms/delete.html"

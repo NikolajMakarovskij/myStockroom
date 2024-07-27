@@ -95,7 +95,7 @@ class ConsumablesCategoriesView(
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
     paginate_by = DataMixin.paginate
-    model = Consumables.objects
+    model = Consumables
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cons_cat = cache.get("cons_cat")
@@ -203,7 +203,7 @@ class ConsumablesUpdate(
         return context
 
 
-class ConsumablesDelete(
+class ConsumablesDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "consumables.delete_consumables"
@@ -320,7 +320,7 @@ class AccessoriesCategoriesView(
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
     paginate_by = DataMixin.paginate
-    model = Accessories.objects
+    model = Accessories
 
     def get_context_data(self, *, object_list=None, **kwargs):
         acc_cat = cache.get("acc_cat")
@@ -420,9 +420,9 @@ class AccessoriesUpdate(
         return context
 
 
-class AccessoriesDelete(
+class AccessoriesDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-):
+    ):
     permission_required = "consumables.delete_accessories"
     model = Accessories
     template_name = "Forms/delete.html"
