@@ -12,18 +12,18 @@ class Manufacturer(ModelMixin, models.Model):
          Manufacturer (Manufacturer): _returns object "Manufacturer"_
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=150,
         help_text="Введите наименование производителя",
         verbose_name="Производитель",
     )
-    country = models.CharField(
+    country: models.CharField = models.CharField(
         max_length=150, help_text="Введите название страны", verbose_name="Страна"
     )
-    production = models.CharField(
+    production: models.CharField = models.CharField(
         max_length=150,
         help_text="Введите страну производства",
         verbose_name="Страна производства",
