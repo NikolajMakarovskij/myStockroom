@@ -32,13 +32,13 @@ class Decom(object):
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
-            device_category = Device.objects.get(id=device_id).categories.name
+            device_category = Device.objects.get(id=device_id).categories.name # type: ignore[attr-defined]
             if CategoryDec.objects.filter(name=device_category):
                 device_category = CategoryDec.objects.get(name=device_category)
             else:
                 device_category = CategoryDec.objects.create(
-                    name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug,
+                    name=Device.objects.get(id=device_id).categories.name, # type: ignore[attr-defined]
+                    slug=Device.objects.get(id=device_id).categories.slug, # type: ignore[attr-defined]
                 )
         return device_category
 
@@ -48,12 +48,12 @@ class Decom(object):
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
-            device_category = Device.objects.get(id=device_id).categories.name
+            device_category = Device.objects.get(id=device_id).categories.name # type: ignore[attr-defined]
             if CategoryDis.objects.filter(name=device_category):
                 device_category = CategoryDis.objects.get(name=device_category)
             else:
                 device_category = CategoryDis.objects.create(
-                    name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug,
+                    name=Device.objects.get(id=device_id).categories.name, # type: ignore[attr-defined]
+                    slug=Device.objects.get(id=device_id).categories.slug, # type: ignore[attr-defined]
                 )
         return device_category
