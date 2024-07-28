@@ -1,0 +1,83 @@
+stages:
+  - docker
+  - linting
+  - pages
+  - build
+
+
+services:
+  - docker:24.0.5-dind
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  PDM_CACHE_DIR: "CI_PROJECT_DIR/.cache/pdm"
+
+#pages:
+#  stage: pages
+#  script:
+#    - pdm run quarto render src/docs
+#    - cp -r src/docs/_site public
+#  artifacts:
+#    paths:
+#      - public
+#  only:
+#    - main
+
+
+build:
+  image: docker:24.0.5
+  stage: docker
+  only:
+    changes:
+     - pdm.lock
+     - pyproject.toml
+     - dockerfile
+     - .gitlab-ci.yml
+  before_script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev .
+    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
+
+default:
+  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
+
+ruff-running:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - pdm run ruff check .
+
+isort-running:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - pdm run isort --check-only --diff .
+
+mypy-running:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - pdm run mypy .
+
+
+#build-release:
+#  stage: build
+#  script:
+#    - pdm install --check --prod --no-editable
+#    - echo "building package"
+#    - pdm build
+#    - echo "Publish package"
+#    - pdm config repository.company.url "https://gitlab.com/nikolajmakarovskij/mlops_ods"
+#    - pdm config repository.company.username gitlab-ci-token
+#    - pdm config repository.company.password ${CI_JOB_TOKEN}
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#  artifacts:
+#    expire_in: never
+#    paths:
+#      - $CI_PROJECT_DIR/dist
