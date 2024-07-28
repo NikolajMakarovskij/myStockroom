@@ -37,11 +37,11 @@ build:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/dev:latest --target dev .
-    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/dev:latest
+    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev .
+    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
 
 default:
-  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/dev:latest
+  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
 
 ruff-running:
   stage: linting
