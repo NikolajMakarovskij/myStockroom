@@ -1,0 +1,63 @@
+<div class="accordion accordion-flush dark mt-3" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#con_history" aria-expanded="true" aria-controls="con_history">
+            {{table_head}}
+        </button>
+      </h2>
+      <div id="con_history" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            {% if not history_list%}
+                <table class="table align-middle table-hover" style="text-align:center">
+                <thead>
+                    <tr>
+                    <th scope="col" style="font-size: 32px;">{{no_history}}</th>
+                    </tr>
+                </thead>
+                </table>
+            {% else %}
+                <table class="table align-middle table-hover" style="text-align:center">
+                <thead>
+                    <tr>
+                        <th scope="col">Расх.</th>
+                        <th scope="col">Кол-во</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Прим.</th>
+                        <th scope="col">Изм.</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                {% for each in history_list %}
+                <tr>
+                    <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
+                    <td>{{ each.quantity }}</td>
+                    <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>
+                    {% if not each.device %}
+                        {{ each.status }}
+                    {% else %}
+                        {{ each.status }} на устройство
+                        <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
+                    {% endif %}
+                    </td>
+                    {% if not each.note %}
+                        <td></td>
+                    {% else %}
+                        <td>{{ each.note }}</td>
+                    {% endif %}
+                    <td>{{ each.user }}</td>
+                </tr>
+                {% endfor %}
+                </table>
+            {% endif %}
+            <div class="d-flex justify-content-center input-group mt-3 ">
+                <a class="btn btn-lg btn-outline-dark bg-gradient  input-group-text"
+                href="{% url 'stockroom:history_list' %}">
+                    Больше
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% load static %}
+    <div class="table-responsive">
+      <caption>
+        <h1 style="text-align:center" >{{title}}</h1>
+      </caption>
+<!--search block-->
+      {%include 'search/search.html' %}
+<!--block content-->
+  {% if not menu_categories %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col" style="font-size: 32px;">Группы не обнаружены</th>
+        </tr>
+      </thead>
+    </table>
+  {% else %}
+    <nav class="navbar bg-body-tertiary sticky-top bg-light w-100" >
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_acc_list' %}active{% endif %}" href="{% url 'stockroom:history_acc_list' %}">
+              Все группы
+            </a>
+        </li>
+        {% for item in menu_categories %}
+          <li class="nav-item ">
+            <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
+              href="{% url 'stockroom:history_dev_category' item.slug %}">{{item.name}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  {% endif %}
+  {% if not historydev_list %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col" style="font-size: 32px;">Истории не обнаружено</th>
+        </tr>
+      </thead>
+    </table>
+  {% else %}
+    <table class="table align-middle table-hover" style="text-align:center">
+      <thead>
+        <tr>
+          <th scope="col">Устройство</th>
+          <th scope="col">Группа</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Дата</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Примечание</th>
+          <th scope="col">Пользователь</th>
+        </tr>
+      </thead>
+    <tbody style="text-align:center">
+      {% for each in historydev_list %}
+      <tr>
+        <td><a class="noDecoration" href="{% url 'device:device-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
+        <td>{{ each.categories}}</td>
+        <td>{{ each.quantity }}</td>
+        <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ each.status }}</td>
+        {% if not each.note %}
+          <td></td>
+        {% else %}
+          <td>{{ each.note }}</td>
+        {% endif %}
+        <td>{{ each.user }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+  </div>
+<!--block pagination-->
+  {%include 'pagination/pagination.html' %}
+{% endblock %}

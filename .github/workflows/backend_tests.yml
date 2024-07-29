@@ -1,6 +1,6 @@
 name: Django Actions
 
-on: 
+on:
   push:
     branch: [backend]
   pull_request:
@@ -35,5 +35,9 @@ jobs:
           PGDATA: "/var/lib/postgresql/data/pgdata"
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
+      - name: Check types backend
+        run: docker exec backend pdm run mypy .
+      - name: Linting backend
+        run: docker exec backend pdm run ruff check .
       - name: Run tests
-        run: docker exec backend pytest --cov
+        run: docker exec backend pdm run pytest --cov

@@ -1,0 +1,10 @@
+.pytest_cache
+.coverage
+env/
+**/__pycache__/
+**.ruff_cache/
+**.mypy_cache/
+/backend/celerybeat-schedule
+.venv
+src/static
+src/media

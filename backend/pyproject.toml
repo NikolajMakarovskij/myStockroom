@@ -1,42 +1,44 @@
 [project]
 name = "stockroom"
-version = "0.6.11"
-description = "The project is designed to maintain a database with equipment and consumabless"
+version = "0.7.2"
+description = "The project is designed to maintain a database with equipment and consumables"
 authors = [
     {name = "Makarovskiy Nikolay", email = "adrameleh666@gmail.com"},
 ]
 
 dependencies = [
-    "asgiref==3.7.2",
-    "attrs==23.1.0",
-    "diff-match-patch==20230430",
-    "Django >=4.1.6,<=5",
-    "djangorestframework==3.14.0",
-    "markdown==3.4.3",
-    "django-filter==23.2",
-    "gunicorn==22.0.0",
-    "celery==5.3.1",
-    "django-celery-beat==2.5.0",
-    "redis==4.6.0",
-    "hiredis==2.2.3",
-    "flower==2.0.0",
-    "django-adaptors==0.2.5",
-    "django-appconf==1.0.5",
-    "django-cors-headers==4.2.0",
-    "django-crispy-forms==2.0",
-    "django-bootstrap5==23.3",
-    "crispy-bootstrap5==0.7",
-    "Pillow==10.2.0",
-    "psycopg2==2.9.6",
+    "asgiref>=3.8.1",
+    "attrs>=23.2.0",
+    "diff-match-patch>=20230430",
+    "Django >=4.1.6,<=5.0.7",
+    "djangorestframework==3.15.2",
+    "djangorestframework-simplejwt>=5.2.2",
+    "markdown>=3.6",
+    "django-filter>=24.2",
+    "gunicorn>=22.0.0",
+    "celery>=5.4.0",
+    "django-celery-beat>=2.6.0",
+    "redis>=5.0.7",
+    "hiredis>=3.0.0",
+    "flower>=2.0.1",
+    "django-adaptors>=0.2.5",
+    "django-appconf>=1.0.6",
+    "django-cors-headers>=4.4.0",
+    "django-crispy-forms>=2.3",
+    "django-bootstrap5>=24.2",
+    "crispy-bootstrap5>=2024.2",
+    "Pillow>=10.4.0",
+    "psycopg2>=2.9.9",
     "psycopg2-binary>=2.9.9",
-    "python-dateutil==2.8.2",
-    "pytz==2023.3",
-    "six==1.16.0",
-    "sqlparse==0.5.0",
-    "django-select2==8.1.2",
-    "django-import-export==4.0.6",
+    "python-dateutil>=2.9.post0",
+    "pytz>=2024.1",
+    "six>=1.16.0",
+    "sqlparse>=0.5.1",
+    "django-select2>=8.2.0",
+    "django-import-export>=4.1.1",
+    "tablib[all]>=3.5.0"
 ]
-requires-python = "==3.12"
+requires-python = ">=3.12"
 readme = "README.md"
 license = {file = "LICENSE"}
 
@@ -49,11 +51,14 @@ distribution = true
 
 [tool.pdm.dev-dependencies]
 lint = [
-    "ruff==0.3.7",
+    "ruff==0.4.8",
     "mypy==1.10.0",
     "pre-commit==3.7.1",
     "isort==5.13.2",
-    "django-stubs>=5.0.0",
+    "setuptools>=71.0.1",
+    "django-stubs>=5.0.3",
+    "djangorestframework-stubs>=3.15.0",
+    "celery-types>=0.22.0"
 ]
 test = [
     "pytest==8.1.1",
@@ -96,6 +101,8 @@ exclude = [
     "site-packages",
     "venv",
     "__pycache__",
+    "static/",
+    "media/"
 ]
 
 
@@ -105,46 +112,42 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.isort]
-profile = "ruff"
+profile = "black"
 line_length = 88
 multi_line_output = 4
 skip_gitignore = true
 skip_glob = [
     "**/migrations/*",
     "**/settings/*",
+    "**/static/*",
+    "**/media/*"
 ]
 src_paths = [
-    "./backend",
+    "./src",
 ]
 
 [tool.mypy]
-mypy_path = "./backend"
-follow_imports = "silent"
-strict_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
+mypy_path = "./src"
+follow_imports = "normal"
 disallow_any_generics = true
 check_untyped_defs = true
 no_implicit_reexport = true
 show_error_codes = true
-plugins = ["mypy_django_plugin.main"]
-
-[mypy-pyproj]
-ignore_missing_imports = true
+warn_unused_ignores = false
+show_error_context = true
+plugins = ["mypy_django_plugin.main",  "mypy_drf_plugin.main", "celery-types"]
 
 [[tool.mypy.overrides]]
 module = [
-    "import_export.*",
-    "rest_framework.*",
-    ]
+    "import_export"
+]
 ignore_missing_imports = true
-
 
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
 ]
-pythonpath = "./backend"
+pythonpath = "./src"
 
 [tool.django-stubs]
 django_settings_module = "backend.settings.production"
