@@ -29,9 +29,10 @@ build:
   stage: docker
   only:
     changes:
-     - pdm.lock
-     - pyproject.toml
+     - backend/pdm.lock
+     - backend/pyproject.toml
      - dockerfile
+     - backend/dockerfile
      - .gitlab-ci.yml
   before_script:
     - docker info
