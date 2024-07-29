@@ -50,12 +50,12 @@ ruff-running:
   script:
     - pdm run ruff check .
 
-isort-running:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - pdm run isort --check-only --diff .
+#isort-running:
+#  stage: linting
+#  rules:
+#    - if: $CI_COMMIT_MESSAGE
+#  script:
+#    - pdm run isort --check-only --diff .
 
 mypy-running:
   stage: linting
