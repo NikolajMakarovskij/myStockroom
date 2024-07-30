@@ -1,3 +1,5 @@
-.ruff_cache
+**/.ruff_cache/
+**/.mypy_cache/
+**/.pytest_cache/
 database/
 nginx/

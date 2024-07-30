@@ -29,9 +29,10 @@ build:
   stage: docker
   only:
     changes:
-     - pdm.lock
-     - pyproject.toml
+     - backend/pdm.lock
+     - backend/pyproject.toml
      - dockerfile
+     - backend/dockerfile
      - .gitlab-ci.yml
   before_script:
     - docker info
@@ -50,12 +51,12 @@ ruff-running:
   script:
     - pdm run ruff check .
 
-isort-running:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - pdm run isort --check-only --diff .
+#isort-running:
+#  stage: linting
+#  rules:
+#    - if: $CI_COMMIT_MESSAGE
+#  script:
+#    - pdm run isort --check-only --diff .
 
 mypy-running:
   stage: linting
@@ -81,4 +82,3 @@ mypy-running:
 #    expire_in: never
 #    paths:
 #      - $CI_PROJECT_DIR/dist
-

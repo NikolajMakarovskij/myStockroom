@@ -20,3 +20,5 @@ env/
 /venv/
 .idea/
 .env.dev
+backend/.pdm-python
+backend/.pdm-python

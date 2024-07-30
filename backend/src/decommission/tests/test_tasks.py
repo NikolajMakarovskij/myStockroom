@@ -189,7 +189,12 @@ def test_disp_add_device_not_category(client):
 
 @pytest.mark.django_db
 def test_disp_remove_device(client):
-    """Checks the operation of the remove_disp method of the Decom class"""
+    """_summary_
+        Checks the operation of the remove_disp method of the Decom class
+    Args:
+        client (_type_): _description_
+    """
+
     create_session(client)
     devices = create_devices()
     quantity = 1

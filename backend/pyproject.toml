@@ -7,6 +7,7 @@ authors = [
 ]
 
 dependencies = [
+    "setuptools>=71.0.1",
     "asgiref>=3.8.1",
     "attrs>=23.2.0",
     "diff-match-patch>=20230430",
