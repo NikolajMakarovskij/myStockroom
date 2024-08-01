@@ -72,7 +72,7 @@ mypy-running:
   script:
     - rm .env
     - ls -a
-    - cp "$ENV_FILE" .env
+    - cp $ENV_FILE .env
     - echo "$DEBUG"
     - cd backend
     - ls -a
