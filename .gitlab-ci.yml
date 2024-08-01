@@ -68,7 +68,7 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - pdm run mypy .
+    - docker exec lint pdm run mypy .
 
 #backend-testing:
 #  stage: testing
