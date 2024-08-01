@@ -74,7 +74,7 @@ mypy-running:
     - pdm run mypy .
 
 #backend-testing:
-#  stage: linting
+#  stage: testing
 #  rules:
 #    - if: $CI_COMMIT_MESSAGE
 # script:
