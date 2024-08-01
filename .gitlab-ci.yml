@@ -45,7 +45,7 @@ build:
   variables:
     MOUNT_POINT: /backend/src
   script:
-    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target builder ./backend
+    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target dev ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
     - docker run -t -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
 
@@ -68,8 +68,7 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - docker run -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
-    - docker exec -t lint pdm run mypy .
+    - pdm run mypy .
 
 #backend-testing:
 #  stage: testing
