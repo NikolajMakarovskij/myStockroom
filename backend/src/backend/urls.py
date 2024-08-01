@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("__debug__/", include("debug_toolbar.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("api/v1/auth/", include("rest_framework.urls")),
     path("select2/", include("django_select2.urls")),
