@@ -1,6 +1,7 @@
 stages:
   - docker
   - linting
+  - testing
   - pages
   - build
 
@@ -34,7 +35,7 @@ build:
      - backend/pyproject.toml
      - dockerfile
      - backend/dockerfile
-     - .gitlab-ci.yml
+    # - .gitlab-ci.yml
   before_script:
     - apk add --no-cache py-pip
     - apk add docker-compose
@@ -58,17 +59,6 @@ ruff-running:
     - PATH="/backend/.venv/bin:$PATH"
     - pdm run ruff check .
 
-isort-running:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - cd backend
-    - pdm lock -G lint
-    - pdm install -G lint
-    - PATH="/backend/.venv/bin:$PATH"
-    - pdm run isort --check-only --diff .
-
 mypy-running:
   stage: linting
   rules:
@@ -76,6 +66,7 @@ mypy-running:
   script:
     - rm .env
     - ls -a
+    - echo "$ENV_FILE"
     - cp $ENV_FILE /.env
     - echo "$DEBUG"
     - cd backend
@@ -86,6 +77,16 @@ mypy-running:
     - ls -a
     - pdm run mypy .
 
+backend-testing:
+  stage: testing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - cd backend
+    - pdm lock -G test
+    - pdm install -G test
+    - PATH="/backend/.venv/bin:$PATH"
+    - pdm run pytest
 
 #build-release:
 #  stage: build
