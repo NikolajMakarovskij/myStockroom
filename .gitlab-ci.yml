@@ -73,6 +73,8 @@ mypy-running:
     - echo "$DEBUG"
     - cd backend
     - ls -a
+    - pdm install -G lint
+    - ls -a
     - pdm run mypy .
 
 
