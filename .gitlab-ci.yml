@@ -47,7 +47,7 @@ build:
   script:
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target builder ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
-    - docker run -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
+    - docker run -it -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
 
 default:
   image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
