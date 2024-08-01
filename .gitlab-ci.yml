@@ -71,7 +71,7 @@ mypy-running:
     - pdm install -G lint
     - PATH="/backend/.venv/bin:$PATH"
     - ls -a
-    - pdm run mypy .
+    - pdm run mypy src/
 
 #backend-testing:
 #  stage: testing
