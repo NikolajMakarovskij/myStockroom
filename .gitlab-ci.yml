@@ -65,10 +65,9 @@ mypy-running:
     - if: $CI_COMMIT_MESSAGE
   script:
     - export DEBUG=1
-    - echo "$DEBUG"
     - cd backend
-    - pdm lock -G lint
-    - pdm install -G lint
+    - pdm lock 
+    - pdm install --check --dev
     - PATH="/backend/.venv/bin:$PATH"
     - ls -a
     - pdm run mypy src/
