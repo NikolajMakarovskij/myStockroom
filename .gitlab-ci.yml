@@ -67,13 +67,11 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - ls -a
-    - echo $ENV_FILE > .env
-    - ls -a
+    - echo "$ENV_FILE" >> .env
     - echo "$DEBUG"
     - cd backend
     - ls -a
-    - pdm install -G lint
+    - pdm install --check --dev
     - ls -a
     - pdm run mypy .
 
