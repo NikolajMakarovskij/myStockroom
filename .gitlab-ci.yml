@@ -58,12 +58,16 @@ ruff-running:
     - PATH="/backend/.venv/bin:$PATH"
     - pdm run ruff check .
 
-#isort-running:
-#  stage: linting
-#  rules:
-#    - if: $CI_COMMIT_MESSAGE
-#  script:
-#    - pdm run isort --check-only --diff .
+isort-running:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - cd backend
+    - pdm lock -G lint
+    - pdm install -G lint
+    - PATH="/backend/.venv/bin:$PATH"
+    - pdm run isort --check-only --diff .
 
 mypy-running:
   stage: linting
@@ -72,7 +76,7 @@ mypy-running:
   script:
     - rm .env
     - ls -a
-    - cp $ENV_FILE .env
+    - cp $ENV_FILE /.env
     - echo "$DEBUG"
     - cd backend
     - ls -a
