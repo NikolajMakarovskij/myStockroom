@@ -19,7 +19,6 @@ RUN pdm lock
 # run dev stage
 FROM builder AS dev
 # add git folder for isort check
-COPY --from=builder /backend/.venv /backend/.venv
 RUN cd ..
 # retrieve packages from build stage
 #COPY --from=builder /backend/.venv /backend/.venv
