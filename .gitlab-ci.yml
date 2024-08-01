@@ -68,7 +68,8 @@ mypy-running:
     - ls -a
     - echo "ENV_FILE"
     - echo "$ENV_FILE"
-    - cp $ENV_FILE /.env
+    - cp $ENV_FILE t.env
+    - mv t.env .env
     - echo "$DEBUG"
     - cd backend
     - ls -a
