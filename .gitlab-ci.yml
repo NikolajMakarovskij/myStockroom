@@ -64,15 +64,9 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - rm .env
-    - ls -a
-    - echo "ENV_FILE"
-    - echo "$ENV_FILE"
-    - cp $ENV_FILE t.env
-    - mv t.env .env
+    - export DEBUG=$DEBUG
     - echo "$DEBUG"
     - cd backend
-    - ls -a
     - pdm lock -G lint
     - pdm install -G lint
     - PATH="/backend/.venv/bin:$PATH"
@@ -80,7 +74,7 @@ mypy-running:
     - pdm run mypy .
 
 backend-testing:
-  stage: testing
+  stage: linting
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
