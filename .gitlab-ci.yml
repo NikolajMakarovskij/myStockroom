@@ -41,7 +41,7 @@ build:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - cp $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/.env .env
+    - cp $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/src/.env .env
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
 
