@@ -70,7 +70,7 @@ mypy-running:
     - pdm install --check --dev
     - PATH="/backend/.venv/bin:$PATH"
     - ls -a
-    - pdm run mypy .
+    - docker exec -t backend pdm run mypy .
 
 #backend-testing:
 #  stage: testing
