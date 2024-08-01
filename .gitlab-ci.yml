@@ -52,7 +52,7 @@ ruff-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - ls -a
+    - cd backend
     - pdm run ruff check .
 
 #isort-running:
@@ -67,6 +67,7 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
+    - cd backend
     - pdm run mypy .
 
 
