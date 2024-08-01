@@ -4,7 +4,6 @@ Django settings for backend project.
 """
 
 import os
-import socket
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
