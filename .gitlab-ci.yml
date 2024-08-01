@@ -63,14 +63,11 @@ mypy-running:
   stage: linting
   rules:
     - if: $CI_COMMIT_MESSAGE
+  variables:
+    MOUNT_POINT: /backend/src
   script:
-    - export DEBUG=1
-    - cd backend
-    - pdm lock 
-    - pdm install --check --dev
-    - PATH="/backend/.venv/bin:$PATH"
-    - ls -a
-    - docker exec -t backend pdm run mypy .
+    - docker run -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
+    - docker exec -t lint pdm run mypy .
 
 #backend-testing:
 #  stage: testing
