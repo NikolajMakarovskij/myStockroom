@@ -41,8 +41,8 @@ build:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev ./backend
-    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
+    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target build ./backend
+    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
 
 default:
   image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
@@ -53,6 +53,9 @@ ruff-running:
     - if: $CI_COMMIT_MESSAGE
   script:
     - cd backend
+    - pdm lock -G lint
+    - pdm install -G lint
+    - PATH="/backend/.venv/bin:$PATH"
     - pdm run ruff check .
 
 #isort-running:
@@ -67,11 +70,15 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - echo "$ENV_FILE" >> .env
+    - rm .env
+    - ls -a
+    - cp "$ENV_FILE" .env
     - echo "$DEBUG"
     - cd backend
     - ls -a
-    - pdm install --check --dev
+    - pdm lock -G lint
+    - pdm install -G lint
+    - PATH="/backend/.venv/bin:$PATH"
     - ls -a
     - pdm run mypy .
 
