@@ -41,9 +41,13 @@ build:
     - apk add docker-compose
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  
+  variables:
+    MOUNT_POINT: /backend/src
   script:
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target builder ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
+    - docker run -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
 
 default:
   image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
@@ -63,11 +67,8 @@ mypy-running:
   stage: linting
   rules:
     - if: $CI_COMMIT_MESSAGE
-  variables:
-    MOUNT_POINT: /backend/src
   script:
-    - docker run -v $MOUNT_POINT:/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
-    - docker exec -t lint pdm run mypy .
+    - pdm run mypy .
 
 #backend-testing:
 #  stage: testing
