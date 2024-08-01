@@ -41,8 +41,6 @@ build:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - echo $ENV_FILE
-    - echo "$ENV_FILE"  > .env
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
 
@@ -69,6 +67,7 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
+    - echo "$ENV_FILE" > .env
     - cd backend
     - pdm run mypy .
 
