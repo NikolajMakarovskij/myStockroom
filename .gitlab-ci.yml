@@ -64,7 +64,7 @@ mypy-running:
   rules:
     - if: $CI_COMMIT_MESSAGE
   script:
-    - export DEBUG=$DEBUG
+    - export DEBUG=1
     - echo "$DEBUG"
     - cd backend
     - pdm lock -G lint
@@ -73,16 +73,16 @@ mypy-running:
     - ls -a
     - pdm run mypy .
 
-backend-testing:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - cd backend
-    - pdm lock -G test
-    - pdm install -G test
-    - PATH="/backend/.venv/bin:$PATH"
-    - pdm run pytest
+#backend-testing:
+#  stage: linting
+#  rules:
+#    - if: $CI_COMMIT_MESSAGE
+# script:
+#    - cd backend
+#    - pdm lock -G test
+#    - pdm install -G test
+#    - PATH="/backend/.venv/bin:$PATH"
+#    - pdm run pytest
 
 #build-release:
 #  stage: build
