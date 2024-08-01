@@ -134,6 +134,9 @@ no_implicit_reexport = true
 show_error_codes = true
 warn_unused_ignores = false
 show_error_context = true
+exclude = [
+    '^pyproject.toml$', 
+]
 plugins = [
     "mypy_django_plugin.main",
     "mypy_drf_plugin.main",
