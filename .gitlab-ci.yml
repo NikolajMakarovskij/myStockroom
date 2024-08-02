@@ -59,11 +59,11 @@ ruff-running:
   stage: linting
   extends:
     - .standard-rules
+  variables:
+    DEBUG: 1
+    SECRET_KEY: foo
   script:
     - cd backend
-    - pdm lock -G lint
-    - pdm install -G lint
-    - PATH="/backend/.venv/bin:$PATH"
     - pdm run ruff check .
 
 mypy-running:
@@ -75,6 +75,7 @@ mypy-running:
     DEBUG: 1
     SECRET_KEY: foo
   script:
+    - cd backend
     - pdm run mypy .
 
 #backend-testing:
