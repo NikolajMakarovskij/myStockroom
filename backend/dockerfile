@@ -23,7 +23,7 @@ RUN cd ..
 # retrieve packages from build stage
 #COPY --from=builder /backend/.venv /backend/.venv
 RUN pdm install --check --dev
-
+COPY ../src /backend/src
 ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]
 
@@ -34,7 +34,7 @@ FROM builder AS prod
 # retrieve packages from build stage
 COPY --from=builder /backend/.venv /backend/.venv
 RUN pdm install --check --prod --no-editable
-COPY ./src /backend/src
+COPY ../src /backend/src
 
 ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]

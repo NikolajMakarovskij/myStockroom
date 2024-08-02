@@ -18,7 +18,7 @@ variables:
 
 
 .standard-rules:       # Make a hidden job to hold the common rules
-  rules:  
+  rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
@@ -52,7 +52,7 @@ build:
   script:
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target dev ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
-    
+
 
 ruff-running:
   image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
@@ -71,8 +71,9 @@ mypy-running:
   stage: linting
   extends:
     - .standard-rules
-  before_script:
-    - docker run -v $MOUNT_POINT:/backend/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
+  variables:
+    DEBUG: 1
+    SECRET_KEY: foo
   script:
     - docker exec lint pdm run mypy .
 
