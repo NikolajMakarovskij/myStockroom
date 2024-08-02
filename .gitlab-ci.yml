@@ -75,7 +75,7 @@ mypy-running:
     DEBUG: 1
     SECRET_KEY: foo
   script:
-    - docker exec lint pdm run mypy .
+    - pdm run mypy .
 
 #backend-testing:
 #  stage: testing
