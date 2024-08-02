@@ -13,6 +13,14 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
   DOCKER_DRIVER: overlay2
   PDM_CACHE_DIR: "CI_PROJECT_DIR/.cache/pdm"
+  MOUNT_POINT: ./backend/src
+  # variables in DinD
+
+
+.standard-rules:       # Make a hidden job to hold the common rules
+  rules:  
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 #pages:
 #  stage: pages
@@ -41,21 +49,16 @@ build:
     - apk add docker-compose
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-  
-  variables:
-    MOUNT_POINT: ./backend/src
   script:
     - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target dev ./backend
     - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
-    - docker run -v $MOUNT_POINT:/backend/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
-
-default:
-  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
+    
 
 ruff-running:
+  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
   stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
+  extends:
+    - .standard-rules
   script:
     - cd backend
     - pdm lock -G lint
@@ -64,9 +67,12 @@ ruff-running:
     - pdm run ruff check .
 
 mypy-running:
+  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
   stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
+  extends:
+    - .standard-rules
+  before_script:
+    - docker run -v $MOUNT_POINT:/backend/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest 
   script:
     - docker exec lint pdm run mypy .
 
