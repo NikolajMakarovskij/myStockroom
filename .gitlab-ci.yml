@@ -74,6 +74,7 @@ mypy-running:
   variables:
     DEBUG: 1
     SECRET_KEY: foo
+    PATH: "/backend/.venv/bin:$PATH"
   script:
     - ls -a
     - cd /
@@ -81,7 +82,6 @@ mypy-running:
     - cd backend
     - ls -a
     - pdm install --check --dev
-    - PATH="/backend/.venv/bin:$PATH"
     - pdm run mypy .
 
 #backend-testing:
