@@ -75,10 +75,9 @@ mypy-running:
     DEBUG: 1
     SECRET_KEY: foo
   script:
-    - cd backend
-    - pdm install --check --dev
-    - PATH="/backend/.venv/bin:$PATH"
-    - pdm run mypy .
+    - apk add docker-ce
+    - docker run -v $MOUNT_POINT:/backend/src --name lint $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
+    - docker exec -it lint pdm run mypy .
 
 #backend-testing:
 #  stage: testing
