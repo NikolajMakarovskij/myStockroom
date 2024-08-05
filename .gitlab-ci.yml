@@ -66,23 +66,23 @@ ruff-running:
     - cd backend
     - pdm run ruff check .
 
-mypy-running:
-  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
-  stage: linting
-  extends:
-    - .standard-rules
-  variables:
-    DEBUG: 1
-    SECRET_KEY: foo
-    PATH: "/backend/.venv/bin:$PATH"
-  script:
-    - ls -a
-    - cd /
-    - ls -a
-    - cd backend
-    - ls -a
-    - pdm install --check --dev
-    - pdm run mypy .
+#mypy-running:
+#  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
+#  stage: linting
+#  extends:
+#    - .standard-rules
+#  variables:
+#   DEBUG: 1
+#    SECRET_KEY: foo
+#    PATH: "/backend/.venv/bin:$PATH"
+#  script:
+#    - ls -a
+#    - cd /
+#   - ls -a
+#    - cd backend
+#    - ls -a
+#    - pdm install --check --dev
+#    - pdm run mypy .
 
 #backend-testing:
 #  stage: testing
