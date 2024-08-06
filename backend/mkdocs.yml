@@ -1,0 +1,14 @@
+site_name: Stockroom
+
+theme:
+  name: "material"
+
+plugins:
+- search
+- autorefs
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          show_source: false

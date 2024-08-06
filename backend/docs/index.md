@@ -1,0 +1,1 @@
+# Welcome to Stockroom docs
