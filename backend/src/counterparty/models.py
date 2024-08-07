@@ -7,10 +7,11 @@ from core.utils import ModelMixin
 
 
 class Manufacturer(ModelMixin, models.Model):
-    """
-    The manufacturers' model.
-    """
+    """_Manufacturer_: _Manufacturer model_
 
+    Returns:
+         Manufacturer (Manufacturer): _returns object "Manufacturer"_
+    """
     id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
@@ -29,9 +30,21 @@ class Manufacturer(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Manufacturer __str__ _: _returns name of model_
+
+        Returns:
+            Manufacturer__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_Manufacturer get self url_
+
+        Args (UUID): self.id
+
+        Returns:
+            Manufacturer__id (str): _returns url by id_
+        """
         return reverse("counterparty:manufacturer-detail", args=[str(self.id)])
 
     class Meta:

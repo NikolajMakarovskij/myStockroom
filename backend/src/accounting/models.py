@@ -8,7 +8,7 @@ from core.utils import ModelMixin
 
 
 class Categories(ModelMixin, models.Model):
-    """_Categories_ Модель группы для расходников на балансе в бухгалтерии.
+    """_Categories_ The group model for consumables on the balance sheet in accounting.
 
     Returns:
         Categories (Categories): _returns object "Categories"_
@@ -163,7 +163,7 @@ class Accounting(ModelMixin, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        """_Accounting update url_
+        """_Accounting get self url_
 
         Args (UUID): self.id
 
