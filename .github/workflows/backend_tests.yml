@@ -1,4 +1,4 @@
-name: Django Actions
+name: 
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       max-parallel: 4
     steps:
       - uses: actions/checkout@v3
-      - uses: isbang/compose-action@v1.4.1
+      - uses: isbang/compose-action@v2.0.1
         with:
           compose-file: "./backend/docker-compose.yaml"
         env:
