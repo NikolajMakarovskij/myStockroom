@@ -455,6 +455,14 @@ class ExportAccessories(View):
 
 class ExportAccessoriesCategory(View):
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_summary_
+
+        Args:
+            object_list (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            _type_: _description_
+        """
         acc_cat = cache.get("acc_cat")
         if not acc_cat:
             acc_cat = AccCat.objects.all()

@@ -6,6 +6,11 @@ from .models import Accounting, Categories
 
 @admin.register(Accounting)
 class AccountingAdmin(ImportExportModelAdmin):
+    """_AccountingAdmin_ Add model to admin panel
+
+    Args:
+        ImportExportModelAdmin (_type_): _description_
+    """
     list_display = [
         "name",
         "categories",
@@ -33,6 +38,11 @@ class AccountingAdmin(ImportExportModelAdmin):
 
 @admin.register(Categories)
 class CategoriesAdmin(ImportExportModelAdmin):
+    """_CategoriesAdmin_ Add model to admin panel
+
+    Args:
+        ImportExportModelAdmin (_type_): _description_
+    """
     list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}

@@ -6,6 +6,11 @@ from .models import AccCat, Accessories, Categories, Consumables
 
 @admin.register(Consumables)
 class ConsumablesAdmin(ImportExportModelAdmin):
+    """_summary_
+
+    Args:
+        ImportExportModelAdmin (_type_): _description_
+    """
     list_display = [
         "name",
         "categories",

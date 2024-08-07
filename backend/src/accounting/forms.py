@@ -7,6 +7,18 @@ from .models import Accounting, Categories
 
 
 class CategoryWidget(BaseModelSelect2WidgetMixin):
+    """_CategoryWidget_ 
+    Autocomplete plugin for the category selection field
+
+    Args:
+        BaseModelSelect2WidgetMixin (BaseModelSelect2WidgetMixin): 
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Categories):
+        querysets (Categories): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Categories
     queryset = Categories.objects.all().order_by("name")
@@ -14,6 +26,18 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
 
 
 class ConsumablesWidget(BaseModelSelect2WidgetMixin):
+    """_ConsumablesWidget_ 
+    Autocomplete plugin for the consumable selection field
+
+    Args:
+        BaseModelSelect2WidgetMixin (BaseModelSelect2WidgetMixin): 
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Categories):
+        querysets (Categories): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Consumables
     queryset = Consumables.objects.all().order_by("name")
@@ -24,6 +48,18 @@ class ConsumablesWidget(BaseModelSelect2WidgetMixin):
 
 
 class AccessoriesWidget(BaseModelSelect2WidgetMixin):
+    """_AccessoriesWidget_ 
+    Autocomplete plugin for the accessories selection field
+
+    Args:
+        BaseModelSelect2WidgetMixin (BaseModelSelect2WidgetMixin): 
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Accessories):
+        querysets (Accessories): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Accessories
     queryset = Accessories.objects.all().order_by("name")
@@ -33,7 +69,19 @@ class AccessoriesWidget(BaseModelSelect2WidgetMixin):
 
 
 class AccountingForm(forms.ModelForm):
+    """_AccountingForm_
+
+    Args:
+        ModelForm (ModelForm): _description_
+    """
     class Meta:
+        """_Class returns form of Accounting model_
+
+        Returns:
+            model (Accounting):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+        """
         model = Accounting
         fields = [
             "name",
@@ -72,7 +120,19 @@ class AccountingForm(forms.ModelForm):
 
 
 class CategoriesForm(forms.ModelForm):
+    """_CategoriesForm_
+
+    Args:
+        ModelForm (ModelForm): _description_
+    """
     class Meta:
+        """_Class returns form of Categories model_
+
+        Returns:
+            model (Categories):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+        """
         model = Categories
         fields = ["name", "slug"]
         widgets = {
