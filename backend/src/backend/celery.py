@@ -12,12 +12,9 @@ app.conf.timezone = "Asia/Yekaterinburg"
 
 @app.task(bind=True)
 def debug_task(self):
-    """_debug_task_ Debug celery
-
-    Args:
-        self: _description_
+    """_Debug celery_
         
     Returns:
-        self.request: _description_
+        request: _self.request_
     """
     print("Request: {0!r}".format(self.request))
