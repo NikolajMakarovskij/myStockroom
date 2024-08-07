@@ -8,10 +8,6 @@ from .utils import menu
 class IndexView(LoginRequiredMixin, generic.TemplateView):
     """_IndexView_ Home page
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin: _description_
-        TemplateView (TemplateView): _description_
-
     Returns:
         context (dict[list[str], dict[str, str]]): _returns context, title, side menu_
     """

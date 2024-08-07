@@ -30,10 +30,6 @@ class DataMixin:
     def get_user_context(self, **kwargs):
         """_get_user_context_: returns context for views
 
-        Args:
-            self: _description_
-            **kwargs: _description_
-
         Returns:
             menu (dict[str, str]): _Navigation side menu_
             query (str): _q_ returns query for search in views
@@ -52,9 +48,6 @@ class DataMixin:
 
 class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
     """_BaseModelSelect2WidgetMixin_ Adds plugin Select2 in views
-
-    Args:
-        ModelSelect2Widget (ModelSelect2Widget): _Select2 plugin_
     """
 
     def __init__(self, **kwargs):
@@ -92,9 +85,6 @@ class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
 
 class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
     """_BaseSelect2MultipleWidgetMixin_ Adds plugin Select2 in views for multiple select
-
-    Args:
-        ModelSelect2MultipleWidget ( ModelSelect2MultipleWidget: _Select2 plugin for multiple select_
     """
     def __init__(self, **kwargs):
         """_add js and css styles_
@@ -136,9 +126,6 @@ class ModelMixin:
     def get_all_fields(self):
         """_get_all_fields_: returns all fields from model
 
-        Args:
-            self: _description_
-
         Returns:
             fields (dict[str, str]): dict from the list of fields and their values for the model, except those excluded fields
             expose_fields (list[str]): excluded fields
@@ -173,7 +160,7 @@ class ModelMixin:
 class FormMessageMixin:
     """_FormMessageMixin_ Add messages in forms
 
-    Args: 
+    Returns: 
         success_message (str): _description_ 
         debug_message (str): _description_
         info_message (str): _description_
@@ -191,7 +178,6 @@ class FormMessageMixin:
         """_form_valid_ Validation forms
 
         Args:
-            self: _description_
             form (_type_): _description_
 
         Returns:
@@ -221,7 +207,6 @@ class FormMessageMixin:
         """_get_success_message_
 
         Args:
-            self: _description_
             cleaned_data (_type_): _clean form data_
 
         Returns:
@@ -233,7 +218,6 @@ class FormMessageMixin:
         """_get_debug_message_
 
         Args:
-            self: _description_
             cleaned_data (_type_): _clean form data_
 
         Returns:
@@ -245,7 +229,6 @@ class FormMessageMixin:
         """_get_info_message_
 
         Args:
-            self: _description_
             cleaned_data (_type_): _clean form data_
 
         Returns:
@@ -257,7 +240,6 @@ class FormMessageMixin:
         """_get_warning_message_
 
         Args:
-            self: _description_
             cleaned_data (_type_): _clean form data_
 
         Returns:
@@ -269,7 +251,6 @@ class FormMessageMixin:
         """_get_error_message_
 
         Args:
-            self: _description_
             cleaned_data (_type_): _clean form data_
 
         Returns:

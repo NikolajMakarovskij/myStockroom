@@ -5,9 +5,6 @@ from .models import Accounting, Categories
 
 class CategoriesModelSerializer(serializers.ModelSerializer):
     """_CategoriesModelSerializer_ Serialize Categories Model to JSON
-
-    Args:
-        ModelSerializer (ModelSerializer): _description_
     """
     class Meta:
         """_Class returns JSON of Categories model_
@@ -24,9 +21,6 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
 
 class AccountingModelSerializer(serializers.ModelSerializer):
     """_AccountingModelSerializer_ Serialize Accounting Model to JSON
-
-    Args:
-        ModelSerializer (ModelSerializer): _description_
     """
     class Meta:
         """_Class returns JSON of Accounting model_

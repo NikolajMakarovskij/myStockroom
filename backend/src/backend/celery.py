@@ -15,6 +15,6 @@ def debug_task(self):
     """_Debug celery_
         
     Returns:
-        request: _self.request_
+        request (str): _self.request_
     """
     print("Request: {0!r}".format(self.request))

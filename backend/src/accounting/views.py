@@ -20,11 +20,6 @@ class AccountingIndexView(
     """_AccountingIndexView_
     Home page for accounting app
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        TemplateView (TemplateView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -35,11 +30,6 @@ class AccountingIndexView(
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (list[str]): _returns title, side menu_
@@ -57,12 +47,6 @@ class AccountingView(
     """_AccountingView_
     List of accounting instances
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        ListView (ListView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -76,11 +60,6 @@ class AccountingView(
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create accounting, categories for filtering queryset_
@@ -128,12 +107,6 @@ class AccountingCategoriesView(
     """_AccountingCategoriesView_
     List of accounting instances filtered by categories
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        ListView (ListView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -147,11 +120,6 @@ class AccountingCategoriesView(
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create accounting, categories for filtering queryset_
@@ -185,11 +153,6 @@ class AccountingCategoriesView(
 class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_AccountingRestView_ returns accounting
 
-    Args:
-        DataMixin (DataMixin): _description_
-        FormMessageMixin (FormMessageMixin): _description_
-        ModelViewSet (ModelViewSet): _description_
-
     Returns:
         queryset (Accounting): 
         serializer_class (AccountingModelSerializer): 
@@ -219,12 +182,6 @@ class AccountingDetailView(
     """_AccountingDetailView_
     Detail of accounting instances
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        DetailView (DetailView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -236,11 +193,6 @@ class AccountingDetailView(
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete accounting instance_
@@ -262,12 +214,6 @@ class AccountingCreate(
     """_AccountingCreate_
     Create of accounting instances
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        CreateView (CreateView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -286,11 +232,6 @@ class AccountingCreate(
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
 
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
-
         Returns:
             context (object[dict[str, str],list[str]]): _returns title_
         """
@@ -307,12 +248,6 @@ class AccountingUpdate(
 ):
     """_AccountingUpdate_
     Update of accounting instances
-
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        UpdateView (UpdateView): _description_
 
     Returns:
         template_name (str): _path to template_
@@ -332,11 +267,6 @@ class AccountingUpdate(
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
 
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
-
         Returns:
             context (object[dict[str, str],list[str]]): _returns title_
         """
@@ -351,12 +281,6 @@ class AccountingDelete(# type: ignore[misc]
     ):  
     """_AccountingDelete_
     Delete of accounting instances
-
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        DeleteView (DeleteView): _description_
 
     Returns:
         template_name (str): _path to template_
@@ -376,11 +300,6 @@ class AccountingDelete(# type: ignore[misc]
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
 
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
-
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, link to accounting list_
         """
@@ -399,12 +318,6 @@ class CategoryView(
     """_CategoryView_
     List of categories instances
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        ListView (ListView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -418,11 +331,6 @@ class CategoryView(
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, link to add category, link for search_
@@ -453,11 +361,6 @@ class CategoryView(
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_CategoriesRestView_ returns categories
 
-    Args:
-        DataMixin (DataMixin): _description_
-        FormMessageMixin (FormMessageMixin): _description_
-        ModelViewSet (ModelViewSet): _description_
-
     Returns:
         queryset (Categories): 
         serializer_class (CategoriesModelSerializer): 
@@ -485,12 +388,6 @@ class CategoryCreate(
     """_CategoryCreate_
     Create of category instances
 
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        CreateView (CreateView): _description_
-
     Returns:
         template_name (str): _path to template_
         permission_required (str): _permissions_
@@ -510,11 +407,6 @@ class CategoryCreate(
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
 
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
-
         Returns:
             context (object[dict[str, str],list[str]]): _returns title_
         """
@@ -532,12 +424,6 @@ class CategoryUpdate(
 ):
     """_CategoryUpdate_
     Update of category instances
-
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        UpdateView (UpdateView): _description_
 
     Returns:
         template_name (str): _path to template_
@@ -558,11 +444,6 @@ class CategoryUpdate(
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
 
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
-
         Returns:
             context (object[dict[str, str],list[str]]): _returns title_
         """
@@ -578,12 +459,6 @@ class CategoryDelete( # type: ignore[misc]
     ):
     """_CategoryDelete_
     Delete of accounting instances
-
-    Args:
-        LoginRequiredMixin (LoginRequiredMixin): _description_
-        PermissionRequiredMixin (PermissionRequiredMixin): _description_
-        DataMixin (DataMixin): _description_
-        DeleteView (DeleteView): _description_
 
     Returns:
         template_name (str): _path to template_
@@ -602,11 +477,6 @@ class CategoryDelete( # type: ignore[misc]
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_
-
-        Args:
-            object_list (_type_, optional):
-            * (list[str]):
-            **kwargs (dict[str,str]):
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, link to accounting list_

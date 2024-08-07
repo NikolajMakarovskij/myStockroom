@@ -10,10 +10,6 @@ from core.utils import ModelMixin
 class Categories(ModelMixin, models.Model):
     """_Categories_ Модель группы для расходников на балансе в бухгалтерии.
 
-    Args:
-        ModelMixin (ModelMixin): _description_
-        models (Model): _description_
-
     Returns:
         Categories (Categories): _returns object "Categories"_
     """
@@ -91,10 +87,6 @@ class Categories(ModelMixin, models.Model):
 
 class Accounting(ModelMixin, models.Model):
     """_Accounting_: _Accounting model_
-
-    Args:
-        ModelMixin (ModelMixin): _description_
-        models (Model): _description_
 
     Returns:
          Accounting (Accounting): _returns object "Categories"_
