@@ -8,6 +8,11 @@ from core.tests.test_login import auto_login_user  # noqa F401
 # index
 @pytest.mark.django_db
 def test_url_exists_at_desired_location(auto_login_user): # noqa F811
+    """_Tests that the url exists at the desired location_
+
+    Args:
+        auto_login_user (_type_): _description_
+    """
     client, user = auto_login_user()
     links = ['/home/']
     for link in links:
@@ -18,6 +23,11 @@ def test_url_exists_at_desired_location(auto_login_user): # noqa F811
 
 @pytest.mark.django_db
 def test_urls(auto_login_user): # noqa F811
+    """_summary_: Tests routing in the core application
+
+    Args:
+        auto_login_user (_type_): _description_
+    """
     client, user = auto_login_user()
     links = [
         {'link': 'core:index', 'template': 'index.html'}
