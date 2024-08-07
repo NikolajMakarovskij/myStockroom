@@ -1,4 +1,4 @@
 # ***Views***
 
-## IndexView
+### IndexView
 :::src.core.views.IndexView
