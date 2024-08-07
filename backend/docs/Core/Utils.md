@@ -1,16 +1,16 @@
 # ***Utils***
 
-## DataMixin
+### DataMixin
 :::src.core.utils.DataMixin
 
-## BaseModelSelect2WidgetMixin
+### BaseModelSelect2WidgetMixin
 :::src.core.utils.BaseModelSelect2WidgetMixin
 
-## BaseSelect2MultipleWidgetMixin
+### BaseSelect2MultipleWidgetMixin
 :::src.core.utils.BaseSelect2MultipleWidgetMixin
 
-## ModelMixin
+### ModelMixin
 :::src.core.utils.ModelMixin
 
-## FormMessageMixin
+### FormMessageMixin
 :::src.core.utils.FormMessageMixin
