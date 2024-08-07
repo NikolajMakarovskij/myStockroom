@@ -13,6 +13,7 @@ class Categories(ModelMixin, models.Model):
         Categories (Categories): _returns object "Categories"_
     """
 
+
     id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
