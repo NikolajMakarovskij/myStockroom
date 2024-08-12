@@ -33,6 +33,8 @@ class Manufacturer(ModelMixin, models.Model):
         return self.name
 
     class Meta:
+        """_Manufacturer Meta_: _model settings_
+        """
         verbose_name = "Производитель"
         verbose_name_plural = "Производители"
         ordering = [
