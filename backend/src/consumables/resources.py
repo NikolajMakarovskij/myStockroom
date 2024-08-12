@@ -9,6 +9,13 @@ from counterparty.models import Manufacturer
 
 @dataclass
 class BaseResource(resources.ModelResource):
+    """_BaseResource_
+    Resource defines how consumables | accessories are mapped to their export representations and handle exporting data.
+
+    Other parameters:
+            category_model (type | None): _ForeignKey model for category field_
+            manufacturer_model (type | None): _ForeignKey model for manufacturer field_
+    """
     category_model: type | None = None
     manufacturer_model: type | None = None
 
@@ -35,18 +42,36 @@ class BaseResource(resources.ModelResource):
 
 
 class ConsumableResource(BaseResource):
+    """_ConsumableResource_
+    Resource defines how consumables are mapped to their export representations and handle exporting data.
+
+    Other parameters:
+            category_model (type | None): _ForeignKey model for category field_
+            manufacturer_model (type | None): _ForeignKey model for manufacturer field_
+    """
     category_model = Categories
     manufacturer_model = Manufacturer
 
     class Meta:
+        """_ConsumableResource Meta_: _resource settings_
+        """
         model = Consumables
         exclude = ["id"]
 
 
 class AccessoriesResource(BaseResource):
+    """_AccessoriesResource_
+    Resource defines how accessories are mapped to their export representations and handle exporting data.
+
+    Other parameters:
+            category_model (type | None): _ForeignKey model for category field_
+            manufacturer_model (type | None): _ForeignKey model for manufacturer field_
+    """
     category_model = AccCat
     manufacturer_model = Manufacturer
 
     class Meta:
+        """_AccessoriesResource Meta_: _resource settings_
+        """
         model = Accessories
         exclude = ["id"]
