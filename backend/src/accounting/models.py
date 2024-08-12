@@ -38,30 +38,33 @@ class Categories(ModelMixin, models.Model):
     def get_absolute_url(self):
         """_Categories url_
 
-        Args (UUID): self.id
-
         Returns:
             Categories__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
         """
         return reverse("accounting:categories-detail", args=[str(self.id)])
 
     def get_slug_url(self):
         """_Categories slug url_
 
-        Args (slug): self.slug
-
         Returns:
-            Categories__id (str): _returns url by slug_
+            Categories__slug (str): _returns url by slug_
+
+        Other parameters:
+            kwargs (str): self.slug
         """
         return reverse("accounting:category", kwargs={"category_slug": self.slug})
 
     def get_update_url(self):
         """_Categories update url_
 
-        Args (UUID): self.id
-
         Returns:
             Categories__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
         """
 
         return reverse("accounting:categories-update", args=[str(self.id)])
@@ -69,10 +72,11 @@ class Categories(ModelMixin, models.Model):
     def get_delete_url(self):
         """_Categories delete url_
 
-        Args (UUID): self.id
-
         Returns:
             Categories__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
         """
 
         return reverse("accounting:categories-delete", args=[str(self.id)])
@@ -165,17 +169,16 @@ class Accounting(ModelMixin, models.Model):
     def get_absolute_url(self):
         """_Accounting get self url_
 
-        Args (UUID): self.id
-
         Returns:
             Accounting__id (str): _returns url by id_
+        
+        Other parameters:
+            args (str): self.id
         """
         return reverse("accounting:accounting-detail", args=[str(self.id)])
 
     def get_cost_all(self):
         """_Accounting cost_all_: _returns cost all consumables or accessories_
-
-        Args (Accounting): self
 
         Returns:
             cost_all (float): _Accounting__cost * Accounting__quantity_

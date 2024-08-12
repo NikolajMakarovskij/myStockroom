@@ -40,14 +40,17 @@ class Manufacturer(ModelMixin, models.Model):
     def get_absolute_url(self):
         """_Manufacturer get self url_
 
-        Args (UUID): self.id
-
         Returns:
             Manufacturer__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id            
         """
         return reverse("counterparty:manufacturer-detail", args=[str(self.id)])
 
     class Meta:
+        """_Manufacturer Meta_: _model settings_
+        """
         verbose_name = "Производитель"
         verbose_name_plural = "Производители"
         ordering = [
