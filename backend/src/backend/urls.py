@@ -33,8 +33,8 @@ urlpatterns += [
         include(("signature.urls", "signature"), namespace="signature"),
     ),
     path(
-        "api/device/",
-        include(("device.urls", "device"), namespace="device"),
+        "api/devices/",
+        include(("device.urls", "devices"), namespace="devices"),
     ),
     path(
         "api/consumables/",

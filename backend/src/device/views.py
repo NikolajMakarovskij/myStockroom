@@ -15,7 +15,18 @@ from .serializers import (
 )
 
 
-class DeviceRestView(viewsets.ModelViewSet):
+class DeviceListRestView(viewsets.ReadOnlyModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = Device.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class DeviceModelRestView(viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
 
@@ -45,17 +56,6 @@ class DeviceRestView(viewsets.ModelViewSet):
         project = self.queryset.get(pk=pk)
         project.delete()
         return Response(status=204)
-
-
-class DeviceListRestView(viewsets.ModelViewSet):
-    queryset = Device.objects.all()
-    serializer_class = DeviceListSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def list(self, request):
-        queryset = Device.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
 
 
 class DeviceCatRestView(viewsets.ModelViewSet):
