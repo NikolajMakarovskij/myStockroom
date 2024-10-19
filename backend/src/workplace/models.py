@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 
@@ -30,9 +29,6 @@ class Room(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("workplace:room-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Кабинет"
@@ -65,9 +61,6 @@ class Workplace(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("workplace:workplace-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Рабочее место"

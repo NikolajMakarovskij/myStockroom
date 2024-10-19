@@ -1,5 +1,4 @@
 import pytest
-from django.urls import reverse
 
 from ..models import Room, Workplace
 
@@ -14,9 +13,6 @@ def test_room_create():
     assert room.building == "name_building"
     assert room.floor == "name_floor"
     assert room.__str__() == "name_room"
-    assert room.get_absolute_url() == reverse(
-        "workplace:room-detail", kwargs={"pk": room.pk}
-    )
 
 
 @pytest.mark.django_db
@@ -32,6 +28,3 @@ def test_workplace_create():
     assert wp.name == "my_workplace_name"
     assert wp.room.name == "my_room"  # type: ignore[union-attr]
     assert wp.__str__() == "my_workplace_name"
-    assert wp.get_absolute_url() == reverse(
-        "workplace:workplace-detail", kwargs={"pk": wp.pk}
-    )
