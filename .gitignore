@@ -22,3 +22,7 @@ env/
 .env.dev
 backend/.pdm-python
 backend/.pdm-python
+
+# celery
+celerybeat*
+backend/src/celerybeat-schedule
