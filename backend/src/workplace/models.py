@@ -1,15 +1,12 @@
-from django.db import models
-from django.urls import reverse
 import uuid
+
 from core.utils import ModelMixin
+from django.db import models
 
 
 class Room(ModelMixin, models.Model):
     id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        db_index=True,
-        help_text="ID"
+        primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
     name = models.CharField(
         max_length=15,
@@ -32,46 +29,40 @@ class Room(ModelMixin, models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('workplace:room-detail', args=[str(self.id)])
-
     class Meta:
-        verbose_name = 'Кабинет'
-        verbose_name_plural = 'Кабинеты'
-        ordering = ['name', 'building']
+        verbose_name = "Кабинет"
+        verbose_name_plural = "Кабинеты"
+        ordering = ["name", "building"]
 
 
 class Workplace(ModelMixin, models.Model):
     """
     Модель рабочего места. Используется в workstation
     """
+
     id = models.UUIDField(
-        db_index=True,
-        primary_key=True,
-        default=uuid.uuid4,
-        help_text="ID"
+        db_index=True, primary_key=True, default=uuid.uuid4, help_text="ID"
     )
     name = models.CharField(
         max_length=50,
         help_text="Введите номер рабочего места",
-        verbose_name="Рабочее место"
+        verbose_name="Рабочее место",
     )
     room = models.ForeignKey(
-        'Room',
+        "Room",
         on_delete=models.SET_NULL,
-        blank=True, null=True,
-        related_name='workplace',
+        blank=True,
+        null=True,
+        related_name="workplace",
         help_text="Выберете номер кабинета",
-        verbose_name="Номер кабинета"
+        verbose_name="Номер кабинета",
     )
 
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('workplace:workplace-detail', args=[str(self.id)])
-
     class Meta:
-        verbose_name = 'Рабочее место'
-        verbose_name_plural = 'Рабочие места'
-        ordering = ['room__building', 'name']
+        verbose_name = "Рабочее место"
+        verbose_name_plural = "Рабочие места"
+        ordering = ["room__building", "name"]
+        ordering = ["room__building", "name"]

@@ -1,23 +1,18 @@
-from django.urls import reverse
 import pytest
-from ..models import Workplace, Room
+
+from ..models import Room, Workplace
 
 
 @pytest.mark.django_db
 def test_room_create():
     """Тестирует создание записи в базе данных для модели Room приложения Workplace"""
-    Room.objects.create(
-        name="name_room",
-        building="name_building",
-        floor="name_floor"
-    )
+    Room.objects.create(name="name_room", building="name_building", floor="name_floor")
     room = Room.objects.get(name="name_room")
     assert Room.objects.count() == 1
     assert room.name == "name_room"
     assert room.building == "name_building"
     assert room.floor == "name_floor"
     assert room.__str__() == "name_room"
-    assert room.get_absolute_url() == reverse('workplace:room-detail', kwargs={'pk': room.pk})
 
 
 @pytest.mark.django_db
@@ -33,4 +28,4 @@ def test_workplace_create():
     assert wp.name == "my_workplace_name"
     assert wp.room.name == "my_room"
     assert wp.__str__() == "my_workplace_name"
-    assert wp.get_absolute_url() == reverse('workplace:workplace-detail', kwargs={'pk': wp.pk})
+    assert wp.__str__() == "my_workplace_name"
