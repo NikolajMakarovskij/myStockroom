@@ -90,7 +90,7 @@
         {% for each in stockroom_list %}
           <tr>
             <td>
-              <a class="noDecoration" href="{{ each.stock_model.get_absolute_url }}">{{ each.stock_model.name }}</a>
+              {{ each.stock_model.name }}
             </td>
             {% if not each.stock_model.device.all %}
                 <td></td>
@@ -99,9 +99,7 @@
                   <table class="table table-sm table-hover " >
                     <tbody style="text-align:center">
                     {% for dev in each.stock_model.device.all %}
-                          <a class="noDecoration" href="{{ dev.get_absolute_url }}">
                             | {{ dev.name }}
-                          </a>
                       {% endfor %}
                     </tbody>
                   </table>
@@ -124,9 +122,7 @@
                     {% for con in each.stock_model.consumable.all %}
                     <tr >
                       <td>
-                        <a class="noDecoration" href="{{ con.get_absolute_url }}">
                           {{ con.code }}
-                        </a>
                       </td>
                       <td>
                         {{ con.quantity }}

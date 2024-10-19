@@ -90,7 +90,7 @@
     <tbody style="text-align:center">
       {% for each in history_list %}
       <tr>
-        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
+        <td>{{ each.stock_model }}</td>
         {% load history_tags %}
         {% consumption each.stock_model_id %}
       </tr>

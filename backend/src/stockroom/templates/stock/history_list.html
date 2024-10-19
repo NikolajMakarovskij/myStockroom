@@ -64,7 +64,7 @@
     <tbody style="text-align:center">
       {% for each in history_list %}
       <tr>
-        <td><a class="noDecoration" href="{% url 'consumables:consumables-detail' each.stock_model_id %}">{{ each.stock_model }}</a></td>
+        <td>{{ each.stock_model }}</td>
         <td>{{ each.categories}}</td>
         <td>{{ each.quantity }}</td>
         <td>{{ each.dateInstall|date:"SHORT_DATE_FORMAT" }}</td>
@@ -72,9 +72,8 @@
           {% if not each.device %}
               {{ each.status }}
           {% else %}
-              {{ each.status }} на устройство
-              <a class="noDecoration" href="{% url 'device:device-detail' each.deviceId %}">{{ each.device }}</a>
-          {% endif %}
+              {{ each.status }} на устройство 
+w          {% endif %}
         </td>
         {% if not each.note %}
           <td></td>
