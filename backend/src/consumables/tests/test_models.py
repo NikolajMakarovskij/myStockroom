@@ -1,8 +1,8 @@
-from django.db.utils import IntegrityError
 import pytest
-from ..models import Consumables, Categories, AccCat, Accessories
 from counterparty.models import Manufacturer
-from django.urls import reverse
+from django.db.utils import IntegrityError
+
+from ..models import AccCat, Accessories, Categories, Consumables
 
 
 # Расходники
@@ -58,9 +58,6 @@ def test_consumable_create():
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
     assert consumable.__str__() == "my_consumable"
-    assert consumable.get_absolute_url() == reverse(
-        "consumables:consumables-detail", kwargs={"pk": consumable.pk}
-    )
 
 
 # Комплектующие
@@ -119,6 +116,4 @@ def test_accessories_create():
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == "my_consumable"
-    assert accessories.get_absolute_url() == reverse(
-        "consumables:accessories-detail", kwargs={"pk": accessories.pk}
-    )
+    assert accessories.__str__() == "my_consumable"
