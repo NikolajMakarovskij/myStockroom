@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-
 from workplace.models import Workplace
 
 from ..models import Departament, Employee, Post
