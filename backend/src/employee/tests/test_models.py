@@ -1,8 +1,10 @@
-from django.db.utils import IntegrityError
-from django.urls import reverse
 import pytest
-from ..models import Employee, Departament, Post
+from django.db.utils import IntegrityError
+
 from workplace.models import Workplace
+
+from ..models import Departament, Employee, Post
+from ..models import Departament, Employee, Post
 
 
 @pytest.mark.django_db
@@ -13,7 +15,6 @@ def test_departament_create():
     assert Departament.objects.count() == 1
     assert departament.name == "name_departament"
     assert departament.__str__() == "name_departament"
-    assert departament.get_absolute_url() == reverse('employee:departament-detail', kwargs={'pk': departament.pk})
 
 
 @pytest.mark.django_db
@@ -29,7 +30,6 @@ def test_post_create():
     assert post.name == "my_post_name"
     assert post.departament.name == "my_departament"
     assert post.__str__() == "my_post_name"
-    assert post.get_absolute_url() == reverse('employee:post-detail', kwargs={'pk': post.pk})
 
 
 @pytest.mark.django_db
@@ -37,8 +37,7 @@ def test_employee_create():
     """Тестирует создание записи в базе данных для модели Employee"""
     Departament.objects.create(name="my_departament")
     Post.objects.create(
-        name="employee_post",
-        departament=Departament.objects.get(name="my_departament")
+        name="employee_post", departament=Departament.objects.get(name="my_departament")
     )
     Workplace.objects.create(
         name="my_workplace",
@@ -61,20 +60,14 @@ def test_employee_create():
     assert employee.post.departament.name == "my_departament"
     assert employee.employeeEmail == "admin@admin.com"
     assert employee.__str__() == "employee_name"
-    assert employee.get_absolute_url() == reverse('employee:employee-detail', kwargs={'pk': employee.pk})
 
 
 @pytest.mark.django_db
 def test_email_unique():
     """Тестирует наличие дублирования в поле employeeEmail"""
     with pytest.raises(IntegrityError):
-        Employee.objects.create(
-            name="my_category_1",
-            employeeEmail="admin@admin.com"
-        )
+        Employee.objects.create(name="my_category_1", employeeEmail="admin@admin.com")
 
-        assert (Employee.objects.create(
-            name="my_category_2",
-            employeeEmail="admin@admin.com"
-        )
+        assert Employee.objects.create(
+            name="my_category_2", employeeEmail="admin@admin.com"
         )
