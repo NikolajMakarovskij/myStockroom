@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Accessories, Consumables
 from core.utils import ModelMixin
@@ -26,9 +25,6 @@ class Categories(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("accounting:categories-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Группа расходников"
@@ -105,9 +101,6 @@ class Accounting(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("accounting:accounting-detail", args=[str(self.id)])
 
     def get_cost_all(self):
         cost_all = self.cost * self.quantity
