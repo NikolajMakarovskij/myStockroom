@@ -25,4 +25,3 @@ backend/.pdm-python
 
 # celery
 celerybeat*
-backend/src/celerybeat-schedule
