@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Accessories, Consumables
 from core.utils import ModelMixin
@@ -28,9 +27,6 @@ class DeviceCat(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("device:category", kwargs={"category_slug": self.slug})
 
     class Meta:
         verbose_name = "Группа устройств"
@@ -179,9 +175,6 @@ class Device(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("device:device-detail", args=[str(self.id)])
 
     # TODO valid method to ip_address field
 

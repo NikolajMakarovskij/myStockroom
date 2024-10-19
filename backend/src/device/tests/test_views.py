@@ -1,15 +1,17 @@
-from ..models import Device, DeviceCat
-from counterparty.models import Manufacturer
-from workplace.models import Workplace, Room
-from stockroom.models.devices import StockDev
-from decommission.models import Decommission, Disposal
 import json
+
 import pytest
 from core.tests.test_login import auto_login_user  # noqa: F401
+from counterparty.models import Manufacturer
+from decommission.models import Decommission, Disposal
+from stockroom.models.devices import StockDev
+from workplace.models import Room, Workplace
+
+from ..models import Device, DeviceCat
 
 
 class TestDeviceEndpoints:
-    endpoint = "/api/device/device/"
+    endpoint = "/api/devices/device_crud/"
 
     @pytest.mark.django_db
     def test_device_list(self, auto_login_user):  # noqa: F811
@@ -35,7 +37,7 @@ class TestDeviceEndpoints:
             ]
         )
         client, user = auto_login_user()
-        response = client.get("/api/device/device_list/")
+        response = client.get("/api/devices/device_list/")
         data = json.loads(response.content)
         assert response.status_code == 200
         assert len(data) == 3
@@ -82,7 +84,7 @@ class TestDeviceEndpoints:
         expected_json = {"name": "04", "categories": cat.id, "manufacturer": man.id}
 
         response = client.post(self.endpoint, data=expected_json, format="json")
-        get_response = client.get("/api/device/device_list/")
+        get_response = client.get("/api/devices/device_list/")
         data = json.loads(get_response.content)
         assert response.status_code == 200
         assert data[0]["name"] == "04"
@@ -118,7 +120,7 @@ class TestDeviceEndpoints:
     def test_no_accounting(self, auto_login_user):  # noqa: F811
         client, user = auto_login_user()
         Device.objects.get_or_create(name="10")
-        response = client.get("/api/device/device_list/")
+        response = client.get("/api/devices/device_list/")
         data = json.loads(response.content)
         assert data[0]["accounting"] == "Н"
 
@@ -128,7 +130,7 @@ class TestDeviceEndpoints:
         Device.objects.get_or_create(name="10")
         device = Device.objects.get(name="10")
         StockDev.objects.create(stock_model=device)
-        response = client.get("/api/device/device_list/")
+        response = client.get("/api/devices/device_list/")
         data = json.loads(response.content)
         assert data[0]["accounting"] == "Б"
 
@@ -138,7 +140,7 @@ class TestDeviceEndpoints:
         Device.objects.get_or_create(name="10")
         device = Device.objects.get(name="10")
         Decommission.objects.create(stock_model=device)
-        response = client.get("/api/device/device_list/")
+        response = client.get("/api/devices/device_list/")
         data = json.loads(response.content)
         assert data[0]["accounting"] == "С"
 
@@ -148,13 +150,13 @@ class TestDeviceEndpoints:
         Device.objects.get_or_create(name="10")
         device = Device.objects.get(name="10")
         Disposal.objects.create(stock_model=device)
-        response = client.get("/api/device/device_list/")
+        response = client.get("/api/devices/device_list/")
         data = json.loads(response.content)
         assert data[0]["accounting"] == "У"
 
 
 class TestCategoryEndpoints:
-    endpoint = "/api/device/device_cat/"
+    endpoint = "/api/devices/device_cat/"
 
     @pytest.mark.django_db
     def test_categories_list(self, auto_login_user):  # noqa: F811
