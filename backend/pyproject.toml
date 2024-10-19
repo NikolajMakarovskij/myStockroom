@@ -7,7 +7,7 @@ authors = [
 ]
 
 dependencies = [
-    "setuptools>=75.1.0",
+    "setuptools>=75.2.0",
     "asgiref>=3.8.1",
     "attrs>=24.2.0",
     "diff-match-patch>=20230430",
@@ -19,18 +19,18 @@ dependencies = [
     "gunicorn>=23.0.0",
     "celery>=5.4.0",
     "django-celery-beat>=2.7.0",
-    "redis>=5.1.0",
+    "redis>=5.1.1",
     "hiredis>=3.0.0",
     "flower>=2.0.1",
     "django-adaptors>=0.2.5",
     "django-appconf>=1.0.6",
-    "django-cors-headers>=4.4.0",
+    "django-cors-headers>=4.5.0",
     "django-crispy-forms>=2.3",
     "django-bootstrap5>=24.3",
-    "crispy-bootstrap5>=2024.2",
-    "Pillow>=10.4.0",
-    "psycopg2>=2.9.9",
-    "psycopg2-binary>=2.9.9",
+    "crispy-bootstrap5>=2024.10",
+    "Pillow>=11.0.0",
+    "psycopg2>=2.9.10",
+    "psycopg2-binary>=2.9.10",
     "python-dateutil>=2.9.post0",
     "pytz>=2024.2",
     "six>=1.16.0",
@@ -40,7 +40,7 @@ dependencies = [
     "tablib[all]>=3.5.0",
     "django-debug-toolbar>=4.4.6"
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 readme = "README.md"
 license = {file = "LICENSE"}
 
