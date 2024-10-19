@@ -1,9 +1,8 @@
 import uuid
 
+from core.utils import ModelMixin
 from django.db import models
 from django.urls import reverse
-
-from core.utils import ModelMixin
 from workplace.models import Workplace
 
 
@@ -38,20 +37,22 @@ class Employee(ModelMixin, models.Model):
         null=True,
         help_text="Выберете должность",
         verbose_name="Должность",
+        verbose_name="Должность",
     )
     employeeEmail = models.EmailField(
         blank=True,
         null=True,
         unique=True,
+        blank=True,
+        null=True,
+        unique=True,
         help_text="Введите e-mail",
+        verbose_name="e-mail",
         verbose_name="e-mail",
     )
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("employee:employee-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Сотрудник"
@@ -99,9 +100,6 @@ class Post(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("employee:post-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Должность"
