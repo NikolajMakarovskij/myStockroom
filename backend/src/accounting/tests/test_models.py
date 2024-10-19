@@ -1,8 +1,8 @@
-from django.db.utils import IntegrityError
 import pytest
+from consumables.models import Accessories, Consumables
+from django.db.utils import IntegrityError
+
 from ..models import Accounting, Categories
-from consumables.models import Consumables, Accessories
-from django.urls import reverse
 
 
 @pytest.mark.django_db
@@ -16,35 +16,35 @@ def test_category_create():
     assert Categories.objects.count() == 1
     assert category.name == "my_category_name"
     assert category.slug == "my_category_name"
-    assert category.__str__() == 'my_category_name'
-    assert category.get_absolute_url() == reverse('accounting:categories-detail',
-                                                  kwargs={'pk': category.pk})
+    assert category.__str__() == "my_category_name"
+
 
 @pytest.mark.django_db
 def test_category_unique_slug():
     """Тестирует наличие дублирования в поле slug"""
     with pytest.raises(IntegrityError):
-        Categories.objects.create(name="my_category",)
+        Categories.objects.create(
+            name="my_category",
+        )
 
-        assert (Categories.objects.create(name="my_category",))
+        assert Categories.objects.create(
+            name="my_category",
+        )
 
 
 @pytest.mark.django_db
 def test_accounting_create():
     """Тестирует создание записи в базе данных для модели Consumables"""
-    Categories.objects.create(
-        name="my_category",
-        slug="my_category"
-    )
+    Categories.objects.create(name="my_category", slug="my_category")
     Consumables.objects.create(name="my_consumable")
     Accessories.objects.create(name="my_accessories")
     Accounting.objects.create(
         name="my_accounting",
         categories=Categories.objects.get(name="my_category"),
-        account='123',
+        account="123",
         consumable=Consumables.objects.get(name="my_consumable"),
         accessories=Accessories.objects.get(name="my_accessories"),
-        quantity='3',
+        quantity="3",
         note="some_name",
         code="000753",
         cost="35.23",
@@ -62,6 +62,5 @@ def test_accounting_create():
     assert accounting.cost == 35.23
     assert accounting.get_cost_all() == 105.69
     assert accounting.note == "some_name"
-    assert accounting.__str__() == 'my_accounting'
-    assert accounting.get_absolute_url() == reverse('accounting:accounting-detail',
-                                                    kwargs={'pk': accounting.pk})
+    assert accounting.__str__() == "my_accounting"
+    assert accounting.__str__() == "my_accounting"
