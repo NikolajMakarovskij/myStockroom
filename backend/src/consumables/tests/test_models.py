@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from counterparty.models import Manufacturer
 
@@ -60,9 +59,6 @@ def test_consumable_create():
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
     assert consumable.__str__() == "my_consumable"
-    assert consumable.get_absolute_url() == reverse(
-        "consumables:consumables-detail", kwargs={"pk": consumable.pk}
-    )
 
 
 # Комплектующие
@@ -121,6 +117,3 @@ def test_accessories_create():
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == "my_consumable"
-    assert accessories.get_absolute_url() == reverse(
-        "consumables:accessories-detail", kwargs={"pk": accessories.pk}
-    )

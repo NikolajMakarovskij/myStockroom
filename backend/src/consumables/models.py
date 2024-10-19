@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from counterparty.models import Manufacturer
@@ -27,9 +26,6 @@ class Categories(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("consumables:category", kwargs={"category_slug": self.slug})
 
     class Meta:
         verbose_name = "Группа расходников"
@@ -119,9 +115,6 @@ class Consumables(ModelMixin, models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("consumables:consumables-detail", args=[str(self.id)])
-
     class Meta:
         verbose_name = "Расходник"
         verbose_name_plural = "Расходники"
@@ -152,11 +145,6 @@ class AccCat(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse(
-            "consumables:category_accessories", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         verbose_name = "Группа комплектующих"
@@ -245,9 +233,6 @@ class Accessories(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("consumables:accessories-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Комплектующее"
