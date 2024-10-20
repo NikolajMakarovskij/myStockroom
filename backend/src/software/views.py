@@ -25,6 +25,7 @@ class SoftwareListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "software.view_software"
+    paginate_by = DataMixin.paginate
     model = Software
     template_name = "software/software_list.html"
 
@@ -110,7 +111,7 @@ class SoftwareUpdate(
         return context
 
 
-class SoftwareDelete(
+class SoftwareDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_software"
@@ -135,6 +136,7 @@ class OSListView(
 ):
     permission_required = "software.view_os"
     model = Os
+    paginate_by = DataMixin.paginate
     template_name = "software/OS_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -217,7 +219,7 @@ class OSUpdate(
         return context
 
 
-class OSDelete(
+class OSDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_os"

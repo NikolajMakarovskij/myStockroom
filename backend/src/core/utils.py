@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.core.cache import cache
-from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
+from django_select2.forms import (  # type: ignore[import-untyped]
+    ModelSelect2MultipleWidget,
+    ModelSelect2Widget,
+)
 
 menu = [
     {"title": "Главная страница", "url_name": "core:index"},
@@ -15,7 +18,7 @@ class DataMixin:
     Mixin add pagination and menu in views
     """
 
-    paginate_by = 20
+    paginate: int = 20
 
     def get_user_context(self, **kwargs):
         side_menu = cache.get("side_menu")
@@ -107,12 +110,11 @@ class FormMessageMixin:
     added messages in form
     """
 
-    success_message = ""
-    debug_message = ""
-    info_message = ""
-    warning_message = ""
-    error_message = ""
-    success_url = ""
+    success_message: str = ""
+    debug_message: str = ""
+    info_message: str = ""
+    warning_message: str = ""
+    error_message: str = ""
 
     def form_valid(self, form):
         response = super().form_valid(form)

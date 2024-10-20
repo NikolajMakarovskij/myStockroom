@@ -25,6 +25,7 @@ class StockroomView(
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
+    paginate_by = DataMixin.paginate
     model = Stockroom
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -79,6 +80,7 @@ class StockroomCategoriesView(
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
+    paginate_by = DataMixin.paginate
     model = Stockroom
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -159,6 +161,7 @@ class HistoryView(
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
+    paginate_by = DataMixin.paginate
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -195,6 +198,7 @@ class HistoryCategoriesView(
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
+    paginate_by = DataMixin.paginate
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -223,6 +227,7 @@ class HistoryConsumptionView(
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
+    paginate_by = DataMixin.paginate
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -263,6 +268,7 @@ class HistoryConsumptionCategoriesView(
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
+    paginate_by = DataMixin.paginate
     model = History
 
     def get_context_data(self, *, object_list=None, **kwargs):

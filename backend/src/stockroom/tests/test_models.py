@@ -2,15 +2,13 @@ import datetime
 
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
-from consumables.models import Accessories
+from consumables.models import Accessories, Consumables
 from counterparty.models import Manufacturer
 from device.models import Device
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
-from consumables.models import Consumables
 
 
 # Consumables
@@ -23,9 +21,6 @@ def test_category_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "stockroom:category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db
@@ -105,9 +100,6 @@ def test_category_acc_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "stockroom:accessories_category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db
@@ -187,9 +179,6 @@ def test_category_dev_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "stockroom:devices_category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db

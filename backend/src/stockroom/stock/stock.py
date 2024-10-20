@@ -34,12 +34,12 @@ class DevStock(BaseStock):
     @classmethod
     def create_history_device(
         cls, model_id: str, quantity: int, username: str, status_choice: str, note: str
-    ) -> None:
+    ) -> HistoryDev:
         """Creating an entry in the history of stock_model"""
         model = cls.base_model.objects.get(id=model_id)
         category = cls.add_category(model_id)
         if not note:
-            note = None
+            note = ""
         else:
             note = note
         history = cls.history_model.objects.create(
@@ -86,7 +86,7 @@ class DevStock(BaseStock):
             )
             model_instance.update(quantity=int(quantity))
         cls.create_history_device(
-            model_id, quantity, username, status_choice="Приход", note=None
+            model_id, quantity, username, status_choice="Приход", note=""
         )
 
     @classmethod
@@ -100,7 +100,7 @@ class DevStock(BaseStock):
         if model_instance:
             model_instance.delete()
             cls.create_history_device(
-                model_id, quantity, username, status_choice, note=None
+                model_id, quantity, username, status_choice, note=""
             )
 
     @classmethod

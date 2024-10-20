@@ -24,6 +24,7 @@ class StockAccView(
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = StockAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -81,6 +82,7 @@ class StockAccCategoriesView(
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = StockAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -200,6 +202,7 @@ class HistoryAccView(
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -236,6 +239,7 @@ class HistoryAccCategoriesView(
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -264,6 +268,7 @@ class HistoryConsumptionAccView(
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -304,6 +309,7 @@ class HistoryAccConsumptionCategoriesView(
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_consumption_acc_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):

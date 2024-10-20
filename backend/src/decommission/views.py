@@ -24,6 +24,7 @@ class DecommissionView(
     permission_required = "decommission.view_decommission"
     template_name = "decom/decom_list.html"
     model = Decommission
+    paginate_by = DataMixin.paginate
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cat_decom = cache.get("cat_decom")
@@ -63,6 +64,7 @@ class DecomCategoriesView(
     permission_required = "decommission.view_decommission"
     template_name = "decom/decom_list.html"
     model = Decommission
+    paginate_by = DataMixin.paginate
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cat_decom = cache.get("cat_decom")
@@ -180,6 +182,7 @@ class DisposalView(
     permission_required = "decommission.view_disposal"
     template_name = "decom/disp_list.html"
     model = Disposal
+    paginate_by = DataMixin.paginate
 
     def get_context_data(self, *, object_list=None, **kwargs):
         cat_disp = cache.get("cat_disp")
@@ -218,6 +221,7 @@ class DispCategoriesView(
 ):
     permission_required = "decommission.view_disposal"
     template_name = "decom/disp_list.html"
+    paginate_by = DataMixin.paginate
     model = Disposal
 
     def get_context_data(self, *, object_list=None, **kwargs):

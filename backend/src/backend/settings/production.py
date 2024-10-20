@@ -89,7 +89,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE: dict[list, str] = {}
 
 # end celery
 
@@ -159,7 +159,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATE_FORMAT = ["%d.%m.%Y"]
+DATE_FORMAT = "%d.%m.%Y"
 
 # end region settings
 # start file settings

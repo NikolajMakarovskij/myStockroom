@@ -8,7 +8,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))
+ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))  # type: ignore[union-attr]
 
 INSTALLED_APPS = [
     "rest_framework",
@@ -57,7 +57,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE: dict[list, str] = {}
 
 # end celery
 

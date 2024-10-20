@@ -16,6 +16,7 @@ class SignatureListView(
 ):
     permission_required = "signature.view_signature"
     model = Signature
+    paginate_by = DataMixin.paginate
     template_name = "signature/signature_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -119,7 +120,7 @@ class SignatureUpdate(
         return context
 
 
-class SignatureDelete(
+class SignatureDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "signature.delete_signature"
@@ -135,4 +136,5 @@ class SignatureDelete(
             title="Удалить ЭЦП", selflink="signature:signature_list"
         )
         context = dict(list(context.items()) + list(c_def.items()))
+        return context
         return context

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
 
 from consumables.models import AccCat, Accessories, Categories, Consumables
 from counterparty.models import Manufacturer
@@ -9,8 +9,8 @@ from counterparty.models import Manufacturer
 
 @dataclass
 class BaseResource(resources.ModelResource):
-    category_model: dict = None
-    manufacturer_model: dict = None
+    category_model: type | None = None
+    manufacturer_model: type | None = None
 
     name = fields.Field(column_name="Название", attribute="name")
     categories = fields.Field(
@@ -49,4 +49,6 @@ class AccessoriesResource(BaseResource):
 
     class Meta:
         model = Accessories
+        exclude = ["id"]
+        exclude = ["id"]
         exclude = ["id"]

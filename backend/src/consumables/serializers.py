@@ -1,6 +1,6 @@
+# from device.serializers import DeviceListSerializer
 from rest_framework import serializers
 
-# from device.serializers import DeviceListSerializer
 from accounting.serializers import AccountingModelSerializer
 from counterparty.serializers import ManufacturerSerializer
 
@@ -23,7 +23,9 @@ class ConsumablesModelSerializer(serializers.ModelSerializer):
 
 class ConsumablesListSerializer(serializers.ModelSerializer):
     queryset = Consumables.objects.all()
-    device = serializers.StringRelatedField(many=True, read_only=True)
+    device: serializers.StringRelatedField = serializers.StringRelatedField(
+        many=True, read_only=True
+    )
     consumable = AccountingModelSerializer(many=True, read_only=True)
     categories = CategoriesModelSerializer(read_only=True)
     manufacturer = ManufacturerSerializer(read_only=True)
@@ -51,7 +53,9 @@ class AccCatModelSerializer(serializers.ModelSerializer):
 
 class AccessoriesListModelSerializer(serializers.ModelSerializer):
     queryset = Accessories.objects.all()
-    device = serializers.StringRelatedField(many=True, read_only=True)
+    device: serializers.StringRelatedField = serializers.StringRelatedField(
+        many=True, read_only=True
+    )
     accessories = AccountingModelSerializer(many=True, read_only=True)
     categories = AccCatModelSerializer(read_only=True)
     manufacturer = ManufacturerSerializer(read_only=True)

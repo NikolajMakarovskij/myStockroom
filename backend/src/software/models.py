@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from counterparty.models import Manufacturer
@@ -12,15 +11,15 @@ class Software(ModelMixin, models.Model):
     Модель софта
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=50,
         help_text="Введите название ПО",
         verbose_name="Программное обеспечение",
     )
-    manufacturer = models.ForeignKey(
+    manufacturer: models.ForeignKey = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -28,35 +27,35 @@ class Software(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    version = models.CharField(
+    version: models.CharField = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите версию",
         verbose_name="Версия",
     )
-    bitDepth = models.CharField(
+    bitDepth: models.CharField = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите разрядность",
         verbose_name="разрядность",
     )
-    licenseKeyText = models.CharField(
+    licenseKeyText: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите лицензионный ключ",
         verbose_name="Введите ключ",
     )
-    licenseKeyImg = models.ImageField(
+    licenseKeyImg: models.ImageField = models.ImageField(
         upload_to="software/soft/",
         blank=True,
         null=True,
         help_text="прикрепите файл",
         verbose_name="Фото ключа",
     )
-    licenseKeyFile = models.FileField(
+    licenseKeyFile: models.FileField = models.FileField(
         upload_to="software/soft/",
         blank=True,
         null=True,
@@ -66,9 +65,6 @@ class Software(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("software:software-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Программное обеспечение"
@@ -83,15 +79,15 @@ class Os(ModelMixin, models.Model):
     Модель ОС
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=50,
         help_text="Введите название ОС",
         verbose_name="Операционная система",
     )
-    manufacturer = models.ForeignKey(
+    manufacturer: models.ForeignKey = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -99,35 +95,35 @@ class Os(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    version = models.CharField(
+    version: models.CharField = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите версию",
         verbose_name="Версия",
     )
-    bitDepth = models.CharField(
+    bitDepth: models.CharField = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите разрядность",
         verbose_name="разрядность",
     )
-    licenseKeyText = models.CharField(
+    licenseKeyText: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите лицензионный ключ",
         verbose_name="Лицензионный ключ",
     )
-    licenseKeyImg = models.ImageField(
+    licenseKeyImg: models.ImageField = models.ImageField(
         upload_to="software/OS/",
         blank=True,
         null=True,
         help_text="прикрепите файл",
         verbose_name="Фото ключа",
     )
-    licenseKeyFile = models.FileField(
+    licenseKeyFile: models.FileField = models.FileField(
         upload_to="software/OS/",
         blank=True,
         null=True,
@@ -137,9 +133,6 @@ class Os(ModelMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse("software:OS-detail", args=[str(self.id)])
 
     class Meta:
         verbose_name = "Операционная система"

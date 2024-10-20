@@ -1,6 +1,6 @@
 import os
 
-DEBUG = int(os.environ.get("DEBUG", 1))
+DEBUG = int(os.environ.get("DEBUG", 1))  # type: ignore[arg-type]
 
 if DEBUG:
     from .production import *  # noqa F403
