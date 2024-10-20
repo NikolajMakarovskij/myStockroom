@@ -1,22 +1,21 @@
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
-
 from dataclasses import dataclass
-from device.models import Device
-from consumables.models import Consumables, Accessories
-from stockroom.models.devices import StockDev, CategoryDev
-from stockroom.models.consumables import Stockroom, StockCat, History
-from stockroom.models.accessories import StockAcc, CategoryAcc, HistoryAcc
-
 from datetime import datetime
+
+from consumables.models import Accessories, Consumables
+from device.models import Device
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
+from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
+from stockroom.models.consumables import History, StockCat, Stockroom
+from stockroom.models.devices import CategoryDev, StockDev
 
 
 @dataclass
 class BaseStockResource(resources.ModelResource):
     """Class with stock base methods"""
 
-    stock_model: dict = None
-    stock_category: dict = None
+    stock_model: type | None = None
+    stock_category: type | None = None
 
     name = fields.Field(
         column_name="Название",
@@ -424,4 +423,5 @@ class AccessoriesConsumptionResource(resources.ModelResource):
             requirement = abs(2 * QLY - QS + QCY)
         else:
             requirement = 0
+        return requirement
         return requirement

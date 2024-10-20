@@ -116,4 +116,3 @@ def test_accessories_create():
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == "my_consumable"
-    assert accessories.__str__() == "my_consumable"

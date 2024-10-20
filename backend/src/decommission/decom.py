@@ -1,6 +1,8 @@
-from django.conf import settings
-from device.models import Device
+from typing import Any
+
 from decommission.models import CategoryDec, CategoryDis
+from device.models import Device
+from django.conf import settings
 
 
 class Decom(object):
@@ -24,33 +26,33 @@ class Decom(object):
         self.session.modified = True
 
     # Decommission
-    def add_category_decom(device_id: str) -> dict:
+    def add_category_decom(device_id: str) -> Any | None:  # type: ignore[misc]
         """Get category"""
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
-            device_category = Device.objects.get(id=device_id).categories.name
+            device_category = Device.objects.get(id=device_id).categories.name  # type: ignore[attr-defined]
             if CategoryDec.objects.filter(name=device_category):
                 device_category = CategoryDec.objects.get(name=device_category)
             else:
                 device_category = CategoryDec.objects.create(
-                    name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug
+                    name=Device.objects.get(id=device_id).categories.name,  # type: ignore[attr-defined]
+                    slug=Device.objects.get(id=device_id).categories.slug,  # type: ignore[attr-defined]
                 )
         return device_category
 
     # Disposal
-    def add_category_disp(device_id: str) -> dict:
+    def add_category_disp(device_id: str) -> Any | None:  # type: ignore[misc]
         """Get category"""
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
-            device_category = Device.objects.get(id=device_id).categories.name
+            device_category = Device.objects.get(id=device_id).categories.name  # type: ignore[attr-defined]
             if CategoryDis.objects.filter(name=device_category):
                 device_category = CategoryDis.objects.get(name=device_category)
             else:
                 device_category = CategoryDis.objects.create(
-                    name=Device.objects.get(id=device_id).categories.name,
-                    slug=Device.objects.get(id=device_id).categories.slug
+                    name=Device.objects.get(id=device_id).categories.name,  # type: ignore[attr-defined]
+                    slug=Device.objects.get(id=device_id).categories.slug,  # type: ignore[attr-defined]
                 )
         return device_category

@@ -28,4 +28,3 @@ def test_workplace_create():
     assert wp.name == "my_workplace_name"
     assert wp.room.name == "my_room"
     assert wp.__str__() == "my_workplace_name"
-    assert wp.__str__() == "my_workplace_name"

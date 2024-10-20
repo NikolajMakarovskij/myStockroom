@@ -1,8 +1,7 @@
-from import_export import fields, resources
-from import_export.widgets import ForeignKeyWidget
-
-from decommission.models import Decommission, Disposal, CategoryDec, CategoryDis
+from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from device.models import Device
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
 
 
 class DecommissionResource(resources.ModelResource):

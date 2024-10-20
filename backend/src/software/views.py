@@ -1,12 +1,12 @@
+from core.utils import DataMixin, FormMessageMixin, menu
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from core.utils import menu, DataMixin, FormMessageMixin
-from .forms import SoftwareForm, OSForm
-from .models import Software, Os
+from .forms import OSForm, SoftwareForm
+from .models import Os, Software
 
 
 class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
@@ -24,6 +24,7 @@ class SoftwareListView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
     permission_required = "software.view_software"
+    paginate_by = DataMixin.paginate
     model = Software
     template_name = "software/software_list.html"
 
@@ -109,7 +110,7 @@ class SoftwareUpdate(
         return context
 
 
-class SoftwareDelete(
+class SoftwareDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_software"
@@ -134,6 +135,7 @@ class OSListView(
 ):
     permission_required = "software.view_os"
     model = Os
+    paginate_by = DataMixin.paginate
     template_name = "software/OS_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -216,7 +218,7 @@ class OSUpdate(
         return context
 
 
-class OSDelete(
+class OSDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "software.delete_os"

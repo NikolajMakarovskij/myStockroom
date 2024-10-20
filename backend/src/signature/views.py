@@ -1,12 +1,13 @@
+from core.utils import DataMixin, FormMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, DeleteView, FormMixin, UpdateView
+from stockroom.forms import ConsumableInstallForm
+
 from .forms import SignatureForm
 from .models import Signature
-from django.views import generic
-from django.urls import reverse_lazy
-from django.db.models import Q
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from core.utils import DataMixin, FormMessageMixin
-from stockroom.forms import ConsumableInstallForm
 
 
 class SignatureListView(
@@ -14,6 +15,7 @@ class SignatureListView(
 ):
     permission_required = "signature.view_signature"
     model = Signature
+    paginate_by = DataMixin.paginate
     template_name = "signature/signature_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -117,7 +119,7 @@ class SignatureUpdate(
         return context
 
 
-class SignatureDelete(
+class SignatureDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     permission_required = "signature.delete_signature"
@@ -133,4 +135,5 @@ class SignatureDelete(
             title="Удалить ЭЦП", selflink="signature:signature_list"
         )
         context = dict(list(context.items()) + list(c_def.items()))
+        return context
         return context

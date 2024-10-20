@@ -10,11 +10,13 @@ class Categories(ModelMixin, models.Model):
     Модель группы для расходников на балансе в бухгалтерии.
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
-    name = models.CharField(
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
+    name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug = models.SlugField(
+    slug: models.SlugField = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,
@@ -36,16 +38,16 @@ class Accounting(ModelMixin, models.Model):
     Accounting model
     """
 
-    id = models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=500, help_text="Введите название", verbose_name="Название"
     )
-    account = models.IntegerField(
+    account: models.IntegerField = models.IntegerField(
         blank=True, null=True, help_text="Введите счет", verbose_name="Счет"
     )
-    categories = models.ForeignKey(
+    categories: models.ForeignKey = models.ForeignKey(
         "Categories",
         on_delete=models.SET_NULL,
         blank=True,
@@ -53,7 +55,7 @@ class Accounting(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="Группа",
     )
-    consumable = models.ForeignKey(
+    consumable: models.ForeignKey = models.ForeignKey(
         Consumables,
         on_delete=models.SET_NULL,
         blank=True,
@@ -62,7 +64,7 @@ class Accounting(ModelMixin, models.Model):
         help_text="Укажите расходник",
         verbose_name="Расходник",
     )
-    accessories = models.ForeignKey(
+    accessories: models.ForeignKey = models.ForeignKey(
         Accessories,
         on_delete=models.SET_NULL,
         blank=True,
@@ -71,26 +73,26 @@ class Accounting(ModelMixin, models.Model):
         help_text="Укажите комплектующее",
         verbose_name="Комплектующее",
     )
-    code = models.CharField(
+    code: models.CharField = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите код по бухгалтерии",
         verbose_name="Код в бухгалтерии",
     )
-    quantity = models.IntegerField(
+    quantity: models.IntegerField = models.IntegerField(
         blank=True,
         default=0,
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
     )
-    cost = models.FloatField(
+    cost: models.FloatField = models.FloatField(
         blank=True,
         default=0,
         help_text="Введите стоимость за 1 ед.",
         verbose_name="Стоимость",
     )
-    note = models.TextField(
+    note: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,

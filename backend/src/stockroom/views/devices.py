@@ -13,7 +13,6 @@ from django.views import View, generic
 from django.views.decorators.http import require_POST
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
-
 from stockroom.forms import AddHistoryDeviceForm, MoveDeviceForm, StockAddForm
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.resources import StockDevResource
@@ -28,6 +27,7 @@ class StockDevView(
 ):
     permission_required = "stockroom.view_stockdev"
     template_name = "stock/stock_dev_list.html"
+    paginate_by = DataMixin.paginate
     model = StockDev
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -74,6 +74,7 @@ class StockDevCategoriesView(
 ):
     permission_required = "stockroom.view_stockdev"
     template_name = "stock/stock_dev_list.html"
+    paginate_by = DataMixin.paginate
     model = StockDev
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -125,6 +126,7 @@ class HistoryDevView(
 ):
     permission_required = "stockroom.view_historydev"
     template_name = "stock/history_dev_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryDev
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -160,6 +162,7 @@ class HistoryDevCategoriesView(
 ):
     permission_required = "stockroom.view_historydev"
     template_name = "stock/history_dev_list.html"
+    paginate_by = DataMixin.paginate
     model = HistoryDev
 
     def get_context_data(self, *, object_list=None, **kwargs):

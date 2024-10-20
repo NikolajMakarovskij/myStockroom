@@ -1,29 +1,27 @@
-from rest_framework import serializers
-
 from device.models import Device
 from device.serializers import DeviceListSerializer
-from ..models.devices import StockDev, CategoryDev
+from rest_framework import serializers
+
+from ..models.devices import CategoryDev, StockDev
 
 
 class StockDevSerializer(serializers.ModelSerializer):
-    device = serializers.StringRelatedField(many=True)
-    consumable = serializers.StringRelatedField(many=True)
+    device: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
+    consumable: serializers.StringRelatedField = serializers.StringRelatedField(
+        many=True
+    )
 
     class Meta:
         model = Device
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class StockDevCatSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryDev
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class StockDevListSerializer(serializers.ModelSerializer):
@@ -33,12 +31,12 @@ class StockDevListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StockDev
-        fields = ["stock_model",
-                  "dateAddToStock",
-                  "dateInstall",
-                  "rack",
-                  "shelf",
-                  "categories"]
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = [
+            "stock_model",
+            "dateAddToStock",
+            "dateInstall",
+            "rack",
+            "shelf",
+            "categories",
+        ]
+        extra_kwargs = {"id": {"read_only": True}}

@@ -1,88 +1,96 @@
-from django.db import models
-from django.urls import reverse
-from employee.models import Employee
-from device.models import Device
+import uuid
+
 from consumables.models import Consumables
 from core.utils import ModelMixin
-import uuid
+from device.models import Device
+from django.db import models
+from employee.models import Employee
 
 
 class Signature(ModelMixin, models.Model):
     """
     Модель ЭЦП (электронной цифровой подписи)
     """
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        db_index=True,
-        help_text="ID"
+
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name = models.CharField(
-        max_length=50,
-        help_text="Введите номер ключа",
-        verbose_name="Ключ"
+    name: models.CharField = models.CharField(
+        max_length=50, help_text="Введите номер ключа", verbose_name="Ключ"
     )
-    licenseKeyFileOpen = models.FileField(
-        upload_to='signature/Open/',
-        blank=True, null=True,
+    licenseKeyFileOpen: models.FileField = models.FileField(
+        upload_to="signature/Open/",
+        blank=True,
+        null=True,
         help_text="Прикрепите файл",
-        verbose_name="Открытая часть лицензии"
+        verbose_name="Открытая часть лицензии",
     )
-    licenseKeyFileClose = models.FileField(
-        upload_to='signature/Close/',
-        blank=True, null=True,
+    licenseKeyFileClose: models.FileField = models.FileField(
+        upload_to="signature/Close/",
+        blank=True,
+        null=True,
         help_text="Прикрепите файл",
-        verbose_name="Закрытая часть лицензии"
+        verbose_name="Закрытая часть лицензии",
     )
-    periodOpen = models.DateField(
-        null=True, blank=True,
+    periodOpen: models.DateField = models.DateField(
+        null=True,
+        blank=True,
         help_text="Укажите дату",
-        verbose_name="Срок действия открытой части"
+        verbose_name="Срок действия открытой части",
     )
-    periodClose = models.DateField(
-        null=True, blank=True,
+    periodClose: models.DateField = models.DateField(
+        null=True,
+        blank=True,
         help_text="Укажите дату",
-        verbose_name="Срок действия закрытой части"
+        verbose_name="Срок действия закрытой части",
     )
-    employeeRegister = models.ForeignKey(
+    employeeRegister: models.ForeignKey = models.ForeignKey(
         Employee,
         on_delete=models.SET_NULL,
-        blank=True, null=True,
+        blank=True,
+        null=True,
         help_text="Укажите сотрудника",
-        verbose_name="Сотрудник на которого оформлена ЭЦП"
+        verbose_name="Сотрудник на которого оформлена ЭЦП",
     )
-    employeeStorage = models.ForeignKey(
+    employeeStorage: models.ForeignKey = models.ForeignKey(
         Employee,
         on_delete=models.SET_NULL,
-        blank=True, null=True,
-        related_name='+',
+        blank=True,
+        null=True,
+        related_name="+",
         help_text="Укажите сотрудника",
-        verbose_name="Сотрудник у которого хранится ЭЦП"
+        verbose_name="Сотрудник у которого хранится ЭЦП",
     )
-    workstation = models.ForeignKey(
+    workstation: models.ForeignKey = models.ForeignKey(
         Device,
         on_delete=models.SET_NULL,
-        blank=True, null=True,
+        blank=True,
+        null=True,
         help_text="Укажите рабочую станцию",
-        verbose_name="Рабочая станция"
+        verbose_name="Рабочая станция",
     )
-    storage = models.ForeignKey(
+    storage: models.ForeignKey = models.ForeignKey(
         Consumables,
         on_delete=models.SET_NULL,
-        blank=True, null=True,
+        blank=True,
+        null=True,
         help_text="Укажите накопитель",
-        verbose_name="накопитель"
+        verbose_name="накопитель",
     )
 
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('signature:signature-detail', args=[str(self.id)])
-
     # конец методов
 
     class Meta:
-        verbose_name = 'ЭЦП'
-        verbose_name_plural = 'ЭЦП'
-        ordering = ["periodOpen", "periodClose", ]
+        verbose_name = "ЭЦП"
+        verbose_name_plural = "ЭЦП"
+        ordering = [
+            "periodOpen",
+            "periodClose",
+        ]
+        ordering = [
+            "periodOpen",
+            "periodClose",
+        ]
