@@ -6,8 +6,7 @@ stages:
 
 image: docker:24.0.5
 services:
-    - name: registry.hub.docker.com/library/docker:24.0.5-dind
-      alias: docker
+    - docker:24.0.5-dind
 
 .standard-rules:       # Make a hidden job to hold the common rules
   rules:
@@ -16,7 +15,7 @@ services:
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_HOST: "tcp://docker-dind:2375"
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
 
 #pages:
@@ -33,6 +32,7 @@ variables:
 
 
 before_script:
+  - apk add --no-cache docker-compose
   - docker version
 
 ruff-running:
