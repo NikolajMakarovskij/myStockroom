@@ -9,14 +9,6 @@ stages:
 services:
   - docker:24.0.5-dind
 
-variables:
-  DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_DRIVER: overlay2
-  PDM_CACHE_DIR: "CI_PROJECT_DIR/.cache/pdm"
-  MOUNT_POINT: ./backend/src
-  # variables in DinD
-
-
 .standard-rules:       # Make a hidden job to hold the common rules
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -49,6 +41,7 @@ build:
     - apk add docker-compose
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
     - docker compose up -d
 
 
