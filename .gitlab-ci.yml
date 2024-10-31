@@ -1,4 +1,5 @@
 stages:
+  - typing
   - linting
   - testing
   - pages
@@ -8,28 +9,14 @@ image: docker:24.0.5
 services:
     - docker:24.0.5-dind
 
-.standard-rules:       # Make a hidden job to hold the common rules
+.standard-rules:
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 variables:
-  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
-
-#pages:
-#  stage: pages
-#  script:
-#    - pdm run quarto render src/docs
-#    - cp -r src/docs/_site public
-#  artifacts:
-#    paths:
-#      - public
-#  only:
-#    - main
-
-
 
 before_script:
   - apk add --no-cache docker-compose
@@ -38,53 +25,26 @@ before_script:
   - cd backend
   - docker-compose up -d
 
+backend-typnig:
+  stage: typing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - sleep 5s
+    - docker exec -t backend pdm run mypy .
+
 backend-linting:
   stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
   script:
+    - sleep 5s
     - docker exec -t backend pdm run ruff check .
 
-#mypy-running:
-#  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
-#  stage: linting
-#  extends:
-#    - .standard-rules
-#  variables:
-#   DEBUG: 1
-#    SECRET_KEY: foo
-#    PATH: "/backend/.venv/bin:$PATH"
-#  script:
-#    - ls -a
-#    - cd /
-#   - ls -a
-#    - cd backend
-#    - ls -a
-#    - pdm install --check --dev
-#    - pdm run mypy .
+backend-testing:
+  stage: testing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+  script:
+    - docker exec -t backend pdm run pytest
 
-#backend-testing:
-#  stage: testing
-#  rules:
-#    - if: $CI_COMMIT_MESSAGE
-# script:
-#    - cd backend
-#    - pdm lock -G test
-#    - pdm install -G test
-#    - PATH="/backend/.venv/bin:$PATH"
-#    - pdm run pytest
-
-#build-release:
-#  stage: build
-#  script:
-#    - pdm install --check --prod --no-editable
-#    - echo "building package"
-#    - pdm build
-#    - echo "Publish package"
-#    - pdm config repository.company.url "https://gitlab.com/nikolajmakarovskij/mlops_ods"
-#    - pdm config repository.company.username gitlab-ci-token
-#    - pdm config repository.company.password ${CI_JOB_TOKEN}
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-#  artifacts:
-#    expire_in: never
-#    paths:
-#      - $CI_PROJECT_DIR/dist
