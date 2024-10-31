@@ -35,7 +35,6 @@ variables:
 
 
 before_script:
-  - timeout 5s
   - docker version
   - docker-compose --version
 
