@@ -34,9 +34,7 @@ variables:
 
 
 before_script:
-  - apk add --update python py-pip python-dev && pip install docker-compose
   - docker version
-  - docker-compose version
   - docker info
   - cd backend
   - docker compose up -d
