@@ -18,6 +18,7 @@ services:
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_VERIFY: 1
   DOCKER_TLS_CERTDIR: "/certs"
 
 #pages:
