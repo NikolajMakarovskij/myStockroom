@@ -34,12 +34,13 @@ variables:
 before_script:
   - apk add --no-cache docker-compose
   - docker version
+  - docker-compose --version
+  - cd backend
+  - docker-compose up -d
 
-ruff-running:
+backend-linting:
   stage: linting
   script:
-    - cd backend
-    - docker-compose up -d
     - docker exec -t backend pdm run ruff check .
 
 #mypy-running:
