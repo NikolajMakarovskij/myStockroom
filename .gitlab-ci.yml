@@ -35,6 +35,13 @@ variables:
 
 
 before_script:
+  - |
+      for i in $(seq 1 30)
+      do
+          docker info && break
+          echo "Waiting for docker to start"
+          sleep 1s
+      done
   - docker version
 #  - docker compose --version
 
