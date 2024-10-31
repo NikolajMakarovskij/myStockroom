@@ -36,6 +36,7 @@ variables:
 
 before_script:
   - docker version
+  - export DOCKER_HOST="${HOSTNAME}-docker"
   - docker-compose --version
 
 ruff-running:
