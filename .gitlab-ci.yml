@@ -4,13 +4,10 @@ stages:
   - pages
   - build
 
-image:
-  name: docker/compose:latest
-
+image: docker:24.0.5
 services:
-  - name: docker:24.0.7-dind
-    alias: docker
-
+    - name: registry.hub.docker.com/library/docker:24.0.5-dind
+      alias: docker
 
 .standard-rules:       # Make a hidden job to hold the common rules
   rules:
