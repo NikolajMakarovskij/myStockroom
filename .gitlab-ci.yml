@@ -49,22 +49,13 @@ build:
     - apk add docker-compose
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-  script:
-    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest --target dev ./backend
-    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
+    - docker compose up -d
 
 
 ruff-running:
-  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
   stage: linting
-  extends:
-    - .standard-rules
-  variables:
-    DEBUG: 1
-    SECRET_KEY: foo
   script:
-    - cd backend
-    - pdm run ruff check .
+    - docker exec -t backend pdm run ruff check .
 
 #mypy-running:
 #  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/build:latest
