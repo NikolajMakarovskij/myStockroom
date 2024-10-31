@@ -34,13 +34,12 @@ variables:
 
 
 before_script:
-    - docker version
-    - docker-compose version
-    - docker info
-    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    - cd backend
-    - docker compose up -d
-
+  - apk add --update python py-pip python-dev && pip install docker-compose
+  - docker version
+  - docker-compose version
+  - docker info
+  - cd backend
+  - docker compose up -d
 
 ruff-running:
   stage: linting
