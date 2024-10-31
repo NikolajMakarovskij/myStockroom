@@ -8,7 +8,7 @@ image:
   name: docker/compose:latest
 
 services:
-  - docker:24.0.5-dind
+  - docker:dind
 
 .standard-rules:       # Make a hidden job to hold the common rules
   rules:
@@ -36,12 +36,12 @@ variables:
 before_script:
   - docker version
   - docker info
-  - cd backend
-  - docker compose up -d
 
 ruff-running:
   stage: linting
   script:
+    - cd backend
+    - docker compose up -d
     - docker exec -t backend pdm run ruff check .
 
 #mypy-running:
