@@ -17,7 +17,7 @@ services:
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_HOST: "tcp://docker-dind:2375"
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
