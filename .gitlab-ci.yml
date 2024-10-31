@@ -8,7 +8,9 @@ image:
   name: docker/compose:latest
 
 services:
-  - docker:dind
+  - name: docker:dind
+    alias: docker
+
 
 .standard-rules:       # Make a hidden job to hold the common rules
   rules:
@@ -35,10 +37,7 @@ variables:
 
 
 before_script:
-  - apk add --no-cache docker-compose
   - docker version
-  - export DOCKER_HOST="${HOSTNAME}-docker"
-  - docker-compose --version
 
 ruff-running:
   stage: linting
