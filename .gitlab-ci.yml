@@ -51,7 +51,7 @@ backend-testing:
   artifacts:
     when: always
     paths:
-      - junit.xml
+      - /backend/src/junit.xml
     reports:
       junit: junit.xml
 
