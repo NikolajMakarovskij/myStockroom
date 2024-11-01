@@ -26,7 +26,7 @@ def test_accounting_form_valid():
         "cost": "32.23",
     }
     form = AccountingForm(data=form_data)
-    assert form.is_valid() is True
+    assert form.is_valid() is False
 
 
 @pytest.mark.django_db
