@@ -54,4 +54,4 @@ backend-testing:
       - backend/src/junit.xml
       - backend/src/coverage.xml
     reports:
-      junit: junit.xml
+      junit: backend/src/junit.xml
