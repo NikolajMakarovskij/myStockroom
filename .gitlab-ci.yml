@@ -51,7 +51,7 @@ backend-testing:
   artifacts:
     when: always
     paths:
-      - /backend/src/junit.xml
-      - /backend/src/coverage.xml
+      - backend/src/junit.xml
+      - backend/src/coverage.xml
     reports:
       junit: junit.xml

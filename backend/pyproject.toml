@@ -53,19 +53,19 @@ distribution = true
 
 [tool.pdm.dev-dependencies]
 lint = [
-    "ruff==0.4.8",
-    "mypy==1.10.0",
-    "pre-commit==3.7.1",
-    "isort==5.13.2",
+    "ruff>=0.4.8",
+    "mypy>=1.10.0",
+    "pre-commit>=3.7.1",
+    "isort>=5.13.2",
     "django-stubs>=5.1.0",
     "djangorestframework-stubs>=3.15.0",
     "celery-types>=0.22.0"
 ]
 test = [
-    "pytest==8.1.1",
-    "pytest-django==4.8.0",
-    "pytest-xdist==3.6.1",
-    "pytest-cov==5.0.0",
+    "pytest>=8.3.3",
+    "pytest-django>=4.9.0",
+    "pytest-xdist>=3.6.1",
+    "pytest-cov>=6.0.0",
     ]
 
 [tool.ruff]
