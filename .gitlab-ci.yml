@@ -47,5 +47,5 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
   script:
     - docker exec -t backend pdm run pytest --cov
-  coverage: '/Code coverage: \d+(?:\.\d+)?/'
+  coverage: '/TOTAL.*? (100(?:\.0+)?\%\|[1-9]?\d(?:\.\d+)?\%)$/'
 
