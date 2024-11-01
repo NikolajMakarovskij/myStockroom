@@ -17,7 +17,7 @@ def test_list_url_exists_at_desired_location(auto_login_user): # noqa F811
     for link in links:
         url = link
         response = client.get(url)
-        assert response.status_code == 400
+        assert response.status_code == 200
 
 
 @pytest.mark.django_db
