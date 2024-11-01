@@ -16,12 +16,9 @@ pgadmin-data/_data/pgadmin4.db
 env/
 **/__pycache__/
 
-/backend/celerybeat-schedule
 /venv/
 .idea/
 .env.dev
-backend/.pdm-python
-backend/.pdm-python
 
 # celery
 celerybeat*
