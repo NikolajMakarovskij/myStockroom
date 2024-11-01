@@ -102,6 +102,8 @@ exclude = [
     "site-packages",
     "venv",
     "__pycache__",
+    "static/",
+    "media/"
 ]
 
 
@@ -111,11 +113,8 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.mypy]
-mypy_path = "./backend"
-follow_imports = "silent"
-strict_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
+mypy_path = "./src"
+follow_imports = "normal"
 disallow_any_generics = true
 check_untyped_defs = true
 no_implicit_reexport = true
@@ -131,22 +130,17 @@ plugins = [
     "mypy_drf_plugin.main",
 ]
 
-[mypy-pyproj]
-ignore_missing_imports = true
-
 [[tool.mypy.overrides]]
 module = [
-    "import_export.*",
-    "rest_framework.*",
-    ]
+    "import_export"
+]
 ignore_missing_imports = true
-
 
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
 ]
-pythonpath = "./backend"
+pythonpath = "./src"
 
 [tool.django-stubs]
 django_settings_module = "backend.settings.production"
