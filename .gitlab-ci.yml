@@ -55,5 +55,3 @@ backend-testing:
       - /backend/src/coverage.xml
     reports:
       junit: junit.xml
-      coverage_report: coverage.xml
-
