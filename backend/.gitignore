@@ -11,3 +11,4 @@ src/media
 .pdm-build
 junit.xml
 coverage.xml
+site/*

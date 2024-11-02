@@ -68,7 +68,7 @@ backend-testing:
 pages:
   stage: pages
   rules:
-    - if: $CI_COMMIT_MESSAGE
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH 
       changes:
         paths:
           - 'backend/docs/*'
@@ -80,4 +80,7 @@ pages:
   artifacts:
     paths:
       - public
+  only:
+    - master
+
 
