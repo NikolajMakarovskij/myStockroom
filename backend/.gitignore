@@ -4,8 +4,10 @@ env/
 **/__pycache__/
 **.ruff_cache/
 **.mypy_cache/
-/backend/celerybeat-schedule
+celerybeat-schedule
 .venv
 src/static
 src/media
-**site/
+.pdm-build
+junit.xml
+coverage.xml

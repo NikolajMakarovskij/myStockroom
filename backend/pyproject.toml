@@ -41,7 +41,6 @@ dependencies = [
     "junitxml>=0.7",
 ]
 requires-python = ">=3.13"
-
 readme = "README.md"
 license = {file = "LICENSE"}
 
