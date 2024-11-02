@@ -30,7 +30,7 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/'
+          - 'backend/src/*'
           - 'backend/pyproject.toml'
   script:
     - sleep 5s
@@ -42,7 +42,7 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/'
+          - 'backend/src/*'
           - 'backend/pyproject.toml'
   script:
     - sleep 5s
@@ -54,7 +54,7 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/'
+          - 'backend/*'
           - '.gitlab-ci.yml'
           - 'docker-compose.yaml'
   script:
