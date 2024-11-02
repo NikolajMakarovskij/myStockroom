@@ -53,7 +53,6 @@ backend-testing:
       changes:
         paths:
           - 'backend/*'
-          - '.gitlab-ci.yml'
           - 'docker-compose.yaml'
   script:
     - docker exec -t backend pdm run pytest --cov --junitxml=junit.xml
@@ -76,7 +75,7 @@ pages:
 #          - 'docs/*'
 #          - 'mkdocs.yml'
   script:
-    - docker exec -t backend 'cd /backend && pdm run mkdocs build'
+    - docker exec -t backend bash -c 'cd /backend && pdm run mkdocs build'
     - cp -r backend/site public
   artifacts:
     paths:
