@@ -7,11 +7,11 @@ authors = [
 ]
 
 dependencies = [
-    "setuptools>=75.2.0",
+   "setuptools>=75.2.0",
     "asgiref>=3.8.1",
     "attrs>=24.2.0",
     "diff-match-patch>=20230430",
-    "Django >=5.1.2",
+    "Django>=5.1.2",
     "djangorestframework==3.15.2",
     "djangorestframework-simplejwt>=5.2.2",
     "markdown>=3.7",
@@ -67,11 +67,16 @@ test = [
     "pytest-xdist>=3.6.1",
     "pytest-cov>=6.0.0",
     ]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.43",
+    "mkdocstrings[python]>=0.26.2",
+]
 
 [tool.ruff]
 line-length = 88
 indent-width = 4
-target-version = "py312"
+target-version = "py313"
 exclude = [
     ".bzr",
     ".direnv",

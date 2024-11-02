@@ -1,5 +1,5 @@
 services:
-  web:
+  backend:
     build:
       context: ./
       target: dev
@@ -9,6 +9,8 @@ services:
     restart: always
     volumes:
       - ./src:/backend/src
+      - ./site:/backend/site
+      - ../public:/public
       - ./src/static:/home/backend/web/static
       - ./src/media:/home/backend/web/mediafiles
     expose:
@@ -41,7 +43,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - web
+      - backend
 
   redis:
     image: redis:alpine
@@ -63,7 +65,7 @@ services:
     depends_on:
       - db
       - redis
-      - web
+      - backend
 
   celery-beat:
     image: backend-web

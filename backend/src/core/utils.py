@@ -19,13 +19,22 @@ menu = [
 
 
 class DataMixin:
-    """
-    Mixin add pagination and menu in views
-    """
+    """_DataMixin_: Mixin add pagination and menu in views
 
+    Returns:
+        paginate (int): _pagination const_
+    """
+    
     paginate: int = 20 
 
     def get_user_context(self, **kwargs):
+        """_get_user_context_: returns context for views
+
+        Returns:
+            menu (dict[str, str]): _Navigation side menu_
+            query (str): _q_ returns query for search in views
+            obj_list_count (int): _count_ queryset count
+        """
         side_menu = cache.get("side_menu")
         if not side_menu:
             side_menu = menu
@@ -38,7 +47,16 @@ class DataMixin:
 
 
 class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
+    """_BaseModelSelect2WidgetMixin_ Adds plugin Select2 in views
+    """
+
     def __init__(self, **kwargs):
+        """_add js and css styles_
+
+        Returns:
+            class (str): _js-example-placeholder-single js-states form-control form-control-lg_
+            style (str): "width:100%"
+        """
         super().__init__(kwargs)
         self.attrs = {
             "class": "js-example-placeholder-single js-states form-control form-control-lg",
@@ -46,6 +64,15 @@ class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
         }
 
     def build_attrs(self, base_attrs, extra_attrs=None):
+        """_build_attrs_
+
+        Args:
+            base_attrs (_type_): _description_
+            extra_attrs (_type_, optional): _description_
+
+        Returns:
+            _base_attrs (_type_): _update attrs_
+        """
         base_attrs = super().build_attrs(base_attrs, extra_attrs)
         base_attrs.update(
             {
@@ -57,7 +84,15 @@ class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
 
 
 class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
+    """_BaseSelect2MultipleWidgetMixin_ Adds plugin Select2 in views for multiple select
+    """
     def __init__(self, **kwargs):
+        """_add js and css styles_
+
+        Returns:
+            class (str): _js-example-placeholder-single js-states form-control form-control-lg_
+            style (str): "width:100%"
+        """
         super().__init__(kwargs)
         self.attrs = {
             "class": "js-example-placeholder-single js-states form-control form-control-lg",
@@ -65,6 +100,15 @@ class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
         }
 
     def build_attrs(self, base_attrs, extra_attrs=None):
+        """_build_attrs_
+
+        Args:
+            base_attrs (_type_): _description_
+            extra_attrs (_type_, optional): _description_
+
+        Returns:
+            _base_attrs (_type_): _update attrs_
+        """
         base_attrs = super().build_attrs(base_attrs, extra_attrs)
         base_attrs.update(
             {
@@ -76,14 +120,17 @@ class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
 
 
 class ModelMixin:
+    """_ModelMixin_ Mixin with methods from models
     """
-    Mixin with methods from models
-    """
-
+    
     def get_all_fields(self):
+        """_get_all_fields_: returns all fields from model
+
+        Returns:
+            fields (dict[str, str]): dict from the list of fields and their values for the model, except those excluded fields
+            expose_fields (list[str]): excluded fields
         """
-        Returned list all fields from model. Used in DetailView
-        """
+        
         fields = []
         expose_fields = ["id", "slug"]
         for f in self._meta.fields:
@@ -111,8 +158,14 @@ class ModelMixin:
 
 
 class FormMessageMixin:
-    """
-    added messages in form
+    """_FormMessageMixin_ Add messages in forms
+
+    Returns: 
+        success_message (str): _description_ 
+        debug_message (str): _description_
+        info_message (str): _description_
+        warning_message (str): _description_
+        error_message (str): _description_
     """
 
     success_message: str = ""
@@ -122,6 +175,14 @@ class FormMessageMixin:
     error_message: str = ""
 
     def form_valid(self, form):
+        """_form_valid_ Validation forms
+
+        Args:
+            form (_type_): _description_
+
+        Returns:
+            response (bool | str): _Returns server response or error message_
+        """
         response = super().form_valid(form)
         success_message = self.get_success_message(form.cleaned_data)
         debug_message = self.get_debug_message(form.cleaned_data)
@@ -143,16 +204,56 @@ class FormMessageMixin:
         return response
 
     def get_success_message(self, cleaned_data):
+        """_get_success_message_
+
+        Args:
+            cleaned_data (_type_): _clean form data_
+
+        Returns:
+            message (str): _return message_
+        """
         return self.success_message % cleaned_data
 
     def get_debug_message(self, cleaned_data):
+        """_get_debug_message_
+
+        Args:
+            cleaned_data (_type_): _clean form data_
+
+        Returns:
+            message (str): _return message_
+        """
         return self.debug_message % cleaned_data
 
     def get_info_message(self, cleaned_data):
+        """_get_info_message_
+
+        Args:
+            cleaned_data (_type_): _clean form data_
+
+        Returns:
+            message (str): _return message_
+        """
         return self.info_message % cleaned_data
 
     def get_warning_message(self, cleaned_data):
+        """_get_warning_message_
+
+        Args:
+            cleaned_data (_type_): _clean form data_
+
+        Returns:
+            message (str): _return message_
+        """
         return self.warning_message % cleaned_data
 
     def get_error_message(self, cleaned_data):
+        """_get_error_message_
+
+        Args:
+            cleaned_data (_type_): _clean form data_
+
+        Returns:
+            message (str): _return message_
+        """
         return self.error_message % cleaned_data

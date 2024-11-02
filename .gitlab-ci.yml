@@ -3,7 +3,6 @@ stages:
   - linting
   - testing
   - pages
-  - build
 
 image: docker:24.0.5
 services:
@@ -31,10 +30,9 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/'
+          - 'backend/src/*.{py}'
           - 'backend/pyproject.toml'
   script:
-    - sleep 5s
     - docker exec -t backend pdm run mypy .
 
 backend-linting:
@@ -43,10 +41,9 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/'
+          - 'backend/src/*.{py}'
           - 'backend/pyproject.toml'
   script:
-    - sleep 5s
     - docker exec -t backend pdm run ruff check .
 
 backend-testing:
@@ -55,8 +52,7 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/'
-          - '.gitlab-ci.yml'
+          - 'backend/*'
           - 'docker-compose.yaml'
   script:
     - docker exec -t backend pdm run pytest --cov --junitxml=junit.xml
@@ -68,4 +64,20 @@ backend-testing:
     reports:
       junit: 
         - backend/src/junit.xml
+
+pages:
+  stage: pages
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/docs/*'
+          - 'docs/*'
+          - 'mkdocs.yml'
+  script:
+    - docker exec -t backend bash -c 'cd /backend && pdm run mkdocs build'
+    - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
+  artifacts:
+    paths:
+      - public
 

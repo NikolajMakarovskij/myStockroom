@@ -24,14 +24,23 @@ from .serializers import (
 class ConsumableIndexView(
     LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView
 ):
-    """
-    Главная
+    """_ConsumableIndexView_
+    Home page for consumables app
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
     """
 
     template_name = "consumables/consumables_index.html"
     permission_required = "consumables.view_consumables"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (list[str]): _returns title, side menu_
+        """
         context = super().get_context_data(**kwargs)
         context["title"] = "Расходники и комплектующие"
         context["menu"] = menu
@@ -42,12 +51,26 @@ class ConsumableIndexView(
 class ConsumablesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_ConsumablesView_
+    List of consumables instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (Consumables): _base model for list_
+    """
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
     paginate_by = DataMixin.paginate
     model = Consumables
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+        """
         cons_cat = cache.get("cons_cat")
         if not cons_cat:
             cons_cat = Categories.objects.all()
@@ -63,6 +86,11 @@ class ConsumablesView(
         return context
 
     def get_queryset(self):
+        """_queryset_ 
+
+        Returns:
+            object_list (Consumables): _description_
+        """
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -92,12 +120,26 @@ class ConsumablesView(
 class ConsumablesCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_ConsumablesCategoriesView_
+    List of consumables instances filtered by categories
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (Consumables): _base model for list_
+    """
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
     paginate_by = DataMixin.paginate
     model = Consumables
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+        """
         cons_cat = cache.get("cons_cat")
         if not cons_cat:
             cons_cat = Categories.objects.all()
@@ -113,6 +155,11 @@ class ConsumablesCategoriesView(
         return context
 
     def get_queryset(self):
+        """_queryset_ 
+
+        Returns:
+            object_list (Consumables): _filtered by categories_
+        """
         object_list = Consumables.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         ).select_related("categories")
@@ -120,23 +167,49 @@ class ConsumablesCategoriesView(
 
 
 class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    """_ConsumablesRestView_ returns consumables
+
+    Returns:
+        queryset (Consumables): 
+        serializer_class (ConsumablesModelSerializer): 
+        success_message (str):
+        error_message (str):
+    """
     queryset = Consumables.objects.all()
     serializer_class = ConsumablesModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
     error_message = "%(categories)s %(name)s не удалось создать"
 
     def get_serializer_context(self):
+        """_context_ returns serializer context
+
+        Returns:
+            context (list[]): _serializer context_
+        """
         context = super().get_serializer_context()
         return context
 
 
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    """_ConsumablesRestView_ returns categories of consumables
+
+    Returns:
+        queryset (Categories): 
+        serializer_class (CategoriesModelSerializer): 
+        success_message (str):
+        error_message (str):
+    """
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
     success_message = "Категория %(name)s успешно создана"
     error_message = "Категория %(name)s не удалось создать"
 
     def get_serializer_context(self):
+        """_context_ returns serializer context
+
+        Returns:
+            context (list[]): _serializer context_
+        """
         context = super().get_serializer_context()
         context.update({"request": self.request})
         context.update({"menu": menu})
@@ -150,12 +223,26 @@ class ConsumablesDetailView(
     FormMixin,
     generic.DetailView,
 ):
+    """_ConsumablesDetailView_
+    Detail of consumables instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Consumables): _base model for list_
+        form_class (StockAddForm): _form for adding consumables to the stock_
+    """
     permission_required = "consumables.view_consumables"
     model = Consumables
     template_name = "consumables/consumables_detail.html"
     form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete consumables instance_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Расходник",
@@ -170,6 +257,17 @@ class ConsumablesDetailView(
 class ConsumablesCreate(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
 ):
+    """_ConsumablesCreate_
+    Create of consumables instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Consumables): _base model for list_
+        form_class (ConsumablesForm): _form class to view_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.add_consumables"
     model = Consumables
     form_class = ConsumablesForm
@@ -178,6 +276,11 @@ class ConsumablesCreate(
     error_message = "Расходник %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Добавить расходник",
@@ -189,6 +292,17 @@ class ConsumablesCreate(
 class ConsumablesUpdate(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
 ):
+    """_ConsumablesUpdate_
+    Update of consumables instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Consumables): _base model for list_
+        form_class (ConsumablesForm): _form class to view_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.change_consumables"
     model = Consumables
     template_name = "Forms/add.html"
@@ -197,6 +311,11 @@ class ConsumablesUpdate(
     error_message = "Расходник %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Редактировать расходник")
         context = dict(list(context.items()) + list(c_def.items()))
@@ -206,6 +325,17 @@ class ConsumablesUpdate(
 class ConsumablesDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
+    """_ConsumablesDelete_
+    Delete of consumables instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Consumables): _base model for list_
+        success_url (str): _switches to url in case of successful deletion_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.delete_consumables"
     model = Consumables
     template_name = "Forms/delete.html"
@@ -214,6 +344,11 @@ class ConsumablesDelete( # type: ignore[misc]
     error_message = "Расходник не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to accounting list_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Удалить расходник", selflink="consumables:consumables_list"
@@ -223,7 +358,18 @@ class ConsumablesDelete( # type: ignore[misc]
 
 
 class ExportConsumable(View):
+    """_ExportConsumable_
+    Returns an Excel file with all records of consumables from the database
+    """
     def get(self, *args, **kwargs):
+        """extracts all records of consumables from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+        
+        Other parameters:
+            resource (ConsumableResource): _dict of consumables for export into an xlsx file_
+        """
         resource = ConsumableResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -237,7 +383,15 @@ class ExportConsumable(View):
 
 
 class ExportConsumableCategory(View):
+    """_ExportConsumableCategory_
+    Returns an Excel file with filtered records by categories of consumables from the database
+    """
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to consumables list_
+        """
         cons_cat = cache.get("cons_cat")
         if not cons_cat:
             cons_cat = Categories.objects.all()
@@ -248,6 +402,14 @@ class ExportConsumableCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
+        """extracts filtered records by categories of consumables from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+        
+        Other parameters:
+            resource (ConsumableResource): _dict of consumables for export into an xlsx file_
+        """
         queryset = Consumables.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -267,12 +429,26 @@ class ExportConsumableCategory(View):
 class AccessoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_AccessoriesView_
+    List of accessories instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (Accessories): _base model for list_
+    """
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
     paginate_by = DataMixin.paginate
     model = Accessories
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+        """
         acc_cat = cache.get("acc_cat")
         if not acc_cat:
             acc_cat = AccCat.objects.all()
@@ -288,6 +464,11 @@ class AccessoriesView(
         return context
 
     def get_queryset(self):
+        """_queryset_ 
+
+        Returns:
+            object_list (Accessories): _description_
+        """
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -317,12 +498,26 @@ class AccessoriesView(
 class AccessoriesCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_AccessoriesCategoriesView_
+    List of accessories instances filtered by categories
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (Accessories): _base model for list_
+    """
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
     paginate_by = DataMixin.paginate
     model = Accessories
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create accessories, categories for filtering queryset_
+        """
         acc_cat = cache.get("acc_cat")
         if not acc_cat:
             acc_cat = AccCat.objects.all()
@@ -338,6 +533,11 @@ class AccessoriesCategoriesView(
         return context
 
     def get_queryset(self):
+        """_queryset_ 
+
+        Returns:
+            object_list (Accessories): _filtered by categories_
+        """
         object_list = Accessories.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         ).select_related("categories")
@@ -345,6 +545,14 @@ class AccessoriesCategoriesView(
 
 
 class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+    """_AccessoriesRestView_ returns accessories
+
+    Returns:
+        queryset (Accessories): 
+        serializer_class (AccessoriesModelSerializer): 
+        success_message (str):
+        error_message (str):
+    """
     queryset = Accessories.objects.all()
     serializer_class = AccessoriesModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
@@ -354,6 +562,14 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class AccCatRestView(
     LoginRequiredMixin, DataMixin, FormMessageMixin, viewsets.ModelViewSet
 ):
+    """_AccCatRestView_ returns categories of accessories
+
+    Returns:
+        queryset (AccCat): 
+        serializer_class (AccCatModelSerializer): 
+        success_message (str):
+        error_message (str):
+    """
     queryset = AccCat.objects.all()
     serializer_class = AccCatModelSerializer
     success_message = "Категория %(name)s успешно создана"
@@ -367,12 +583,26 @@ class AccessoriesDetailView(
     FormMixin,
     generic.DetailView,
 ):
+    """_AccessoriesDetailView_
+    Detail of accessories instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Accessories): _base model for list_
+        form_class (StockAddForm): _form for adding accessories to the stock_
+    """
     permission_required = "consumables.view_accessories"
     model = Accessories
     template_name = "consumables/accessories_detail.html"
     form_class = StockAddForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete accessories instance_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Комплектующее",
@@ -387,6 +617,17 @@ class AccessoriesDetailView(
 class AccessoriesCreate(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
 ):
+    """_AccessoriesCreate_
+    Create of accessories instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Accessories): _base model for list_
+        form_class (AccessoriesForm): _form class to view_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.add_accessories"
     model = Accessories
     form_class = AccessoriesForm
@@ -395,6 +636,11 @@ class AccessoriesCreate(
     error_message = "Комплектующее %(name)s не удалось создать"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Добавить комплектующее",
@@ -406,6 +652,17 @@ class AccessoriesCreate(
 class AccessoriesUpdate(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
 ):
+    """_AccessoriesUpdate_
+    Update of accessories instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Accessories): _base model for list_
+        form_class (AccessoriesForm): _form class to view_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.change_accessories"
     model = Accessories
     template_name = "Forms/add.html"
@@ -414,6 +671,11 @@ class AccessoriesUpdate(
     error_message = "Комплектующее %(name)s не удалось обновить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Редактировать комплектующее")
         context = dict(list(context.items()) + list(c_def.items()))
@@ -423,6 +685,17 @@ class AccessoriesUpdate(
 class AccessoriesDelete( # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
     ):
+    """_AccessoriesDelete_
+    Delete of accessories instances
+
+    Returns:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        model (Accessories): _base model for list_
+        success_url (str): _switches to url in case of successful deletion_
+        success_message (str):
+        error_message (str):
+    """
     permission_required = "consumables.delete_accessories"
     model = Accessories
     template_name = "Forms/delete.html"
@@ -431,6 +704,11 @@ class AccessoriesDelete( # type: ignore[misc]
     error_message = "Комплектующее не удалось удалить"
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to accessories list_
+        """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(
             title="Удалить комплектующее", selflink="consumables:accessories_list"
@@ -440,7 +718,18 @@ class AccessoriesDelete( # type: ignore[misc]
 
 
 class ExportAccessories(View):
+    """_ExportAccessories_
+    Returns an Excel file with all records of accessories from the database
+    """
     def get(self, *args, **kwargs):
+        """extracts all records of accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+        
+        Other parameters:
+            resource (AccessoriesResource): _dict of accessories for export into an xlsx file_
+        """
         resource = AccessoriesResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -454,7 +743,15 @@ class ExportAccessories(View):
 
 
 class ExportAccessoriesCategory(View):
+    """_ExportAccessoriesCategory_
+    Returns an Excel file with filtered records by categories of accessories from the database
+    """
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to accessories list_
+        """
         acc_cat = cache.get("acc_cat")
         if not acc_cat:
             acc_cat = AccCat.objects.all()
@@ -465,6 +762,14 @@ class ExportAccessoriesCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
+        """extracts filtered records by categories of accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+        
+        Other parameters:
+            resource (AccessoriesResource): _dict of accessories for export into an xlsx file_
+        """
         queryset = Accessories.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )

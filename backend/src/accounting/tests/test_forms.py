@@ -9,7 +9,11 @@ from ..models import Categories
 # Accounting
 @pytest.mark.django_db
 def test_accounting_form_valid():
-    """Тест на валидность формы"""
+    """_Form validation test_
+
+    Returns:
+        AccountingForm (func): _form.is_valid() is True_
+    """
     Categories.objects.create(name="my_category", slug="my_category")
     Consumables.objects.create(name="my_consumable")
     Accessories.objects.create(name="my_accessories")
@@ -31,7 +35,12 @@ def test_accounting_form_valid():
 
 @pytest.mark.django_db
 def test_accounting_form_name_invalid():
-    """Тест на наличие названия"""
+    """_Test for the presence of a name_
+
+    Returns:
+        AccountingForm (func): _form.is_valid() is False_
+        err_name (str): _form.errors["name"]_
+    """
     err_name = "Обязательное поле."
     form_data = {
         "name": "",
@@ -43,7 +52,12 @@ def test_accounting_form_name_invalid():
 
 @pytest.mark.django_db
 def test_accounting_form_cost_invalid():
-    """Тест на ввод числа"""
+    """_Test for entering a number in the cost field_
+
+    Returns:
+        AccountingForm (func): _form.is_valid() is False_
+        err_mes (str): _form.errors["cost"]_
+    """
     err_mes = "Введите число."
     form_data = {
         "name": "my_consumable",
@@ -56,7 +70,12 @@ def test_accounting_form_cost_invalid():
 
 @pytest.mark.django_db
 def test_accounting_form_account_invalid():
-    """Тест на ввод числа"""
+    """_Test for entering a number in the account field_
+
+    Returns:
+        AccountingForm (func): _form.is_valid() is False_
+        err_mes (str): _form.errors["account"]_
+    """
     err_mes = "Введите целое число."
     form_data = {
         "name": "my_consumable",
@@ -69,7 +88,12 @@ def test_accounting_form_account_invalid():
 
 @pytest.mark.django_db
 def test_accounting_form_quantity_invalid():
-    """Тест на ввод числа"""
+    """_Test for entering a number in the quantity field_
+
+    Returns:
+        AccountingForm (func): _form.is_valid() is False_
+        err_mes (str): _form.errors["quantity"]_
+    """
     err_mes = "Введите целое число."
     form_data = {
         "name": "my_consumable",

@@ -6,8 +6,10 @@ from .utils import menu
 
 # Главная
 class IndexView(LoginRequiredMixin, generic.TemplateView):
-    """
-    Главная
+    """_IndexView_ Home page
+
+    Returns:
+        context (dict[list[str], dict[str, str]]): _returns context, title, side menu_
     """
 
     template_name = "index.html"
