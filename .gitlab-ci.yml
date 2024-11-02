@@ -76,7 +76,7 @@ pages:
 #          - 'docs/*'
 #          - 'mkdocs.yml'
   script:
-    - docker exec -t backend 'cd ../ && pdm run mkdocs build'
+    - docker exec -t backend 'cd /backend && pdm run mkdocs build'
     - cp -r backend/site public
   artifacts:
     paths:
