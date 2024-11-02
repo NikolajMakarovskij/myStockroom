@@ -8,3 +8,5 @@ env/
 .venv
 src/static
 src/media
+coverage.xml
+junit.xml
