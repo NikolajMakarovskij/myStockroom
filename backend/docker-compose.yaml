@@ -1,5 +1,5 @@
 services:
-  web:
+  backend:
     build:
       context: ./
       target: dev
@@ -43,7 +43,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - web
+      - backend
 
   redis:
     image: redis:alpine
@@ -65,7 +65,7 @@ services:
     depends_on:
       - db
       - redis
-      - web
+      - backend
 
   celery-beat:
     image: backend-web

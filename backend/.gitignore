@@ -8,3 +8,4 @@ env/
 .venv
 src/static
 src/media
+**site/

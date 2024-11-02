@@ -26,7 +26,6 @@ RUN pdm install --check --dev
 COPY ../src /backend/src
 COPY ../docs /backend/docs
 COPY ../mkdocs.yml /backend/mkdocs.yml
-COPY ../../public /public
 ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]
 

@@ -77,8 +77,6 @@ pages:
   script:
     - docker exec -t backend bash -c 'cd /backend && pdm run mkdocs build'
     - ls
-    - cd ../
-    - ls
     - cp -r site public
     - cd public
     - ls
