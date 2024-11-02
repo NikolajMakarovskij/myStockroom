@@ -79,5 +79,5 @@ pages:
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
   artifacts:
     paths:
-      - /public
+      - public
 
