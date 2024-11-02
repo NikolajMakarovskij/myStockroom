@@ -77,7 +77,7 @@ pages:
   script:
     - docker exec -t backend bash -c 'cd /backend && pdm run mkdocs build'
     - ls
-    - cp -r /stockroom/backend/site public
+    - cp -r site public
   artifacts:
     paths:
       - public
