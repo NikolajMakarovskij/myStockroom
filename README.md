@@ -1,6 +1,9 @@
 # **Склад**
 
-##### Зеркало [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### [Репозиторий](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### [Зеркало](https://github.com/NikolajMakarovskij/myStockroom)
+
+##### [Документация](https://nikolajmakarovskij.gitlab.io/stockroom/)
 
 ___
 ## О программе
