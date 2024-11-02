@@ -69,11 +69,11 @@ pages:
   stage: pages
   rules:
     - if: $CI_COMMIT_MESSAGE
-#      changes:
-#        paths:
-#          - 'backend/docs/*'
-#          - 'docs/*'
-#          - 'mkdocs.yml'
+      changes:
+        paths:
+          - 'backend/docs/*'
+          - 'docs/*'
+          - 'mkdocs.yml'
   script:
     - docker exec -t backend bash -c 'cd /backend && pdm run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
