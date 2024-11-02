@@ -1,16 +1,74 @@
 stages:
-  - docker
+  - typing
   - linting
+  - testing
   - pages
-  - build
 
-
+image: docker:24.0.5
 services:
-  - docker:24.0.5-dind
+    - docker:24.0.5-dind
+
+.standard-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 variables:
-  DOCKER_TLS_CERTDIR: "/certs"
-  PDM_CACHE_DIR: "CI_PROJECT_DIR/.cache/pdm"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - apk add --no-cache docker-compose
+  - docker version
+  - docker-compose --version
+  - cd backend
+  - docker-compose up -d
+
+backend-typnig:
+  stage: typing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/src/'
+          - 'backend/pyproject.toml'
+  script:
+    - sleep 5s
+    - docker exec -t backend pdm run mypy .
+
+backend-linting:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/src/'
+          - 'backend/pyproject.toml'
+  script:
+    - sleep 5s
+    - docker exec -t backend pdm run ruff check .
+
+backend-testing:
+  stage: testing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/'
+          - '.gitlab-ci.yml'
+          - 'docker-compose.yaml'
+  script:
+    - docker exec -t backend pdm run pytest --cov --junitxml=junit.xml
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    paths:
+      - backend/src/junit.xml
+    reports:
+      junit: 
+        - backend/src/junit.xml
+
+
 
 #pages:
 #  stage: pages
@@ -22,63 +80,3 @@ variables:
 #      - public
 #  only:
 #    - main
-
-
-build:
-  image: docker:24.0.5
-  stage: docker
-  only:
-    changes:
-     - backend/pdm.lock
-     - backend/pyproject.toml
-     - dockerfile
-     - backend/dockerfile
-     - .gitlab-ci.yml
-  before_script:
-    - docker info
-    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-  script:
-    - docker build -t $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest --target dev ./backend
-    - docker push $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
-
-default:
-  image: $CI_REGISTRY/nikolajmakarovskij/stockroom/backend/dev:latest
-
-ruff-running:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - pdm run ruff check .
-
-#isort-running:
-#  stage: linting
-#  rules:
-#    - if: $CI_COMMIT_MESSAGE
-#  script:
-#    - pdm run isort --check-only --diff .
-
-mypy-running:
-  stage: linting
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-  script:
-    - pdm run mypy .
-
-
-#build-release:
-#  stage: build
-#  script:
-#    - pdm install --check --prod --no-editable
-#    - echo "building package"
-#    - pdm build
-#    - echo "Publish package"
-#    - pdm config repository.company.url "https://gitlab.com/nikolajmakarovskij/mlops_ods"
-#    - pdm config repository.company.username gitlab-ci-token
-#    - pdm config repository.company.password ${CI_JOB_TOKEN}
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-#  artifacts:
-#    expire_in: never
-#    paths:
-#      - $CI_PROJECT_DIR/dist
