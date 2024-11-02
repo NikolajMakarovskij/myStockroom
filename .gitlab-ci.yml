@@ -29,6 +29,10 @@ backend-typnig:
   stage: typing
   rules:
     - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/src/'
+          - 'backend/pyproject.toml'
   script:
     - sleep 5s
     - docker exec -t backend pdm run mypy .
@@ -37,6 +41,10 @@ backend-linting:
   stage: linting
   rules:
     - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/src/'
+          - 'backend/pyproject.toml'
   script:
     - sleep 5s
     - docker exec -t backend pdm run ruff check .
@@ -45,6 +53,11 @@ backend-testing:
   stage: testing
   rules:
     - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/'
+          - '.gitlab-ci.yml'
+          - 'docker-compose.yaml'
   script:
     - docker exec -t backend pdm run pytest --cov --junitxml=junit.xml
   coverage: '/TOTAL.*\s+(\d+%)$/'
