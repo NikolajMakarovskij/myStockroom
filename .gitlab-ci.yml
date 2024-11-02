@@ -30,10 +30,9 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*'
+          - 'backend/src/*.{py}'
           - 'backend/pyproject.toml'
   script:
-    - sleep 5s
     - docker exec -t backend pdm run mypy .
 
 backend-linting:
@@ -42,10 +41,9 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*'
+          - 'backend/src/*.{py}'
           - 'backend/pyproject.toml'
   script:
-    - sleep 5s
     - docker exec -t backend pdm run ruff check .
 
 backend-testing:
@@ -68,14 +66,19 @@ backend-testing:
       junit: 
         - backend/src/junit.xml
 
-#pages:
-#  stage: pages
-#  script:
-#    - pdm run quarto render src/docs
-#    - cp -r src/docs/_site public
-#  artifacts:
-#    paths:
-#      - public
-#  only:
-#    - main
+pages:
+  stage: pages
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+#      changes:
+#        paths:
+#          - 'backend/docs/*'
+#          - 'docs/*'
+#          - 'mkdocs.yml'
+  script:
+    - docker exec -t backend 'cd ../ && pdm run mkdocs build'
+    - cp -r backend/site public
+  artifacts:
+    paths:
+      - public
 

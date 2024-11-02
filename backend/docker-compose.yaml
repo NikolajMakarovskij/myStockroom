@@ -9,6 +9,7 @@ services:
     restart: always
     volumes:
       - ./src:/backend/src
+      - ./site:/backend/site
       - ./src/static:/home/backend/web/static
       - ./src/media:/home/backend/web/mediafiles
     expose:
