@@ -84,5 +84,5 @@ pages:
     - ls
   artifacts:
     paths:
-      - public
+      - backend/public
 
