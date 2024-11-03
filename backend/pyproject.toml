@@ -40,18 +40,11 @@ dependencies = [
     "django-debug-toolbar>=4.4.6",
     "junitxml>=0.7",
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 readme = "README.md"
 license = {file = "LICENSE"}
 
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 lint = [
     "ruff>=0.4.8",
     "mypy>=1.10.0",
@@ -72,6 +65,16 @@ docs = [
     "mkdocs-material>=9.5.43",
     "mkdocstrings[python]>=0.26.2",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/"]
+
+[tool.uv]
+default-groups = ["lint", "test", "docs"]
 
 [tool.ruff]
 line-length = 88
@@ -145,7 +148,6 @@ exclude = [
 plugins = [
     "mypy_django_plugin.main",
     "mypy_drf_plugin.main",
-    "celery-types",
 ]
 
 [[tool.mypy.overrides]]
