@@ -30,7 +30,7 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*.{py}'
+          - 'backend/src/*'
           - 'backend/pyproject.toml'
   script:
     - docker exec -t backend uv run mypy .
@@ -41,7 +41,7 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*.{py}'
+          - 'backend/src/*'
           - 'backend/pyproject.toml'
   script:
     - docker exec -t backend uv run ruff check .

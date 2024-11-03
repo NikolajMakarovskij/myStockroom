@@ -10,8 +10,14 @@ from workplace.models import Workplace
 
 
 class DeviceCat(ModelMixin, models.Model):
-    """
-    Group model for devices
+    """_summary_
+
+    Args:
+        ModelMixin (_type_): _description_
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
     """
 
     id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
