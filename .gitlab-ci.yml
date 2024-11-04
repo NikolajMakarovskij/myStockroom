@@ -55,7 +55,7 @@ backend-testing:
           - 'backend/*'
           - 'docker-compose.yaml'
   script:
-    - docker exec -t backend uv run pytest --cov --junitxml=junit.xml
+    - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
   coverage: '/TOTAL.*\s+(\d+%)$/'
   artifacts:
     when: always
