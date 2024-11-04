@@ -1,103 +1,128 @@
-# **Склад**
+# **Stockroom**
 
-##### Основной репозиторий [https://github.com/NikolajMakarovskij/myStockroom](https://github.com/NikolajMakarovskij/myStockroom)
-##### Зеркало [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### [Repository](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### [Mirror Repository](https://github.com/NikolajMakarovskij/myStockroom)
 
-
-___
-## О программе
-<details>
-<summary> Описание </summary>
-
-`Данная программа позволяет задать расстановку техники в помещениях, указать установленные в технику комплектующие 
-и расходники, вести историю замены комплектующих. Позволяет добавлять, списывать и утилизировать на(со) склад(а).
-В разаделе "На балансе" указываются как числяться расходники и комплектующие в бухгалтерии.
-Функционал разделов с программным обеспечением и цифровыми подписями
-находится в разработке`
-
-`Доступ в программу осуществляется через браузер во внутренней локальной сети. Присутствует система авторизации, панель администратора,
-система прав доступа к разделам`
-
-`Программа написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
-PostgreSQL (v. 14). для запуска и развертывания программы используется Doсker`
-
-</details>
+##### [Documentation](https://nikolajmakarovskij.gitlab.io/stockroom/)
 
 ___
-## Требования перед установкой
-
+## About
 <details>
-<summary> Дополнительное ПО </summary>
+<summary> Description </summary>
 
-1. Для развертывания программы потребуются предварительно установленные: 
-    * [Docker](https://docs.docker.com/engine/) и [Docker compose](https://docs.docker.com/compose/)
-    или
-    * [Docker desktop](https://docs.docker.com/get-docker/)
-   
+`This program allows you to set the placement of equipment in the premises, specify the components
+and consumables installed in the equipment, and keep a history of component replacement. Allows you to add, write off and dispose of to (co) warehouse(a).
+In the "On balance" section, you can specify how consumables and components are listed in accounting.
+The functionality of the sections with software and digital signatures
+is under development`
+
+`The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel,
+the system of access rights to sections`
+
+`The program is written using the Django framework (v 5) in python 3.12. It is used as a database
+PostgreSQL (v. 14). Docker is used to launch and deploy the program`
+
 </details>
 
 ___
-## Развертывание
+## Requirements before installation
 
 <details>
-<summary>Настройка переменных окружения</summary>
+<summary> Additional Software </summary>
 
-1. В папке ***backend/database/Init_db/*** расположена тестовая база данных для демонстрации работы Программы. Если вам не нужна тестовая база, удалите файл ***init.sql*** из папки;
-2. В папке ***backend/*** откройте файл ***.env***. Значения переменных указаны в таблице ниже:
-<details><summary>Переменные окружения</summary>
+1. To deploy the program, you will need pre-installed:
+    * Docker и Docker compose
 
-|                      Переменная | Описание                                                                                            |
-|--------------------------------:|-----------------------------------------------------------------------------------------------------|
-|                           DEBUG | Включает режим отладки. Установите ***0***, чтобы отключить. Для включения установите ***1***       |
-|                      SECRET_KEY | Ключ для криптографической подписи                                                                  |
-|            DJANGO_ALLOWED_HOSTS | Разрешенные хосты. Укажите список хостов через запятую ***                                          |
-|                      SQL_ENGINE | При использовании PostgreSQL укажите ***django.db.backends.postgresql***. Рекомендуется не изменять |
-|       SQL_DATABASE, POSTGRES_DB | Имя БД. Должны совпадать                                                                            |
-|         SQL_USER, POSTGRES_USER | Имя пользователя БД. Должны совпадать                                                               |
-| SQL_PASSWORD, POSTGRES_PASSWORD | Пароль пользователя БД. Должны совпадать                                                            |
-|                        SQL_HOST | Имя хоста БД. Рекомендуется оставить ***db***                                                       |
-|                        SQL_PORT | Порт БД. Рекомендуется оставить ***5432***                                                          |
-|              SQL_PGDATA, PGDATA | Расположение БД внутри контейнера. Рекомендуется оставить ***"/var/lib/postgresql/data/pgdata"***   |
-|       POSTGRES_HOST_AUTH_METHOD | Рекомендуется оставить ***trust***                                                                  |
-|                   CELERY_BROKER | Настройки сервера брокера Celery. Рекомендуется оставить ***redis://redis:6379/0***                 |
-|                  CELERY_BACKEND | Настройки сервера Celery. Рекомендуется оставить ***redis://redis:6379/0***                         |
+    or
+
+    * Docker desktop
+
+2. The installation of Docker can be found at [link](
+https://docs.docker.com/engine/).
+
+3. The installation of Docker compose can be found at [link](
+https://docs.docker.com/compose/).
+
+4. The installation of Docker desktop can be found at [link](
+https://docs.docker.com/get-docker/).
+
+</details>
+
+___
+## Deployment
+
+<details>
+<summary>Cloning a repository</summary>
+
+Copying of the repository can be found at [link](
+https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloning-a-repository).
+
+</details>
+
+<details>
+<summary>Setting up Environment variables</summary>
+
+1. In the folder ***backend/database/Init_db/*** there is a test database to demonstrate the operation of the Program. If you do not need a test database, delete the ***init.sql*** file from the folder;
+2. In the ***backend/*** folder, open the ***.env*** file. The values of the variables are shown in the table below:
+
+<details><summary>Environment variables</summary>
+
+|                      Variable | Description                                                                                                               |
+|--------------------------------:|-------------------------------------------------------------------------------------------------------------------------|
+|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
+|                      SECRET_KEY | The key for the cryptographic signature                                                                                 |
+|            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                                            |
+|                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change                     |
+|       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                                    |
+|         SQL_USER, POSTGRES_USER | Имя пользователя БД. Должны совпадать                                                                                   |
+| SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                                               |
+|                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                      |
+|                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                                |
+|              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***"/var/lib/postgresql/data/pgdata"***   |
+|       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                                  |
+|                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                                    |
+|                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                                           |
 </details>
 </details>
-<details><summary>Установка</summary>
+<details><summary>Installation</summary>
 
-1. После настройки переменных окружения откройте в терминале папку ***backend/***;
-2. Введите команду: 
-    ```bash
+1. After setting up the environment variables, open the ***backend folder in the terminal/***;
+2. Enter the command:
+
+    ```
     docker-compose up --build
     ```
-3. Дождитесь сборки и запуска контейнеров;
-4. После запуска контейнеров откройте новое окно консоли;
-5. Для создания суперпользователя введите: 
-    <pre>
-        ```bash
-        docker exec -it  <a href="docker-compose.yaml?plain=1#L07">container_name</a> python3 manage.py createsuperuser
-        ```
-    </pre>
-6. Перейдите по адресу [0.0.0.0/home/](http://0.0.0.0/home/) или [localhost/home/](http://localhost/home/);
-7. Авторизуйтесь с данными указанными в п. 5. 
-`Если программа разворачивалась с тестовой БД, будет доступен пользователь: login: admin password: admin`.
-8. Бэкап
-    <pre>
-        ```bash
-        docker exec <a href="docker-compose.yaml?plain=1#L41">container_name</a> pg_dump -U <a href=".env?plain=1#L06">SQL_USER</a> -W <a href=".env?plain=1#L05">SQL_DATABASE </a> > init_db_$(date +\%Y-\%m-\%d).sql 
-        ```
-    </pre>
+
+3. Wait for the containers to be assembled and launched;
+4. After starting the containers, open a new console window;
+5. To create a superuser, enter:
+
+    ```
+    docker exec -it container_name python3 manage.py createsuperuser
+    ```
+    
+6. Go to [0.0.0.0/home/](http://0.0.0.0/home/) or [localhost/home/](http://localhost/home/);
+7. Log in with the data specified in clause 5.
+
+`If the program was deployed from a test database, the user will be available: login: admin password: admin'.`
+
+8. Backup
+
+    ```
+    docker exec container_name pg_dump -U SQL_USER -W SQL_DATABASE > init_db_$(date +\%Y-\%m-\%d).sql
+    ```
+
 </details>
 
 ___
-## В разработке
+## In development
 
 <details>
-<summary> Разработка </summary>
+<summary> Development </summary>
 
-1. REST API на основе Django rest api;
-2. frontend на основе React;
-3. раздел "Программное обеспечение";
-4. раздел "Цифровые подписи".
+1. REST API based on Django rest api ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
+2. frontend based on React ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
+3. Software app ([#15](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/15));
+4. Signature app ([#16](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/16)).
 
 </details>
