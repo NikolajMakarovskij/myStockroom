@@ -19,6 +19,10 @@
 
 ## urls
 
+### Home page
+
+1. ```/```
+
 ### Consumables
 
 1. ```consumables/```

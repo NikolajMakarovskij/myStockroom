@@ -10,34 +10,15 @@
 
 ## Urls
 
-```python
-urlpatterns = [
-    path("", CounterpartyView.as_view(), name="counterparty"),
-    # Производитель
-    path("manufacturer/", ManufacturerListView.as_view(), name="manufacturer_list"),
-    path(
-        "manufacturer/search",
-        ManufacturerListView.as_view(),
-        name="manufacturer_search",
-    ),
-    re_path(
-        r"^manufacturer/(?P<pk>[-\w]+)$",
-        ManufacturerDetailView.as_view(),
-        name="manufacturer-detail",
-    ),
-    re_path(
-        r"^manufacturer/create/$", ManufacturerCreate.as_view(), name="new-manufacturer"
-    ),
-    re_path(
-        r"^manufacturer/(?P<pk>[-\w]+)/update$",
-        ManufacturerUpdate.as_view(),
-        name="manufacturer-update",
-    ),
-    re_path(
-        r"^manufacturer/(?P<pk>[-\w]+)/delete$",
-        ManufacturerDelete.as_view(),
-        name="manufacturer-delete",
-    ),
-]
+### Home page
 
-```
+1. ```/```
+
+### Manufacturer
+
+1. ```manufacturer/```
+2. ```"manufacturer/search```
+3. ```manufacturer/(?P<pk>[-\w]+)$```
+4. ```manufacturer/create/$```
+5. ```manufacturer/(?P<pk>[-\w]+)/update$```
+6. ```manufacturer/(?P<pk>[-\w]+)/delete$```

@@ -13,7 +13,7 @@
 
 ## urls
 
-### home
+### Home page
 
 1. ```/```
 
