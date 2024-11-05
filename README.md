@@ -10,17 +10,14 @@ ___
 <details>
 <summary> Description </summary>
 
-`This program allows you to set the placement of equipment in the premises, specify the components
-and consumables installed in the equipment, and keep a history of component replacement. Allows you to add, write off and dispose of to (co) warehouse(a).
-In the "On balance" section, you can specify how consumables and components are listed in accounting.
-The functionality of the sections with software and digital signatures
+`This program allows you to set the placement of equipment on the premises and specify the components.
+and consumables installed in the equipment, and keep a history of component replacement. Allows you to add, write off, and dispose of to (co) warehouse(a). In the "On balance" section, you can specify how consumables and components are listed in accounting. The functionality of the sections with software and digital signatures
 is under development`
 
-`The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel,
-the system of access rights to sections`
+`The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel, and the system of access rights to sections.`
 
-`The program is written using the Django framework (v 5) in python 3.12. It is used as a database
-PostgreSQL (v. 14). Docker is used to launch and deploy the program`
+`The program is written using the Django framework (v 5) in Python 3.12. It is used as a database.
+PostgreSQL (v. 14). Docker is used to launch and deploy the program.`
 
 </details>
 
@@ -62,7 +59,7 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
 <details>
 <summary>Setting up Environment variables</summary>
 
-1. In the folder ***backend/database/Init_db/*** there is a test database to demonstrate the operation of the Program. If you do not need a test database, delete the ***init.sql*** file from the folder;
+1. In the folder ***backend/database/Init_db/*** there is a test database to demonstrate the operation of the program. If you do not need a test database, delete the ***init.sql*** file from the folder;
 2. In the ***backend/*** folder, open the ***.env*** file. The values of the variables are shown in the table below:
 
 <details><summary>Environment variables</summary>
@@ -120,7 +117,7 @@ ___
 <details>
 <summary> Development </summary>
 
-1. REST API based on Django rest api ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
+1. REST API based on Django REST framework ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
 2. frontend based on React ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
 3. Software app ([#15](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/15));
 4. Signature app ([#16](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/16)).
