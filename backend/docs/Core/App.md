@@ -13,12 +13,9 @@ admin.site.site_header = "admin panel header"
 
 ## Urls
 
-```python
-urlpatterns = [
-    # главная
-    path("", IndexView.as_view(), name="index")
-]
-```
+### Home page
+
+1. ```/```
 
 
 

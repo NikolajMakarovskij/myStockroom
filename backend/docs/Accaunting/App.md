@@ -13,47 +13,29 @@
 
 ## urls
 
-```python
-urlpatterns = [
-    re_path("api/v1/", include(router.urls)),
-    path("", AccountingIndexView.as_view(), name="accounting_index"),
-    # accounting
-    path("accounting/", AccountingView.as_view(), name="accounting_list"),
-    path("accounting/search", AccountingView.as_view(), name="accounting_search"),
-    path(
-        "accounting/category/<slug:category_slug>",
-        AccountingCategoriesView.as_view(),
-        name="category",
-    ),
-    re_path(
-        r"^accounting/(?P<pk>[-\w]+)$",
-        AccountingDetailView.as_view(),
-        name="accounting-detail",
-    ),
-    re_path(r"^accounting/create/$", AccountingCreate.as_view(), name="new-accounting"),
-    re_path(
-        r"^accounting/(?P<pk>[-\w]+)/update$",
-        AccountingUpdate.as_view(),
-        name="accounting-update",
-    ),
-    re_path(
-        r"^accounting/(?P<pk>[-\w]+)/delete$",
-        AccountingDelete.as_view(),
-        name="accounting-delete",
-    ),
-    # categories
-    path("categories/", CategoryView.as_view(), name="categories_list"),
-    path("categories/search", CategoryView.as_view(), name="categories_search"),
-    re_path(r"^categories/create/$", CategoryCreate.as_view(), name="new-categories"),
-    re_path(
-        r"^categories/(?P<pk>[-\w]+)/update$",
-        CategoryUpdate.as_view(),
-        name="categories-update",
-    ),
-    re_path(
-        r"^categories/(?P<pk>[-\w]+)/delete$",
-        CategoryDelete.as_view(),
-        name="categories-delete",
-    ),
-]
-```
+### Home page
+
+1. ```/```
+
+### accounting
+
+2. ```accounting/```
+3. ```accounting/search```
+4. ```accounting/category/<slug:category_slug>```
+5. ```accounting/(?P<pk>[-\w]+)$```
+6. ```accounting/create/$```
+7. ```accounting/(?P<pk>[-\w]+)/update$```
+8. ```accounting/(?P<pk>[-\w]+)/delete$```
+
+### categories
+
+1. ```categories/```
+2. ```categories/search```
+3. ```categories/create/$```
+4. ```categories/(?P<pk>[-\w]+)/update$```
+5. ```categories/(?P<pk>[-\w]+)/delete$```
+
+### REST API
+
+1. ```api/v1/accounting/```
+2. ```api/v1/accounting_category/```
