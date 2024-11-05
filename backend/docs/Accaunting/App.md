@@ -37,5 +37,5 @@
 
 ### REST API
 
-1. ```api/v1/accounting```
-2. ```api/v1/accounting_category```
+1. ```api/v1/accounting/```
+2. ```api/v1/accounting_category/```
