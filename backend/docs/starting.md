@@ -22,7 +22,7 @@ https://docs.docker.com/get-docker/).
 
 ### Setting up Environment variables
 
-1. In the folder ***backend/database/Init_db/*** there is a test database to demonstrate the operation of the Program. If you do not need a test database, delete the ***init.sql*** file from the folder;
+1. In the folder ***backend/database/Init_db/*** there is a test database to demonstrate the operation of the program. If you do not need a test database, delete the ***init.sql*** file from the folder;
 2. In the ***backend/*** folder, open the ***.env*** file. The values of the variables are shown in the table below:
 
 ### Environment variables
@@ -34,7 +34,7 @@ https://docs.docker.com/get-docker/).
 |            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                          |
 |                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change |
 |       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                            |
-|         SQL_USER, POSTGRES_USER | Имя пользователя БД. Должны совпадать                                                               |
+|         SQL_USER, POSTGRES_USER | The name of the database user. Must match                                                               |
 | SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                            |
 |                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                       |
 |                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                          |
@@ -63,7 +63,7 @@ https://docs.docker.com/get-docker/).
 6. Go to [0.0.0.0/home/](http://0.0.0.0/home/) or [localhost/home/](http://localhost/home/);
 7. Log in with the data specified in clause 5.
 
-`If the program was deployed from a test database, the user will be available: login: admin password: admin'.`
+`If the program was deployed from a test database, the user will be available: login: admin password: admin.`
 
 8. Backup
 
