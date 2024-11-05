@@ -2,7 +2,7 @@
 
 # Basic settings folder for Stockroom
 
-# Base urls
+## Base urls
 
 ### authorization
 
