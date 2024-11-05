@@ -2,8 +2,8 @@
 
 # Development
 
-To develop, you need to deploy the server using docker-compose.
-To install docker and docker-compose, follow [link](https://docs.docker.com/get-started/get-docker/)
+To develop, you need to deploy the server using Docker-compose.
+To install Docker and Docker-compose, follow [link](https://docs.docker.com/get-started/get-docker/)
 
 You can deploy servers using the following commands:
 
@@ -15,7 +15,7 @@ When the container starts, a script is run using migrations and collecting stati
 
 The project uses the package manager [uv](https://docs.astral.sh/uv /)
 
-- you can run the python command on the server:
+- you can run the Python command on the server:
 
 - bash (recommended) 
 ```bash
@@ -35,7 +35,7 @@ uv run [COMMAND]
 
 ## CI checks
 
-- **Please perform all checks inside docker containers** to avoid failed CI checks. Below are the commands to run the checks:
+- **Please perform all checks inside Docker containers** to avoid failed CI checks. Below are the commands to run the checks:
 
 
 - check backend typing
@@ -79,9 +79,9 @@ uv run [COMMAND]
 
 The [MkDocs](https://www.mkdocs.org/user-guide/configuration/) library is used to develop documentation 
 
-- **No need to build documentation and then commit**. CI has a task set up to build and publish documentation for merge requests
+- **No need to build documentation and then commit.** CI has a task set up to build and publish documentation for merge requests
 
-- **There is no docker container for documentation development.** You can run the documentation development server in a virtual environment. Below is the command:
+- **There is no Docker container for documentation development.** You can run the documentation development server in a virtual environment. Below is the command:
 
     - **from the backend folder**
     ```bash
