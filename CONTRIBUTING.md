@@ -40,8 +40,8 @@ include your language, tool, or project, it’s not because it’s not awesome.
 
 # Development
 
-To develop, you need to deploy the server using docker-compose.
-To install docker and docker-compose, follow [link](https://docs.docker.com/get-started/get-docker/)
+To develop, you need to deploy the server using Docker-compose.
+To install Docker and Docker-compose, follow [link](https://docs.docker.com/get-started/get-docker/)
 
 You can deploy servers using the following commands:
 
@@ -50,11 +50,11 @@ You can deploy servers using the following commands:
     docker compose up -d
 ```
 
-To work with the repository, pre-commit is configured to check linting, but CI provides typing checks and testing. Before sending commit, make sure that the code passes all typing, linting, and testing checks
+To work with the repository, pre-commit is configured to check linting, but CI provides typing checks and testing. Before sending the commit, make sure that the code passes all typing, linting, and testing checks.
 
 ## CI checks
 
-- **Please perform all checks inside docker containers** to avoid failed CI checks. Below are the commands to run the checks:
+- **Please perform all checks inside Docker containers** to avoid failed CI checks. Below are the commands to run the checks:
 
 
 - check backend typing
@@ -109,9 +109,9 @@ To work with the repository, pre-commit is configured to check linting, but CI p
 
 The [MkDocs](https://www.mkdocs.org/user-guide/configuration/) library is used to develop documentation 
 
-- **No need to build documentation and then commit**. CI has a task set up to build and publish documentation for merge requests
+- **No need to build documentation and then commit.** CI has a task set up to build and publish documentation for merge requests
 
-- **There is no docker container for documentation development.** You can run the documentation development server in a virtual environment. Below is the command:
+- **There is no Docker container for documentation development.** You can run the documentation development server in a virtual environment. Below is the command:
 
     - **from the backend folder**
     ```bash
