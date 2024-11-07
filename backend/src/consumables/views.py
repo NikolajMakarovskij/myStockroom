@@ -54,7 +54,7 @@ class ConsumablesView(
     """_ConsumablesView_
     List of consumables instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -123,7 +123,7 @@ class ConsumablesCategoriesView(
     """_ConsumablesCategoriesView_
     List of consumables instances filtered by categories
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -169,7 +169,7 @@ class ConsumablesCategoriesView(
 class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_ConsumablesRestView_ returns consumables
 
-    Returns:
+    Other parameters:
         queryset (Consumables): 
         serializer_class (ConsumablesModelSerializer): 
         success_message (str):
@@ -193,7 +193,7 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_ConsumablesRestView_ returns categories of consumables
 
-    Returns:
+    Other parameters:
         queryset (Categories): 
         serializer_class (CategoriesModelSerializer): 
         success_message (str):
@@ -226,7 +226,7 @@ class ConsumablesDetailView(
     """_ConsumablesDetailView_
     Detail of consumables instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Consumables): _base model for list_
@@ -260,7 +260,7 @@ class ConsumablesCreate(
     """_ConsumablesCreate_
     Create of consumables instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Consumables): _base model for list_
@@ -295,7 +295,7 @@ class ConsumablesUpdate(
     """_ConsumablesUpdate_
     Update of consumables instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Consumables): _base model for list_
@@ -328,7 +328,7 @@ class ConsumablesDelete( # type: ignore[misc]
     """_ConsumablesDelete_
     Delete of consumables instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Consumables): _base model for list_
@@ -432,7 +432,7 @@ class AccessoriesView(
     """_AccessoriesView_
     List of accessories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -501,7 +501,7 @@ class AccessoriesCategoriesView(
     """_AccessoriesCategoriesView_
     List of accessories instances filtered by categories
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -547,7 +547,7 @@ class AccessoriesCategoriesView(
 class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_AccessoriesRestView_ returns accessories
 
-    Returns:
+    Other parameters:
         queryset (Accessories): 
         serializer_class (AccessoriesModelSerializer): 
         success_message (str):
@@ -564,7 +564,7 @@ class AccCatRestView(
 ):
     """_AccCatRestView_ returns categories of accessories
 
-    Returns:
+    Other parameters:
         queryset (AccCat): 
         serializer_class (AccCatModelSerializer): 
         success_message (str):
@@ -586,7 +586,7 @@ class AccessoriesDetailView(
     """_AccessoriesDetailView_
     Detail of accessories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accessories): _base model for list_
@@ -620,7 +620,7 @@ class AccessoriesCreate(
     """_AccessoriesCreate_
     Create of accessories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accessories): _base model for list_
@@ -655,7 +655,7 @@ class AccessoriesUpdate(
     """_AccessoriesUpdate_
     Update of accessories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accessories): _base model for list_
@@ -688,7 +688,7 @@ class AccessoriesDelete( # type: ignore[misc]
     """_AccessoriesDelete_
     Delete of accessories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accessories): _base model for list_

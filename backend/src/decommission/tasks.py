@@ -14,8 +14,13 @@ class DecomTasks(Decom):
     # Decommission
     @shared_task()
     def add_device_decom(device_id: str, username: str, status_choice: str) -> None: # type: ignore[misc]
-        """
-        Add a device to a decommission
+        """_add_device_decom_
+        Adds a device to a record in the decommission model and deletes it from the stockroom model
+
+        Args:
+            device_id (str): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
         device_id = str(device_id)
@@ -41,8 +46,13 @@ class DecomTasks(Decom):
 
     @shared_task()
     def remove_decom(device_id: str, username: str, status_choice: str) -> None: # type: ignore[misc]
-        """
-        Delete from Decommission
+        """_remove_decom_
+        Delete from the Decommission model
+        
+        Args:
+            device_id (str): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
         device_id = str(device_id)
@@ -55,8 +65,13 @@ class DecomTasks(Decom):
     # Disposal
     @shared_task()
     def add_device_disp(device_id: str, username: str, status_choice: str) -> None: # type: ignore[misc]
-        """
-        Add a device to a disposal
+        """_add_device_disp_
+        Adds a decommission to a record in the disposal model and deletes it from the decommission model
+
+        Args:
+            device_id (str): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
         username = username
         status_choice = status_choice
@@ -84,8 +99,13 @@ class DecomTasks(Decom):
 
     @shared_task()
     def remove_disp(device_id: str, username: str, status_choice: str) -> None: # type: ignore[misc]
-        """
-        Delete from Decommission
+        """_remove_disp_
+        Delete from the Disposal model
+        
+        Args:
+            device_id (str): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
         status_choice = status_choice

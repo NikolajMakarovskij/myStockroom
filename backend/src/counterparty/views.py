@@ -17,7 +17,7 @@ class CounterpartyView(
     """_CounterpartyView_
     Home page for counterparty app
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
     """
@@ -43,7 +43,7 @@ class ManufacturerListView(
     """_ManufacturerListView_
     List of manufacturer instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -92,7 +92,7 @@ class ManufacturerDetailView(
     """_ManufacturerDetailView_
     Detail of manufacturer instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Manufacturer): _base model for list_
@@ -124,7 +124,7 @@ class ManufacturerCreate(
     """_ManufacturerCreate_
     Create of manufacturer instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Manufacturer): _base model for list_
@@ -160,7 +160,7 @@ class ManufacturerUpdate(
     """_ManufacturerUpdate_
     Update of manufacturer instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Manufacturer): _base model for list_
@@ -196,7 +196,7 @@ class ManufacturerDelete( # type: ignore[misc]
     """_ManufacturerDelete_
     Delete of manufacturer instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Manufacturer): _base model for list_

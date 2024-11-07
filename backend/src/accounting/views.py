@@ -20,7 +20,7 @@ class AccountingIndexView(
     """_AccountingIndexView_
     Home page for accounting app
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
     """
@@ -47,7 +47,7 @@ class AccountingView(
     """_AccountingView_
     List of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -107,7 +107,7 @@ class AccountingCategoriesView(
     """_AccountingCategoriesView_
     List of accounting instances filtered by categories
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -153,7 +153,7 @@ class AccountingCategoriesView(
 class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_AccountingRestView_ returns accounting
 
-    Returns:
+    Other parameters:
         queryset (Accounting): 
         serializer_class (AccountingModelSerializer): 
         success_message (str):
@@ -182,7 +182,7 @@ class AccountingDetailView(
     """_AccountingDetailView_
     Detail of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accounting): _base model for list_
@@ -214,7 +214,7 @@ class AccountingCreate(
     """_AccountingCreate_
     Create of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accounting): _base model for list_
@@ -249,7 +249,7 @@ class AccountingUpdate(
     """_AccountingUpdate_
     Update of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accounting): _base model for list_
@@ -282,7 +282,7 @@ class AccountingDelete(# type: ignore[misc]
     """_AccountingDelete_
     Delete of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Accounting): _base model for list_
@@ -318,7 +318,7 @@ class CategoryView(
     """_CategoryView_
     List of categories instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         paginate_by (int, optional): _add pagination_
@@ -361,7 +361,7 @@ class CategoryView(
 class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_CategoriesRestView_ returns categories
 
-    Returns:
+    Other parameters:
         queryset (Categories): 
         serializer_class (CategoriesModelSerializer): 
         success_message (str):
@@ -388,7 +388,7 @@ class CategoryCreate(
     """_CategoryCreate_
     Create of category instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Categories): _base model for list_
@@ -425,7 +425,7 @@ class CategoryUpdate(
     """_CategoryUpdate_
     Update of category instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Categories): _base model for list_
@@ -460,7 +460,7 @@ class CategoryDelete( # type: ignore[misc]
     """_CategoryDelete_
     Delete of accounting instances
 
-    Returns:
+    Other parameters:
         template_name (str): _path to template_
         permission_required (str): _permissions_
         model (Categories): _base model for list_
