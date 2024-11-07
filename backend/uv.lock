@@ -1548,7 +1548,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 docs = [
     { name = "mkdocs", specifier = ">=1.6.1" },
-    { name = "mkdocs-material", specifier = ">=9.5.43" },
+    { name = "mkdocs-material", specifier = ">=9.5.44" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.26.2" },
 ]
 lint = [
