@@ -7,6 +7,15 @@ from .models import Departament, Employee, Post
 
 
 class WorkplaceWidget(BaseModelSelect2WidgetMixin):
+    """_WorkplaceWidget_ 
+    Autocomplete plugin for the workplace selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Workplace):
+        querysets (Workplace): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Workplace
     queryset = Workplace.objects.all().order_by("name")
@@ -19,6 +28,15 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
 
 
 class PostWidget(BaseModelSelect2WidgetMixin):
+    """_PostWidget_ 
+    Autocomplete plugin for the post selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Post):
+        querysets (Post): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Post
     queryset = Post.objects.all().order_by("name")
@@ -29,6 +47,15 @@ class PostWidget(BaseModelSelect2WidgetMixin):
 
 
 class DepartamentWidget(BaseModelSelect2WidgetMixin):
+    """_DepartamentWidget_ 
+    Autocomplete plugin for the departament selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Departament):
+        querysets (Departament): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Departament
     queryset = Departament.objects.all().order_by("name")
@@ -39,7 +66,17 @@ class DepartamentWidget(BaseModelSelect2WidgetMixin):
 
 # Сотрудники
 class EmployeeForm(forms.ModelForm):
+    """_EmployeeForm_
+    """
     class Meta:
+        """_Class returns form of Employee model_
+
+        Returns:
+            model (Employee):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+            error_messages (str): _returns error messages of model field in form_
+        """
         model = Employee
         fields = ["surname", "name", "last_name", "workplace", "post", "employeeEmail"]
         widgets = {
@@ -62,7 +99,16 @@ class EmployeeForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    """_PostForm_
+    """
     class Meta:
+        """_Class returns form of Employee model_
+
+        Returns:
+            model (Post):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+        """
         model = Post
         fields = [
             "name",
@@ -75,7 +121,16 @@ class PostForm(forms.ModelForm):
 
 
 class DepartamentForm(forms.ModelForm):
+    """_DepartamentForm_
+    """
     class Meta:
+        """_Class returns form of Departament model_
+
+        Returns:
+            model (Departament):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+        """
         model = Departament
         fields = [
             "name",
