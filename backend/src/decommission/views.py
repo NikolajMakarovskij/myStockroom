@@ -39,7 +39,7 @@ class DecommissionView(
         """_returns context_
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
         """
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
@@ -99,7 +99,7 @@ class DecomCategoriesView(
         """_returns context_
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
         """
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
@@ -284,7 +284,7 @@ class DisposalView(
         """_returns context_
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
         """
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
@@ -343,7 +343,7 @@ class DispCategoriesView(
         """_returns context_
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create consumables, categories for filtering queryset_
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
         """
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
