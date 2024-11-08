@@ -8,6 +8,15 @@ from .models import Device, DeviceCat
 
 
 class ManufacturerWidget(BaseModelSelect2WidgetMixin):
+    """_ManufacturerWidget_ 
+    Autocomplete plugin for the manufacturer selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Manufacturer):
+        querysets (Manufacturer): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Manufacturer
     queryset = Manufacturer.objects.all().order_by("name")
@@ -19,6 +28,15 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
 
 
 class CategoryWidget(BaseModelSelect2WidgetMixin):
+    """_CategoryWidget_ 
+    Autocomplete plugin for the category selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (DeviceCat):
+        querysets (DeviceCat): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = DeviceCat
     queryset = DeviceCat.objects.all().order_by("name")
@@ -28,6 +46,15 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
 
 
 class ConWidget(BaseSelect2MultipleWidgetMixin):
+    """_ConWidget_ 
+    Autocomplete plugin for the consumables selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Consumables):
+        querysets (Consumables): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Consumables
     queryset = Consumables.objects.all().order_by("name")
@@ -43,6 +70,15 @@ class ConWidget(BaseSelect2MultipleWidgetMixin):
 
 
 class AccWidget(BaseSelect2MultipleWidgetMixin):
+    """_AccWidget_ 
+    Autocomplete plugin for the consumables selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Accessories):
+        querysets (Accessories): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
     empty_label = "--выбрать--"
     model = Accessories
     queryset = Accessories.objects.all().order_by("name")
@@ -58,7 +94,16 @@ class AccWidget(BaseSelect2MultipleWidgetMixin):
 
 
 class DeviceForm(forms.ModelForm):
+    """_DeviceForm_
+    """
     class Meta:
+        """_Class returns form of Device model_
+
+        Returns:
+            model (Device):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+        """
         model = Device
         fields = [
             "name",

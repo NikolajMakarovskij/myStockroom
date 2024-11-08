@@ -347,7 +347,7 @@ class ConsumablesDelete( # type: ignore[misc]
         """_returns context_
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to accounting list_
+            context (object[dict[str, str],list[str]]): _returns title, link to consumables list_
         """
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(

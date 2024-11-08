@@ -10,14 +10,11 @@ from workplace.models import Workplace
 
 
 class DeviceCat(ModelMixin, models.Model):
-    """_summary_
-
-    Args:
-        ModelMixin (_type_): _description_
-        models (_type_): _description_
+    """_DeviceCat_:
+    Device categories model
 
     Returns:
-        _type_: _description_
+        DeviceCat (DeviceCat): _description_
     """
 
     id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -33,20 +30,38 @@ class DeviceCat(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_DeviceCat __str__ _: _returns name of model_
+
+        Returns:
+            DeviceCat__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_DeviceCats get self url_
+
+        Returns:
+            DeviceCat__slug (str): _returns url by slug_
+
+        Other parameters:
+            kwargs (str): self.slug
+        """
         return reverse("device:category", kwargs={"category_slug": self.slug})
 
     class Meta:
+        """_DeviceCat Meta_: _model settings_
+        """
         verbose_name = "Группа устройств"
         verbose_name_plural = "Группы устройств"
         ordering = ["name"]
 
 
 class Device(ModelMixin, models.Model):
-    """
-    Модель устройства
+    """_Device_:
+    Device model
+
+    Returns:
+        Device (Device): _description_
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -172,14 +187,29 @@ class Device(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Device __str__ _: _returns name of model_
+
+        Returns:
+            Device__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_Device url_
+
+        Returns:
+            Device__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
+        """
         return reverse("device:device-detail", args=[str(self.id)])
 
     # TODO valid method to ip_address field
 
     class Meta:
+        """_Device Meta_: _model settings_
+        """
         verbose_name = "Устройства"
         verbose_name_plural = "Устройства"
         ordering = ["workplace__room__building", "workplace__name"]

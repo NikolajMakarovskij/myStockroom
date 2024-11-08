@@ -9,6 +9,9 @@ from workplace.models import Workplace
 
 
 class DeviceResource(resources.ModelResource):
+    """_DeviceResource_
+    Resource defines how Device are mapped to their export representations and handle exporting data.
+    """
     name = fields.Field(
         column_name="Название",
         attribute="name",
@@ -76,5 +79,7 @@ class DeviceResource(resources.ModelResource):
     )
 
     class Meta:
+        """_DeviceResource Meta_: _resource settings_
+        """
         model = Device
         exclude = ["id", "login", "pwd"]

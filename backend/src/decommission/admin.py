@@ -18,7 +18,7 @@ class CategoryDecAdmin(ImportExportModelAdmin):
 @admin.register(Decommission)
 class DecommissionAdmin(ImportExportModelAdmin):
     """_DecommissionAdmin_
-    Add categories model to admin panel
+    Add model to admin panel
     """
     list_display = ["stock_model", "categories", "date"]
     list_filter = ["categories"]
