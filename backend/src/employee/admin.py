@@ -6,6 +6,9 @@ from .models import Departament, Employee, Post
 
 @admin.register(Employee)
 class EmployeeAdmin(ImportExportModelAdmin):
+    """_EmployeeAdmin_ 
+    Add model to admin panel
+    """
     list_display = [
         "name",
         "surname",
@@ -30,6 +33,9 @@ class EmployeeAdmin(ImportExportModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(ImportExportModelAdmin):
+    """_PostAdmin_ 
+    Add model to admin panel
+    """
     list_display = [
         "name",
         "departament",
@@ -45,5 +51,8 @@ class PostAdmin(ImportExportModelAdmin):
 
 @admin.register(Departament)
 class DepartamentAdmin(ImportExportModelAdmin):
+    """_DepartamentAdmin_ 
+    Add model to admin panel
+    """
     list_display = ["name"]
     search_fields = ["name"]
