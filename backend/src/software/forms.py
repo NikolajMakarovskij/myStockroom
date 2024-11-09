@@ -7,6 +7,16 @@ from .models import Os, Software
 
 
 class ManufacturerWidget(BaseModelSelect2WidgetMixin):
+    """_CManufacturerWidget_
+    Autocomplete plugin for the manufacturer selection field
+
+    Returns:
+        empty_label (str): _value of empty_label_
+        model (Manufacturer):
+        querysets (Manufacturer): _returns querysets of model in form_
+        search_fields (list[str]): _fields of the model to search for are specified_
+    """
+
     empty_label = "--выбрать--"
     model = Manufacturer
     queryset = Manufacturer.objects.all().order_by("name")
@@ -18,7 +28,18 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
 
 
 class SoftwareForm(forms.ModelForm):
+    """_SoftwareForm_"""
+
     class Meta:
+        """_Class returns form of Software model_
+
+        Returns:
+            model (Software):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+            error_messages (str): _returns error messages of model field in form_
+        """
+
         model = Software
         fields = [
             "name",
@@ -49,7 +70,18 @@ class SoftwareForm(forms.ModelForm):
 
 
 class OSForm(forms.ModelForm):
+    """_OSForm_"""
+
     class Meta:
+        """_Class returns form of OS model_
+
+        Returns:
+            model (OS):
+            fields (list[str]): _returns fields of model in form_
+            widgets (dict[str,str]): _returns widgets of model in form_
+            error_messages (str): _returns error messages of model field in form_
+        """
+
         model = Os
         fields = [
             "name",
