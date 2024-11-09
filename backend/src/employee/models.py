@@ -14,17 +14,17 @@ class Employee(ModelMixin, models.Model):
         Employee (Employee): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(max_length=50, help_text="Введите имя", verbose_name="Имя")
-    last_name: models.CharField = models.CharField(
+    name = models.CharField(max_length=50, help_text="Введите имя", verbose_name="Имя")
+    last_name = models.CharField(
         max_length=50, blank=True, help_text="Введите отчество", verbose_name="Отчество"
     )
-    surname: models.CharField = models.CharField(
+    surname = models.CharField(
         max_length=50, blank=True, help_text="Введите фамилию", verbose_name="Фамилия"
     )
-    workplace: models.ForeignKey = models.ForeignKey(
+    workplace = models.ForeignKey(
         Workplace,
         on_delete=models.SET_NULL,
         blank=True,
@@ -33,7 +33,7 @@ class Employee(ModelMixin, models.Model):
         help_text="Выберете рабочее место",
         verbose_name="Рабочее место",
     )
-    post: models.ForeignKey = models.ForeignKey(
+    post = models.ForeignKey(
         "Post",
         on_delete=models.SET_NULL,
         blank=True,
@@ -41,7 +41,7 @@ class Employee(ModelMixin, models.Model):
         help_text="Выберете должность",
         verbose_name="Должность",
     )
-    employeeEmail: models.EmailField = models.EmailField(
+    employeeEmail = models.EmailField(
         blank=True,
         null=True,
         unique=True,
@@ -114,7 +114,7 @@ class Post(ModelMixin, models.Model):
     name = models.CharField(
         max_length=50, help_text="Введите должность", verbose_name="Должность"
     )
-    departament: models.ForeignKey = models.ForeignKey(
+    departament = models.ForeignKey(
         "Departament",
         on_delete=models.SET_NULL,
         blank=True,

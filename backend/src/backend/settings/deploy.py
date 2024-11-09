@@ -115,7 +115,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATE_FORMAT = ["%d.%m.%Y"]
+DATE_FORMAT = "%d.%m.%Y"
 
 # end region settings
 # start file settings

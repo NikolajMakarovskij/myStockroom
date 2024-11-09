@@ -8,7 +8,7 @@ from ..models import Accounting, Categories
 
 @pytest.mark.django_db
 def test_category_create():
-    """Is testing the creation of a record in the database for the Categories model of the Accounting application"""
+    """Тестирует создание записи в базе данных для модели Categories приложения Accounting"""
     Categories.objects.create(
         name="my_category_name",
         slug="my_category_name",
@@ -22,7 +22,7 @@ def test_category_create():
 
 @pytest.mark.django_db
 def test_category_unique_slug():
-    """Tests for duplication in the slug field in Categories"""
+    """Тестирует наличие дублирования в поле slug"""
     with pytest.raises(IntegrityError):
         Categories.objects.create(
             name="my_category",
@@ -35,7 +35,7 @@ def test_category_unique_slug():
 
 @pytest.mark.django_db
 def test_accounting_create():
-    """Tests the creation of a record in the database for the Accounting model"""
+    """Тестирует создание записи в базе данных для модели Consumables"""
     Categories.objects.create(name="my_category", slug="my_category")
     Consumables.objects.create(name="my_consumable")
     Accessories.objects.create(name="my_accessories")
@@ -64,4 +64,4 @@ def test_accounting_create():
     assert accounting.get_cost_all() == 105.69
     assert accounting.note == "some_name"
     assert accounting.__str__() == "my_accounting"
-    
+    assert accounting.__str__() == "my_accounting"

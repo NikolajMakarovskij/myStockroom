@@ -14,15 +14,15 @@ class Software(ModelMixin, models.Model):
         Software (Software): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(
+    name = models.CharField(
         max_length=50,
         help_text="Введите название ПО",
         verbose_name="Программное обеспечение",
     )
-    manufacturer: models.ForeignKey = models.ForeignKey(
+    manufacturer = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -30,35 +30,35 @@ class Software(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    version: models.CharField = models.CharField(
+    version = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите версию",
         verbose_name="Версия",
     )
-    bitDepth: models.CharField = models.CharField(
+    bitDepth = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите разрядность",
         verbose_name="разрядность",
     )
-    licenseKeyText: models.CharField = models.CharField(
+    licenseKeyText = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите лицензионный ключ",
         verbose_name="Введите ключ",
     )
-    licenseKeyImg: models.ImageField = models.ImageField(
+    licenseKeyImg = models.ImageField(
         upload_to="software/soft/",
         blank=True,
         null=True,
         help_text="прикрепите файл",
         verbose_name="Фото ключа",
     )
-    licenseKeyFile: models.FileField = models.FileField(
+    licenseKeyFile = models.FileField(
         upload_to="software/soft/",
         blank=True,
         null=True,
@@ -93,15 +93,15 @@ class Os(ModelMixin, models.Model):
         OS (OS): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(
+    name = models.CharField(
         max_length=50,
         help_text="Введите название ОС",
         verbose_name="Операционная система",
     )
-    manufacturer: models.ForeignKey = models.ForeignKey(
+    manufacturer = models.ForeignKey(
         Manufacturer,
         on_delete=models.SET_NULL,
         blank=True,
@@ -109,35 +109,35 @@ class Os(ModelMixin, models.Model):
         help_text="Укажите производителя",
         verbose_name="Производитель",
     )
-    version: models.CharField = models.CharField(
+    version = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите версию",
         verbose_name="Версия",
     )
-    bitDepth: models.CharField = models.CharField(
+    bitDepth = models.CharField(
         max_length=200,
         blank=True,
         null=True,
         help_text="Укажите разрядность",
         verbose_name="разрядность",
     )
-    licenseKeyText: models.CharField = models.CharField(
+    licenseKeyText = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="Введите лицензионный ключ",
         verbose_name="Лицензионный ключ",
     )
-    licenseKeyImg: models.ImageField = models.ImageField(
+    licenseKeyImg = models.ImageField(
         upload_to="software/OS/",
         blank=True,
         null=True,
         help_text="прикрепите файл",
         verbose_name="Фото ключа",
     )
-    licenseKeyFile: models.FileField = models.FileField(
+    licenseKeyFile = models.FileField(
         upload_to="software/OS/",
         blank=True,
         null=True,
@@ -159,4 +159,5 @@ class Os(ModelMixin, models.Model):
 
         verbose_name = "Операционная система"
         verbose_name_plural = "Операционные системы"
+        ordering = ["name"]
         ordering = ["name"]
