@@ -5,7 +5,10 @@ import pytest
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.stock.stock import ConStock
 from stockroom.tests.test_stock.test_stock import (
-    add_consumables_in_devices, create_consumable, create_session,)
+    add_consumables_in_devices,
+    create_consumable,
+    create_session,
+)
 
 
 @pytest.mark.django_db

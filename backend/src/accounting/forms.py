@@ -7,7 +7,7 @@ from .models import Accounting, Categories
 
 
 class CategoryWidget(BaseModelSelect2WidgetMixin):
-    """_CategoryWidget_ 
+    """_CategoryWidget_
     Autocomplete plugin for the category selection field
 
     Returns:
@@ -16,6 +16,7 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
         querysets (Categories): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Categories
     queryset = Categories.objects.all().order_by("name")
@@ -23,7 +24,7 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
 
 
 class ConsumablesWidget(BaseModelSelect2WidgetMixin):
-    """_ConsumablesWidget_ 
+    """_ConsumablesWidget_
     Autocomplete plugin for the consumable selection field
 
     Returns:
@@ -32,6 +33,7 @@ class ConsumablesWidget(BaseModelSelect2WidgetMixin):
         querysets (Categories): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Consumables
     queryset = Consumables.objects.all().order_by("name")
@@ -42,7 +44,7 @@ class ConsumablesWidget(BaseModelSelect2WidgetMixin):
 
 
 class AccessoriesWidget(BaseModelSelect2WidgetMixin):
-    """_AccessoriesWidget_ 
+    """_AccessoriesWidget_
     Autocomplete plugin for the accessories selection field
 
     Returns:
@@ -51,6 +53,7 @@ class AccessoriesWidget(BaseModelSelect2WidgetMixin):
         querysets (Accessories): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Accessories
     queryset = Accessories.objects.all().order_by("name")
@@ -60,8 +63,8 @@ class AccessoriesWidget(BaseModelSelect2WidgetMixin):
 
 
 class AccountingForm(forms.ModelForm):
-    """_AccountingForm_
-    """
+    """_AccountingForm_"""
+
     class Meta:
         """_Class returns form of Accounting model_
 
@@ -70,6 +73,7 @@ class AccountingForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Accounting
         fields = [
             "name",
@@ -108,8 +112,8 @@ class AccountingForm(forms.ModelForm):
 
 
 class CategoriesForm(forms.ModelForm):
-    """_CategoriesForm_
-    """
+    """_CategoriesForm_"""
+
     class Meta:
         """_Class returns form of Categories model_
 
@@ -118,6 +122,7 @@ class CategoriesForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Categories
         fields = ["name", "slug"]
         widgets = {

@@ -2,9 +2,18 @@ from django.urls import include, path, re_path
 
 from .routers import router
 from .views import (
-    IndexView, RoomCreate, RoomDelete, RoomDetailView, RoomListView, RoomUpdate,
-    WorkplaceCreate, WorkplaceDelete, WorkplaceDetailView, WorkplaceListView,
-    WorkplaceUpdate,)
+    IndexView,
+    RoomCreate,
+    RoomDelete,
+    RoomDetailView,
+    RoomListView,
+    RoomUpdate,
+    WorkplaceCreate,
+    WorkplaceDelete,
+    WorkplaceDetailView,
+    WorkplaceListView,
+    WorkplaceUpdate,
+)
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),

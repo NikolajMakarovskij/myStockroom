@@ -8,17 +8,18 @@ def auto_login_user(db, client):
     """_auto_login_user_ Auxiliary function for authorization
 
     Args:
-        db (db): 
-        client (client): 
+        db (db):
+        client (client):
 
     Returns:
-        make_auto_login (func): 
+        make_auto_login (func):
     """
+
     def make_auto_login(user=None):
         """_make_auto_login_ Autologin
 
         Args:
-            user (user, optional): _description_. 
+            user (user, optional): _description_.
 
         Returns:
             user (user): _user of db_

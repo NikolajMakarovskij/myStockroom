@@ -16,6 +16,7 @@ class BaseResource(resources.ModelResource):
             category_model (type | None): _ForeignKey model for category field_
             manufacturer_model (type | None): _ForeignKey model for manufacturer field_
     """
+
     category_model: type | None = None
     manufacturer_model: type | None = None
 
@@ -49,12 +50,13 @@ class ConsumableResource(BaseResource):
             category_model (type | None): _ForeignKey model for category field_
             manufacturer_model (type | None): _ForeignKey model for manufacturer field_
     """
+
     category_model = Categories
     manufacturer_model = Manufacturer
 
     class Meta:
-        """_ConsumableResource Meta_: _resource settings_
-        """
+        """_ConsumableResource Meta_: _resource settings_"""
+
         model = Consumables
         exclude = ["id"]
 
@@ -67,11 +69,12 @@ class AccessoriesResource(BaseResource):
             category_model (type | None): _ForeignKey model for category field_
             manufacturer_model (type | None): _ForeignKey model for manufacturer field_
     """
+
     category_model = AccCat
     manufacturer_model = Manufacturer
 
     class Meta:
-        """_AccessoriesResource Meta_: _resource settings_
-        """
+        """_AccessoriesResource Meta_: _resource settings_"""
+
         model = Accessories
         exclude = ["id"]

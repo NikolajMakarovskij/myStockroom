@@ -4,8 +4,8 @@ from .models import AccCat, Accessories, Categories, Consumables
 
 
 class CategoriesModelSerializer(serializers.ModelSerializer):
-    """_CategoriesModelSerializer_ Serialize consumables categories model to JSON
-    """
+    """_CategoriesModelSerializer_ Serialize consumables categories model to JSON"""
+
     class Meta:
         """_Class returns JSON of consumables categories model_
 
@@ -14,6 +14,7 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
             fields (list[str]): _returns fields of model in form_
             extra_kwargs (dict[str,list[str]): _returns settings of fields_
         """
+
         model = Categories
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
@@ -22,12 +23,15 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
 class ConsumablesModelSerializer(serializers.ModelSerializer):
     """_ConsumablesModelSerializer_ Serialize consumables model to JSON
 
-        Other parameters:
-            device (StringRelatedField): _returns device_
-            consumable (StringRelatedField): _returns consumables_
+    Other parameters:
+        device (StringRelatedField): _returns device_
+        consumable (StringRelatedField): _returns consumables_
     """
+
     device: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
-    consumable: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
+    consumable: serializers.StringRelatedField = serializers.StringRelatedField(
+        many=True
+    )
 
     class Meta:
         """_Class returns JSON of consumables model_
@@ -37,14 +41,15 @@ class ConsumablesModelSerializer(serializers.ModelSerializer):
             fields (list[str]): _returns fields of model in form_
             extra_kwargs (dict[str,list[str]): _returns settings of fields_
         """
+
         model = Consumables
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
 class AccCatModelSerializer(serializers.ModelSerializer):
-    """_AccCatModelSerializer_ Serialize accessories categories model to JSON
-    """
+    """_AccCatModelSerializer_ Serialize accessories categories model to JSON"""
+
     class Meta:
         """_Class returns JSON of accessories categories model_
 
@@ -53,14 +58,15 @@ class AccCatModelSerializer(serializers.ModelSerializer):
             fields (list[str]): _returns fields of model in form_
             extra_kwargs (dict[str,list[str]): _returns settings of fields_
         """
+
         model = AccCat
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
 class AccessoriesModelSerializer(serializers.ModelSerializer):
-    """_AccessoriesModelSerializer_ Serialize accessories model to JSON
-    """
+    """_AccessoriesModelSerializer_ Serialize accessories model to JSON"""
+
     class Meta:
         """_Class returns JSON of accessories model_
 
@@ -69,6 +75,7 @@ class AccessoriesModelSerializer(serializers.ModelSerializer):
             fields (list[str]): _returns fields of model in form_
             extra_kwargs (dict[str,list[str]): _returns settings of fields_
         """
+
         model = Accessories
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}

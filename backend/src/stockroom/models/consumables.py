@@ -34,7 +34,9 @@ class Stockroom(ModelMixin, models.Model):
     dateAddToStock: models.DateField = models.DateField(
         null=True, blank=True, verbose_name="Дата поступления на склад"
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     rack: models.IntegerField = models.IntegerField(
         blank=True,
         null=True,
@@ -62,7 +64,9 @@ class StockCat(ModelMixin, models.Model):
     Group model for stock_model
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -97,7 +101,7 @@ class History(models.Model):
     stock_model: models.CharField = models.CharField(
         blank=True, default=0, max_length=150, verbose_name="Расходники"
     )
-    stock_model_id: models.CharField= models.CharField(
+    stock_model_id: models.CharField = models.CharField(
         blank=True, default=0, max_length=50, verbose_name="ID Расходникa"
     )
     device: models.CharField = models.CharField(
@@ -119,7 +123,9 @@ class History(models.Model):
         default=0,
         verbose_name="Количество",
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     user: models.CharField = models.CharField(
         blank=True,
         default=0,
@@ -137,7 +143,7 @@ class History(models.Model):
         choices=STATUS_CHOICES,
         default="Расход",
     )
-    note: models.TextField= models.TextField(
+    note: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,

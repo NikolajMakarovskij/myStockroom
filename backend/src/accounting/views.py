@@ -53,6 +53,7 @@ class AccountingView(
         paginate_by (int, optional): _add pagination_
         model (Accounting): _base model for list_
     """
+
     permission_required = "accounting.view_accounting"
     template_name = "accounting/accounting_list.html"
     paginate_by = DataMixin.paginate
@@ -79,7 +80,7 @@ class AccountingView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Accounting): _description_
@@ -113,6 +114,7 @@ class AccountingCategoriesView(
         paginate_by (int, optional): _add pagination_
         model (Accounting): _base model for list_
     """
+
     permission_required = "accounting.view_accounting"
     template_name = "accounting/accounting_list.html"
     paginate_by = DataMixin.paginate
@@ -139,7 +141,7 @@ class AccountingCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Accounting): _filtered by categories_
@@ -154,11 +156,12 @@ class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_AccountingRestView_ returns accounting
 
     Other parameters:
-        queryset (Accounting): 
-        serializer_class (AccountingModelSerializer): 
+        queryset (Accounting):
+        serializer_class (AccountingModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Accounting.objects.all()
     serializer_class = AccountingModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
@@ -187,6 +190,7 @@ class AccountingDetailView(
         permission_required (str): _permissions_
         model (Accounting): _base model for list_
     """
+
     permission_required = "accounting.view_accounting"
     model = Accounting
     template_name = "accounting/accounting_detail.html"
@@ -222,6 +226,7 @@ class AccountingCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.add_accounting"
     model = Accounting
     form_class = AccountingForm
@@ -257,6 +262,7 @@ class AccountingUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.change_accounting"
     model = Accounting
     template_name = "Forms/add.html"
@@ -276,9 +282,9 @@ class AccountingUpdate(
         return context
 
 
-class AccountingDelete(# type: ignore[misc]
+class AccountingDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-    ):  
+):
     """_AccountingDelete_
     Delete of accounting instances
 
@@ -290,6 +296,7 @@ class AccountingDelete(# type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.delete_accounting"
     model = Accounting
     template_name = "Forms/delete.html"
@@ -324,6 +331,7 @@ class CategoryView(
         paginate_by (int, optional): _add pagination_
         model (Categories): _base model for list_
     """
+
     permission_required = "accounting.view_category"
     template_name = "accounting/categories_list.html"
     paginate_by = DataMixin.paginate
@@ -362,11 +370,12 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_CategoriesRestView_ returns categories
 
     Other parameters:
-        queryset (Categories): 
-        serializer_class (CategoriesModelSerializer): 
+        queryset (Categories):
+        serializer_class (CategoriesModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
     success_message = "Категория %(name)s успешно создана"
@@ -396,6 +405,7 @@ class CategoryCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.add_category"
     model = Categories
     form_class = CategoriesForm
@@ -433,6 +443,7 @@ class CategoryUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.update_category"
     model = Categories
     template_name = "Forms/add.html"
@@ -454,9 +465,9 @@ class CategoryUpdate(
         return context
 
 
-class CategoryDelete( # type: ignore[misc]
+class CategoryDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-    ):
+):
     """_CategoryDelete_
     Delete of accounting instances
 
@@ -468,6 +479,7 @@ class CategoryDelete( # type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "accounting.delete_category"
     model = Categories
     template_name = "Forms/delete.html"

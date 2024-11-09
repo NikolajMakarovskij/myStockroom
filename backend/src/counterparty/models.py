@@ -12,6 +12,7 @@ class Manufacturer(ModelMixin, models.Model):
     Returns:
          Manufacturer (Manufacturer): _returns object "Manufacturer"_
     """
+
     id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
@@ -44,13 +45,13 @@ class Manufacturer(ModelMixin, models.Model):
             Manufacturer__id (str): _returns url by id_
 
         Other parameters:
-            args (str): self.id            
+            args (str): self.id
         """
         return reverse("counterparty:manufacturer-detail", args=[str(self.id)])
 
     class Meta:
-        """_Manufacturer Meta_: _model settings_
-        """
+        """_Manufacturer Meta_: _model settings_"""
+
         verbose_name = "Производитель"
         verbose_name_plural = "Производители"
         ordering = [

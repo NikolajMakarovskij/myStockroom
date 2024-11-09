@@ -1,7 +1,9 @@
 from django.contrib import messages
 from django.core.cache import cache
 from django_select2.forms import (  # type: ignore[import-untyped]
-    ModelSelect2MultipleWidget, ModelSelect2Widget,)
+    ModelSelect2MultipleWidget,
+    ModelSelect2Widget,
+)
 
 menu = [
     {"title": "Главная страница", "url_name": "core:index"},
@@ -24,8 +26,8 @@ class DataMixin:
     Returns:
         paginate (int): _pagination const_
     """
-    
-    paginate: int = 20 
+
+    paginate: int = 20
 
     def get_user_context(self, **kwargs):
         """_get_user_context_: returns context for views
@@ -47,8 +49,7 @@ class DataMixin:
 
 
 class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
-    """_BaseModelSelect2WidgetMixin_ Adds plugin Select2 in views
-    """
+    """_BaseModelSelect2WidgetMixin_ Adds plugin Select2 in views"""
 
     def __init__(self, **kwargs):
         """_add js and css styles_
@@ -84,8 +85,8 @@ class BaseModelSelect2WidgetMixin(ModelSelect2Widget):
 
 
 class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
-    """_BaseSelect2MultipleWidgetMixin_ Adds plugin Select2 in views for multiple select
-    """
+    """_BaseSelect2MultipleWidgetMixin_ Adds plugin Select2 in views for multiple select"""
+
     def __init__(self, **kwargs):
         """_add js and css styles_
 
@@ -120,9 +121,8 @@ class BaseSelect2MultipleWidgetMixin(ModelSelect2MultipleWidget):
 
 
 class ModelMixin:
-    """_ModelMixin_ Mixin with methods from models
-    """
-    
+    """_ModelMixin_ Mixin with methods from models"""
+
     def get_all_fields(self):
         """_get_all_fields_: returns all fields from model
 
@@ -130,7 +130,7 @@ class ModelMixin:
             fields (dict[str, str]): dict from the list of fields and their values for the model, except those excluded fields
             expose_fields (list[str]): excluded fields
         """
-        
+
         fields = []
         expose_fields = ["id", "slug"]
         for f in self._meta.fields:
@@ -160,8 +160,8 @@ class ModelMixin:
 class FormMessageMixin:
     """_FormMessageMixin_ Add messages in forms
 
-    Returns: 
-        success_message (str): _description_ 
+    Returns:
+        success_message (str): _description_
         debug_message (str): _description_
         info_message (str): _description_
         warning_message (str): _description_

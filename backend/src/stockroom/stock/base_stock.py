@@ -37,15 +37,16 @@ class BaseStock(object):
     def add_category(cls, model_id: str) -> Model | None:
         """Getting a category"""
         model = cls.base_model._default_manager.get(id=model_id)
-        if not model.categories: # type: ignore[attr-defined]
+        if not model.categories:  # type: ignore[attr-defined]
             category = None
         else:
-            model_category = model.categories.name # type: ignore[attr-defined]
-            if cls.stock_category._default_manager.filter(name=model_category): 
-                category = cls.stock_category._default_manager.get(name=model_category) 
+            model_category = model.categories.name  # type: ignore[attr-defined]
+            if cls.stock_category._default_manager.filter(name=model_category):
+                category = cls.stock_category._default_manager.get(name=model_category)
             else:
                 category = cls.stock_category._default_manager.create(
-                    name=model.categories.name, slug=model.categories.slug # type: ignore[attr-defined]
+                    name=model.categories.name,  # type: ignore[attr-defined]
+                    slug=model.categories.slug,  # type: ignore[attr-defined]
                 )
         return category
 
@@ -64,7 +65,7 @@ class BaseStock(object):
         model = cls.base_model._default_manager.get(id=model_id)
         category = cls.add_category(model_id)
         if not device_id:
-            device_name: str= ""
+            device_name: str = ""
             device_id = ""
         else:
             device = Device.objects.get(id=device_id)
@@ -72,8 +73,8 @@ class BaseStock(object):
             device_id = device.id
 
         history = cls.history_model._default_manager.create(
-            stock_model=model.name, # type: ignore[attr-defined]
-            stock_model_id=model.id, # type: ignore[attr-defined]
+            stock_model=model.name,  # type: ignore[attr-defined]
+            stock_model_id=model.id,  # type: ignore[attr-defined]
             device=device_name,
             deviceId=device_id,
             quantity=quantity,
@@ -95,8 +96,10 @@ class BaseStock(object):
 
         model = cls.base_model._default_manager.get(id=model_id)
         model_instance = cls.base_model._default_manager.filter(id=model_id)
-        model_quantity = int(str(model.quantity)) # type: ignore[attr-defined]
-        stock_model_instance = cls.stock_model._default_manager.filter(stock_model=model_id)
+        model_quantity = int(str(model.quantity))  # type: ignore[attr-defined]
+        stock_model_instance = cls.stock_model._default_manager.filter(
+            stock_model=model_id
+        )
         device_id = ""
         category = cls.add_category(model_id)
         if category is None:
@@ -153,7 +156,7 @@ class BaseStock(object):
         """
         device_id = str(device)
         model_add = cls.base_model._default_manager.get(id=model_id)
-        model_quantity = int(str(model_add.quantity)) # type: ignore[attr-defined]
+        model_quantity = int(str(model_add.quantity))  # type: ignore[attr-defined]
         device_obj = Device.objects.get(id=device_id)
         device_note = device_obj.note
         history_note = ""

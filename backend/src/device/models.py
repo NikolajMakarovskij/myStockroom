@@ -17,7 +17,9 @@ class DeviceCat(ModelMixin, models.Model):
         DeviceCat (DeviceCat): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -49,8 +51,8 @@ class DeviceCat(ModelMixin, models.Model):
         return reverse("device:category", kwargs={"category_slug": self.slug})
 
     class Meta:
-        """_DeviceCat Meta_: _model settings_
-        """
+        """_DeviceCat Meta_: _model settings_"""
+
         verbose_name = "Группа устройств"
         verbose_name_plural = "Группы устройств"
         ordering = ["name"]
@@ -208,8 +210,8 @@ class Device(ModelMixin, models.Model):
     # TODO valid method to ip_address field
 
     class Meta:
-        """_Device Meta_: _model settings_
-        """
+        """_Device Meta_: _model settings_"""
+
         verbose_name = "Устройства"
         verbose_name_plural = "Устройства"
         ordering = ["workplace__room__building", "workplace__name"]

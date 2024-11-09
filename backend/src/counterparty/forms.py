@@ -4,8 +4,8 @@ from .models import Manufacturer
 
 
 class ManufacturerForm(forms.ModelForm):
-    """_ManufacturerForm_
-    """
+    """_ManufacturerForm_"""
+
     class Meta:
         """_Class returns form of Manufacturer model_
 
@@ -14,6 +14,7 @@ class ManufacturerForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Manufacturer
         fields = ["name", "country", "production"]
         widgets = {

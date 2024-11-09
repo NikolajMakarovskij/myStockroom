@@ -2,11 +2,24 @@ from django.urls import include, path, re_path
 
 from .routers import router
 from .views import (
-    AccessoriesCategoriesView, AccessoriesCreate, AccessoriesDelete,
-    AccessoriesDetailView, AccessoriesUpdate, AccessoriesView, ConsumableIndexView,
-    ConsumablesCategoriesView, ConsumablesCreate, ConsumablesDelete,
-    ConsumablesDetailView, ConsumablesUpdate, ConsumablesView, ExportAccessories,
-    ExportAccessoriesCategory, ExportConsumable, ExportConsumableCategory,)
+    AccessoriesCategoriesView,
+    AccessoriesCreate,
+    AccessoriesDelete,
+    AccessoriesDetailView,
+    AccessoriesUpdate,
+    AccessoriesView,
+    ConsumableIndexView,
+    ConsumablesCategoriesView,
+    ConsumablesCreate,
+    ConsumablesDelete,
+    ConsumablesDetailView,
+    ConsumablesUpdate,
+    ConsumablesView,
+    ExportAccessories,
+    ExportAccessoriesCategory,
+    ExportConsumable,
+    ExportConsumableCategory,
+)
 
 urlpatterns = [
     re_path("api/v1/", include(router.urls)),

@@ -14,8 +14,9 @@ class Categories(ModelMixin, models.Model):
         Categories (Categories): _returns object "Categories"_
     """
 
-
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -82,8 +83,8 @@ class Categories(ModelMixin, models.Model):
         return reverse("accounting:categories-delete", args=[str(self.id)])
 
     class Meta:
-        """_Categories Meta_: _model settings_
-        """
+        """_Categories Meta_: _model settings_"""
+
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
@@ -96,7 +97,7 @@ class Accounting(ModelMixin, models.Model):
          Accounting (Accounting): _returns object "Categories"_
     """
 
-    id : models.UUIDField= models.UUIDField(
+    id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
     name: models.CharField = models.CharField(
@@ -171,7 +172,7 @@ class Accounting(ModelMixin, models.Model):
 
         Returns:
             Accounting__id (str): _returns url by id_
-        
+
         Other parameters:
             args (str): self.id
         """
@@ -187,8 +188,8 @@ class Accounting(ModelMixin, models.Model):
         return float("{:.2f}".format(cost_all))
 
     class Meta:
-        """_Accounting Meta_: _model settings_
-        """
+        """_Accounting Meta_: _model settings_"""
+
         verbose_name = "На балансе"
         verbose_name_plural = "На балансе"
         ordering = ["-account", "name"]

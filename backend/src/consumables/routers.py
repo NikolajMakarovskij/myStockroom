@@ -1,7 +1,11 @@
 from rest_framework import routers
 
 from .views import (
-    AccCatRestView, AccessoriesRestView, CategoriesRestView, ConsumablesRestView,)
+    AccCatRestView,
+    AccessoriesRestView,
+    CategoriesRestView,
+    ConsumablesRestView,
+)
 
 router = routers.SimpleRouter()
 router.register(r"consumable", ConsumablesRestView)

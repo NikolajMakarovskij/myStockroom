@@ -34,7 +34,9 @@ class StockAcc(ModelMixin, models.Model):
     dateAddToStock: models.DateField = models.DateField(
         null=True, blank=True, verbose_name="Дата поступления на склад"
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     rack: models.IntegerField = models.IntegerField(
         blank=True,
         null=True,
@@ -62,7 +64,9 @@ class CategoryAcc(ModelMixin, models.Model):
     Group model for components
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -121,7 +125,9 @@ class HistoryAcc(models.Model):
         default=0,
         verbose_name="Количество",
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     user: models.CharField = models.CharField(
         blank=True,
         default=0,

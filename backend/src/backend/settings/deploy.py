@@ -7,7 +7,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
-ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")) # type: ignore[union-attr]
+ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))  # type: ignore[union-attr]
 
 INSTALLED_APPS = [
     "rest_framework",

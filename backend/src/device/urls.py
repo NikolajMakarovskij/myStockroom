@@ -2,8 +2,15 @@ from django.urls import include, path, re_path
 
 from .routers import router
 from .views import (
-    DeviceCategoryListView, DeviceCreate, DeviceDelete, DeviceDetailView,
-    DeviceListView, DeviceUpdate, ExportDevice, ExportDeviceCategory,)
+    DeviceCategoryListView,
+    DeviceCreate,
+    DeviceDelete,
+    DeviceDetailView,
+    DeviceListView,
+    DeviceUpdate,
+    ExportDevice,
+    ExportDeviceCategory,
+)
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),

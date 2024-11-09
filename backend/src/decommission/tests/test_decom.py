@@ -19,7 +19,6 @@ def create_session(client):
 
 def create_devices() -> Device:
     """Service function. Creates a category and device"""
-    
 
     if Device.objects.filter(name="my_consumable").aexists():
         DeviceCat.objects.create(name="my_category", slug="my_category")

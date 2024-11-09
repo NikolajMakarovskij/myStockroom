@@ -1,21 +1,47 @@
 from django.urls import include, path
 
 from stockroom.views.accessories import (
-    ExportConsumptionAccessories, ExportConsumptionAccessoriesCategory,
-    ExportStockAccessories, ExportStockAccessoriesCategory, HistoryAccCategoriesView,
-    HistoryAccConsumptionCategoriesView, HistoryAccView, HistoryConsumptionAccView,
-    StockAccCategoriesView, StockAccView, device_add_accessories, stock_add_accessories,
-    stock_remove_accessories,)
+    ExportConsumptionAccessories,
+    ExportConsumptionAccessoriesCategory,
+    ExportStockAccessories,
+    ExportStockAccessoriesCategory,
+    HistoryAccCategoriesView,
+    HistoryAccConsumptionCategoriesView,
+    HistoryAccView,
+    HistoryConsumptionAccView,
+    StockAccCategoriesView,
+    StockAccView,
+    device_add_accessories,
+    stock_add_accessories,
+    stock_remove_accessories,
+)
 from stockroom.views.consumables import (
-    ExportConsumptionConsumable, ExportConsumptionConsumableCategory,
-    ExportStockConsumable, ExportStockConsumableCategory, HistoryCategoriesView,
-    HistoryConsumptionCategoriesView, HistoryConsumptionView, HistoryView,
-    StockroomCategoriesView, StockroomView, device_add_consumable, stock_add_consumable,
-    stock_remove_consumable,)
+    ExportConsumptionConsumable,
+    ExportConsumptionConsumableCategory,
+    ExportStockConsumable,
+    ExportStockConsumableCategory,
+    HistoryCategoriesView,
+    HistoryConsumptionCategoriesView,
+    HistoryConsumptionView,
+    HistoryView,
+    StockroomCategoriesView,
+    StockroomView,
+    device_add_consumable,
+    stock_add_consumable,
+    stock_remove_consumable,
+)
 from stockroom.views.devices import (
-    ExportStockDevice, ExportStockDeviceCategory, HistoryDevCategoriesView,
-    HistoryDevView, StockDevCategoriesView, StockDevView, add_history_to_device,
-    move_device_from_stock, stock_add_device, stock_remove_device,)
+    ExportStockDevice,
+    ExportStockDeviceCategory,
+    HistoryDevCategoriesView,
+    HistoryDevView,
+    StockDevCategoriesView,
+    StockDevView,
+    add_history_to_device,
+    move_device_from_stock,
+    stock_add_device,
+    stock_remove_device,
+)
 from stockroom.views.index import StockroomIndexView
 
 from .routers import router

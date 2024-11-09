@@ -2,9 +2,18 @@ from django.urls import include, path, re_path
 
 from .routers import router
 from .views import (
-    AccountingCategoriesView, AccountingCreate, AccountingDelete, AccountingDetailView,
-    AccountingIndexView, AccountingUpdate, AccountingView, CategoryCreate,
-    CategoryDelete, CategoryUpdate, CategoryView,)
+    AccountingCategoriesView,
+    AccountingCreate,
+    AccountingDelete,
+    AccountingDetailView,
+    AccountingIndexView,
+    AccountingUpdate,
+    AccountingView,
+    CategoryCreate,
+    CategoryDelete,
+    CategoryUpdate,
+    CategoryView,
+)
 
 urlpatterns = [
     re_path("api/v1/", include(router.urls)),

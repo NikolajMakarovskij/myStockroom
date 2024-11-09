@@ -30,6 +30,7 @@ class DecommissionView(
         paginate_by (int, optional): _add pagination_
         model (Decommission): _base model for list_
     """
+
     permission_required = "decommission.view_decommission"
     paginate_by = DataMixin.paginate
     template_name = "decom/decom_list.html"
@@ -55,7 +56,7 @@ class DecommissionView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Decommission): _description_
@@ -115,7 +116,7 @@ class DecomCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Decommission): _filtered by categories_
@@ -172,7 +173,7 @@ def add_decommission(request, device_id):
 def remove_decommission(request, devices_id):
     """_remove_decommission_
     View for the task "remove_decommission"
-    
+
     Args:
         request (request): _description_
         devices_id (str): _uuid of the Device model_
@@ -198,12 +199,13 @@ class ExportDecomDevice(View):
     """_ExportDecomDevice_
     Returns an Excel file with all records of Decommission from the database
     """
+
     def get(self, *args, **kwargs):
         """extracts all records of Decommission from the database and converts them into an xlsx file
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
         """
@@ -223,6 +225,7 @@ class ExportDecomDeviceCategory(View):
     """_ExportConsumableCategory_
     Returns an Excel file with filtered records by categories of Decommission from the database
     """
+
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_ The function is used to return a list of categories
 
@@ -243,7 +246,7 @@ class ExportDecomDeviceCategory(View):
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
         """
@@ -275,6 +278,7 @@ class DisposalView(
         paginate_by (int, optional): _add pagination_
         model (Disposal): _base model for list_
     """
+
     permission_required = "decommission.view_disposal"
     paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
@@ -300,7 +304,7 @@ class DisposalView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Disposal): _description_
@@ -334,6 +338,7 @@ class DispCategoriesView(
         paginate_by (int, optional): _add pagination_
         model (Disposal): _base model for list_
     """
+
     permission_required = "decommission.view_disposal"
     paginate_by = DataMixin.paginate
     template_name = "decom/disp_list.html"
@@ -359,7 +364,7 @@ class DispCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Disposal): _filtered by categories_
@@ -440,12 +445,13 @@ class ExportDispDevice(View):
     """_ExportDecomDevice_
     Returns an Excel file with all records of Disposal from the database
     """
+
     def get(self, *args, **kwargs):
         """extracts all records of Disposal from the database and converts them into an xlsx file
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DisposalResource): _dict of Disposal for export into an xlsx file_
         """
@@ -465,6 +471,7 @@ class ExportDispDeviceCategory(View):
     """_ExportConsumableCategory_
     Returns an Excel file with filtered records by categories of Disposal from the database
     """
+
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_ The function is used to return a list of categories
 
@@ -485,7 +492,7 @@ class ExportDispDeviceCategory(View):
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DisposalResource): _dict of Disposal for export into an xlsx file_
         """

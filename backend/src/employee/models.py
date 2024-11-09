@@ -18,7 +18,9 @@ class Employee(ModelMixin, models.Model):
     id: models.UUIDField = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(max_length=50, help_text="Введите имя", verbose_name="Имя")
+    name: models.CharField = models.CharField(
+        max_length=50, help_text="Введите имя", verbose_name="Имя"
+    )
     last_name: models.CharField = models.CharField(
         max_length=50, blank=True, help_text="Введите отчество", verbose_name="Отчество"
     )
@@ -70,8 +72,8 @@ class Employee(ModelMixin, models.Model):
         return reverse("employee:employee-detail", args=[str(self.id)])
 
     class Meta:
-        """_Employee Meta_: _model settings_
-        """
+        """_Employee Meta_: _model settings_"""
+
         verbose_name = "Сотрудник"
         verbose_name_plural = "Сотрудники"
         ordering = [
@@ -88,7 +90,10 @@ class Departament(ModelMixin, models.Model):
     Returns:
         Departament (Departament): _description_
     """
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название отдела", verbose_name="Отдел"
     )
@@ -113,8 +118,8 @@ class Departament(ModelMixin, models.Model):
         return reverse("employee:departament-detail", args=[str(self.id)])
 
     class Meta:
-        """_Departament Meta_: _model settings_
-        """
+        """_Departament Meta_: _model settings_"""
+
         verbose_name = "Отдел"
         verbose_name_plural = "Отделы"
         ordering = [
@@ -129,7 +134,10 @@ class Post(ModelMixin, models.Model):
     Returns:
         Post (Post): _description_
     """
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите должность", verbose_name="Должность"
     )
@@ -162,8 +170,8 @@ class Post(ModelMixin, models.Model):
         return reverse("employee:post-detail", args=[str(self.id)])
 
     class Meta:
-        """_Post Meta_: _model settings_
-        """
+        """_Post Meta_: _model settings_"""
+
         verbose_name = "Должность"
         verbose_name_plural = "Должности"
         ordering = [

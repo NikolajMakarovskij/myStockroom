@@ -7,7 +7,7 @@ from .models import AccCat, Accessories, Categories, Consumables
 
 
 class ManufacturerWidget(BaseModelSelect2WidgetMixin):
-    """_ManufacturerWidget_ 
+    """_ManufacturerWidget_
     Autocomplete plugin for the manufacturer selection field
 
     Returns:
@@ -16,6 +16,7 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
         querysets (Manufacturer): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Manufacturer
     queryset = Manufacturer.objects.all().order_by("name")
@@ -27,7 +28,7 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
 
 
 class CategoryWidget(BaseModelSelect2WidgetMixin):
-    """_CategoryWidget_ 
+    """_CategoryWidget_
     Autocomplete plugin for the category selection field
 
     Returns:
@@ -36,6 +37,7 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
         querysets (Categories): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Categories
     queryset = Categories.objects.all().order_by("name")
@@ -43,7 +45,7 @@ class CategoryWidget(BaseModelSelect2WidgetMixin):
 
 
 class AccCatWidget(BaseModelSelect2WidgetMixin):
-    """_AccCatWidget_ 
+    """_AccCatWidget_
     Autocomplete plugin for the category selection field
 
     Returns:
@@ -52,6 +54,7 @@ class AccCatWidget(BaseModelSelect2WidgetMixin):
         querysets (AccCat): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = AccCat
     queryset = AccCat.objects.all().order_by("name")
@@ -59,8 +62,8 @@ class AccCatWidget(BaseModelSelect2WidgetMixin):
 
 
 class ConsumablesForm(forms.ModelForm):
-    """_ConsumablesForm_
-    """
+    """_ConsumablesForm_"""
+
     class Meta:
         """_Class returns form of Consumables model_
 
@@ -69,6 +72,7 @@ class ConsumablesForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Consumables
         fields = [
             "name",
@@ -107,8 +111,8 @@ class ConsumablesForm(forms.ModelForm):
 
 
 class AccessoriesForm(forms.ModelForm):
-    """_AccessoriesForm_
-    """
+    """_AccessoriesForm_"""
+
     class Meta:
         """_Class returns form of Accessories model_
 
@@ -117,6 +121,7 @@ class AccessoriesForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Accessories
         fields = [
             "name",
