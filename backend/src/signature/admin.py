@@ -6,6 +6,10 @@ from .models import Signature
 
 @admin.register(Signature)
 class SignatureAdmin(ImportExportModelAdmin):
+    """_SignatureAdmin_
+    Add model to admin panel
+    """
+
     list_display = [
         "name",
         "periodOpen",
