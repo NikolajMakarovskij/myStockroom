@@ -8,8 +8,11 @@ from counterparty.models import Manufacturer
 
 
 class Software(ModelMixin, models.Model):
-    """
-    Модель софта
+    """_Software_:
+    Software model
+
+    Returns:
+        Software (Software): _description_
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -65,12 +68,27 @@ class Software(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Software __str__ _: _returns name of model_
+
+        Returns:
+            Software__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_Software url_
+
+        Returns:
+            Software__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
+        """
         return reverse("software:software-detail", args=[str(self.id)])
 
     class Meta:
+        """_Software Meta_: _model settings_"""
+
         verbose_name = "Программное обеспечение"
         verbose_name_plural = "Программное обеспечение"
         ordering = [
@@ -79,8 +97,11 @@ class Software(ModelMixin, models.Model):
 
 
 class Os(ModelMixin, models.Model):
-    """
-    Модель ОС
+    """_Os_:
+    OS model
+
+    Returns:
+        OS (OS): _description_
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -136,12 +157,27 @@ class Os(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_OS __str__ _: _returns name of model_
+
+        Returns:
+            OS__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_OS url_
+
+        Returns:
+            OS__id (str): _returns url by id_
+
+        Other parameters:
+            args (str): self.id
+        """
         return reverse("software:OS-detail", args=[str(self.id)])
 
     class Meta:
+        """_OS Meta_: _model settings_"""
+
         verbose_name = "Операционная система"
         verbose_name_plural = "Операционные системы"
         ordering = ["name"]
