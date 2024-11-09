@@ -9,6 +9,7 @@ class DeviceAdmin(ImportExportModelAdmin):
     """_DeviceAdmin_
     Add model to admin panel
     """
+
     list_display = [
         "name",
         "description",
@@ -38,6 +39,7 @@ class DeviceCatAdmin(ImportExportModelAdmin):
     """_DeviceCatAdmin_
     Add categories model to admin panel
     """
+
     list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}
