@@ -6,6 +6,10 @@ from .models import Os, Software
 
 @admin.register(Software)
 class SoftwareAdmin(ImportExportModelAdmin):
+    """_SoftwareAdmin_
+    Add model to admin panel
+    """
+
     list_display = [
         "name",
         "manufacturer",
@@ -32,6 +36,10 @@ class SoftwareAdmin(ImportExportModelAdmin):
 
 @admin.register(Os)
 class OsAdmin(ImportExportModelAdmin):
+    """_OsAdmin_
+    Add model to admin panel
+    """
+
     list_display = [
         "name",
         "manufacturer",
