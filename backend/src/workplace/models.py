@@ -92,4 +92,3 @@ class Workplace(ModelMixin, models.Model):
         verbose_name = "Рабочее место"
         verbose_name_plural = "Рабочие места"
         ordering = ["room__building", "name"]
-        ordering = ["room__building", "name"]
