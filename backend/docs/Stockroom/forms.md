@@ -1,18 +1,25 @@
 # ***Forms***
 
-##
+## Constants
+:::src.stockroom.forms.CONSUMABLE_QUANTITY_CHOICES
+:::src.stockroom.forms.RACK_QUANTITY_CHOICES
+:::src.stockroom.forms.SHELF_QUANTITY_CHOICES
+:::src.stockroom.forms.DEVICE_QUANTITY_CHOICES
 
-### ManufacturerWidget
-:::src.consumables.forms.ManufacturerWidget
 
-### CategoryWidget
-:::src.consumables.forms.CategoryWidget
+## Forms
 
-### AccCatWidget
-:::src.consumables.forms.AccCatWidget
+### StockAddForm
+:::src.stockroom.forms.StockAddForm
 
-### ConsumablesForm
-:::src.consumables.forms.ConsumablesForm
+### ConsumableInstallForm
+:::src.stockroom.forms.ConsumableInstallForm
 
-### AccessoriesForm
-:::src.consumables.forms.AccessoriesForm
+### AddHistoryDeviceForm
+:::src.stockroom.forms.AddHistoryDeviceForm
+
+### WorkplaceWidget
+:::src.stockroom.forms.WorkplaceWidget
+
+### MoveDeviceForm
+:::src.stockroom.forms.MoveDeviceForm
