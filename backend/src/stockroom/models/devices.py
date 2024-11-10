@@ -52,6 +52,7 @@ class StockDev(ModelMixin, models.Model):
 
     class Meta:
         """_StockDev_: _model settings_"""
+
         verbose_name = "Склад устройств"
         verbose_name_plural = "Склад устройств"
         ordering = [
@@ -112,6 +113,7 @@ class CategoryDev(ModelMixin, models.Model):
 
     class Meta:
         """_StockCat Meta_: _model settings_"""
+
         verbose_name = "Группа устройств"
         verbose_name_plural = "Группы устройств"
         ordering = ["name"]
@@ -170,6 +172,7 @@ class HistoryDev(models.Model):
 
     class Meta:
         """_HistoryDev Meta_: _model settings_"""
+
         verbose_name = "История устройств"
         verbose_name_plural = "История устройств"
         ordering = ["-dateInstall", "stock_model"]

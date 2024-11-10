@@ -52,6 +52,7 @@ class StockAcc(ModelMixin, models.Model):
 
     class Meta:
         """_Stockroom Meta_: _model settings_"""
+
         verbose_name = "Склад комплектующих"
         verbose_name_plural = "Склад комплектующих"
         ordering = ["rack", "shelf"]
@@ -108,6 +109,7 @@ class CategoryAcc(ModelMixin, models.Model):
 
     class Meta:
         """_CategoryAcc Meta_: _model settings_"""
+
         verbose_name = "Группа комплектующих"
         verbose_name_plural = "Группы комплектующих"
         ordering = ["name"]
@@ -179,6 +181,7 @@ class HistoryAcc(models.Model):
 
     class Meta:
         """_HistoryAcc Meta_: _model settings_"""
+
         verbose_name = "История комплектующих"
         verbose_name_plural = "История комплектующих"
         ordering = ["-dateInstall", "stock_model"]

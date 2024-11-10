@@ -52,6 +52,7 @@ class Stockroom(ModelMixin, models.Model):
 
     class Meta:
         """_Stockroom Meta_: _model settings_"""
+
         verbose_name = "Склад Расходников"
         verbose_name_plural = "Склад Расходников"
         ordering = ["rack", "shelf"]

@@ -5,7 +5,9 @@ from device.models import Device
 from workplace.models import Workplace
 
 consumable_score: int = 11
-CONSUMABLE_QUANTITY_CHOICES: list[str] = [(i, str(i)) for i in range(0, consumable_score)]
+CONSUMABLE_QUANTITY_CHOICES: list[str] = [
+    (i, str(i)) for i in range(0, consumable_score)
+]
 """_CONSUMABLE_QUANTITY_CHOICES_
 
 Other parameters:
@@ -58,7 +60,6 @@ class StockAddForm(forms.Form):
         number_rack (TypedChoiceField): _rack number_
         number_shelf (TypedChoiceField): _shelf number_
     """
-
 
     quantity = forms.TypedChoiceField(
         choices=CONSUMABLE_QUANTITY_CHOICES,
@@ -139,6 +140,7 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
         querysets (Workplace): _returns querysets of model in form_
         search_fields (list[str]): _fields of the model to search for are specified_
     """
+
     empty_label = "--выбрать--"
     model = Workplace
     queryset = Workplace.objects.all().order_by("name")
@@ -152,6 +154,7 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
 
 class MoveDeviceForm(forms.ModelForm):
     """_MoveDeviceFor_"""
+
     class Meta:
         """_Class returns form to moves the device to the workplace_
 
@@ -160,6 +163,7 @@ class MoveDeviceForm(forms.ModelForm):
             fields (list[str]): _returns fields of model in form_
             widgets (dict[str,str]): _returns widgets of model in form_
         """
+
         model = Device
         fields = ["workplace", "note"]
         widgets = {

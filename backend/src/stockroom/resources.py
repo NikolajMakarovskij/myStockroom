@@ -112,6 +112,7 @@ class StockDevResource(BaseStockResource):
 
     class Meta:
         """_StockDevResource Meta_: _resource settings_"""
+
         model = StockDev
         exclude = ["stock_model"]
 
@@ -124,11 +125,13 @@ class StockConResource(BaseStockResource):
             stock_model (type | None): _ForeignKey model for consumable category field_
             stock_category (type | None): _ForeignKey model for consumable manufacturer field_
     """
+
     stock_model = Consumables
     stock_category = StockCat
 
     class Meta:
         """_StockConResource Meta_: _resource settings_"""
+
         model = Stockroom
         exclude = ["stock_model"]
 
@@ -141,11 +144,13 @@ class StockAccResource(BaseStockResource):
             stock_model (type | None): _ForeignKey model for accessories category field_
             stock_category (type | None): _ForeignKey model for accessories manufacturer field_
     """
+
     stock_model = Accessories
     stock_category = CategoryAcc
 
     class Meta:
         """_StockAccResource Meta_: _resource settings_"""
+
         model = StockAcc
         exclude = ["stock_model"]
 
