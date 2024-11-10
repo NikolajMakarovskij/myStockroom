@@ -2,8 +2,11 @@
 
 ##
 
-### Accessories
-:::src.consumables.models.Accessories
+### StockAcc
+:::src.stockroom.models.accessories.StockAcc
 
-### AccCat
-:::src.consumables.models.AccCat
+### CategoryAcc
+:::src.stockroom.models.accessories.CategoryAcc
+
+### HistoryAcc
+:::src.stockroom.models.accessories.HistoryAcc

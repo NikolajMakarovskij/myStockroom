@@ -9,10 +9,13 @@ from core.utils import ModelMixin
 
 # Accessories
 class StockAcc(ModelMixin, models.Model):
-    """
+    """_StockAcc_:
     Expansion of the model of components for the warehouse.
-    The nomenclature of components of the warehouse and the directory may differ,
+    The nomenclature of components of the warehouse and the directory may differ;
     however, the quantity of each component must match
+
+    Returns:
+        StockAcc (StockAcc): The stockroom accessories model
     """
 
     stock_model: models.OneToOneField = models.OneToOneField(
@@ -48,6 +51,7 @@ class StockAcc(ModelMixin, models.Model):
     )
 
     class Meta:
+        """_Stockroom Meta_: _model settings_"""
         verbose_name = "Склад комплектующих"
         verbose_name_plural = "Склад комплектующих"
         ordering = ["rack", "shelf"]
@@ -60,8 +64,11 @@ class StockAcc(ModelMixin, models.Model):
 
 
 class CategoryAcc(ModelMixin, models.Model):
-    """
-    Group model for components
+    """_CategoryAcc_:
+    stock_model categories
+
+    Returns:
+        CategoryAcc (CategoryAcc): _description_
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -79,22 +86,39 @@ class CategoryAcc(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_CategoryAcc __str__ _: _returns name of model_
+
+        Returns:
+            CategoryAcc__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_CategoryAcc get self url_
+
+        Returns:
+            CategoryAcc__slug (str): _returns url by slug_
+
+        Other parameters:
+            kwargs (str): self.slug
+        """
         return reverse(
             "stockroom:accessories_category", kwargs={"category_slug": self.slug}
         )
 
     class Meta:
+        """_CategoryAcc Meta_: _model settings_"""
         verbose_name = "Группа комплектующих"
         verbose_name_plural = "Группы комплектующих"
         ordering = ["name"]
 
 
 class HistoryAcc(models.Model):
-    """
-    Model for storing the history of the use of components
+    """_HistoryAcc_:
+    Model for storing the history of the use of accessories
+
+    Returns:
+        HistoryAcc (HistoryAcc): The stockroom model
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -154,6 +178,7 @@ class HistoryAcc(models.Model):
     )
 
     class Meta:
+        """_HistoryAcc Meta_: _model settings_"""
         verbose_name = "История комплектующих"
         verbose_name_plural = "История комплектующих"
         ordering = ["-dateInstall", "stock_model"]

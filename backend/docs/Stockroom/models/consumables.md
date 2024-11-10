@@ -2,8 +2,11 @@
 
 ##
 
-### Consumables
-:::src.consumables.models.Consumables
+### Stockroom
+:::src.stockroom.models.consumables.Stockroom
 
-### Categories
-:::src.consumables.models.Categories
+### StockCat
+:::src.stockroom.models.consumables.StockCat
+
+### History
+:::src.stockroom.models.consumables.History
