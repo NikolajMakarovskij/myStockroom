@@ -2,11 +2,14 @@
 
 ##
 
-### BaseResource
-:::src.consumables.resources.BaseResource
+### BaseStockResource
+:::src.stockroom.resources.BaseStockResource
 
-### ConsumableResource
-:::src.consumables.resources.ConsumableResource
+### StockConResource
+:::src.stockroom.resources.StockConResource
 
-### AccessoriesResource
-:::src.consumables.resources.AccessoriesResource
+### StockAccResource
+:::src.stockroom.resources.StockAccResource
+
+### StockDevResource
+:::src.stockroom.resources.StockDevResource
