@@ -108,6 +108,12 @@ class StockroomCategoriesView(
 
 
 class StockRestView(DataMixin, viewsets.ModelViewSet):
+    """_StockRestView_ Stockroom consumables API view
+
+    Other parameters:
+        queryset (Stockroom): _description_
+        serializer_class (StockModelSerializer): _description_
+    """
     queryset = Stockroom.objects.all()
     serializer_class = StockModelSerializer
 
