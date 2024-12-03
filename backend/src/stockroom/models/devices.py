@@ -124,7 +124,7 @@ class HistoryDev(models.Model):
     Model for storing the history of the use of device
 
     Returns:
-        HistoryDev (HistoryDev: The stockroom model
+        HistoryDev (HistoryDev): The stockroom model
     """
 
     id: models.UUIDField = models.UUIDField(

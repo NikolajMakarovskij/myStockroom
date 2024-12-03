@@ -1474,7 +1474,6 @@ dependencies = [
     { name = "flower" },
     { name = "gunicorn" },
     { name = "hiredis" },
-    { name = "junitxml" },
     { name = "markdown" },
     { name = "pillow" },
     { name = "psycopg", extra = ["binary", "pool"] },
@@ -1503,6 +1502,7 @@ lint = [
     { name = "ruff" },
 ]
 test = [
+    { name = "junitxml" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
@@ -1532,7 +1532,6 @@ requires-dist = [
     { name = "flower", specifier = ">=2.0.1" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "hiredis", specifier = ">=3.0.0" },
-    { name = "junitxml", specifier = ">=0.7" },
     { name = "markdown", specifier = ">=3.7" },
     { name = "pillow", specifier = ">=11.0.0" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.2.3" },
@@ -1541,7 +1540,7 @@ requires-dist = [
     { name = "redis", specifier = ">=5.2.0" },
     { name = "setuptools", specifier = ">=75.6.0" },
     { name = "six", specifier = ">=1.16.0" },
-    { name = "sqlparse", specifier = ">=0.5.1" },
+    { name = "sqlparse", specifier = ">=0.5.2" },
     { name = "tablib", extras = ["all"], specifier = ">=3.7.0" },
 ]
 
@@ -1561,6 +1560,7 @@ lint = [
     { name = "ruff", specifier = ">=0.8.1" },
 ]
 test = [
+    { name = "junitxml", specifier = ">=0.7" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-django", specifier = ">=4.9.0" },
