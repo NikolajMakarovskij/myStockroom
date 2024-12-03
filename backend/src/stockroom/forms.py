@@ -1,4 +1,5 @@
 from typing import List
+
 from django import forms
 
 from core.utils import BaseModelSelect2WidgetMixin
@@ -12,40 +13,46 @@ CONSUMABLE_QUANTITY_CHOICES: List[tuple[int, str]] = [
 """_CONSUMABLE_QUANTITY_CHOICES_
 
 Other parameters:
-    consumable_score (int): 
+    consumable_score (int):
 
 Returns:
     choices (List[tuple[int, str]]): _quantity_
 """
 
 rack_score: int = 10
-RACK_QUANTITY_CHOICES: List[tuple[int, str]] = [(i, str(i)) for i in range(1, rack_score)]
+RACK_QUANTITY_CHOICES: List[tuple[int, str]] = [
+    (i, str(i)) for i in range(1, rack_score)
+]
 """_RACK_QUANTITY_CHOICES_
 
 Other parameters:
-    rack_score (int): 
+    rack_score (int):
 
 Returns:
     choices (List[tuple[int, str]]): _quantity_
 """
 
 shelf_score: int = 20
-SHELF_QUANTITY_CHOICES: List[tuple[int, str]] = [(i, str(i)) for i in range(1, shelf_score)]
+SHELF_QUANTITY_CHOICES: List[tuple[int, str]] = [
+    (i, str(i)) for i in range(1, shelf_score)
+]
 """_SHELF_QUANTITY_CHOICES_
 
 Other parameters:
-    shelf_score (int): 
+    shelf_score (int):
 
 Returns:
     choices (List[tuple[int, str]]): _quantity_
 """
 
 device_score: int = 5
-DEVICE_QUANTITY_CHOICES: List[tuple[int, str]] = [(i, str(i)) for i in range(1, device_score)]
+DEVICE_QUANTITY_CHOICES: List[tuple[int, str]] = [
+    (i, str(i)) for i in range(1, device_score)
+]
 """_DEVICE_QUANTITY_CHOICES_
 
 Other parameters:
-    device_score (int): 
+    device_score (int):
 
 Returns:
     choices (List[tuple[int, str]]): _quantity_

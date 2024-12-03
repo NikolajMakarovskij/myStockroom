@@ -16,7 +16,7 @@ from core.utils import DataMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.resources import ConsumableConsumptionResource, StockConResource
-from stockroom.serializers.consumables import StockModelSerializer
+from stockroom.serializers import StockModelSerializer
 from stockroom.stock.stock import ConStock
 
 
