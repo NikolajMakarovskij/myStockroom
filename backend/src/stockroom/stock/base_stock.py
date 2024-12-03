@@ -9,7 +9,14 @@ from device.models import Device
 
 @dataclass
 class BaseStock(object):
-    """Class with stock base methods"""
+    """_BaseStock_ Class with stock base methods
+
+    Other parameters:
+        base_model (type[Model]): _Consumables | Accessories | Devices_
+        stock_model (type[Model]): _Stockroom model for Consumables | Accessories | Devices_
+        stock_category (type[Model]): _Category model for Consumables | Accessories | Devices_
+        history_model (type[Model]): _History model for Consumables | Accessories | Devices_
+    """
 
     base_model: type[Model] = Model
     stock_model: type[Model] = Model
@@ -22,6 +29,12 @@ class BaseStock(object):
     ):
         """
         Initializes the stock
+
+        Args:
+            request (request): _description_
+
+        Other parameters:
+            stock (dict[str, str]): _self.session[settings.STOCK_SESSION_ID]_
         """
         self.session = request.session
         stock = self.session.get(settings.STOCK_SESSION_ID)
@@ -30,12 +43,21 @@ class BaseStock(object):
         self.stock = stock
 
     def save(self):
+        """_saving session_
+        """
         self.session[settings.STOCK_SESSION_ID] = self.stock
         self.session.modified = True
 
     @classmethod
     def add_category(cls, model_id: str) -> Model | None:
-        """Getting a category"""
+        """Getting a category
+
+        Args:
+            model_id (str): _stockroom model id_
+
+        Returns:
+            Category (Model | None): _category model_
+        """
         model = cls.base_model._default_manager.get(id=model_id)
         if not model.categories:  # type: ignore[attr-defined]
             category = None
@@ -60,7 +82,19 @@ class BaseStock(object):
         note: str,
         status_choice: str,
     ) -> Model:
-        """Creating an entry in the history of stock_model"""
+        """Creating an entry in the history of stock_model
+
+        Args:
+            model_id (str): _stockroom model id_
+            device_id (str): _device model id_
+            quantity (int): _description_
+            username (str): _getting from session_
+            note (str): _description_
+            status_choice (str): _description_
+
+        Returns:
+            History (Model): _Adding instance in database_
+        """
 
         model = cls.base_model._default_manager.get(id=model_id)
         category = cls.add_category(model_id)
@@ -90,8 +124,14 @@ class BaseStock(object):
     def add_to_stock(
         cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=""
     ) -> None:
-        """
-        Add a stock_model to the stock or update its quantity.
+        """Add a stock_model to the stock or update it quantity.
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            quantity (int): _description_
+            number_rack (int): _description_
+            number_shelf (int): _description_
+            username (str): _getting from session_
         """
 
         model = cls.base_model._default_manager.get(id=model_id)
@@ -126,8 +166,12 @@ class BaseStock(object):
 
     @classmethod
     def remove_from_stock(cls, model_id: str, quantity=0, username="") -> None:
-        """
-        Remove stock_model from the stock
+        """Remove stock_model from the stock
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            quantity (int): _description_
+            username (str): _getting from session_
         """
         device_id = ""
         stock_model = cls.stock_model._default_manager.filter(stock_model=model_id)
@@ -146,13 +190,19 @@ class BaseStock(object):
     def add_to_device(
         cls,
         model_id: str,
-        device: dict,
+        device: str,
         quantity: int = 1,
         note: str = "",
         username: str = "",
     ) -> None:
-        """
-        Install stock_model in the device
+        """Install stock_model in the device
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            device (dict): _device model id_
+            quantity (int, optional): _description_
+            note (str, optional): _description_
+            username (str, optional): _getting from session_
         """
         device_id = str(device)
         model_add = cls.base_model._default_manager.get(id=model_id)
