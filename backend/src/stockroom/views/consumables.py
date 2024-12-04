@@ -584,7 +584,7 @@ def stock_add_consumable(request, consumable_id):
 @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
 def stock_remove_consumable(request, consumable_id):
     """
-    remove consumables to the stockroom
+    remove consumables from the stockroom
 
     Args:
         request (request): _description_
@@ -597,7 +597,7 @@ def stock_remove_consumable(request, consumable_id):
         username (str): _username of the user model_
         consumable (Consumables | 404): _consumable model instance_
         stock (ConStock): _stock model_
-        form (remove_from_stock): _form for adding consumables to the stock_
+        form (remove_from_stock): _form for removing consumables from the stock_
     """
 
     username = request.user.username

@@ -1,45 +1,35 @@
 # ***Devices***
 
 ## Devices
-### StockroomView
-#### :::src.stockroom.views.consumables.StockroomView
+### StockDevView
+#### :::src.stockroom.views.devices.StockDevView
 
-### StockroomCategoriesView
-#### :::src.stockroom.views.consumables.StockroomCategoriesView
+### StockDevCategoriesView
+#### :::src.stockroom.views.devices.StockDevCategoriesView
 
 ## Export
-### ExportStockConsumable
-#### :::src.stockroom.views.consumables.ExportStockConsumable
+### ExportStockDevice
+#### :::src.stockroom.views.devices.ExportStockDevice
 
-### ExportStockConsumableCategory
-#### :::src.stockroom.views.consumables.ExportStockConsumableCategory
-
-### ExportConsumptionConsumable
-#### :::src.stockroom.views.consumables.ExportConsumptionConsumable
-
-### ExportConsumptionConsumableCategory
-#### :::src.stockroom.views.consumables.ExportConsumptionConsumableCategory
+### StockDevCategoriesView
+#### :::src.stockroom.views.devices.StockDevCategoriesView
 
 ## History
-### HistoryView
-#### :::src.stockroom.views.consumables.HistoryView
+### HistoryDevView
+#### :::src.stockroom.views.devices.HistoryDevView
 
-### HistoryCategoriesView
-#### :::src.stockroom.views.consumables.HistoryCategoriesView
-
-## Consumption
-### HistoryConsumptionView
-#### :::src.stockroom.views.consumables.HistoryConsumptionView
-
-### HistoryConsumptionCategoriesView
-#### :::src.stockroom.views.consumables.HistoryConsumptionCategoriesView
+### HistoryDevCategoriesView
+#### :::src.stockroom.views.devices.HistoryDevCategoriesView
 
 ## Methods
-### stock_add_consumable
-#### :::src.stockroom.views.consumables.stock_add_consumable
+### stock_add_device
+#### :::src.stockroom.views.devices.stock_add_device
 
-### stock_remove_consumable
-#### :::src.stockroom.views.consumables.stock_remove_consumable
+### stock_remove_device
+#### :::src.stockroom.views.devices.stock_remove_device
 
-### device_add_consumable
-#### :::src.stockroom.views.consumables.device_add_consumable
+### move_device_from_stock
+#### :::src.stockroom.views.devices.move_device_from_stock
+
+### add_history_to_device
+#### :::src.stockroom.views.devices.add_history_to_device
