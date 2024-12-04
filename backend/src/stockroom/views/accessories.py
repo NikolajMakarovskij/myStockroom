@@ -211,7 +211,7 @@ class ExportStockAccessoriesCategory(View):
             response (HttpResponse): _returns xlsx file_
 
         Other parameters:
-            resource (AccessoriesResource): _dict of stockroom accessories for export into an xlsx file_
+            resource (StockAccResource): _dict of stockroom accessories for export into an xlsx file_
         """
 
         queryset = StockAcc.objects.filter(
@@ -602,6 +602,7 @@ def stock_remove_accessories(request, accessories_id):
         stock (AccStock): _stock model_
         form (remove_from_stock): _form for removing accessories to the stock_
     """
+
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
     stock = AccStock

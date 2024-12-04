@@ -1,6 +1,6 @@
-# ***Consumables***
+# ***Devices***
 
-## Consumables
+## Devices
 ### StockroomView
 #### :::src.stockroom.views.consumables.StockroomView
 
