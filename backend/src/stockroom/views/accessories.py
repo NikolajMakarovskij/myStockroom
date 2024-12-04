@@ -22,12 +22,28 @@ from stockroom.stock.stock import AccStock
 class StockAccView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_StockAccView_
+    List of stockroom accessories instances
+
+    Other parameters:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (StockAcc): _base model for list_
+    """
+
     permission_required = "stockroom.view_stockacc"
     paginate_by = DataMixin.paginate
     template_name = "stock/stock_acc_list.html"
     model = StockAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -42,6 +58,12 @@ class StockAccView(
         return context
 
     def get_queryset(self):
+        """_queryset_
+
+        Returns:
+            object_list (StockAcc): _description_
+        """
+
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -80,12 +102,28 @@ class StockAccView(
 class StockAccCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_StockAccCategoriesView_
+    List of stockroom accessories instances filtered by categories
+
+    Other parameters:
+        template_name (str): _path to template_
+        permission_required (str): _permissions_
+        paginate_by (int, optional): _add pagination_
+        model (StockAcc): _base model for list_
+    """
+
     permission_required = "stockroom.view_stockacc"
     paginate_by = DataMixin.paginate
     template_name = "stock/stock_acc_list.html"
     model = StockAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -100,6 +138,12 @@ class StockAccCategoriesView(
         return context
 
     def get_queryset(self):
+        """_queryset_
+
+        Returns:
+            object_list (StockAcc): _filtered by categories_
+        """
+
         object_list = (
             StockAcc.objects.filter(categories__slug=self.kwargs["category_slug"])
             .select_related(
@@ -113,7 +157,20 @@ class StockAccCategoriesView(
 
 
 class ExportStockAccessories(View):
+    """_ExportAccessories_
+    Returns an Excel file with all records of stockroom accessories from the database
+    """
+
     def get(self, *args, **kwargs):
+        """extracts all records of stockroom accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+
+        Other parameters:
+            resource (StockAccResource): _dict of accessories for export into an xlsx file_
+        """
+
         resource = StockAccResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -127,7 +184,17 @@ class ExportStockAccessories(View):
 
 
 class ExportStockAccessoriesCategory(View):
+    """_ExportAccessoriesCategory_
+    Returns an Excel file with filtered records by categories of stockroom accessories from the database
+    """
+
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to stockroom accessories list_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -138,6 +205,15 @@ class ExportStockAccessoriesCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
+        """extracts filtered records by categories of stockroom accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+
+        Other parameters:
+            resource (AccessoriesResource): _dict of stockroom accessories for export into an xlsx file_
+        """
+
         queryset = StockAcc.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -154,7 +230,20 @@ class ExportStockAccessoriesCategory(View):
 
 
 class ExportConsumptionAccessories(View):
+    """_ExportConsumptionAccessories_
+    Returns an Excel file with all records of consumption of stockroom accessories from the database
+    """
+
     def get(self, *args, **kwargs):
+        """
+        extracts all records of consumption of stockroom accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+
+        Other parameters:
+            resource (AccessoriesConsumptionResource): _dict of accessories for export into an xlsx file_
+        """
         resource = AccessoriesConsumptionResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -168,7 +257,17 @@ class ExportConsumptionAccessories(View):
 
 
 class ExportConsumptionAccessoriesCategory(View):
+    """_ExportConsumptionAccessoriesCategory_
+    Returns an Excel file with filtered records by categories of consumption of stockroom accessories from the database
+    """
+
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to stockroom accessories list_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -179,6 +278,16 @@ class ExportConsumptionAccessoriesCategory(View):
         return context
 
     def get(self, queryset=None, *args, **kwargs):
+        """
+        extracts filtered records by categories of consumption of stockroom accessories from the database and converts them into an xlsx file
+
+        Returns:
+            response (HttpResponse): _returns xlsx file_
+
+        Other parameters:
+            resource (AccessoriesConsumptionResource): _dict of accessories for export into an xlsx file_
+        """
+
         queryset = (
             HistoryAcc.objects.filter(categories__slug=self.kwargs["category_slug"])
             .order_by("stock_model")
@@ -200,12 +309,27 @@ class ExportConsumptionAccessoriesCategory(View):
 class HistoryAccView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_HistoryAccView_
+    Returns a list of all records of history of stockroom accessories from the database
+
+    Other parameters:
+        paginate_by (int): _number of records per page_
+        template_name (str): _name of the template_
+        model (HistoryAcc): _model of the HistoryAcc_
+    """
+
     permission_required = "stockroom.view_historyacc"
     paginate_by = DataMixin.paginate
     template_name = "stock/history_acc_list.html"
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to stockroom accessories list, list of categories_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -220,6 +344,12 @@ class HistoryAccView(
         return context
 
     def get_queryset(self):
+        """_returns queryset_
+
+        Returns:
+            object_list (HistoryAcc): _returns queryset_
+        """
+
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -237,12 +367,27 @@ class HistoryAccView(
 class HistoryAccCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_HistoryAccCategoriesView_
+    Returns a list of with filtered records by categories of history of stockroom accessories from the database
+
+    Other parameters:
+        paginate_by (int): _number of records per page_
+        template_name (str): _name of the template_
+        model (HistoryAcc): _model of the HistoryAcc_
+    """
+
     permission_required = "stockroom.view_historyacc"
     paginate_by = DataMixin.paginate
     template_name = "stock/history_acc_list.html"
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to history of stockroom accessories list_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -257,6 +402,16 @@ class HistoryAccCategoriesView(
         return context
 
     def get_queryset(self):
+        """_returns queryset_
+
+        Returns:
+            object_list (HistoryAcc): _returns queryset_
+        """
+
+        query = self.request.GET.get("q")
+        if not query:
+            query = ""
+
         object_list = HistoryAcc.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -266,12 +421,27 @@ class HistoryAccCategoriesView(
 class HistoryConsumptionAccView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_HistoryConsumptionAccView_
+    Returns a list of with all records of consumption of stockroom accessories from the database
+
+    Other parameters:
+        paginate_by (int): _number of records per page_
+        template_name (str): _name of the template_
+        model (HistoryAcc): _model of the HistoryAcc_
+    """
+
     permission_required = "stockroom.view_history"
     paginate_by = DataMixin.paginate
     template_name = "stock/history_consumption_acc_list.html"
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom accessories list_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -286,6 +456,12 @@ class HistoryConsumptionAccView(
         return context
 
     def get_queryset(self):
+        """_returns queryset_
+
+        Returns:
+            object_list (HistoryAcc): _returns queryset_
+        """
+
         query = self.request.GET.get("q")
         if not query:
             query = ""
@@ -307,12 +483,27 @@ class HistoryConsumptionAccView(
 class HistoryAccConsumptionCategoriesView(
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
 ):
+    """_HistoryAccConsumptionCategoriesView_
+    Returns a list of with filtered records by categories of consumption of stockroom accessories from the database
+
+    Other parameters:
+        paginate_by (int): _number of records per page_
+        template_name (str): _name of the template_
+        model (HistoryAcc): _model of the HistoryAcc_
+    """
+
     permission_required = "stockroom.view_historyacc"
     paginate_by = DataMixin.paginate
     template_name = "stock/history_consumption_acc_list.html"
     model = HistoryAcc
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """_returns context_ The function is used to return a list of categories
+
+        Returns:
+            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom accessories list_
+        """
+
         cat_acc = cache.get("cat_acc")
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
@@ -327,6 +518,12 @@ class HistoryAccConsumptionCategoriesView(
         return context
 
     def get_queryset(self):
+        """_returns queryset_
+
+        Returns:
+            object_list (HistoryAcc): _returns queryset_
+        """
+
         object_list = (
             HistoryAcc.objects.filter(categories__slug=self.kwargs["category_slug"])
             .order_by("stock_model")
@@ -340,6 +537,22 @@ class HistoryAccConsumptionCategoriesView(
 @login_required
 @permission_required("stockroom.add_accessories_to_stock", raise_exception=True)
 def stock_add_accessories(request, accessories_id):
+    """
+    adds accessories to the stockroom
+
+    Args:
+        request (request): _description_
+        accessories_id (UUID): _id of the accessories_
+
+    Returns:
+        redirect (request): _stockroom:stock_acc_list_
+
+    Other parameters:
+        username (str): _username of the user model_
+        accessories (Accessories | 404): _accessories model instance_
+        stock (AccStock): _stock model_
+        form (StockAddForm): _form for adding accessories to the stock_
+    """
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
     stock = AccStock
@@ -373,6 +586,22 @@ def stock_add_accessories(request, accessories_id):
 @login_required
 @permission_required("stockroom.remove_accessories_from_stock", raise_exception=True)
 def stock_remove_accessories(request, accessories_id):
+    """
+    remove accessories from the stockroom
+
+    Args:
+        request (request): _description_
+        accessories_id (UUID): _id of the accessories_
+
+    Returns:
+        redirect (request): _stockroom:stock_acc_list_
+
+    Other parameters:
+        username (str): _username of the user model_
+        accessories (Accessories | 404): _accessories model instance_
+        stock (AccStock): _stock model_
+        form (remove_from_stock): _form for removing accessories to the stock_
+    """
     username = request.user.username
     accessories = get_object_or_404(Accessories, id=accessories_id)
     stock = AccStock
@@ -393,6 +622,24 @@ def stock_remove_accessories(request, accessories_id):
 @login_required
 @permission_required("stockroom.add_accessories_to_device", raise_exception=True)
 def device_add_accessories(request, accessories_id):
+    """
+    adds accessories to the device
+
+    Args:
+        request (request): _description_
+        accessories_id (UUID): _id of the accessories_
+
+    Returns:
+        redirect (request): _stockroom:stock_acc_list_
+
+    Other parameters:
+        username (str): _username of the user model_
+        get_device_id (UUID): _id of the device_
+        accessories (Accessories | 404): _accessories model instance_
+        stock (AccStock): _stock model_
+        form (ConsumableInstallForm): _form for adding accessories to the device_
+    """
+
     username = request.user.username
     get_device_id = request.session["get_device_id"]
     stock = AccStock
