@@ -8,10 +8,8 @@ class DepartamentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Departament
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -19,10 +17,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -31,10 +27,8 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -42,10 +36,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Employee
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
 
 
 class EmployeeListSerializer(serializers.ModelSerializer):
@@ -55,7 +47,5 @@ class EmployeeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Employee
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}

@@ -44,7 +44,6 @@ class DeviceListSerializer(serializers.ModelSerializer):
 
     def get_accounting(self, obj=Meta.model):
         from decommission.models import Decommission, Disposal
-        from stockroom.models.devices import StockDev
 
         if not StockDev.objects.filter(stock_model=obj.id):
             if not Decommission.objects.filter(stock_model=obj.id):

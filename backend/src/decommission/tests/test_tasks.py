@@ -36,8 +36,8 @@ def test_decom_add_devices(client):
     assert Decommission.objects.count() == 1
     assert CategoryDec.objects.count() == 1
     assert HistoryDev.objects.count() == 2
-    assert test_get_decom.categories.name == "my_category"  # type: ignore[attr-defined, union-attr]
-    assert test_get_decom.categories.slug == "my_category"  # type: ignore[attr-defined, union-attr]
+    assert test_get_decom.categories.name == "my_category"
+    assert test_get_decom.categories.slug == "my_category"
     assert test_get_decom.stock_model.name == "my_consumable"
     assert test_get_decom.stock_model.quantity == 1
     assert test_get_decom.date == datetime.date.today()
@@ -140,8 +140,8 @@ def test_disp_add_devices(client):
     assert Disposal.objects.count() == 1
     assert CategoryDis.objects.count() == 1
     assert HistoryDev.objects.count() == 3
-    assert test_get_disp.categories.name == "my_category"  # type: ignore[attr-defined, union-attr]
-    assert test_get_disp.categories.slug == "my_category"  # type: ignore[attr-defined, union-attr]
+    assert test_get_disp.categories.name == "my_category"
+    assert test_get_disp.categories.slug == "my_category"
     assert test_get_disp.stock_model.name == "my_consumable"
     assert test_get_disp.stock_model.quantity == 1
     assert test_get_disp.date == datetime.date.today()

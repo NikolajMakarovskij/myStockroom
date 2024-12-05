@@ -46,8 +46,8 @@ def test_stock_dev_create_history():
     test_history = HistoryDev.objects.get(stock_model="my_consumable")
 
     assert HistoryDev.objects.count() == 1
-    assert test_history.categories.name == "my_category"  # type: ignore[union-attr]
-    assert test_history.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert test_history.categories.name == "my_category"
+    assert test_history.categories.slug == "my_category"
     assert test_history.stock_model == "my_consumable"
     assert test_history.quantity == 1
     assert test_history.dateInstall == datetime.date.today()
@@ -77,16 +77,16 @@ def test_stock_add_devices(client):
 
     assert StockDev.objects.count() == 1
     assert HistoryDev.objects.count() == 1
-    assert test_get_stock.categories.name == "my_category"  # type: ignore[union-attr]
-    assert test_get_stock.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert test_get_stock.categories.name == "my_category"
+    assert test_get_stock.categories.slug == "my_category"
     assert test_get_stock.stock_model.name == "my_consumable"
     assert test_get_stock.stock_model.quantity == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_get_stock.dateAddToStock == datetime.date.today()
     assert test_get_history.stock_model == "my_consumable"
-    assert test_get_history.categories.name == "my_category"  # type: ignore[union-attr]
-    assert test_get_history.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert test_get_history.categories.name == "my_category"
+    assert test_get_history.categories.slug == "my_category"
     assert test_get_history.dateInstall == datetime.date.today()
     assert test_get_history.quantity == 5
     assert test_get_history.user == "admin"
@@ -172,6 +172,7 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = "admin"
+    status_choice = "Удаление"
     DevStock.add_to_stock_device(
         model_id=devices.id,
         quantity=quantity,
@@ -180,7 +181,7 @@ def test_stock_dev_remove_device(client):
         username=username,
     )
     DevStock.remove_device_from_stock(
-        model_id=devices.id, quantity=0, username=username
+        model_id=devices.id, quantity=0, username=username, status_choice=status_choice
     )
     test_history = HistoryDev.objects.get(status="Удаление")
 
@@ -219,5 +220,5 @@ def test_stock_move_device(client):
 
     assert StockDev.objects.count() == 1
     assert HistoryDev.objects.count() == 2
-    assert test_stock.stock_model.workplace.name == "pc-004-r"  # type: ignore[union-attr]
+    assert test_stock.stock_model.workplace.name == "pc-004-r"
     assert test_history.status == "Перемещение на рабочее место pc-004-r"
