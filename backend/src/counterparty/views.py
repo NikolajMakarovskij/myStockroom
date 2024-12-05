@@ -21,6 +21,7 @@ class CounterpartyView(
         template_name (str): _path to template_
         permission_required (str): _permissions_
     """
+
     template_name = "counterparty/counterparty.html"
     permission_required = "counterparty.view_manufacturer"
 
@@ -49,6 +50,7 @@ class ManufacturerListView(
         paginate_by (int, optional): _add pagination_
         model (Manufacturer): _base model for list_
     """
+
     permission_required = "counterparty.view_manufacturer"
     paginate_by = DataMixin.paginate
     model = Manufacturer
@@ -70,7 +72,7 @@ class ManufacturerListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Accounting): _description_
@@ -97,6 +99,7 @@ class ManufacturerDetailView(
         permission_required (str): _permissions_
         model (Manufacturer): _base model for list_
     """
+
     permission_required = "counterparty.view_manufacturer"
     model = Manufacturer
     template_name = "counterparty/manufacturer_detail.html"
@@ -132,6 +135,7 @@ class ManufacturerCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "counterparty.add_manufacturer"
     model = Manufacturer
     form_class = ManufacturerForm
@@ -168,6 +172,7 @@ class ManufacturerUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "counterparty.change_manufacturer"
     model = Manufacturer
     template_name = "Forms/add.html"
@@ -190,7 +195,7 @@ class ManufacturerUpdate(
         return context
 
 
-class ManufacturerDelete( # type: ignore[misc]
+class ManufacturerDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_ManufacturerDelete_
@@ -204,6 +209,7 @@ class ManufacturerDelete( # type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "counterparty.delete_manufacturer"
     model = Manufacturer
     template_name = "Forms/delete.html"

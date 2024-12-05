@@ -1,8 +1,12 @@
 from django.urls import path, re_path
 
 from .views import (
-    SignatureCreate, SignatureDelete, SignatureDetailView, SignatureListView,
-    SignatureUpdate,)
+    SignatureCreate,
+    SignatureDelete,
+    SignatureDetailView,
+    SignatureListView,
+    SignatureUpdate,
+)
 
 urlpatterns = [
     # ЭЦП

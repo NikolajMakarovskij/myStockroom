@@ -16,8 +16,11 @@ from stockroom.forms import StockAddForm
 from .forms import AccessoriesForm, ConsumablesForm
 from .models import AccCat, Accessories, Categories, Consumables
 from .serializers import (
-    AccCatModelSerializer, AccessoriesModelSerializer, CategoriesModelSerializer,
-    ConsumablesModelSerializer,)
+    AccCatModelSerializer,
+    AccessoriesModelSerializer,
+    CategoriesModelSerializer,
+    ConsumablesModelSerializer,
+)
 
 
 # Расходники главная
@@ -60,6 +63,7 @@ class ConsumablesView(
         paginate_by (int, optional): _add pagination_
         model (Consumables): _base model for list_
     """
+
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
     paginate_by = DataMixin.paginate
@@ -86,7 +90,7 @@ class ConsumablesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Consumables): _description_
@@ -129,6 +133,7 @@ class ConsumablesCategoriesView(
         paginate_by (int, optional): _add pagination_
         model (Consumables): _base model for list_
     """
+
     permission_required = "consumables.view_consumables"
     template_name = "consumables/consumables_list.html"
     paginate_by = DataMixin.paginate
@@ -155,7 +160,7 @@ class ConsumablesCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Consumables): _filtered by categories_
@@ -170,11 +175,12 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_ConsumablesRestView_ returns consumables
 
     Other parameters:
-        queryset (Consumables): 
-        serializer_class (ConsumablesModelSerializer): 
+        queryset (Consumables):
+        serializer_class (ConsumablesModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Consumables.objects.all()
     serializer_class = ConsumablesModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
@@ -194,11 +200,12 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_ConsumablesRestView_ returns categories of consumables
 
     Other parameters:
-        queryset (Categories): 
-        serializer_class (CategoriesModelSerializer): 
+        queryset (Categories):
+        serializer_class (CategoriesModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
     success_message = "Категория %(name)s успешно создана"
@@ -232,6 +239,7 @@ class ConsumablesDetailView(
         model (Consumables): _base model for list_
         form_class (StockAddForm): _form for adding consumables to the stock_
     """
+
     permission_required = "consumables.view_consumables"
     model = Consumables
     template_name = "consumables/consumables_detail.html"
@@ -268,6 +276,7 @@ class ConsumablesCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.add_consumables"
     model = Consumables
     form_class = ConsumablesForm
@@ -303,6 +312,7 @@ class ConsumablesUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.change_consumables"
     model = Consumables
     template_name = "Forms/add.html"
@@ -322,7 +332,7 @@ class ConsumablesUpdate(
         return context
 
 
-class ConsumablesDelete( # type: ignore[misc]
+class ConsumablesDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_ConsumablesDelete_
@@ -336,6 +346,7 @@ class ConsumablesDelete( # type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.delete_consumables"
     model = Consumables
     template_name = "Forms/delete.html"
@@ -361,12 +372,13 @@ class ExportConsumable(View):
     """_ExportConsumable_
     Returns an Excel file with all records of consumables from the database
     """
+
     def get(self, *args, **kwargs):
         """extracts all records of consumables from the database and converts them into an xlsx file
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (ConsumableResource): _dict of consumables for export into an xlsx file_
         """
@@ -386,6 +398,7 @@ class ExportConsumableCategory(View):
     """_ExportConsumableCategory_
     Returns an Excel file with filtered records by categories of consumables from the database
     """
+
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_ The function is used to return a list of categories
 
@@ -406,7 +419,7 @@ class ExportConsumableCategory(View):
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (ConsumableResource): _dict of consumables for export into an xlsx file_
         """
@@ -438,6 +451,7 @@ class AccessoriesView(
         paginate_by (int, optional): _add pagination_
         model (Accessories): _base model for list_
     """
+
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
     paginate_by = DataMixin.paginate
@@ -464,7 +478,7 @@ class AccessoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Accessories): _description_
@@ -507,6 +521,7 @@ class AccessoriesCategoriesView(
         paginate_by (int, optional): _add pagination_
         model (Accessories): _base model for list_
     """
+
     permission_required = "consumables.view_accessories"
     template_name = "consumables/accessories_list.html"
     paginate_by = DataMixin.paginate
@@ -533,7 +548,7 @@ class AccessoriesCategoriesView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Accessories): _filtered by categories_
@@ -548,11 +563,12 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_AccessoriesRestView_ returns accessories
 
     Other parameters:
-        queryset (Accessories): 
-        serializer_class (AccessoriesModelSerializer): 
+        queryset (Accessories):
+        serializer_class (AccessoriesModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Accessories.objects.all()
     serializer_class = AccessoriesModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
@@ -565,11 +581,12 @@ class AccCatRestView(
     """_AccCatRestView_ returns categories of accessories
 
     Other parameters:
-        queryset (AccCat): 
-        serializer_class (AccCatModelSerializer): 
+        queryset (AccCat):
+        serializer_class (AccCatModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = AccCat.objects.all()
     serializer_class = AccCatModelSerializer
     success_message = "Категория %(name)s успешно создана"
@@ -592,6 +609,7 @@ class AccessoriesDetailView(
         model (Accessories): _base model for list_
         form_class (StockAddForm): _form for adding accessories to the stock_
     """
+
     permission_required = "consumables.view_accessories"
     model = Accessories
     template_name = "consumables/accessories_detail.html"
@@ -628,6 +646,7 @@ class AccessoriesCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.add_accessories"
     model = Accessories
     form_class = AccessoriesForm
@@ -663,6 +682,7 @@ class AccessoriesUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.change_accessories"
     model = Accessories
     template_name = "Forms/add.html"
@@ -682,9 +702,9 @@ class AccessoriesUpdate(
         return context
 
 
-class AccessoriesDelete( # type: ignore[misc]
+class AccessoriesDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-    ):
+):
     """_AccessoriesDelete_
     Delete of accessories instances
 
@@ -696,6 +716,7 @@ class AccessoriesDelete( # type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "consumables.delete_accessories"
     model = Accessories
     template_name = "Forms/delete.html"
@@ -721,12 +742,13 @@ class ExportAccessories(View):
     """_ExportAccessories_
     Returns an Excel file with all records of accessories from the database
     """
+
     def get(self, *args, **kwargs):
         """extracts all records of accessories from the database and converts them into an xlsx file
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (AccessoriesResource): _dict of accessories for export into an xlsx file_
         """
@@ -746,6 +768,7 @@ class ExportAccessoriesCategory(View):
     """_ExportAccessoriesCategory_
     Returns an Excel file with filtered records by categories of accessories from the database
     """
+
     def get_context_data(self, *, object_list=None, **kwargs):
         """_returns context_ The function is used to return a list of categories
 
@@ -766,7 +789,7 @@ class ExportAccessoriesCategory(View):
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (AccessoriesResource): _dict of accessories for export into an xlsx file_
         """

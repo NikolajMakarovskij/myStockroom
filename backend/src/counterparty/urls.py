@@ -1,8 +1,13 @@
 from django.urls import path, re_path
 
 from .views import (
-    CounterpartyView, ManufacturerCreate, ManufacturerDelete, ManufacturerDetailView,
-    ManufacturerListView, ManufacturerUpdate,)
+    CounterpartyView,
+    ManufacturerCreate,
+    ManufacturerDelete,
+    ManufacturerDetailView,
+    ManufacturerListView,
+    ManufacturerUpdate,
+)
 
 urlpatterns = [
     path("", CounterpartyView.as_view(), name="counterparty"),

@@ -5,7 +5,10 @@ import pytest
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from stockroom.stock.stock import AccStock
 from stockroom.tests.test_stock.test_stock import (
-    add_consumables_in_devices, create_accessories, create_session,)
+    add_consumables_in_devices,
+    create_accessories,
+    create_session,
+)
 
 
 @pytest.mark.django_db

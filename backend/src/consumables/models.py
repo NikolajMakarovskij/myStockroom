@@ -16,7 +16,9 @@ class Categories(ModelMixin, models.Model):
         Categories (Categories): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -48,8 +50,8 @@ class Categories(ModelMixin, models.Model):
         return reverse("consumables:category", kwargs={"category_slug": self.slug})
 
     class Meta:
-        """_Categories Meta_: _model settings_
-        """
+        """_Categories Meta_: _model settings_"""
+
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
@@ -157,21 +159,21 @@ class Consumables(ModelMixin, models.Model):
         return reverse("consumables:consumables-detail", args=[str(self.id)])
 
     def get_difference(self) -> int:
-        """_Consumables get_difference_: 
+        """_Consumables get_difference_:
         Returns the difference between the quantity on stock and in balance
 
         Returns:
             difference (int): _self.quantity - sum(self.consumable.quantity)_
         """
         quantity_all = 0
-        for each in self.consumable.all(): # type: ignore[attr-defined]
+        for each in self.consumable.all():  # type: ignore[attr-defined]
             quantity_all += each.quantity
         difference = self.quantity - quantity_all
         return difference
 
     class Meta:
-        """_Consumables Meta_: _model settings_
-        """
+        """_Consumables Meta_: _model settings_"""
+
         verbose_name = "Расходник"
         verbose_name_plural = "Расходники"
         ordering = ["name", "categories"]
@@ -190,7 +192,9 @@ class AccCat(ModelMixin, models.Model):
         AccCat (AccCat): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -224,8 +228,8 @@ class AccCat(ModelMixin, models.Model):
         )
 
     class Meta:
-        """_AccCat Meta_: _model settings_
-        """
+        """_AccCat Meta_: _model settings_"""
+
         verbose_name = "Группа комплектующих"
         verbose_name_plural = "Группы комплектующих"
         ordering = ["name"]
@@ -333,21 +337,21 @@ class Accessories(ModelMixin, models.Model):
         return reverse("consumables:accessories-detail", args=[str(self.id)])
 
     def get_difference(self) -> int:
-        """_Accessories get_difference_: 
+        """_Accessories get_difference_:
         Returns the difference between the quantity on stock and in balance
 
         Returns:
             difference (int): _self.quantity - sum(self.accessories.quantity)_
         """
         quantity_all = 0
-        for each in self.accessories.all(): # type: ignore[attr-defined]
+        for each in self.accessories.all():  # type: ignore[attr-defined]
             quantity_all += each.quantity
         difference = self.quantity - quantity_all
         return difference
 
     class Meta:
-        """_Accessories Meta_: _model settings_
-        """
+        """_Accessories Meta_: _model settings_"""
+
         verbose_name = "Комплектующее"
         verbose_name_plural = "Комплектующие"
         ordering = ["name", "categories"]

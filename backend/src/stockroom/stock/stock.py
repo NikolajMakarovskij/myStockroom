@@ -10,6 +10,14 @@ from workplace.models import Workplace
 
 
 class ConStock(BaseStock):
+    """Class with stockroom consumables methods
+
+    Other parameters:
+        base_model (Consumables): _description_
+        stock_model (Stockroom): _description_
+        stock_category (StockCat): _description_
+        history_model (History): _description_
+    """
     base_model = Consumables
     stock_model = Stockroom
     stock_category = StockCat
@@ -17,6 +25,14 @@ class ConStock(BaseStock):
 
 
 class AccStock(BaseStock):
+    """Class with stockroom accessories methods
+
+    Other parameters:
+        base_model (Accessories): _description_
+        stock_model (StockAcc): _description_
+        stock_category (CategoryAcc): _description_
+        history_model (HistoryAcc): _description_
+    """
     base_model = Accessories
     stock_model = StockAcc
     stock_category = CategoryAcc
@@ -24,18 +40,37 @@ class AccStock(BaseStock):
 
 
 class DevStock(BaseStock):
+    """Class with stockroom device methods
+
+    Other parameters:
+        base_model (Device): _description_
+        stock_model (StockDev): _description_
+        stock_category (CategoryDev): _description_
+        history_model (HistoryDev): _description_
+    """
+
     base_model = Device
     stock_model = StockDev
     stock_category = CategoryDev
     history_model = HistoryDev
 
-    """Class with stock methods for device"""
 
     @classmethod
     def create_history_device(
         cls, model_id: str, quantity: int, username: str, status_choice: str, note: str
     ) -> HistoryDev:
-        """Creating an entry in the history of stock_model"""
+        """Creating an entry in the history of stockroom device model
+
+        Args:
+            model_id (str): _stockroom model id_
+            quantity (int): _description_
+            username (str): _getting from session_
+            note (str): _description_
+            status_choice (str): _description_
+
+        Returns:
+            History (HistoryDev): _Adding instance in database_
+        """
         model = cls.base_model.objects.get(id=model_id)
         category = cls.add_category(model_id)
         if not note:
@@ -56,10 +91,17 @@ class DevStock(BaseStock):
 
     @classmethod
     def add_to_stock_device(
-        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None
+        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=""
     ) -> None:
-        """
-        Add a stock_model to the stock or update its quantity.
+
+        """Add a stockroom device to the stock or update it quantity.
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            quantity (int): _description_
+            number_rack (int): _description_
+            number_shelf (int): _description_
+            username (str): _getting from session_
         """
 
         model = cls.base_model.objects.get(id=model_id)
@@ -91,24 +133,33 @@ class DevStock(BaseStock):
 
     @classmethod
     def remove_device_from_stock(
-        cls, model_id: str, quantity=0, username=None, status_choice="Удаление"
+        cls, model_id: str, quantity=0, username=""
     ) -> None:
-        """
-        Delete device from the stock
+        """Remove device from the stock
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            quantity (int): _description_
+            username (str): _getting from session_
         """
         model_instance = cls.stock_model.objects.filter(stock_model=model_id)
         if model_instance:
             model_instance.delete()
             cls.create_history_device(
-                model_id, quantity, username, status_choice, note=""
+                model_id, quantity, username, status_choice="Удаление", note=""
             )
 
     @classmethod
     def move_device(
-        cls, model_id: str, workplace_id: str, username=None, note=None
+        cls, model_id: str, workplace_id: str, username="", note=""
     ) -> None:
-        """
-        Move device
+        """Move device
+
+        Args:
+            model_id (str): _stockroom model id_ 
+            workplace_id (str): _workplace model id_
+            username (str): _description_
+            note (str): _getting from session_
         """
         model_instance = cls.base_model.objects.filter(id=model_id)
         stock_model_instance = cls.stock_model.objects.filter(stock_model=model_id)

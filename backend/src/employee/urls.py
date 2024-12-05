@@ -1,10 +1,23 @@
 from django.urls import path, re_path
 
 from .views import (
-    DepartamentCreate, DepartamentDelete, DepartamentDetailView, DepartamentListView,
-    DepartamentUpdate, EmployeeCreate, EmployeeDelete, EmployeeDetailView,
-    EmployeeListView, EmployeeUpdate, IndexView, PostCreate, PostDelete, PostDetailView,
-    PostListView, PostUpdate,)
+    DepartamentCreate,
+    DepartamentDelete,
+    DepartamentDetailView,
+    DepartamentListView,
+    DepartamentUpdate,
+    EmployeeCreate,
+    EmployeeDelete,
+    EmployeeDetailView,
+    EmployeeListView,
+    EmployeeUpdate,
+    IndexView,
+    PostCreate,
+    PostDelete,
+    PostDetailView,
+    PostListView,
+    PostUpdate,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="employee_index"),

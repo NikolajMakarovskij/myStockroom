@@ -18,6 +18,7 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
         template_name (str): _path to template_
         permission_required (str): _permissions_
     """
+
     permission_required = "employee.view_employee"
     template_name = "employee/employee_index.html"
 
@@ -46,6 +47,7 @@ class EmployeeListView(
         paginate_by (int, optional): _add pagination_
         model (Employee): _base model for list_
     """
+
     permission_required = "employee.view_employee"
     paginate_by = DataMixin.paginate
     model = Employee
@@ -67,7 +69,7 @@ class EmployeeListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Employee): _description_
@@ -103,6 +105,7 @@ class EmployeeDetailView(
         permission_required (str): _permissions_
         model (Employee): _base model for list_
     """
+
     permission_required = "employee.view_employee"
     paginate_by = DataMixin.paginate
     model = Employee
@@ -139,6 +142,7 @@ class EmployeeCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.add_employee"
     model = Employee
     form_class = EmployeeForm
@@ -175,6 +179,7 @@ class EmployeeUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.change_employee"
     model = Employee
     template_name = "Forms/add.html"
@@ -197,7 +202,7 @@ class EmployeeUpdate(
         return context
 
 
-class EmployeeDelete(# type: ignore[misc]
+class EmployeeDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_EmployeeDelete_
@@ -211,6 +216,7 @@ class EmployeeDelete(# type: ignore[misc]
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.delete_employee"
     model = Employee
     template_name = "Forms/delete.html"
@@ -245,6 +251,7 @@ class PostListView(
         paginate_by (int, optional): _add pagination_
         model (Post: _base model for list_
     """
+
     permission_required = "employee.view_post"
     paginate_by = DataMixin.paginate
     model = Post
@@ -266,7 +273,7 @@ class PostListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Post): _description_
@@ -328,6 +335,7 @@ class PostCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.add_post"
     model = Post
     form_class = PostForm
@@ -364,6 +372,7 @@ class PostUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.change_post"
     model = Post
     template_name = "Forms/add.html"
@@ -386,7 +395,7 @@ class PostUpdate(
         return context
 
 
-class PostDelete(# type: ignore[misc]
+class PostDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_PostDelete_
@@ -457,7 +466,7 @@ class DepartamentListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Departament): _description_
@@ -517,6 +526,7 @@ class DepartamentCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = "employee.add_departament"
     model = Departament
     form_class = DepartamentForm
@@ -577,7 +587,7 @@ class DepartamentUpdate(
         return context
 
 
-class DepartamentDelete( # type: ignore[misc]
+class DepartamentDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_DepartamentDelete_

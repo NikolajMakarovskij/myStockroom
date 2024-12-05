@@ -1,10 +1,19 @@
 from django.urls import path
 
 from .views import (
-    DecomCategoriesView, DecommissionView, DispCategoriesView, DisposalView,
-    ExportDecomDevice, ExportDecomDeviceCategory, ExportDispDevice,
-    ExportDispDeviceCategory, add_decommission, add_disposal, remove_decommission,
-    remove_disposal,)
+    DecomCategoriesView,
+    DecommissionView,
+    DispCategoriesView,
+    DisposalView,
+    ExportDecomDevice,
+    ExportDecomDeviceCategory,
+    ExportDispDevice,
+    ExportDispDeviceCategory,
+    add_decommission,
+    add_disposal,
+    remove_decommission,
+    remove_disposal,
+)
 
 urlpatterns = [
     # Decommission

@@ -9,10 +9,13 @@ from device.models import Device
 
 # Devices
 class StockDev(ModelMixin, models.Model):
-    """
+    """_StockDev_:
     Extension of the device model for the warehouse.
-    The nomenclature of warehouse and directory stock_model may differ,
+    The nomenclature of warehouse and directory stock_model may differ;
     however, the number and placement of each device must match
+
+    Returns:
+        StockDev (StockDev): The stockroom device model
     """
 
     stock_model: models.OneToOneField = models.OneToOneField(
@@ -34,7 +37,9 @@ class StockDev(ModelMixin, models.Model):
     dateAddToStock: models.DateField = models.DateField(
         null=True, blank=True, verbose_name="Дата поступления на склад"
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     rack: models.IntegerField = models.IntegerField(
         blank=True,
         null=True,
@@ -46,6 +51,8 @@ class StockDev(ModelMixin, models.Model):
     )
 
     class Meta:
+        """_StockDev_: _model settings_"""
+
         verbose_name = "Склад устройств"
         verbose_name_plural = "Склад устройств"
         ordering = [
@@ -62,11 +69,16 @@ class StockDev(ModelMixin, models.Model):
 
 
 class CategoryDev(ModelMixin, models.Model):
-    """
-    Group model for stock_model
+    """_CategoryDev_:
+    stockroom categories for device
+
+    Returns:
+        CategoryDev (CategoryDev): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -79,22 +91,40 @@ class CategoryDev(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_CategoryDev __str__ _: _returns name of model_
+
+        Returns:
+            CategoryDev__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_CategoryDev get self url_
+
+        Returns:
+            CategoryDev__slug (str): _returns url by slug_
+
+        Other parameters:
+            kwargs (str): self.slug
+        """
         return reverse(
             "stockroom:devices_category", kwargs={"category_slug": self.slug}
         )
 
     class Meta:
+        """_StockCat Meta_: _model settings_"""
+
         verbose_name = "Группа устройств"
         verbose_name_plural = "Группы устройств"
         ordering = ["name"]
 
 
 class HistoryDev(models.Model):
-    """
-    Model for storing device usage history
+    """_HistoryDev_:
+    Model for storing the history of the use of device
+
+    Returns:
+        HistoryDev (HistoryDev): The stockroom model
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -119,7 +149,9 @@ class HistoryDev(models.Model):
         default=0,
         verbose_name="Количество",
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     user: models.CharField = models.CharField(
         blank=True,
         default=0,
@@ -139,6 +171,8 @@ class HistoryDev(models.Model):
     )
 
     class Meta:
+        """_HistoryDev Meta_: _model settings_"""
+
         verbose_name = "История устройств"
         verbose_name_plural = "История устройств"
         ordering = ["-dateInstall", "stock_model"]

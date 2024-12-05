@@ -20,7 +20,6 @@ def create_session(client):
 def create_consumable() -> Model:
     """Service function. Creates a category and a stock_model"""
 
-
     if Consumables.objects.filter(name="my_consumable").aexists():
         Categories.objects.create(name="my_category", slug="my_category")
         Consumables.objects.create(
@@ -60,9 +59,10 @@ def create_devices() -> Model:
     return get_device
 
 
-def add_consumables_in_devices(consumable: Model, accessories: Model) -> QuerySet[Device, Device]:
+def add_consumables_in_devices(
+    consumable: Model, accessories: Model
+) -> QuerySet[Device, Device]:
     """Service function. Creates a category, stock_model and stock_model. Return stock_model"""
-    
 
     Device.objects.bulk_create(
         [
@@ -80,6 +80,6 @@ def add_consumables_in_devices(consumable: Model, accessories: Model) -> QuerySe
         pass
     else:
         for device in Device.objects.all():
-            device.accessories.set([accessories.id]) # type: ignore[attr-defined]
+            device.accessories.set([accessories.id])  # type: ignore[attr-defined]
     get_devices = Device.objects.all()
     return get_devices

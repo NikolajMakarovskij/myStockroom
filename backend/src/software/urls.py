@@ -1,8 +1,18 @@
 from django.urls import path, re_path
 
 from .views import (
-    IndexView, OSCreate, OSDelete, OSDetailView, OSListView, OSUpdate, SoftwareCreate,
-    SoftwareDelete, SoftwareDetailView, SoftwareListView, SoftwareUpdate,)
+    IndexView,
+    OSCreate,
+    OSDelete,
+    OSDetailView,
+    OSListView,
+    OSUpdate,
+    SoftwareCreate,
+    SoftwareDelete,
+    SoftwareDetailView,
+    SoftwareListView,
+    SoftwareUpdate,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="software_index"),

@@ -11,7 +11,11 @@ from rest_framework import viewsets
 
 from core.utils import DataMixin, FormMessageMixin
 from stockroom.forms import (
-    AddHistoryDeviceForm, ConsumableInstallForm, MoveDeviceForm, StockAddForm,)
+    AddHistoryDeviceForm,
+    ConsumableInstallForm,
+    MoveDeviceForm,
+    StockAddForm,
+)
 
 from .forms import DeviceForm
 from .models import Device, DeviceCat
@@ -32,6 +36,7 @@ class DeviceListView(
         paginate_by (int, optional): _add pagination_
         model (Device): _base model for list_
     """
+
     permission_required = ("device.view_device",)
     paginate_by = DataMixin.paginate
     model = Device
@@ -58,7 +63,7 @@ class DeviceListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Device): _description_
@@ -101,6 +106,7 @@ class DeviceCategoryListView(
         paginate_by (int, optional): _add pagination_
         model (Device): _base model for list_
     """
+
     model = Device
     paginate_by = DataMixin.paginate
     template_name = "device/device_list.html"
@@ -127,7 +133,7 @@ class DeviceCategoryListView(
         return context
 
     def get_queryset(self):
-        """_queryset_ 
+        """_queryset_
 
         Returns:
             object_list (Device): _description_
@@ -163,11 +169,12 @@ class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_DeviceRestView_ returns device
 
     Other parameters:
-        queryset (Device): 
-        serializer_class (DeviceModelSerializer): 
+        queryset (Device):
+        serializer_class (DeviceModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = Device.objects.all()
     serializer_class = DeviceModelSerializer
     success_message = "%(categories)s %(name)s успешно создано"
@@ -178,11 +185,12 @@ class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     """_DeviceCatRestView_ returns device
 
     Other parameters:
-        queryset (DeviceCat): 
-        serializer_class (DeviceCatModelSerializer): 
+        queryset (DeviceCat):
+        serializer_class (DeviceCatModelSerializer):
         success_message (str):
         error_message (str):
     """
+
     queryset = DeviceCat.objects.all()
     serializer_class = DeviceCatModelSerializer
     success_message = "Категория %(name)s успешно создано"
@@ -200,6 +208,7 @@ class DeviceDetailView(
         permission_required (str): _permissions_
         model (Consumables): _base model for list_
     """
+
     model = Device
     template_name = "device/device_detail.html"
     permission_required = ("device.view_device",)
@@ -209,7 +218,7 @@ class DeviceDetailView(
 
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete device instance_
-        
+
         Other parameters:
             consumable_form (ConsumableInstallForm): _form for install consumable_
             stock_form (StockAddForm): _form for add stock_
@@ -257,6 +266,7 @@ class DeviceCreate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = ("device.add_device",)
     model = Device
     form_class = DeviceForm
@@ -292,6 +302,7 @@ class DeviceUpdate(
         success_message (str):
         error_message (str):
     """
+
     permission_required = ("device.change_device",)
     model = Device
     template_name = "Forms/add.html"
@@ -311,7 +322,7 @@ class DeviceUpdate(
         return context
 
 
-class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):# type: ignore[misc]
+class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):  # type: ignore[misc]
     """_DeviceDelete_
     Delete of device instances
 
@@ -323,6 +334,7 @@ class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, Delet
         success_message (str):
         error_message (str):
     """
+
     permission_required = ("device.delete_device",)
     model = Device
     template_name = "Forms/delete.html"
@@ -353,6 +365,7 @@ class ConsumableInstallFormView(PermissionRequiredMixin, FormView):
         form_class (ConsumableInstallForm): _form class to view_
         success_url (str): _switches to url in case of successful deletion_
     """
+
     permission_required = ("device.can_install_consumable",)
     form_class = ConsumableInstallForm
     template_name = "device/device_detail.html"
@@ -389,6 +402,7 @@ class StockAddFormView(PermissionRequiredMixin, FormView):
         form_class (StockAddForm): _form class to view_
         success_url (str): _switches to url in case of successful deletion_
     """
+
     permission_required = ("device.can_add_stock",)
     form_class = StockAddForm
     template_name = "device/device_detail.html"
@@ -426,6 +440,7 @@ class MoveFormView(PermissionRequiredMixin, FormView):
         form_class (MoveDeviceForm): _form class to view_
         success_url (str): _switches to url in case of successful deletion_
     """
+
     permission_required = ("device.can_install_accessories",)
     form_class = MoveDeviceForm
     template_name = "device/device_detail.html"
@@ -467,6 +482,7 @@ class AddHistoryFormView(PermissionRequiredMixin, FormView):
         form_class (AddHistoryDeviceForm): _form class to view_
         success_url (str): _switches to url in case of successful deletion_
     """
+
     permission_required = ("device.can_add_history",)
     form_class = AddHistoryDeviceForm
     template_name = "device/device_detail.html"
@@ -505,12 +521,13 @@ class ExportDevice(View):
     """_ExportDevice_
     Returns an Excel file with all records of devices from the database
     """
+
     def get(self, *args, **kwargs):
         """extracts all records of devices from the database and converts them into an xlsx file
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DeviceResource): _dict of devices for export into an xlsx file_
         """
@@ -550,7 +567,7 @@ class ExportDeviceCategory(View):
 
         Returns:
             response (HttpResponse): _returns xlsx file_
-        
+
         Other parameters:
             resource (DeviceResource): _dict of devices for export into an xlsx file_
         """

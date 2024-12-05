@@ -9,10 +9,13 @@ from core.utils import ModelMixin
 
 # Consumables
 class Stockroom(ModelMixin, models.Model):
-    """
+    """_Stockroom_:
     Expansion of the stock_model model for the warehouse.
-    The nomenclature of the stock_model of the warehouse and the directory may differ,
-    however, the quantity of each stock_model must match
+    The nomenclature of the stock_model of the warehouse and the directory may differ;
+    however, the quantity of each stock_model must match.
+
+    Returns:
+        Stockroom (Stockroom): The stockroom consumables model
     """
 
     stock_model: models.OneToOneField = models.OneToOneField(
@@ -34,7 +37,9 @@ class Stockroom(ModelMixin, models.Model):
     dateAddToStock: models.DateField = models.DateField(
         null=True, blank=True, verbose_name="Дата поступления на склад"
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     rack: models.IntegerField = models.IntegerField(
         blank=True,
         null=True,
@@ -46,6 +51,8 @@ class Stockroom(ModelMixin, models.Model):
     )
 
     class Meta:
+        """_Stockroom Meta_: _model settings_"""
+
         verbose_name = "Склад Расходников"
         verbose_name_plural = "Склад Расходников"
         ordering = ["rack", "shelf"]
@@ -58,11 +65,16 @@ class Stockroom(ModelMixin, models.Model):
 
 
 class StockCat(ModelMixin, models.Model):
-    """
-    Group model for stock_model
+    """_StockCat_:
+    stock_model categories
+
+    Returns:
+        StockCat (StockCat): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    id: models.UUIDField = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, help_text="ID"
+    )
     name: models.CharField = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
@@ -75,20 +87,38 @@ class StockCat(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_StockCat __str__ _: _returns name of model_
+
+        Returns:
+            StockCat__name (str): _returns name_
+        """
         return self.name
 
     def get_absolute_url(self):
+        """_StockCat get self url_
+
+        Returns:
+            StockCat__slug (str): _returns url by slug_
+
+        Other parameters:
+            kwargs (str): self.slug
+        """
         return reverse("stockroom:category", kwargs={"category_slug": self.slug})
 
     class Meta:
+        """_StockCat Meta_: _model settings_"""
+
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
 
 
 class History(models.Model):
-    """
+    """_History_:
     Model for storing the history of the use of stock_model
+
+    Returns:
+        History (History): The stockroom model
     """
 
     id: models.UUIDField = models.UUIDField(
@@ -97,7 +127,7 @@ class History(models.Model):
     stock_model: models.CharField = models.CharField(
         blank=True, default=0, max_length=150, verbose_name="Расходники"
     )
-    stock_model_id: models.CharField= models.CharField(
+    stock_model_id: models.CharField = models.CharField(
         blank=True, default=0, max_length=50, verbose_name="ID Расходникa"
     )
     device: models.CharField = models.CharField(
@@ -119,7 +149,9 @@ class History(models.Model):
         default=0,
         verbose_name="Количество",
     )
-    dateInstall: models.DateField = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    dateInstall: models.DateField = models.DateField(
+        null=True, blank=True, verbose_name="Дата установки"
+    )
     user: models.CharField = models.CharField(
         blank=True,
         default=0,
@@ -137,7 +169,7 @@ class History(models.Model):
         choices=STATUS_CHOICES,
         default="Расход",
     )
-    note: models.TextField= models.TextField(
+    note: models.TextField = models.TextField(
         max_length=1000,
         blank=True,
         null=True,
@@ -146,6 +178,8 @@ class History(models.Model):
     )
 
     class Meta:
+        """_History Meta_: _model settings_"""
+
         verbose_name = "История расходников"
         verbose_name_plural = "История расходников"
         ordering = ["-dateInstall", "stock_model"]

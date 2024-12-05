@@ -30,7 +30,7 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*'
+          - 'backend/src/**/*.{py}'
           - 'backend/pyproject.toml'
   script:
     - docker exec -t backend uv run mypy .
@@ -41,7 +41,7 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/src/*'
+          - 'backend/src/**/*.{py}'
           - 'backend/pyproject.toml'
   script:
     - docker exec -t backend uv run ruff check .
@@ -52,7 +52,7 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/*'
+          - 'backend/**/*.{py}'
           - 'docker-compose.yaml'
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
@@ -72,8 +72,8 @@ pages:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/docs/*'
-          - 'docs/*'
+          - 'backend/docs/**/*.{md}'
+          - 'docs/**/*.{md}'
           - 'mkdocs.yml'
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'

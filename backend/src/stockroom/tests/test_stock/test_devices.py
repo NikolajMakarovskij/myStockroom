@@ -172,7 +172,6 @@ def test_stock_dev_remove_device(client):
     number_rack = 3
     number_shelf = 13
     username = "admin"
-    status_choice = "Удаление"
     DevStock.add_to_stock_device(
         model_id=devices.id,
         quantity=quantity,
@@ -181,7 +180,7 @@ def test_stock_dev_remove_device(client):
         username=username,
     )
     DevStock.remove_device_from_stock(
-        model_id=devices.id, quantity=0, username=username, status_choice=status_choice
+        model_id=devices.id, quantity=0, username=username
     )
     test_history = HistoryDev.objects.get(status="Удаление")
 

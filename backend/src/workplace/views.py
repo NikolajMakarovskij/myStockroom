@@ -211,7 +211,7 @@ class WorkplaceUpdate(
         return context
 
 
-class WorkplaceDelete(# type: ignore[misc]
+class WorkplaceDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
 ):
     """_WorkplaceDelete_
@@ -423,9 +423,9 @@ class RoomUpdate(
         return context
 
 
-class RoomDelete(# type: ignore[misc]
+class RoomDelete(  # type: ignore[misc]
     LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
-):  
+):
     """_RoomDelete_
     Delete room instance
 
