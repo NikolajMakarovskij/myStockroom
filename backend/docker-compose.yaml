@@ -4,6 +4,7 @@ services:
       context: ./
       target: dev
     hostname: backend
+    image: backend
     container_name: backend
     command: uv run gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
@@ -52,7 +53,7 @@ services:
 
   celery:
     restart: always
-    image: backend-web
+    image: backend
     container_name: celery
     build:
       context: ./
@@ -68,7 +69,7 @@ services:
       - backend
 
   celery-beat:
-    image: backend-web
+    image: backend
     build:
       context: ./
       target: dev
@@ -84,7 +85,7 @@ services:
       - redis
 
   flower:
-    image: backend-web
+    image: backend
     build:
       context: ./
       target: dev
