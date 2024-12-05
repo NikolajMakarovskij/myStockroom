@@ -1,6 +1,6 @@
 [project]
 name = "stockroom"
-version = "0.7.4"
+version = "0.7.5"
 description = "The project is designed to maintain a database with equipment and consumables"
 authors = [
     {name = "Makarovskiy Nikolay", email = "adrameleh666@gmail.com"},
@@ -22,7 +22,6 @@ dependencies = [
     "django-celery-beat >=2.7.0",
     "django-cors-headers >=4.6.0",
     "django-crispy-forms >=2.3",
-    "django-debug-toolbar >=4.4.6",
     "django-filter >=24.3",
     "django-import-export >=4.3.3",
     "django-select2 >=8.2.1",

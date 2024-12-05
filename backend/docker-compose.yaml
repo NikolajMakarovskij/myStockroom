@@ -64,8 +64,6 @@ services:
     env_file:
       - ./.env
     depends_on:
-      - db
-      - redis
       - backend
 
   celery-beat:
@@ -81,8 +79,7 @@ services:
     env_file:
       - ./.env
     depends_on:
-      - db
-      - redis
+      - backend
 
   flower:
     image: backend
@@ -99,5 +96,4 @@ services:
     ports:
       - 5557:5555
     depends_on:
-      - redis
-      - db
+      - backend
