@@ -3,13 +3,13 @@
 ##
 
 ### BaseStockResource
-:::src.stockroom.resources.BaseStockResource
+#### :::src.stockroom.resources.BaseStockResource
 
 ### StockConResource
-:::src.stockroom.resources.StockConResource
+#### :::src.stockroom.resources.StockConResource
 
 ### StockAccResource
-:::src.stockroom.resources.StockAccResource
+#### :::src.stockroom.resources.StockAccResource
 
 ### StockDevResource
-:::src.stockroom.resources.StockDevResource
+#### :::src.stockroom.resources.StockDevResource

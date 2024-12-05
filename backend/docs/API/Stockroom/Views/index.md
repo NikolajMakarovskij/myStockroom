@@ -1,3 +1,4 @@
 # ***Home page***
 
-:::src.stockroom.views.index.StockroomIndexView
+## Home
+#### :::src.stockroom.views.index.StockroomIndexView

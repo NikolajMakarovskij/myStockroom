@@ -3,28 +3,28 @@
 ##
 
 ### ConsumableIndexView
-:::src.consumables.views.ConsumableIndexView
+#### :::src.consumables.views.ConsumableIndexView
 
 ### ConsumablesView
-:::src.consumables.views.ConsumablesView
+#### :::src.consumables.views.ConsumablesView
 
 ### ConsumablesCategoriesView
-:::src.consumables.views.ConsumablesCategoriesView
+#### :::src.consumables.views.ConsumablesCategoriesView
 
 ### ConsumablesDetailView
-:::src.consumables.views.ConsumablesDetailView
+#### :::src.consumables.views.ConsumablesDetailView
 
 ### ConsumablesCreate
-:::src.consumables.views.ConsumablesCreate
+#### :::src.consumables.views.ConsumablesCreate
 
 ### ConsumablesUpdate
-:::src.consumables.views.ConsumablesUpdate
+#### :::src.consumables.views.ConsumablesUpdate
 
 ### ConsumablesDelete
-:::src.consumables.views.ConsumablesDelete
+#### :::src.consumables.views.ConsumablesDelete
 
 ### ExportConsumable
-:::src.consumables.views.ExportConsumable
+#### :::src.consumables.views.ExportConsumable
 
 ### ExportConsumableCategory
-:::src.consumables.views.ExportConsumableCategory
+#### :::src.consumables.views.ExportConsumableCategory

@@ -3,15 +3,15 @@
 ## Consumables
 
 ### ConsumablesRestView
-:::src.consumables.views.ConsumablesRestView
+#### :::src.consumables.views.ConsumablesRestView
 
 ### CategoriesRestView
-:::src.consumables.views.CategoriesRestView
+#### :::src.consumables.views.CategoriesRestView
 
 ## Accessories
 
 ### AccessoriesRestView
-:::src.consumables.views.AccessoriesRestView
+#### :::src.consumables.views.AccessoriesRestView
 
 ### AccCatRestView
-:::src.consumables.views.AccCatRestView
+#### :::src.consumables.views.AccCatRestView

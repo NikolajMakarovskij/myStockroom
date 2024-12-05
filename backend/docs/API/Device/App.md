@@ -1,13 +1,13 @@
 # ***App Device***
 
 ## App
-:::src.device.apps.DeviceConfig
+#### :::src.device.apps.DeviceConfig
 
 ## Admin
 
 ### Device
-:::src.device.admin.DeviceAdmin
-:::src.device.admin.DeviceCatAdmin
+#### :::src.device.admin.DeviceAdmin
+#### :::src.device.admin.DeviceCatAdmin
 
 ## Urls
 

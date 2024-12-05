@@ -1,21 +1,21 @@
 # ***App Consumables***
 
 ## App
-:::src.consumables.apps.ConsumablesConfig
+#### :::src.consumables.apps.ConsumablesConfig
 
 ## Admin
 
 ### Consumables
-:::src.consumables.admin.ConsumablesAdmin
+#### :::src.consumables.admin.ConsumablesAdmin
 
 ### Consumables categories
-:::src.consumables.admin.CategoriesAdmin
+#### :::src.consumables.admin.CategoriesAdmin
 
 ### Accessories
-:::src.consumables.admin.AccessoriesAdmin
+#### :::src.consumables.admin.AccessoriesAdmin
 
 ### Accessories categories
-:::src.consumables.admin.AccCatAdmin
+#### :::src.consumables.admin.AccCatAdmin
 
 ## urls
 

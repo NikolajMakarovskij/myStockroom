@@ -1,3 +1,4 @@
 # ***Devices***
 
-:::src.stockroom.stock.stock.DevStock
+## DevStock
+#### :::src.stockroom.stock.stock.DevStock

@@ -1,15 +1,15 @@
 # ***App Workplace***
 
 ## App
-:::src.workplace.apps.WorkplaceConfig
+#### :::src.workplace.apps.WorkplaceConfig
 
 ## Admin
 
 ### Workplace
-:::src.workplace.admin.WorkplaceAdmin
+#### :::src.workplace.admin.WorkplaceAdmin
 
 ### Room
-:::src.workplace.admin.RoomAdmin
+#### :::src.workplace.admin.RoomAdmin
 
 ## Urls
 

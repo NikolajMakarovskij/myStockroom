@@ -3,25 +3,25 @@
 ##
 
 ### AccessoriesView
-:::src.consumables.views.AccessoriesView
+#### :::src.consumables.views.AccessoriesView
 
 ### AccessoriesCategoriesView
-:::src.consumables.views.AccessoriesCategoriesView
+#### :::src.consumables.views.AccessoriesCategoriesView
 
 ### AccessoriesDetailView
-:::src.consumables.views.AccessoriesDetailView
+#### :::src.consumables.views.AccessoriesDetailView
 
 ### AccessoriesCreate
-:::src.consumables.views.AccessoriesCreate
+#### :::src.consumables.views.AccessoriesCreate
 
 ### AccessoriesUpdate
-:::src.consumables.views.AccessoriesUpdate
+#### :::src.consumables.views.AccessoriesUpdate
 
 ### AccessoriesDelete
-:::src.consumables.views.AccessoriesDelete
+#### :::src.consumables.views.AccessoriesDelete
 
 ### ExportAccessories
-:::src.consumables.views.ExportAccessories
+#### :::src.consumables.views.ExportAccessories
 
 ### ExportAccessoriesCategory
-:::src.consumables.views.ExportAccessoriesCategory
+#### :::src.consumables.views.ExportAccessoriesCategory

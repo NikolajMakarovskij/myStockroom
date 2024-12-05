@@ -3,33 +3,33 @@
 ## Consumables
 
 ### StockAdmin
-:::src.stockroom.admin.StockAdmin
+#### :::src.stockroom.admin.StockAdmin
 
 ### HistoryAdmin
-:::src.stockroom.admin.HistoryAdmin
+#### :::src.stockroom.admin.HistoryAdmin
 
 ### StockCatAdmin
-:::src.stockroom.admin.StockCatAdmin
+#### :::src.stockroom.admin.StockCatAdmin
 
 ## Accessories
 
 ### StockAccAdmin
 
-:::src.stockroom.admin.StockAccAdmin
+#### :::src.stockroom.admin.StockAccAdmin
 
 ### HistoryAccAdmin
-:::src.stockroom.admin.HistoryAccAdmin
+#### :::src.stockroom.admin.HistoryAccAdmin
 
 ### CategoryAccAdmin
-:::src.stockroom.admin.CategoryAccAdmin
+#### :::src.stockroom.admin.CategoryAccAdmin
 
 ## Devices
 
 ### StockDevAdmin
-:::src.stockroom.admin.StockDevAdmin
+#### :::src.stockroom.admin.StockDevAdmin
 
 ### HistoryDevAdmin
-:::src.stockroom.admin.HistoryDevAdmin
+#### :::src.stockroom.admin.HistoryDevAdmin
 
 ### CategoryDevAdmin
-:::src.stockroom.admin.CategoryDevAdmin
+#### :::src.stockroom.admin.CategoryDevAdmin

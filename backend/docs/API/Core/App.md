@@ -1,10 +1,10 @@
 # ***App Core***
 
 ## App
-:::src.core.apps.CoreConfig
+#### :::src.core.apps.CoreConfig
 
 ## Admin
-consts
+### Consts
 
 ```python
 admin.site.site_title = "admin panel title"

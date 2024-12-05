@@ -1,17 +1,17 @@
 # ***App Decommission***
 
 ## App
-:::src.decommission.apps.DecommissionConfig
+#### :::src.decommission.apps.DecommissionConfig
 
 ## Admin
 
 ### Decommission
-:::src.decommission.admin.DecommissionAdmin
-:::src.decommission.admin.CategoryDecAdmin
+#### :::src.decommission.admin.DecommissionAdmin
+#### :::src.decommission.admin.CategoryDecAdmin
 
 ### Disposal
-:::src.decommission.admin.DisposalAdmin
-:::src.decommission.admin.CategoryDisAdmin
+#### :::src.decommission.admin.DisposalAdmin
+#### :::src.decommission.admin.CategoryDisAdmin
 
 ## Urls
 

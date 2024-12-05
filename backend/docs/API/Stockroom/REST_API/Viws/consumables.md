@@ -1,3 +1,4 @@
 # ***Consumables***
 
-:::src.stockroom.views.consumables.StockRestView
+## CRUD
+#### :::src.stockroom.views.consumables.StockRestView

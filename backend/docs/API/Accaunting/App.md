@@ -1,15 +1,15 @@
 # ***App Accounting***
 
 ## App
-:::src.accounting.apps.AccountingConfig
+### :::src.accounting.apps.AccountingConfig
 
 ## Admin
 
 ### Accounting
-:::src.accounting.admin.AccountingAdmin
+### :::src.accounting.admin.AccountingAdmin
 
 ### Categories
-:::src.accounting.admin.CategoriesAdmin
+### :::src.accounting.admin.CategoriesAdmin
 
 ## urls
 

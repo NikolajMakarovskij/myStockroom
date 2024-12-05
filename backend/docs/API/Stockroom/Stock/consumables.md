@@ -1,3 +1,4 @@
 # ***Consumables***
 
-:::src.stockroom.stock.stock.ConStock
+## ConStock
+#### :::src.stockroom.stock.stock.ConStock

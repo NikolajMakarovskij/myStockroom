@@ -1,12 +1,12 @@
 # ***App Counterparty***
 
 ## App
-:::src.counterparty.apps.CounterpartyConfig
+#### :::src.counterparty.apps.CounterpartyConfig
 
 ## Admin
 
 ### ManufacturerAdmin
-:::src.counterparty.admin.ManufacturerAdmin
+#### :::src.counterparty.admin.ManufacturerAdmin
 
 ## Urls
 

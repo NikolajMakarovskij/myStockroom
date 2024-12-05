@@ -3,4 +3,4 @@
 ##
 
 ### DeviceResource
-:::src.device.resources.DeviceResource
+#### :::src.device.resources.DeviceResource

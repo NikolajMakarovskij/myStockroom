@@ -3,10 +3,10 @@
 ##
 
 ### ManufacturerWidget
-:::src.software.forms.ManufacturerWidget
+#### :::src.software.forms.ManufacturerWidget
 
 ### SoftwareForm
-:::src.software.forms.SoftwareForm
+#### :::src.software.forms.SoftwareForm
 
 ### OSForm
-:::src.software.forms.OSForm
+#### :::src.software.forms.OSForm

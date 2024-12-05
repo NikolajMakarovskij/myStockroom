@@ -1,4 +1,4 @@
 # ***App Stockroom***
 
 ## App
-:::src.stockroom.apps.StockroomConfig
+#### :::src.stockroom.apps.StockroomConfig

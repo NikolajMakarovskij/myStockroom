@@ -1,19 +1,19 @@
 # ***Workplace***
 
 ### IndexView
-:::src.workplace.views.IndexView
+#### :::src.workplace.views.IndexView
 
 ### WorkplaceListView
-:::src.workplace.views.WorkplaceListView
+#### :::src.workplace.views.WorkplaceListView
 
 ### WorkplaceDetailView
-:::src.workplace.views.WorkplaceDetailView
+#### :::src.workplace.views.WorkplaceDetailView
 
 ### WorkplaceCreate
-:::src.workplace.views.WorkplaceCreate
+#### :::src.workplace.views.WorkplaceCreate
 
 ### WorkplaceUpdate
-:::src.workplace.views.WorkplaceUpdate
+#### :::src.workplace.views.WorkplaceUpdate
 
 ### WorkplaceDelete
-:::src.workplace.views.WorkplaceDelete
+#### :::src.workplace.views.WorkplaceDelete

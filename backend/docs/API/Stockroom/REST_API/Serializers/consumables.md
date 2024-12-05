@@ -1,6 +1,11 @@
 # ***Consumables***
 
-:::src.stockroom.serializers.StockConSerializer
-:::src.stockroom.serializers.StockModelSerializer
-:::src.stockroom.serializers.StockCatModelSerializer
-:::src.stockroom.serializers.HistoryModelSerializer
+## CRUD
+#### :::src.stockroom.serializers.StockConSerializer
+#### :::src.stockroom.serializers.StockModelSerializer
+
+## Categories
+#### :::src.stockroom.serializers.StockCatModelSerializer
+
+## History
+#### :::src.stockroom.serializers.HistoryModelSerializer

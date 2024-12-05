@@ -3,10 +3,10 @@
 ##
 
 ### BaseResource
-:::src.consumables.resources.BaseResource
+#### :::src.consumables.resources.BaseResource
 
 ### ConsumableResource
-:::src.consumables.resources.ConsumableResource
+#### :::src.consumables.resources.ConsumableResource
 
 ### AccessoriesResource
-:::src.consumables.resources.AccessoriesResource
+#### :::src.consumables.resources.AccessoriesResource
