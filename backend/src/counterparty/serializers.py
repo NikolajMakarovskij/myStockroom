@@ -7,8 +7,5 @@ class ManufacturerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Manufacturer
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {'read_only': True}
-        }
-
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}

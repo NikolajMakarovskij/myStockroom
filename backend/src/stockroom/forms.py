@@ -16,36 +16,69 @@ DEVICE_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, device_score)]
 
 class StockAddForm(forms.Form):
     """
-    Форма добавляет расходник на склад. Добавляется в template и DetailView расходника 
+    Форма добавляет расходник на склад. Добавляется в template и DetailView расходника
     """
-    quantity = forms.TypedChoiceField(choices=CONSUMABLE_QUANTITY_CHOICES, coerce=int, label='Количество',
-                                      widget=forms.Select(
-                                          attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
-    number_rack = forms.TypedChoiceField(choices=RACK_QUANTITY_CHOICES, coerce=int, label='Стеллаж',
-                                         widget=forms.Select(
-                                             attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
-    number_shelf = forms.TypedChoiceField(choices=SHELF_QUANTITY_CHOICES, coerce=int, label='Полка',
-                                          widget=forms.Select(
-                                              attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
+
+    quantity = forms.TypedChoiceField(
+        choices=CONSUMABLE_QUANTITY_CHOICES,
+        coerce=int,
+        label="Количество",
+        widget=forms.Select(
+            attrs={"class": "form-select form-select-lg btn-outline-dark"}
+        ),
+    )
+    number_rack = forms.TypedChoiceField(
+        choices=RACK_QUANTITY_CHOICES,
+        coerce=int,
+        label="Стеллаж",
+        widget=forms.Select(
+            attrs={"class": "form-select form-select-lg btn-outline-dark"}
+        ),
+    )
+    number_shelf = forms.TypedChoiceField(
+        choices=SHELF_QUANTITY_CHOICES,
+        coerce=int,
+        label="Полка",
+        widget=forms.Select(
+            attrs={"class": "form-select form-select-lg btn-outline-dark"}
+        ),
+    )
 
 
 class ConsumableInstallForm(forms.Form):
     """
     Форма использования расходника в технике. Добавляется в template и DetailView техники
     """
-    quantity = forms.TypedChoiceField(choices=DEVICE_QUANTITY_CHOICES, coerce=int, label='Количество',
-                                      widget=forms.Select(
-                                          attrs={'class': 'form-select form-select-lg btn-outline-dark'}))
-    note = forms.CharField(required=False, label='Примечание', widget=forms.TextInput(
-        attrs={'class': 'form-control form-control-lg btn-outline-dark'}))
+
+    quantity = forms.TypedChoiceField(
+        choices=DEVICE_QUANTITY_CHOICES,
+        coerce=int,
+        label="Количество",
+        widget=forms.Select(
+            attrs={"class": "form-select form-select-lg btn-outline-dark"}
+        ),
+    )
+    note = forms.CharField(
+        required=False,
+        label="Примечание",
+        widget=forms.TextInput(
+            attrs={"class": "form-control form-control-lg btn-outline-dark"}
+        ),
+    )
 
 
 class AddHistoryDeviceForm(forms.Form):
     """
     Форма добавления истории устройства. Добавляется в template и DetailView техники
     """
-    note = forms.CharField(required=False, label='Примечание', widget=forms.TextInput(
-        attrs={'class': 'form-control form-control-lg btn-outline-dark'}))
+
+    note = forms.CharField(
+        required=False,
+        label="Примечание",
+        widget=forms.TextInput(
+            attrs={"class": "form-control form-control-lg btn-outline-dark"}
+        ),
+    )
 
 
 class WorkplaceWidget(BaseModelSelect2WidgetMixin):
@@ -63,7 +96,13 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
 class MoveDeviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ['workplace', 'note']
-        widgets = {'workplace': WorkplaceWidget, 'note': forms.TextInput(
-            attrs={'class': 'js-example-placeholder-single js-states form-control form-control-lg',
-                      'style': 'width:100%'})}
+        fields = ["workplace", "note"]
+        widgets = {
+            "workplace": WorkplaceWidget,
+            "note": forms.TextInput(
+                attrs={
+                    "class": "js-example-placeholder-single js-states form-control form-control-lg",
+                    "style": "width:100%",
+                }
+            ),
+        }

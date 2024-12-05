@@ -1,7 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Accounting, Categories
-from .serializers import AccountingModelSerializer, CategoriesModelSerializer, AccountingListModelSerializer
+from .serializers import (
+    AccountingModelSerializer,
+    CategoriesModelSerializer,
+    AccountingListModelSerializer,
+)
 
 
 class AccountingListRestView(viewsets.ModelViewSet):
@@ -14,7 +18,7 @@ class AccountingListRestView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class AccountingRestView( viewsets.ModelViewSet):
+class AccountingRestView(viewsets.ModelViewSet):
     queryset = Accounting.objects.all()
     serializer_class = AccountingModelSerializer
 
