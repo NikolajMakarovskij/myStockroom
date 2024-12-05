@@ -79,16 +79,16 @@ services:
     env_file:
       - ./.env
     depends_on:
-      - backend
+      - celery
 
   flower:
     image: backend
     build:
       context: ./
       target: dev
-    command: uv run celery -A backend flower --port=5555 --broker=redis://redis:6379/0
+    command: bash -c 'sleep 15 && uv run celery --broker=redis://redis:6379/0 -A backend flower --port=5555'
     container_name: flower
-
+    restart: always
     volumes:
       - ./src:/backend/src
     env_file:
@@ -96,4 +96,5 @@ services:
     ports:
       - 5557:5555
     depends_on:
-      - backend
+      - celery-beat
+      - redis
