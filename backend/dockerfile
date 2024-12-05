@@ -1,43 +1,40 @@
-ARG PYTHON_BASE=3.13-slim
+ARG PYTHON_BASE=3.13-slim-bookworm
 # build stage
 FROM python:$PYTHON_BASE AS builder
-# build base image
-RUN pip install -U pdm
-ENV PDM_CHECK_UODATE=false
+
+# install uv
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure the installed binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
+
 # set work directory
 WORKDIR /backend/src
 WORKDIR /backend/src
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-# install psycopg2 dependencies
-RUN apt-get update \
-    && apt-get install -y postgresql-server-dev-all gcc python3-dev musl-dev
-COPY ../pyproject.toml ../pdm.lock ../README.md ../.dockerignore ../entrypoint.sh ../LICENSE ../
+COPY ../pyproject.toml ../uv.lock ../README.md ../.dockerignore ../entrypoint.sh ../LICENSE ../
 RUN cd ..
-RUN pdm lock
+RUN uv lock
 
 # run dev stage
 FROM builder AS dev
-# add git folder for isort check
-RUN apt-get install git-all -y
 RUN cd ..
-RUN git init
 # retrieve packages from build stage
-COPY --from=builder /backend/.venv /backend/.venv
-RUN pdm install --check --dev
-
-ENV PATH="/backend/.venv/bin:$PATH"
+#COPY --from=ghcr.io/astral-sh/uv:0.5.0 /uv /uvx /bin/
+RUN uv sync
+COPY ../src /backend/src
+COPY ../docs /backend/docs
+COPY ../mkdocs.yml /backend/mkdocs.yml
 ENTRYPOINT ["/backend/entrypoint.sh" ]
 
 
 # run prod stage
 FROM builder AS prod
 
-# retrieve packages from build stage
-COPY --from=builder /backend/.venv /backend/.venv
-RUN pdm install --check --prod --no-editable
-COPY ./src /backend/src
+COPY ../src /backend/src
 
-ENV PATH="/backend/.venv/bin:$PATH"
 ENTRYPOINT ["/backend/entrypoint.sh" ]

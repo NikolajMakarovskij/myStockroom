@@ -1,5 +1,4 @@
 #!/bin/sh
-sleep 5
 if [ "$DATABASE" = "mybase" ]
 then
     # если база еще не запущена
@@ -11,12 +10,12 @@ then
     echo "Старт!"
 fi
 echo "Выполняем миграции"
-pdm run manage.py makemigrations
+uv run manage.py makemigrations
 sleep 1
-pdm run manage.py migrate
+uv run manage.py migrate
 sleep 1
 echo "Собираем статику"
-pdm run manage.py collectstatic <<EOF
+uv run manage.py collectstatic <<EOF
 yes
 EOF
 exec "$@"

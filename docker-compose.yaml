@@ -1,14 +1,17 @@
 services:
-  web:
-    build: 
+  backend:
+    build:
       context: ./backend
       target: dev
     hostname: backend
+    image: backend
     container_name: backend
-    command: pdm run gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
+    command: uv run gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
       - ./backend/src:/backend/src
+      - ./site:/backend/site
+      - ./public:/public
       - ./backend/src/static:/home/backend/web/static
       - ./backend/src/media:/home/backend/web/mediafiles
     ports:
@@ -24,6 +27,7 @@ services:
       context: ./frontend
     hostname: frontend
     container_name: frontend
+    restart: always
     volumes:
       - ./frontend:/frontend
       - ./backend/src/static:/home/backend/web/static
@@ -35,7 +39,7 @@ services:
       - "3000:3000"
     command: npm run dev
     depends_on:
-      - web
+      - backend
 
   db:
     container_name: db
@@ -59,22 +63,22 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - react
       - backend
 
   redis:
     image: redis:alpine
     container_name: redis
-    container_name: redis
     restart: always
 
   celery:
     restart: always
-    image: stockroom-web
+    image: backend
     container_name: celery
-    build: 
+    build:
       context: ./backend
       target: dev
-    command: pdm run celery -A backend worker -l info
+    command: uv run celery -A backend worker -l info
     volumes:
       - ./backend/src:/backend/src
     env_file:
@@ -83,11 +87,11 @@ services:
       - backend
 
   celery-beat:
-    image: stockroom-web
-    build: 
+    image: backend
+    build:
       context: ./backend
       target: dev
-    command: pdm run celery -A backend beat -l info
+    command: uv run celery -A backend beat -l info
     container_name: celery-beat
     restart: always
     volumes:
@@ -98,12 +102,13 @@ services:
       - celery
 
   flower:
-    image: stockroom-web
-    build: 
+    image: backend
+    build:
       context: ./backend
       target: dev
-    command: pdm run celery -A backend flower --port=5555 --broker=redis://redis:6379/0
+    command: uv run celery --broker=redis://redis:6379/0 -A backend flower --port=5555
     container_name: flower
+    restart: always
     volumes:
       - ./backend/src:/backend/src
     env_file:
@@ -111,6 +116,4 @@ services:
     ports:
       - "5557:5555"
     depends_on:
-      - redis
-      - db
       - celery
