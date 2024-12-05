@@ -18,6 +18,7 @@ class ConStock(BaseStock):
         stock_category (StockCat): _description_
         history_model (History): _description_
     """
+
     base_model = Consumables
     stock_model = Stockroom
     stock_category = StockCat
@@ -33,6 +34,7 @@ class AccStock(BaseStock):
         stock_category (CategoryAcc): _description_
         history_model (HistoryAcc): _description_
     """
+
     base_model = Accessories
     stock_model = StockAcc
     stock_category = CategoryAcc
@@ -53,7 +55,6 @@ class DevStock(BaseStock):
     stock_model = StockDev
     stock_category = CategoryDev
     history_model = HistoryDev
-
 
     @classmethod
     def create_history_device(
@@ -93,11 +94,10 @@ class DevStock(BaseStock):
     def add_to_stock_device(
         cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=""
     ) -> None:
-
         """Add a stockroom device to the stock or update it quantity.
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             quantity (int): _description_
             number_rack (int): _description_
             number_shelf (int): _description_
@@ -132,13 +132,11 @@ class DevStock(BaseStock):
         )
 
     @classmethod
-    def remove_device_from_stock(
-        cls, model_id: str, quantity=0, username=""
-    ) -> None:
+    def remove_device_from_stock(cls, model_id: str, quantity=0, username="") -> None:
         """Remove device from the stock
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             quantity (int): _description_
             username (str): _getting from session_
         """
@@ -156,7 +154,7 @@ class DevStock(BaseStock):
         """Move device
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             workplace_id (str): _workplace model id_
             username (str): _description_
             note (str): _getting from session_

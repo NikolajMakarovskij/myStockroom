@@ -43,8 +43,7 @@ class BaseStock(object):
         self.stock = stock
 
     def save(self):
-        """_saving session_
-        """
+        """_saving session_"""
         self.session[settings.STOCK_SESSION_ID] = self.stock
         self.session.modified = True
 
@@ -127,7 +126,7 @@ class BaseStock(object):
         """Add a stock_model to the stock or update it quantity.
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             quantity (int): _description_
             number_rack (int): _description_
             number_shelf (int): _description_
@@ -169,7 +168,7 @@ class BaseStock(object):
         """Remove stock_model from the stock
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             quantity (int): _description_
             username (str): _getting from session_
         """
@@ -198,7 +197,7 @@ class BaseStock(object):
         """Install stock_model in the device
 
         Args:
-            model_id (str): _stockroom model id_ 
+            model_id (str): _stockroom model id_
             device (dict): _device model id_
             quantity (int, optional): _description_
             note (str, optional): _description_
