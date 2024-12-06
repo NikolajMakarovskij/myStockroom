@@ -18,46 +18,49 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
     """
     Главная
     """
-    template_name = 'index.html'
+
+    template_name = "index.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
-        context['menu'] = menu
+        context["title"] = "Главная страница"
+        context["menu"] = menu
         return context
 
 
 # AUTH
 def get_csrf(request):
-    response = JsonResponse({'detail': 'CSRF cookie set'})
-    response['X-CSRFToken'] = get_token(request)
+    response = JsonResponse({"detail": "CSRF cookie set"})
+    response["X-CSRFToken"] = get_token(request)
     return response
 
 
 @require_POST
 def login_view(request):
     data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
+    username = data.get("username")
+    password = data.get("password")
 
     if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
+        return JsonResponse(
+            {"detail": "Please provide username and password."}, status=400
+        )
 
     user = authenticate(username=username, password=password)
 
     if user is None:
-        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+        return JsonResponse({"detail": "Invalid credentials."}, status=400)
 
     login(request, user)
-    return JsonResponse({'detail': 'Successfully logged in.'})
+    return JsonResponse({"detail": "Successfully logged in."})
 
 
 def logout_view(request):
     if not request.user.is_authenticated:
-        return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
+        return JsonResponse({"detail": "You're not logged in."}, status=400)
 
     logout(request)
-    return JsonResponse({'detail': 'Successfully logged out.'})
+    return JsonResponse({"detail": "Successfully logged out."})
 
 
 class SessionView(APIView):
@@ -66,7 +69,9 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'isAuthenticated': True, 'username': request.user.username})
+        return JsonResponse(
+            {"isAuthenticated": True, "username": request.user.username}
+        )
 
 
 class WhoAmIView(APIView):
@@ -75,4 +80,4 @@ class WhoAmIView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'username': request.user.username})
+        return JsonResponse({"username": request.user.username})

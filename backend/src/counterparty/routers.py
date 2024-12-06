@@ -3,4 +3,4 @@ from rest_framework import routers
 
 
 router = routers.SimpleRouter()
-router.register(r'manufacturer', ManufacturerRestView)
+router.register(r"manufacturer", ManufacturerRestView)

@@ -36,10 +36,15 @@ jobs:
           CELERY_BROKER: redis://redis:6379/0
           CELERY_BACKEND: redis://redis:6379/0
       - name: Linting backend
-        run: docker exec backend pdm run ruff check .
+        run: docker exec backend uv run ruff check .
       - name: Typing backend
-        run: docker exec backend pdm run mypy .
+        run: docker exec backend uv run mypy .
       - name: Linting frontend
-        run:  docker exec frontend npx eslint
-      - name: Run tests
-        run: docker exec backend pdm run pytest --cov
+        run:  docker exec frontend npm run lint
+      - name: Run backend tests
+        run: docker exec backend uv run pytest --cov
+      - name: Run frontend tests
+        run: |
+          docker exec frontend npx playwright install 
+          docker exec frontend npx playwright install-deps 
+          docker exec frontend npm run test:integration

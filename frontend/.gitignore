@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# tests
+junit.xml
+junit-integration.xml
+test-results

@@ -18,28 +18,60 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
 class SoftwareForm(forms.ModelForm):
     class Meta:
         model = Software
-        fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile', ]
+        fields = [
+            "name",
+            "manufacturer",
+            "version",
+            "bitDepth",
+            "licenseKeyText",
+            "licenseKeyImg",
+            "licenseKeyFile",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': ManufacturerWidget,
-            'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyFile': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "manufacturer": ManufacturerWidget,
+            "version": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "bitDepth": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyText": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyImg": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyFile": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
         }
 
 
 class OSForm(forms.ModelForm):
     class Meta:
         model = Os
-        fields = ['name', 'manufacturer', 'version', 'bitDepth', 'licenseKeyText', 'licenseKeyImg', 'licenseKeyFile', ]
+        fields = [
+            "name",
+            "manufacturer",
+            "version",
+            "bitDepth",
+            "licenseKeyText",
+            "licenseKeyImg",
+            "licenseKeyFile",
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'manufacturer': ManufacturerWidget,
-            'version': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'bitDepth': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyText': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyImg': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
-            'licenseKeyFile': forms.FileInput(attrs={'class': 'form-control form-control-lg'}),
+            "name": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "manufacturer": ManufacturerWidget,
+            "version": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "bitDepth": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyText": forms.TextInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyImg": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
+            "licenseKeyFile": forms.FileInput(
+                attrs={"class": "form-control form-control-lg"}
+            ),
         }

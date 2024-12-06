@@ -15,8 +15,8 @@ def test_software_form_valid():
         "version": "12.rwg5",
         "bitDepth": "x64",
         "licenseKeyText": "Key_354ygar",
-        "licenseKeyImg": mock.MagicMock(spec=File, name='serial_Img'),
-        "licenseKeyFile": mock.MagicMock(spec=File, name='serial_Img')
+        "licenseKeyImg": mock.MagicMock(spec=File, name="serial_Img"),
+        "licenseKeyFile": mock.MagicMock(spec=File, name="serial_Img"),
     }
     form = SoftwareForm(data=form_data)
     assert form.is_valid() is True
@@ -27,11 +27,11 @@ def test_software_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "",
+        "name": "",
     }
     form = SoftwareForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_name] == form.errors['name']
+    assert [err_name] == form.errors["name"]
 
 
 @pytest.mark.django_db
@@ -55,8 +55,8 @@ def test_OS_form_name_invalid():
     """Тест на наличие названия"""
     err_name = "Обязательное поле."
     form_data = {
-        'name': "",
+        "name": "",
     }
     form = OSForm(data=form_data)
     assert form.is_valid() is False
-    assert [err_name] == form.errors['name']
+    assert [err_name] == form.errors["name"]
