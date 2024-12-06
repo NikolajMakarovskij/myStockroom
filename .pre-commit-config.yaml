@@ -24,22 +24,6 @@ repos:
         language: system
         entry: bash -c 'cd frontend && npm run pre-commit'
         pass_filenames: false
-        types: [jsx]
-        files: ^frontend/
-        verbose: true
-      - id: javascript
-        name: run frontend pre-commit
-        language: system
-        entry: bash -c 'cd frontend && npm run pre-commit'
-        pass_filenames: false
-        types: [javascript]
-        files: ^frontend/
-        verbose: true
-      - id: ts
-        name: run frontend pre-commit
-        language: system
-        entry: bash -c 'cd frontend && npm run pre-commit'
-        pass_filenames: false
-        types: [ts]
+        types_or: [javascript, jsx, ts, tsx]
         files: ^frontend/
         verbose: true
