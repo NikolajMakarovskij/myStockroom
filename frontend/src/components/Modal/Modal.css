@@ -1,9 +1,9 @@
 dialog {
-    width: 400px;
-    margin: 10rem auto;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 1px 1px gray;
-    z-index: 100;
+  width: 400px;
+  margin: 10rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 1px 1px gray;
+  z-index: 100;
 }

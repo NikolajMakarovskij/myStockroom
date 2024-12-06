@@ -32,9 +32,9 @@ export default function AutocompleteMultipleField(props) {
                 getOptionLabel={optionLabel}
                 value={
                   value
-                    ? options.filter((item) => {
+                    ? (options.filter((item) => {
                         return value === item.id
-                      }) ?? []
+                      }) ?? [])
                     : []
                 }
                 //value={value ? value : []} // возвращает весь массив объектов
