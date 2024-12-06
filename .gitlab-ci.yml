@@ -37,7 +37,6 @@ backend-typnig:
 
 backend-linting:
   stage: linting
-  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
@@ -49,7 +48,6 @@ backend-linting:
 
 frontend-linting:
   stage: linting
-  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
@@ -62,11 +60,10 @@ frontend-linting:
           - "frontend/package.json"
           - "frontend/vite.config.js"
   script:
-    - docker exec -t react npm run lint
+    - docker exec -t frontend npm run lint
 
 backend-testing:
   stage: testing
-  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
@@ -86,7 +83,6 @@ backend-testing:
 
 frontend-testing:
   stage: testing
-  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
