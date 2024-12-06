@@ -6,7 +6,7 @@ stages:
 
 image: docker:24.0.5
 services:
-    - docker:24.0.5-dind
+  - docker:24.0.5-dind
 
 .standard-rules:
   rules:
@@ -21,55 +21,58 @@ before_script:
   - apk add --no-cache docker-compose
   - docker version
   - docker-compose --version
+  - cd backend
   - docker-compose up -d
 
-backend-typing:
+backend-typnig:
   stage: typing
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/**/*.{py}'
-          - 'backend/pyproject.toml'
-          - 'backend/dockerfile'
-          - 'backend/.pre-commit-config.yaml'
-          - 'docker-compose.yaml'
-          - '.gitlab-ci.yml'
-          - '.pre-commit-config.yaml'
+          - "backend/src/**/*.{py}"
+          - "backend/pyproject.toml"
   script:
     - docker exec -t backend uv run mypy .
 
 backend-linting:
   stage: linting
+  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/**/*.{py}'
-          - 'backend/pyproject.toml'
-          - 'backend/dockerfile'
-          - 'backend/.pre-commit-config.yaml'
-          - 'docker-compose.yaml'
-          - '.gitlab-ci.yml'
-          - '.pre-commit-config.yaml'
-  needs: ["backend-typing"]
+          - "backend/src/**/*.{py}"
+          - "backend/pyproject.toml"
   script:
     - docker exec -t backend uv run ruff check .
 
-backend-testing:
-  stage: testing
+frontend-linting:
+  stage: linting
+  parallel: 2
   rules:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - 'backend/**/*.{py}'
-          - 'backend/pyproject.toml'
-          - 'backend/dockerfile'
-          - 'backend/.pre-commit-config.yaml'
-          - 'docker-compose.yaml'
-          - '.gitlab-ci.yml'
-          - '.pre-commit-config.yaml'
-  needs: ["backend-linting"]
+          - "frontend/src/**/*"
+          - "frontend/.prettierrc"
+          - "frontend/eslint.config.js"
+          - "frontend/index.html"
+          - "frontend/package-lock.json"
+          - "frontend/package.json"
+          - "frontend/vite.config.js"
+  script:
+    - docker exec -t react npm run lint
+
+backend-testing:
+  stage: testing
+  parallel: 2
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - "backend/**/*.{py}"
+          - "docker-compose.yaml"
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
   coverage: '/TOTAL.*\s+(\d+%)$/'
@@ -81,10 +84,40 @@ backend-testing:
       junit:
         - backend/src/junit.xml
 
+frontend-testing:
+  stage: testing
+  parallel: 2
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - "frontend/**/*"
+          - "docker-compose.yaml"
+          - "frontend/package.json"
+          - "frontend/tests"
+          - "frontend/vite.config.js"
+          - "frontend/playwright.config.ts"
+  script:
+    - docker exec -t frontend npx playwright install
+    - docker exec -t frontend npx playwright install-deps
+    - docker exec -t frontend npm run test:pl-junit
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    paths:
+      - frontend/junit-integration.xml
+    reports:
+      junit:
+        - frontend/junit-integration.xml
+
 pages:
   stage: pages
   only:
-    - master
+    changes:
+      - "backend/docs/**/*.{md}"
+      - "docs/**/*.{md}"
+      - "mkdocs.yml"
+      - main
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
