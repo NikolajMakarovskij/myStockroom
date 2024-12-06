@@ -1,5 +1,14 @@
 default_stages: [pre-commit, pre-push]
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
   - repo: local
     hooks:
       - id: bakend
@@ -9,12 +18,28 @@ repos:
         pass_filenames: false
         types: [python]
         files: ^backend/
-  - repo: local
-    hooks:
-      - id: frontend
-        name: run front pre-commit
+        verbose: true
+      - id: react
+        name: run frontend pre-commit
+        language: system
+        entry: bash -c 'cd frontend && npm run pre-commit'
+        pass_filenames: false
+        types: [jsx]
+        files: ^frontend/
+        verbose: true
+      - id: javascript
+        name: run frontend pre-commit
         language: system
         entry: bash -c 'cd frontend && npm run pre-commit'
         pass_filenames: false
         types: [javascript]
         files: ^frontend/
+        verbose: true
+      - id: ts
+        name: run frontend pre-commit
+        language: system
+        entry: bash -c 'cd frontend && npm run pre-commit'
+        pass_filenames: false
+        types: [ts]
+        files: ^frontend/
+        verbose: true
