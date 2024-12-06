@@ -30,6 +30,7 @@ backend-typnig:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
+          - ".gitlab-ci.yml"
           - "backend/src/**/*.{py}"
           - "backend/pyproject.toml"
   script:
@@ -41,6 +42,7 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
+          - ".gitlab-ci.yml"
           - "backend/src/**/*.{py}"
           - "backend/pyproject.toml"
   script:
@@ -52,6 +54,7 @@ frontend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
+          - ".gitlab-ci.yml"
           - "frontend/src/**/*"
           - "frontend/.prettierrc"
           - "frontend/eslint.config.js"
@@ -68,6 +71,7 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
+          - ".gitlab-ci.yml"
           - "backend/**/*.{py}"
           - "docker-compose.yaml"
   script:
@@ -87,6 +91,7 @@ frontend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
+          - ".gitlab-ci.yml"
           - "frontend/**/*"
           - "docker-compose.yaml"
           - "frontend/package.json"
