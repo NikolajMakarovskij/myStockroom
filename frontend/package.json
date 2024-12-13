@@ -42,19 +42,19 @@
   "devDependencies": {
     "@eslint/compat": "^1.0.3",
     "@eslint/js": "^9.13.0",
+    "@playwright/test": "^1.28.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
-    "prettier": "^3.1.1",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^9.4.0",
     "eslint-config-standart": "^0.2.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "globals": "^15.3.0",
-    "vitest": "^2.1.4",
-    "@playwright/test": "^1.28.1",
-    "pre-commit": "^1.2.2",
-    "vite": "^5.0.8"
+    "pre-commit": "^1.0.10",
+    "prettier": "^3.1.1",
+    "vite": "^5.0.8",
+    "vitest": "^2.1.4"
   },
   "resolutions": {
     "rollup": "npm:@rollup/wasm-node"
