@@ -45,6 +45,7 @@ backend-linting:
           - ".gitlab-ci.yml"
           - "backend/src/**/*.{py}"
           - "backend/pyproject.toml"
+  needs: ["backend-typnig"]
   script:
     - docker exec -t backend uv run ruff check .
 
@@ -74,6 +75,7 @@ backend-testing:
           - ".gitlab-ci.yml"
           - "backend/**/*.{py}"
           - "docker-compose.yaml"
+  needs: ["backend-linting"]
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
   coverage: '/TOTAL.*\s+(\d+%)$/'
@@ -98,6 +100,7 @@ frontend-testing:
           - "frontend/tests"
           - "frontend/vite.config.js"
           - "frontend/playwright.config.ts"
+  needs: ["frontend-linting"]
   script:
     - docker exec -t frontend npx playwright install
     - docker exec -t frontend npx playwright install-deps
@@ -118,7 +121,7 @@ pages:
     - "backend/docs/**/*.{md}"
     - "docs/**/*.{md}"
     - "mkdocs.yml"
-
+  needs: ["backend-testing"]
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
