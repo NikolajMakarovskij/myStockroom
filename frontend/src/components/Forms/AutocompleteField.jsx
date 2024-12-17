@@ -32,7 +32,7 @@ export default function AutocompleteField(props) {
                 }
                 options={options}
                 getOptionLabel={optionLabel}
-                isOptionEqualToValue={(option, value) => option.id === value}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 noOptionsText={noOptionsText}
                 id={id}
                 disableCloseOnSelect
