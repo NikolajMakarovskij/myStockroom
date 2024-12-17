@@ -28,20 +28,11 @@ export default function AutocompleteMultipleField(props) {
                 options={options}
                 getOptionLabel={optionLabel}
                 onChange={(event, value) => {
-                  onChange(
-                    value
-                      ? value.map((item) => {
-                          return item.id
-                        })
-                      : [],
-                    console.log('onChange: ', value),
-                  )
+                  onChange(value ? value.map((item) => item.id) : [], console.log('onChange: ', value))
                 }}
                 value={
                   value
-                    ? (options.filter((option) => {
-                        return (option = value), console.log('Option: ', option)
-                      }),
+                    ? (options.filter((option) => ((option = value), console.log('Option: ', option))),
                       console.log('Value: ', value))
                     : []
                 }

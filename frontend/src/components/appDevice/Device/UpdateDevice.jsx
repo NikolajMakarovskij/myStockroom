@@ -141,13 +141,13 @@ const UpdateDevice = () => {
     ip_address: '',
     login: '',
     pwd: '',
-    categories: '',
-    manufacturer: '',
+    categories: [],
+    manufacturer: [],
     serial: '',
     invent: '',
     description: '',
-    consumable: '',
-    accessories: '',
+    consumable: [],
+    accessories: [],
     note: '',
   }
 
