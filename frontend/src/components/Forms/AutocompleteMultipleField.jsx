@@ -9,8 +9,6 @@ import PropTypes from 'prop-types'
 export default function AutocompleteMultipleField(props) {
   const { label, optionLabel, name, id, control, placeholder, width, options, noOptionsText, loading, error } = props
 
-  //const selectedValue = useMemo(value ? (() => options.filter((option) => option.id), [options]) ?? [] : [])
-
   return (
     <>
       {loading ? (
@@ -25,19 +23,28 @@ export default function AutocompleteMultipleField(props) {
             <FormControl variant='standard' sx={{ width: { width } }}>
               <Autocomplete
                 multiple
-                //filterSelectedOptions
                 id={id}
                 name={name}
                 options={options}
                 getOptionLabel={optionLabel}
+                onChange={(event, value) => {
+                  onChange(
+                    value
+                      ? value.map((item) => {
+                          return item.id
+                        })
+                      : [],
+                    console.log('onChange: ', value),
+                  )
+                }}
                 value={
                   value
-                    ? (options.filter((item) => {
-                        return value === item.id
-                      }) ?? [])
+                    ? (options.filter((option) => {
+                        return (option = value), console.log('Option: ', option)
+                      }),
+                      console.log('Value: ', value))
                     : []
                 }
-                //value={value ? value : []} // возвращает весь массив объектов
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 noOptionsText={noOptionsText}
                 disableCloseOnSelect
@@ -51,11 +58,8 @@ export default function AutocompleteMultipleField(props) {
                     variant='standard'
                   />
                 )}
-                onChange={(event, newValue) => {
-                  onChange(newValue ? newValue.id : [])
-                }}
               />
-              {console.log(value)}
+              {console.log('log: ', value)}
               <FormHelperText sx={{ color: '#d32f2f' }}> {error?.message} </FormHelperText>
             </FormControl>
           )}
