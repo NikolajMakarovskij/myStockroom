@@ -27,6 +27,7 @@ services:
       context: ./frontend
     hostname: frontend
     container_name: frontend
+    image: frontend
     restart: always
     volumes:
       - ./frontend:/frontend
@@ -43,7 +44,7 @@ services:
 
   db:
     container_name: db
-    image: postgres:14
+    image: postgres:17-alpine
     restart: always
     env_file:
       - ./.env
