@@ -1,4 +1,4 @@
-FROM node
+FROM node:23-alpine
 WORKDIR /frontend
 ADD *.json ./
 RUN npm i --force
