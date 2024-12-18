@@ -152,7 +152,7 @@ const ListDevice = () => {
                 {row.original.consumable.length == 0 ? (
                   <></>
                 ) : (
-                  <TreeItem nodeId='1' label='Расходники'>
+                  <TreeItem itemId='1' label='Расходники'>
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
@@ -182,7 +182,7 @@ const ListDevice = () => {
                 {row.original.accessories.length == 0 ? (
                   <></>
                 ) : (
-                  <TreeItem nodeId='2' label='Комплектующие'>
+                  <TreeItem itemId='2' label='Комплектующие'>
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
