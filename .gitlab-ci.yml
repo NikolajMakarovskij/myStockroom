@@ -24,7 +24,7 @@ before_script:
   - cd backend
   - docker-compose up -d
 
-backend-typnig:
+backend-typing:
   stage: typing
   rules:
     - if: $CI_COMMIT_MESSAGE
@@ -45,7 +45,7 @@ backend-linting:
           - ".gitlab-ci.yml"
           - "backend/src/**/*.{py}"
           - "backend/pyproject.toml"
-  needs: ["backend-typnig"]
+  needs: ["backend-typing"]
   script:
     - docker exec -t backend uv run ruff check .
 
