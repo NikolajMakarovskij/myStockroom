@@ -21,7 +21,6 @@ before_script:
   - apk add --no-cache docker-compose
   - docker version
   - docker-compose --version
-  - cd backend
   - docker-compose up -d
 
 backend-typnig:
@@ -64,7 +63,7 @@ backend-testing:
     paths:
       - backend/src/junit.xml
     reports:
-      junit: 
+      junit:
         - backend/src/junit.xml
 
 pages:
@@ -78,4 +77,3 @@ pages:
   artifacts:
     paths:
       - public
-
