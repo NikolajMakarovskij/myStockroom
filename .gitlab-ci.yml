@@ -71,6 +71,7 @@ frontend-linting:
           - "frontend/package.json"
           - "frontend/vite.config.js"
           - '.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
   script:
     - docker exec -t frontend npm run lint
 
@@ -112,6 +113,7 @@ frontend-testing:
           - "frontend/tests"
           - "frontend/vite.config.js"
           - '.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
           - "frontend/playwright.config.ts"
   needs: ["frontend-linting"]
   script:
