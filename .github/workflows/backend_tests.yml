@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: isbang/compose-action@v2.0.1
         with:
-          compose-file: "./backend/docker-compose.yaml"
+          compose-file: "./docker-compose.yaml"
         env:
           DEBUG: 1
           SECRET_KEY: foo
