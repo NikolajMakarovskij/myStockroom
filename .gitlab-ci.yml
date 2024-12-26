@@ -43,6 +43,7 @@ backend-linting:
         paths:
           - 'backend/src/**/*.{py}'
           - 'backend/pyproject.toml'
+  needs: ["backend-typing"]
   script:
     - docker exec -t backend uv run ruff check .
 
@@ -54,6 +55,7 @@ backend-testing:
         paths:
           - 'backend/**/*.{py}'
           - 'docker-compose.yaml'
+  needs: ["backend-linting"]
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
   coverage: '/TOTAL.*\s+(\d+%)$/'
@@ -69,9 +71,7 @@ pages:
   stage: pages
   only:
     - master
-    - 'backend/docs/**/*.{md}'
-    - 'docs/**/*.{md}'
-    - 'mkdocs.yml'
+  needs: ["backend-testing"]
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
