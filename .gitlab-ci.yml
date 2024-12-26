@@ -13,19 +13,6 @@ services:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-.backend-rules:
-  rules:
-    - if: $CI_COMMIT_MESSAGE
-      changes:
-        paths:
-          - 'backend/**/*.{py}'
-          - 'backend/pyproject.toml'
-          - 'backend/dockerfile'
-          - 'backend/.pre-commit-config.yaml'
-          - 'docker-compose.yaml'
-          - '.gitlab-ci.yml'
-          - '.pre-commit-config.yaml'
-
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
@@ -39,14 +26,32 @@ before_script:
 backend-typing:
   stage: typing
   rules:
-    - !reference [.standard-rules, .backend-rules, rules]
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   script:
     - docker exec -t backend uv run mypy .
 
 backend-linting:
   stage: linting
   rules:
-    - !reference [.standard-rules, .backend-rules, rules]
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   needs: ["backend-typing"]
   script:
     - docker exec -t backend uv run ruff check .
@@ -54,7 +59,16 @@ backend-linting:
 backend-testing:
   stage: testing
   rules:
-    - !reference [.standard-rules, .backend-rules, rules]
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   needs: ["backend-linting"]
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
