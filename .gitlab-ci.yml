@@ -23,7 +23,7 @@ before_script:
   - docker-compose --version
   - docker-compose up -d
 
-backend-typnig:
+backend-typing:
   stage: typing
   rules:
     - if: $CI_COMMIT_MESSAGE
