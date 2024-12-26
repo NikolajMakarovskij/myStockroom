@@ -21,7 +21,6 @@ before_script:
   - apk add --no-cache docker-compose
   - docker version
   - docker-compose --version
-  - cd backend
   - docker-compose up -d
 
 backend-typing:
@@ -30,9 +29,13 @@ backend-typing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - ".gitlab-ci.yml"
-          - "backend/src/**/*.{py}"
-          - "backend/pyproject.toml"
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   script:
     - docker exec -t backend uv run mypy .
 
@@ -42,9 +45,13 @@ backend-linting:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - ".gitlab-ci.yml"
-          - "backend/src/**/*.{py}"
-          - "backend/pyproject.toml"
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   needs: ["backend-typing"]
   script:
     - docker exec -t backend uv run ruff check .
@@ -63,6 +70,7 @@ frontend-linting:
           - "frontend/package-lock.json"
           - "frontend/package.json"
           - "frontend/vite.config.js"
+          - '.pre-commit-config.yaml'
   script:
     - docker exec -t frontend npm run lint
 
@@ -72,9 +80,13 @@ backend-testing:
     - if: $CI_COMMIT_MESSAGE
       changes:
         paths:
-          - ".gitlab-ci.yml"
-          - "backend/**/*.{py}"
-          - "docker-compose.yaml"
+          - 'backend/**/*.{py}'
+          - 'backend/pyproject.toml'
+          - 'backend/dockerfile'
+          - 'backend/.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+          - '.gitlab-ci.yml'
+          - '.pre-commit-config.yaml'
   needs: ["backend-linting"]
   script:
     - docker exec -t backend uv run pytest -n 4 --cov --junitxml=junit.xml
@@ -99,6 +111,7 @@ frontend-testing:
           - "frontend/package.json"
           - "frontend/tests"
           - "frontend/vite.config.js"
+          - '.pre-commit-config.yaml'
           - "frontend/playwright.config.ts"
   needs: ["frontend-linting"]
   script:
