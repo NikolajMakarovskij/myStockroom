@@ -32,11 +32,12 @@ services:
       - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database:/var/lib/postgresql/data
 
-  nginx:
-    build: ./nginx
+  angie:
+    build: ./angie
     restart: always
     hostname: stock
-    container_name: nginx
+    container_name: angie
+    image: angie
     volumes:
       - ./frontend:/frontend
       - ./backend/src/static:/home/backend/web/static
