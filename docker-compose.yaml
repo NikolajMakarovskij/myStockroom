@@ -56,7 +56,8 @@ services:
     build: ./angie
     restart: always
     hostname: stock
-    container_name: nginx
+    container_name: angie
+    image: angie
     volumes:
       - ./frontend:/frontend
       - ./backend/src/static:/home/backend/web/static
