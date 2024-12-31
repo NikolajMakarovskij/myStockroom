@@ -51,7 +51,7 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.13.0",
-    "pre-commit": "^1.2.2",
+    "pre-commit": "^1.0.10",
     "prettier": "^3.4.2",
     "vite": "^5.4.11",
     "vitest": "^2.1.8"
