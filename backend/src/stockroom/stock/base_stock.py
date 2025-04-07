@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from django.conf import settings
 from django.db.models import Model
+from uuid import UUID
 
 from device.models import Device
 
@@ -48,11 +49,11 @@ class BaseStock(object):
         self.session.modified = True
 
     @classmethod
-    def add_category(cls, model_id: str) -> Model | None:
+    def add_category(cls, model_id: UUID) -> Model | None:
         """Getting a category
 
         Args:
-            model_id (str): _stockroom model id_
+            model_id (UUID): _stockroom model id_
 
         Returns:
             Category (Model | None): _category model_
@@ -74,7 +75,7 @@ class BaseStock(object):
     @classmethod
     def create_history(
         cls,
-        model_id: str,
+        model_id: UUID,
         device_id: str,
         quantity: int,
         username: str,
@@ -84,7 +85,7 @@ class BaseStock(object):
         """Creating an entry in the history of stock_model
 
         Args:
-            model_id (str): _stockroom model id_
+            model_id (UUID): _stockroom model id_
             device_id (str): _device model id_
             quantity (int): _description_
             username (str): _getting from session_
@@ -121,12 +122,12 @@ class BaseStock(object):
 
     @classmethod
     def add_to_stock(
-        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=""
+        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=""
     ) -> None:
         """Add a stock_model to the stock or update it quantity.
 
         Args:
-            model_id (str): _stockroom model id_
+            model_id (UUID): _stockroom model id_
             quantity (int): _description_
             number_rack (int): _description_
             number_shelf (int): _description_
@@ -164,11 +165,11 @@ class BaseStock(object):
         )
 
     @classmethod
-    def remove_from_stock(cls, model_id: str, quantity=0, username="") -> None:
+    def remove_from_stock(cls, model_id: UUID, quantity=0, username="") -> None:
         """Remove stock_model from the stock
 
         Args:
-            model_id (str): _stockroom model id_
+            model_id (UUID): _stockroom model id_
             quantity (int): _description_
             username (str): _getting from session_
         """
@@ -188,7 +189,7 @@ class BaseStock(object):
     @classmethod
     def add_to_device(
         cls,
-        model_id: str,
+        model_id: UUID,
         device: str,
         quantity: int = 1,
         note: str = "",
@@ -197,7 +198,7 @@ class BaseStock(object):
         """Install stock_model in the device
 
         Args:
-            model_id (str): _stockroom model id_
+            model_id (UUID): _stockroom model id_
             device (dict): _device model id_
             quantity (int, optional): _description_
             note (str, optional): _description_
