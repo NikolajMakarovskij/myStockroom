@@ -17,39 +17,39 @@ class Signature(ModelMixin, models.Model):
         Signature (Signature): _description_
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(
+    name = models.CharField(
         max_length=50, help_text="Введите номер ключа", verbose_name="Ключ"
     )
-    licenseKeyFileOpen: models.FileField = models.FileField(
+    licenseKeyFileOpen = models.FileField(
         upload_to="signature/Open/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Открытая часть лицензии",
     )
-    licenseKeyFileClose: models.FileField = models.FileField(
+    licenseKeyFileClose = models.FileField(
         upload_to="signature/Close/",
         blank=True,
         null=True,
         help_text="Прикрепите файл",
         verbose_name="Закрытая часть лицензии",
     )
-    periodOpen: models.DateField = models.DateField(
+    periodOpen = models.DateField(
         null=True,
         blank=True,
         help_text="Укажите дату",
         verbose_name="Срок действия открытой части",
     )
-    periodClose: models.DateField = models.DateField(
+    periodClose = models.DateField(
         null=True,
         blank=True,
         help_text="Укажите дату",
         verbose_name="Срок действия закрытой части",
     )
-    employeeRegister: models.ForeignKey = models.ForeignKey(
+    employeeRegister = models.ForeignKey(
         Employee,
         on_delete=models.SET_NULL,
         blank=True,
@@ -57,7 +57,7 @@ class Signature(ModelMixin, models.Model):
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник на которого оформлена ЭЦП",
     )
-    employeeStorage: models.ForeignKey = models.ForeignKey(
+    employeeStorage = models.ForeignKey(
         Employee,
         on_delete=models.SET_NULL,
         blank=True,
@@ -66,7 +66,7 @@ class Signature(ModelMixin, models.Model):
         help_text="Укажите сотрудника",
         verbose_name="Сотрудник у которого хранится ЭЦП",
     )
-    workstation: models.ForeignKey = models.ForeignKey(
+    workstation = models.ForeignKey(
         Device,
         on_delete=models.SET_NULL,
         blank=True,
@@ -74,7 +74,7 @@ class Signature(ModelMixin, models.Model):
         help_text="Укажите рабочую станцию",
         verbose_name="Рабочая станция",
     )
-    storage: models.ForeignKey = models.ForeignKey(
+    storage = models.ForeignKey(
         Consumables,
         on_delete=models.SET_NULL,
         blank=True,

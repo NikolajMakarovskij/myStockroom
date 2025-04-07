@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from rest_framework import permissions, viewsets  # noqa F401
 
 from core.utils import DataMixin, FormMessageMixin, menu
-
 from .forms import RoomForm, WorkplaceForm
 from .models import Room, Workplace
 from .serializers import RoomModelSerializer, WorkplaceModelSerializer
@@ -38,7 +37,10 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
 
 # Рабочие места
 class WorkplaceListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_WorkplaceListView_
     List of workplace instances
@@ -90,7 +92,7 @@ class WorkplaceListView(
         return object_list
 
 
-class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
+class WorkplaceRestView(DataMixin, viewsets.ModelViewSet[Workplace]):
     """_WorkplaceRestView_ returns workplace
 
     Other parameters:
@@ -104,7 +106,10 @@ class WorkplaceRestView(DataMixin, viewsets.ModelViewSet):
 
 
 class WorkplaceDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_WorkplaceDetailView_
     Detail of workplace instance
@@ -137,7 +142,11 @@ class WorkplaceDetailView(
 
 
 class WorkplaceCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_WorkplaceCreate_
     Create workplace instance
@@ -175,7 +184,11 @@ class WorkplaceCreate(
 
 
 class WorkplaceUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_WorkplaceUpdate_
     Update of workplace instances
@@ -212,7 +225,11 @@ class WorkplaceUpdate(
 
 
 class WorkplaceDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_WorkplaceDelete_
     Delete workplace instance
@@ -249,7 +266,10 @@ class WorkplaceDelete(  # type: ignore[misc]
 
 # Кабинеты
 class RoomListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_RoomListView_
     List of room instances
@@ -300,7 +320,7 @@ class RoomListView(
         return object_list
 
 
-class RoomRestView(DataMixin, viewsets.ModelViewSet):
+class RoomRestView(DataMixin, viewsets.ModelViewSet[Room]):
     """_RoomRestView_
     List of room instances
 
@@ -315,7 +335,10 @@ class RoomRestView(DataMixin, viewsets.ModelViewSet):
 
 
 class RoomDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_RoomDetailView_
     Detail of room instance
@@ -348,7 +371,11 @@ class RoomDetailView(
 
 
 class RoomCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_RoomCreate_
     Create room instance
@@ -386,7 +413,11 @@ class RoomCreate(
 
 
 class RoomUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_RoomUpdate_
     Update of room instances
@@ -424,7 +455,11 @@ class RoomUpdate(
 
 
 class RoomDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_RoomDelete_
     Delete room instance

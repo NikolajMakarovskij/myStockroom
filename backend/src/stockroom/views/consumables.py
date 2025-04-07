@@ -21,7 +21,10 @@ from stockroom.stock.stock import ConStock
 
 
 class StockroomView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_StockroomView_
     List of stockroom consumables instances
@@ -98,7 +101,10 @@ class StockroomView(
 
 
 class StockroomCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_StockroomCategoriesView_
     List of consumables instances filtered by categories
@@ -151,7 +157,7 @@ class StockroomCategoriesView(
         return object_list
 
 
-class StockRestView(DataMixin, viewsets.ModelViewSet):
+class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
     """_StockRestView_ Stockroom consumables API view
 
     Other parameters:
@@ -182,7 +188,7 @@ class ExportStockConsumable(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -205,8 +211,8 @@ class ExportStockConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -229,7 +235,7 @@ class ExportStockConsumableCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -238,7 +244,10 @@ class ExportStockConsumableCategory(View):
 
 # History
 class HistoryView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_HistoryView_
     Returns a list of all records of history of stockroom consumables from the database
@@ -295,7 +304,10 @@ class HistoryView(
 
 
 class HistoryCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_HistoryCategoriesView_
     Returns a list of with filtered records by categories of history of stockroom consumables from the database
@@ -344,7 +356,10 @@ class HistoryCategoriesView(
 
 
 class HistoryConsumptionView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_HistoryConsumptionView_
     Returns a list of with all records of consumption of stockroom consumables from the database
@@ -406,7 +421,10 @@ class HistoryConsumptionView(
 
 
 class HistoryConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_HistoryConsumptionCategoriesView_
     Returns a list of with filtered records by categories of consumption of stockroom consumables from the database
@@ -478,7 +496,7 @@ class ExportConsumptionConsumable(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -501,8 +519,8 @@ class ExportConsumptionConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -522,7 +540,7 @@ class ExportConsumptionConsumableCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
