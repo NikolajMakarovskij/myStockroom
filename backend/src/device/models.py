@@ -121,7 +121,7 @@ class Device(ModelMixin, models.Model):
         help_text="Введите серийный номер",
         verbose_name="Серийный номер",
     )
-    serialIm = models.ImageField(
+    serialImg = models.ImageField(
         upload_to="device/serial/",
         blank=True,
         null=True,

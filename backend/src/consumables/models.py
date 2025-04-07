@@ -101,7 +101,7 @@ class Consumables(ModelMixin, models.Model):
         help_text="Введите инвентаризационный номер",
         verbose_name="Инвентарный номер",
     )
-    inventIm = models.ImageField(
+    inventImg = models.ImageField(
         upload_to="сonsumables/invent/",
         blank=True,
         null=True,
