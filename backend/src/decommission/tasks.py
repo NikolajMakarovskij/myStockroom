@@ -8,22 +8,22 @@ from stockroom.models.devices import StockDev
 from stockroom.stock.stock import DevStock
 
 from .decom import Decom
+from uuid import UUID
 
 
 class DecomTasks(Decom):
     # Decommission
     @shared_task()
-    def add_device_decom(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def add_device_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """_add_device_decom_
         Adds a device to a record in the decommission model and deletes it from the stockroom model
 
         Args:
-            device_id (str): _uuid of the Device model_
+            device_id (UUID): _uuid of the Device model_
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
-        device_id = str(device_id)
         device_add = Device.objects.get(id=device_id)
         if not Decommission.objects.filter(stock_model=device_id):
             if Decom.add_category_decom(device_id) is None:
@@ -45,17 +45,16 @@ class DecomTasks(Decom):
             pass
 
     @shared_task()
-    def remove_decom(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def remove_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """_remove_decom_
         Delete from the Decommission model
 
         Args:
-            device_id (str): _uuid of the Device model_
+            device_id (UUID): _uuid of the Device model_
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
-        device_id = str(device_id)
         if Decommission.objects.filter(stock_model=device_id):
             Decommission.objects.filter(stock_model=device_id).delete()
             DevStock.create_history_device(
@@ -64,19 +63,18 @@ class DecomTasks(Decom):
 
     # Disposal
     @shared_task()
-    def add_device_disp(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def add_device_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """_add_device_disp_
         Adds a decommission to a record in the disposal model and deletes it from the decommission model
 
         Args:
-            device_id (str): _uuid of the Device model_
+            device_id (UUID): _uuid of the Device model_
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
         username = username
         status_choice = status_choice
         quantity = int(0)
-        device_id = str(device_id)
         device_add = Device.objects.get(id=device_id)
         if not Disposal.objects.filter(stock_model=device_id):
             if Decom.add_category_disp(device_id) is None:
@@ -98,18 +96,17 @@ class DecomTasks(Decom):
             pass
 
     @shared_task()
-    def remove_disp(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def remove_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """_remove_disp_
         Delete from the Disposal model
 
         Args:
-            device_id (str): _uuid of the Device model_
+            device_id (UUID): _uuid of the Device model_
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
         quantity = int(0)
         status_choice = status_choice
-        device_id = str(device_id)
         if Disposal.objects.filter(stock_model=device_id):
             Disposal.objects.filter(stock_model=device_id).delete()
             DevStock.create_history_device(
