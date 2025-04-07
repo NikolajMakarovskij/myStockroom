@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Accounting, Categories
 
 
-class CategoriesModelSerializer(serializers.ModelSerializer):
+class CategoriesModelSerializer(serializers.ModelSerializer[Categories]):
     """_CategoriesModelSerializer_ Serialize Categories Model to JSON"""
 
     class Meta:
@@ -20,7 +20,7 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccountingModelSerializer(serializers.ModelSerializer):
+class AccountingModelSerializer(serializers.ModelSerializer[Accounting]):
     """_AccountingModelSerializer_ Serialize Accounting Model to JSON"""
 
     class Meta:

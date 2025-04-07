@@ -1,11 +1,13 @@
 from rest_framework import serializers
 
 from consumables.models import Consumables
+from device.models import Device
+from accounting.models import Accounting
 
 from .models.consumables import History, StockCat, Stockroom
 
 
-class StockConSerializer(serializers.ModelSerializer):
+class StockConSerializer(serializers.ModelSerializer[Consumables]):
     """_StockConSerializer_ Serialize consumables model to JSON
 
     Other parameters:
@@ -14,9 +16,11 @@ class StockConSerializer(serializers.ModelSerializer):
 
     """
 
-    device: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
-    consumable: serializers.StringRelatedField = serializers.StringRelatedField(
+    device: serializers.StringRelatedField[Device] = serializers.StringRelatedField(
         many=True
+    )
+    consumable: serializers.StringRelatedField[Accounting] = (
+        serializers.StringRelatedField(many=True)
     )
 
     class Meta:
@@ -33,7 +37,7 @@ class StockConSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class StockCatModelSerializer(serializers.ModelSerializer):
+class StockCatModelSerializer(serializers.ModelSerializer[StockCat]):
     """_StockCatModelSerializer_ Serialize stockroom consumables categories model to JSON"""
 
     class Meta:
@@ -50,7 +54,7 @@ class StockCatModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class StockModelSerializer(serializers.ModelSerializer):
+class StockModelSerializer(serializers.ModelSerializer[Stockroom]):
     """_StockConSerializer_ Serialize stockroom consumables model to JSON
 
     Other parameters:
@@ -83,7 +87,7 @@ class StockModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class HistoryModelSerializer(serializers.ModelSerializer):
+class HistoryModelSerializer(serializers.ModelSerializer[History]):
     """_HistoryModelSerializer_ Serialize history consumables model to JSON"""
 
     class Meta:

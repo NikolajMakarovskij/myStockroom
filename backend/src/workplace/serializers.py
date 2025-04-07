@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Room, Workplace
 
 
-class WorkplaceSerializer(serializers.ModelSerializer):
+class WorkplaceSerializer(serializers.ModelSerializer[Workplace]):
     """_WorkplaceSerializer_ Serialize workplace model to JSON for CRUD views
 
     Other parameters:
@@ -37,7 +37,7 @@ class WorkplaceSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class RoomModelSerializer(serializers.ModelSerializer):
+class RoomModelSerializer(serializers.ModelSerializer[Room]):
     """_RoomModelSerializer_ Serialize room model to JSON for list views
 
     Other parameters:
@@ -62,7 +62,7 @@ class RoomModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class RoomSerializer(serializers.ModelSerializer[Room]):
     """_RoomSerializer_ Serialize room model to JSON for CRUD views
 
     Other parameters:
@@ -85,7 +85,7 @@ class RoomSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class WorkplaceModelSerializer(serializers.ModelSerializer):
+class WorkplaceModelSerializer(serializers.ModelSerializer[Workplace]):
     """_WorkplaceSerializer_ Serialize workplace model to JSON for list views
 
     Other parameters:

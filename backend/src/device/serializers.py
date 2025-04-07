@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Device, DeviceCat
 
 
-class DeviceCatModelSerializer(serializers.ModelSerializer):
+class DeviceCatModelSerializer(serializers.ModelSerializer[DeviceCat]):
     """_CategoriesModelSerializer_ Serialize the model of device categories to JSON"""
 
     class Meta:
@@ -20,7 +20,7 @@ class DeviceCatModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class DeviceModelSerializer(serializers.ModelSerializer):
+class DeviceModelSerializer(serializers.ModelSerializer[Device]):
     """_ConsumablesModelSerializer_ Serialize the model of device to JSON"""
 
     class Meta:

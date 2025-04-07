@@ -1,9 +1,11 @@
 from rest_framework import serializers
 
 from .models import AccCat, Accessories, Categories, Consumables
+from device.models import Device
+from accounting.models import Accounting
 
 
-class CategoriesModelSerializer(serializers.ModelSerializer):
+class CategoriesModelSerializer(serializers.ModelSerializer[Categories]):
     """_CategoriesModelSerializer_ Serialize consumables categories model to JSON"""
 
     class Meta:
@@ -20,7 +22,7 @@ class CategoriesModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class ConsumablesModelSerializer(serializers.ModelSerializer):
+class ConsumablesModelSerializer(serializers.ModelSerializer[Consumables]):
     """_ConsumablesModelSerializer_ Serialize consumables model to JSON
 
     Other parameters:
@@ -28,9 +30,11 @@ class ConsumablesModelSerializer(serializers.ModelSerializer):
         consumable (StringRelatedField): _returns consumables_
     """
 
-    device: serializers.StringRelatedField = serializers.StringRelatedField(many=True)
-    consumable: serializers.StringRelatedField = serializers.StringRelatedField(
+    device: serializers.StringRelatedField[Device] = serializers.StringRelatedField(
         many=True
+    )
+    consumable: serializers.StringRelatedField[Accounting] = (
+        serializers.StringRelatedField(many=True)
     )
 
     class Meta:
@@ -47,7 +51,7 @@ class ConsumablesModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccCatModelSerializer(serializers.ModelSerializer):
+class AccCatModelSerializer(serializers.ModelSerializer[AccCat]):
     """_AccCatModelSerializer_ Serialize accessories categories model to JSON"""
 
     class Meta:
@@ -64,7 +68,7 @@ class AccCatModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccessoriesModelSerializer(serializers.ModelSerializer):
+class AccessoriesModelSerializer(serializers.ModelSerializer[Accessories]):
     """_AccessoriesModelSerializer_ Serialize accessories model to JSON"""
 
     class Meta:
