@@ -6,6 +6,8 @@ from consumables.models import Accessories, Consumables
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
 from stockroom.models.devices import HistoryDev
+from device.models import Device
+from django.db.models import QuerySet
 
 register = template.Library()
 
@@ -156,7 +158,7 @@ def consumption(consumable_id):
     history = History.objects.all()
     consumables = Consumables.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
@@ -166,7 +168,7 @@ def consumption(consumable_id):
         if not consumable.device.all():
             pass
         else:
-            device_name = consumable.device.all().order_by("name").distinct("name")
+            device_name = consumable.device.all().order_by("name").distinct("name") #
             device_count = consumable.device.count()
 
     unit_history_all = history.filter(
@@ -315,7 +317,7 @@ def consumption_acc(consumable_id):
     history = HistoryAcc.objects.all()
     consumables = Accessories.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
