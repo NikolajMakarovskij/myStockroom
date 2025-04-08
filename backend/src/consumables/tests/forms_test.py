@@ -3,7 +3,9 @@ from unittest import mock
 import pytest
 from django.core.files import File
 
-from ..forms import AccCat, AccessoriesForm, Categories, ConsumablesForm, Manufacturer
+from ..forms import AccessoriesForm, ConsumablesForm
+from ..models import AccCat, Categories
+from counterparty.models import Manufacturer
 
 
 # Расходники

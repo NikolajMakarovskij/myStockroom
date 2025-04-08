@@ -2,7 +2,10 @@ import pytest
 
 from consumables.models import Categories as ConCat
 
-from ..forms import Consumables, Device, Employee, SignatureForm
+from ..forms import SignatureForm
+from employee.models import Employee
+from consumables.models import Consumables
+from device.models import Device
 
 
 @pytest.mark.django_db

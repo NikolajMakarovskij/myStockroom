@@ -8,8 +8,9 @@ from consumables.models import Categories as ConCat
 from consumables.models import Consumables
 from workplace.models import Workplace
 
-from ..forms import DeviceForm, Manufacturer
+from ..forms import DeviceForm
 from ..models import DeviceCat
+from counterparty.models import Manufacturer
 
 
 @pytest.mark.django_db

@@ -2,7 +2,8 @@ import pytest
 
 from workplace.models import Workplace
 
-from ..forms import Departament, DepartamentForm, EmployeeForm, Post, PostForm
+from ..forms import DepartamentForm, EmployeeForm, PostForm
+from ..models import Departament, Post
 
 
 @pytest.mark.django_db

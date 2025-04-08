@@ -1,6 +1,7 @@
 import pytest
 
-from ..forms import Room, RoomForm, WorkplaceForm
+from ..forms import RoomForm, WorkplaceForm
+from ..models import Room
 
 
 @pytest.mark.django_db
