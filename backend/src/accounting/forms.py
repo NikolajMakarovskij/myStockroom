@@ -58,11 +58,11 @@ class AccessoriesWidget(BaseModelSelect2WidgetMixin):
     model = Accessories
     queryset = Accessories.objects.all().order_by("name")
     search_fields = [
-        "name__icontains" "categories__name__icontains",
+        "name__icontainscategories__name__icontains",
     ]
 
 
-class AccountingForm(forms.ModelForm):
+class AccountingForm(forms.ModelForm):  # type: ignore[type-arg]
     """_AccountingForm_"""
 
     class Meta:
@@ -111,7 +111,7 @@ class AccountingForm(forms.ModelForm):
         }
 
 
-class CategoriesForm(forms.ModelForm):
+class CategoriesForm(forms.ModelForm):  # type: ignore[type-arg]
     """_CategoriesForm_"""
 
     class Meta:

@@ -42,7 +42,10 @@ class AccountingIndexView(
 
 # Accounting
 class AccountingView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_AccountingView_
     List of accounting instances
@@ -103,7 +106,10 @@ class AccountingView(
 
 
 class AccountingCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_AccountingCategoriesView_
     List of accounting instances filtered by categories
@@ -152,7 +158,7 @@ class AccountingCategoriesView(
         return object_list
 
 
-class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_AccountingRestView_ returns accounting
 
     Other parameters:
@@ -180,7 +186,10 @@ class AccountingRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 
 
 class AccountingDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_AccountingDetailView_
     Detail of accounting instances
@@ -213,7 +222,11 @@ class AccountingDetailView(
 
 
 class AccountingCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_AccountingCreate_
     Create of accounting instances
@@ -249,7 +262,11 @@ class AccountingCreate(
 
 
 class AccountingUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_AccountingUpdate_
     Update of accounting instances
@@ -283,7 +300,11 @@ class AccountingUpdate(
 
 
 class AccountingDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_AccountingDelete_
     Delete of accounting instances
@@ -320,7 +341,10 @@ class AccountingDelete(  # type: ignore[misc]
 
 # Categories
 class CategoryView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_CategoryView_
     List of categories instances
@@ -366,7 +390,7 @@ class CategoryView(
         return object_list
 
 
-class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_CategoriesRestView_ returns categories
 
     Other parameters:
@@ -392,7 +416,11 @@ class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 
 
 class CategoryCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_CategoryCreate_
     Create of category instances
@@ -430,7 +458,11 @@ class CategoryCreate(
 
 
 class CategoryUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_CategoryUpdate_
     Update of category instances
@@ -466,7 +498,11 @@ class CategoryUpdate(
 
 
 class CategoryDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_CategoryDelete_
     Delete of accounting instances

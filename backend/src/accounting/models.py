@@ -101,7 +101,7 @@ class Accounting(ModelMixin, models.Model):
     name = models.CharField(
         max_length=500, help_text="Введите название", verbose_name="Название"
     )
-    account: models.IntegerField = models.IntegerField(
+    account = models.IntegerField(
         blank=True, null=True, help_text="Введите счет", verbose_name="Счет"
     )
     categories = models.ForeignKey(

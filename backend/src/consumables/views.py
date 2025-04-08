@@ -52,7 +52,10 @@ class ConsumableIndexView(
 
 # Расходники
 class ConsumablesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_ConsumablesView_
     List of consumables instances
@@ -122,7 +125,10 @@ class ConsumablesView(
 
 
 class ConsumablesCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_ConsumablesCategoriesView_
     List of consumables instances filtered by categories
@@ -171,7 +177,7 @@ class ConsumablesCategoriesView(
         return object_list
 
 
-class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_ConsumablesRestView_ returns consumables
 
     Other parameters:
@@ -196,7 +202,7 @@ class ConsumablesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
         return context
 
 
-class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class CategoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_ConsumablesRestView_ returns categories of consumables
 
     Other parameters:
@@ -227,8 +233,8 @@ class ConsumablesDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     DataMixin,
-    FormMixin,
-    generic.DetailView,
+    FormMixin,  # type: ignore[type-arg]
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_ConsumablesDetailView_
     Detail of consumables instances
@@ -263,7 +269,11 @@ class ConsumablesDetailView(
 
 
 class ConsumablesCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_ConsumablesCreate_
     Create of consumables instances
@@ -299,7 +309,11 @@ class ConsumablesCreate(
 
 
 class ConsumablesUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_ConsumablesUpdate_
     Update of consumables instances
@@ -333,7 +347,11 @@ class ConsumablesUpdate(
 
 
 class ConsumablesDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_ConsumablesDelete_
     Delete of consumables instances
@@ -387,7 +405,7 @@ class ExportConsumable(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -409,8 +427,8 @@ class ExportConsumableCategory(View):
         if not cons_cat:
             cons_cat = Categories.objects.all()
             cache.set("cons_cat", cons_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cons_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cons_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -431,7 +449,7 @@ class ExportConsumableCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -440,7 +458,10 @@ class ExportConsumableCategory(View):
 
 # Комплектующие
 class AccessoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_AccessoriesView_
     List of accessories instances
@@ -510,7 +531,10 @@ class AccessoriesView(
 
 
 class AccessoriesCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_AccessoriesCategoriesView_
     List of accessories instances filtered by categories
@@ -559,7 +583,7 @@ class AccessoriesCategoriesView(
         return object_list
 
 
-class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_AccessoriesRestView_ returns accessories
 
     Other parameters:
@@ -576,7 +600,10 @@ class AccessoriesRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 
 
 class AccCatRestView(
-    LoginRequiredMixin, DataMixin, FormMessageMixin, viewsets.ModelViewSet
+    LoginRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    viewsets.ModelViewSet,  # type: ignore[type-arg]
 ):
     """_AccCatRestView_ returns categories of accessories
 
@@ -597,8 +624,8 @@ class AccessoriesDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     DataMixin,
-    FormMixin,
-    generic.DetailView,
+    FormMixin,  # type: ignore[type-arg]
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_AccessoriesDetailView_
     Detail of accessories instances
@@ -633,7 +660,11 @@ class AccessoriesDetailView(
 
 
 class AccessoriesCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_AccessoriesCreate_
     Create of accessories instances
@@ -669,7 +700,11 @@ class AccessoriesCreate(
 
 
 class AccessoriesUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_AccessoriesUpdate_
     Update of accessories instances
@@ -703,7 +738,11 @@ class AccessoriesUpdate(
 
 
 class AccessoriesDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_AccessoriesDelete_
     Delete of accessories instances
@@ -757,7 +796,7 @@ class ExportAccessories(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Accessories_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Accessories_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -779,8 +818,8 @@ class ExportAccessoriesCategory(View):
         if not acc_cat:
             acc_cat = AccCat.objects.all()
             cache.set("acc_cat", acc_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=acc_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=acc_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -801,7 +840,7 @@ class ExportAccessoriesCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Accessories_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Accessories_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
