@@ -10,7 +10,7 @@ from .forms import OSForm, SoftwareForm
 from .models import Os, Software
 
 
-class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):  # type: ignore[type-arg]
     """_IndexView_
     Home page for software app
 
@@ -35,7 +35,10 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
 
 
 class SoftwareListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_SoftwareListView_
     List of software instances
@@ -86,7 +89,10 @@ class SoftwareListView(
 
 
 class SoftwareDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_SoftwareDetailView_
     Detail of software instance
@@ -120,7 +126,11 @@ class SoftwareDetailView(
 
 
 class SoftwareCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_SoftwareCreate_
     Create of software instances
@@ -157,7 +167,11 @@ class SoftwareCreate(
 
 
 class SoftwareUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_SoftwareUpdate_
     Update of software instances
@@ -195,7 +209,11 @@ class SoftwareUpdate(
 
 
 class SoftwareDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_SoftwareDelete_
     Delete of software instances
@@ -232,7 +250,10 @@ class SoftwareDelete(  # type: ignore[misc]
 
 # ОС
 class OSListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_OSListView_
     List of OS instances
@@ -281,7 +302,10 @@ class OSListView(
 
 
 class OSDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_OSDetailView_
     Detail of OS instances
@@ -314,7 +338,11 @@ class OSDetailView(
 
 
 class OSCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_OSCreate_
     Create of OS instances
@@ -352,7 +380,11 @@ class OSCreate(
 
 
 class OSUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_OSUpdate_
     Update of OS instances
@@ -390,7 +422,11 @@ class OSUpdate(
 
 
 class OSDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_OSDelete_
     Delete of OS instances

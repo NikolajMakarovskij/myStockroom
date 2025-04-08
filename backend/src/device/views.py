@@ -25,7 +25,10 @@ from .serializers import DeviceCatModelSerializer, DeviceModelSerializer
 
 # Devices
 class DeviceListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_DeviceListView_
     List of device instances
@@ -95,7 +98,10 @@ class DeviceListView(
 
 
 class DeviceCategoryListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_DeviceCategoryListView_
     List of device instances filtered by categories
@@ -165,7 +171,7 @@ class DeviceCategoryListView(
         return object_list
 
 
-class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_DeviceRestView_ returns device
 
     Other parameters:
@@ -181,7 +187,7 @@ class DeviceRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
     error_message = "%(categories)s %(name)s не удалось создать"
 
 
-class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
+class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):  # type: ignore[type-arg]
     """_DeviceCatRestView_ returns device
 
     Other parameters:
@@ -198,7 +204,10 @@ class DeviceCatRestView(DataMixin, FormMessageMixin, viewsets.ModelViewSet):
 
 
 class DeviceDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_DeviceDetailView_
     Detail of device instances
@@ -253,7 +262,11 @@ class DeviceDetailView(
 
 
 class DeviceCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_DeviceCreate_
     Create of device instances
@@ -289,7 +302,11 @@ class DeviceCreate(
 
 
 class DeviceUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_DeviceUpdate_
     Update of device instances
@@ -322,7 +339,7 @@ class DeviceUpdate(
         return context
 
 
-class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):  # type: ignore[misc]
+class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, DeleteView):  # type: ignore[misc, type-arg]
     """_DeviceDelete_
     Delete of device instances
 
@@ -355,7 +372,7 @@ class DeviceDelete(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, Delet
 
 
 # form views
-class ConsumableInstallFormView(PermissionRequiredMixin, FormView):
+class ConsumableInstallFormView(PermissionRequiredMixin, FormView):  # type: ignore[type-arg]
     """_ConsumableInstallFormView_
     A form for installing consumables and accessories in the device
 
@@ -382,7 +399,7 @@ class ConsumableInstallFormView(PermissionRequiredMixin, FormView):
         """
         consumable_form = self.form_class(request.POST)
         if consumable_form.is_valid():
-            consumable_form.save()
+            consumable_form.save()  # type: ignore[attr-defined]
             return self.render_to_response(self.get_context_data(success=True))
         else:
             return self.render_to_response(
@@ -392,7 +409,7 @@ class ConsumableInstallFormView(PermissionRequiredMixin, FormView):
             )
 
 
-class StockAddFormView(PermissionRequiredMixin, FormView):
+class StockAddFormView(PermissionRequiredMixin, FormView):  # type: ignore[type-arg]
     """_StockAddFormView_
     A form for adding devices in the stock
 
@@ -420,7 +437,7 @@ class StockAddFormView(PermissionRequiredMixin, FormView):
         stock_form = self.form_class(request.POST)
         consumable_form = ConsumableInstallForm()
         if stock_form.is_valid():
-            stock_form.save()
+            stock_form.save()  # type: ignore[attr-defined]
             return self.render_to_response(self.get_context_data(success=True))
         else:
             return self.render_to_response(
@@ -430,7 +447,7 @@ class StockAddFormView(PermissionRequiredMixin, FormView):
             )
 
 
-class MoveFormView(PermissionRequiredMixin, FormView):
+class MoveFormView(PermissionRequiredMixin, FormView):  # type: ignore[type-arg]
     """_MoveFormView_
     A form for changing workplaces in the device
 
@@ -460,7 +477,7 @@ class MoveFormView(PermissionRequiredMixin, FormView):
         stock_form = StockAddForm()
 
         if move_form.is_valid():
-            move_form.save()
+            move_form.save()  # type: ignore[type-arg]
             return self.render_to_response(self.get_context_data(success=True))
         else:
             return self.render_to_response(
@@ -472,7 +489,7 @@ class MoveFormView(PermissionRequiredMixin, FormView):
             )
 
 
-class AddHistoryFormView(PermissionRequiredMixin, FormView):
+class AddHistoryFormView(PermissionRequiredMixin, FormView):  # type: ignore[type-arg]
     """_AddHistoryFormView_
     Adds an action record to the device history
 
@@ -504,7 +521,7 @@ class AddHistoryFormView(PermissionRequiredMixin, FormView):
         stock_form = StockAddForm()
 
         if history_form.is_valid():
-            history_form.save()
+            history_form.save()  # type: ignore[attr-defined]
             return self.render_to_response(self.get_context_data(success=True))
         else:
             return self.render_to_response(
@@ -536,7 +553,7 @@ class ExportDevice(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_{datetime.today().strftime("%Y_%m_%d")}', ext="xlsx"
+                filename=f"Devices_{datetime.today().strftime('%Y_%m_%d')}", ext="xlsx"
             )
         )
         return response
@@ -557,8 +574,8 @@ class ExportDeviceCategory(View):
         if not device_cat:
             device_cat = DeviceCat.objects.all()
             cache.set("device_cat", device_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=device_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=device_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -577,7 +594,7 @@ class ExportDeviceCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_{datetime.today().strftime("%Y_%m_%d")}', ext="xlsx"
+                filename=f"Devices_{datetime.today().strftime('%Y_%m_%d')}", ext="xlsx"
             )
         )
         return response

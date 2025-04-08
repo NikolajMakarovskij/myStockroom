@@ -36,7 +36,10 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
 
 # Сотрудники
 class EmployeeListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_EmployeeListView_
     List of employee instances
@@ -95,7 +98,10 @@ class EmployeeListView(
 
 
 class EmployeeDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_EmployeeDetailView_
     Detail of employee instances
@@ -129,7 +135,11 @@ class EmployeeDetailView(
 
 
 class EmployeeCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_EmployeeCreate_
     Create of employee instances
@@ -166,7 +176,11 @@ class EmployeeCreate(
 
 
 class EmployeeUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_EmployeeUpdate_
     Update of employee instances
@@ -203,7 +217,11 @@ class EmployeeUpdate(
 
 
 class EmployeeDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_EmployeeDelete_
     Delete of employee instances
@@ -240,7 +258,10 @@ class EmployeeDelete(  # type: ignore[misc]
 
 # Должность
 class PostListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_PostListView_
     List of post instances
@@ -288,7 +309,10 @@ class PostListView(
 
 
 class PostDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_PostDetailView_
     Detail of post instances
@@ -322,7 +346,11 @@ class PostDetailView(
 
 
 class PostCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_PostCreate_
     Create of post instances
@@ -359,7 +387,11 @@ class PostCreate(
 
 
 class PostUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_PostUpdate_
     Update of post instances
@@ -396,7 +428,11 @@ class PostUpdate(
 
 
 class PostDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_PostDelete_
     Delete of post instances
@@ -433,7 +469,10 @@ class PostDelete(  # type: ignore[misc]
 
 # Отдел
 class DepartamentListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_DepartamentListView_
     List of departament instances
@@ -479,7 +518,10 @@ class DepartamentListView(
 
 
 class DepartamentDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_DepartamentDetailView_
     Detail of departament instances
@@ -513,7 +555,11 @@ class DepartamentDetailView(
 
 
 class DepartamentCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_DepartamentCreate_
     Create of departament instances
@@ -550,7 +596,11 @@ class DepartamentCreate(
 
 
 class DepartamentUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_DepartamentUpdate_
     Update of departament instances
@@ -588,7 +638,11 @@ class DepartamentUpdate(
 
 
 class DepartamentDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_DepartamentDelete_
     Delete of departament instances

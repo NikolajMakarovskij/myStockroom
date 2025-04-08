@@ -12,7 +12,9 @@ from .models import Manufacturer
 
 # Контрагенты
 class CounterpartyView(
-    LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    generic.TemplateView,  # type: ignore[type-arg]
 ):
     """_CounterpartyView_
     Home page for counterparty app
@@ -39,7 +41,10 @@ class CounterpartyView(
 
 # Производитель
 class ManufacturerListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     """_ManufacturerListView_
     List of manufacturer instances
@@ -89,7 +94,10 @@ class ManufacturerListView(
 
 
 class ManufacturerDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     """_ManufacturerDetailView_
     Detail of manufacturer instances
@@ -122,7 +130,11 @@ class ManufacturerDetailView(
 
 
 class ManufacturerCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     """_ManufacturerCreate_
     Create of manufacturer instances
@@ -159,7 +171,11 @@ class ManufacturerCreate(
 
 
 class ManufacturerUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     """_ManufacturerUpdate_
     Update of manufacturer instances
@@ -196,7 +212,11 @@ class ManufacturerUpdate(
 
 
 class ManufacturerDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     """_ManufacturerDelete_
     Delete of manufacturer instances
