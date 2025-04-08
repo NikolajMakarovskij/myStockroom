@@ -76,7 +76,7 @@ class BaseStock(object):
     def create_history(
         cls,
         model_id: UUID,
-        device_id: str,
+        device_id: UUID | str,
         quantity: int,
         username: str,
         note: str,
@@ -86,7 +86,7 @@ class BaseStock(object):
 
         Args:
             model_id (UUID): _stockroom model id_
-            device_id (str): _device model id_
+            device_id (UUID): _device model id_
             quantity (int): _description_
             username (str): _getting from session_
             note (str): _description_
@@ -190,7 +190,7 @@ class BaseStock(object):
     def add_to_device(
         cls,
         model_id: UUID,
-        device: str,
+        device: UUID,
         quantity: int = 1,
         note: str = "",
         username: str = "",
@@ -199,15 +199,14 @@ class BaseStock(object):
 
         Args:
             model_id (UUID): _stockroom model id_
-            device (dict): _device model id_
+            device (UUID): _device model id_
             quantity (int, optional): _description_
             note (str, optional): _description_
             username (str, optional): _getting from session_
         """
-        device_id = str(device)
         model_add = cls.base_model._default_manager.get(id=model_id)
         model_quantity = int(str(model_add.quantity))  # type: ignore[attr-defined]
-        device_obj = Device.objects.get(id=device_id)
+        device_obj = Device.objects.get(id=device)
         device_note = device_obj.note
         history_note = ""
         model_quantity -= quantity
@@ -223,7 +222,7 @@ class BaseStock(object):
             history_note = f"{note}"
         # TODO change Device to self.base_model.device
         # TODO fix tests
-        Device.objects.filter(id=device_id).update(note=device_note)
+        Device.objects.filter(id=device).update(note=device_note)
         cls.base_model._default_manager.filter(id=model_id).update(
             quantity=model_quantity,
         )
@@ -232,7 +231,7 @@ class BaseStock(object):
         )
         cls.create_history(
             model_id,
-            device_id,
+            device,
             quantity,
             username,
             history_note,
