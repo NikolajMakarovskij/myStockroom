@@ -9,7 +9,6 @@ from stockroom.stock.base_stock import BaseStock
 from workplace.models import Workplace
 from uuid import UUID
 
-
 class ConStock(BaseStock):
     """Class with stockroom consumables methods
 
@@ -79,7 +78,7 @@ class DevStock(BaseStock):
             note = ""
         else:
             note = note
-        history = cls.history_model.objects.create(
+        history = cls.history_model.objects.create( # type: ignore[misc]
             stock_model=model.name,
             stock_model_id=model.id,
             quantity=quantity,
@@ -120,7 +119,7 @@ class DevStock(BaseStock):
             model_instance.update(quantity=model_quantity)
             stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            cls.stock_model.objects.create(
+            cls.stock_model.objects.create( # type: ignore[misc]
                 stock_model=model,
                 categories=categories,
                 dateAddToStock=datetime.date.today(),
