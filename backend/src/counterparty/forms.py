@@ -3,7 +3,7 @@ from django import forms
 from .models import Manufacturer
 
 
-class ManufacturerForm(forms.ModelForm):
+class ManufacturerForm(forms.ModelForm):  # type: ignore[type-arg]
     """_ManufacturerForm_"""
 
     class Meta:

@@ -26,7 +26,7 @@ class RoomWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class WorkplaceForm(forms.ModelForm):
+class WorkplaceForm(forms.ModelForm):  # type: ignore[type-arg]
     """_WorkplaceForm_"""
 
     class Meta:
@@ -49,7 +49,7 @@ class WorkplaceForm(forms.ModelForm):
         }
 
 
-class RoomForm(forms.ModelForm):
+class RoomForm(forms.ModelForm):  # type: ignore[type-arg]
     """_RoomForm_"""
 
     class Meta:

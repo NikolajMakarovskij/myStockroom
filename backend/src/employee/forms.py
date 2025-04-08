@@ -68,7 +68,7 @@ class DepartamentWidget(BaseModelSelect2WidgetMixin):
 
 
 # Сотрудники
-class EmployeeForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):  # type: ignore[type-arg]
     """_EmployeeForm_"""
 
     class Meta:
@@ -102,7 +102,7 @@ class EmployeeForm(forms.ModelForm):
         }
 
 
-class PostForm(forms.ModelForm):
+class PostForm(forms.ModelForm):  # type: ignore[type-arg]
     """_PostForm_"""
 
     class Meta:
@@ -125,7 +125,7 @@ class PostForm(forms.ModelForm):
         }
 
 
-class DepartamentForm(forms.ModelForm):
+class DepartamentForm(forms.ModelForm):  # type: ignore[type-arg]
     """_DepartamentForm_"""
 
     class Meta:

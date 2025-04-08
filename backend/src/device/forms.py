@@ -97,7 +97,7 @@ class AccWidget(BaseSelect2MultipleWidgetMixin):
     ]
 
 
-class DeviceForm(forms.ModelForm):
+class DeviceForm(forms.ModelForm):  # type: ignore[type-arg]
     """_DeviceForm_"""
 
     class Meta:

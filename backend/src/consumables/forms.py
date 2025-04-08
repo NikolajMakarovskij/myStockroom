@@ -61,7 +61,7 @@ class AccCatWidget(BaseModelSelect2WidgetMixin):
     search_fields = ["name__icontains"]
 
 
-class ConsumablesForm(forms.ModelForm):
+class ConsumablesForm(forms.ModelForm):  # type: ignore[type-arg]
     """_ConsumablesForm_"""
 
     class Meta:
@@ -110,7 +110,7 @@ class ConsumablesForm(forms.ModelForm):
         }
 
 
-class AccessoriesForm(forms.ModelForm):
+class AccessoriesForm(forms.ModelForm):  # type: ignore[type-arg]
     """_AccessoriesForm_"""
 
     class Meta:

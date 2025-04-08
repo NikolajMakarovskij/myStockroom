@@ -91,7 +91,7 @@ class EmployeeWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SignatureForm(forms.ModelForm):
+class SignatureForm(forms.ModelForm):  # type: ignore[type-arg]
     """_SignatureForm_"""
 
     class Meta:

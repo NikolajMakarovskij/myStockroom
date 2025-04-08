@@ -27,7 +27,7 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SoftwareForm(forms.ModelForm):
+class SoftwareForm(forms.ModelForm):  # type: ignore[type-arg]
     """_SoftwareForm_"""
 
     class Meta:
@@ -69,7 +69,7 @@ class SoftwareForm(forms.ModelForm):
         }
 
 
-class OSForm(forms.ModelForm):
+class OSForm(forms.ModelForm):  # type: ignore[type-arg]
     """_OSForm_"""
 
     class Meta:
