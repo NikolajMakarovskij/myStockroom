@@ -66,10 +66,10 @@ def test_accounting_create():
     accounting = Accounting.objects.get(name="my_accounting")
     assert Accounting.objects.count() == 1
     assert accounting.name == "my_accounting"
-    assert accounting.categories.name == "my_category"
-    assert accounting.categories.slug == "my_category"
-    assert accounting.consumable.name == "my_consumable"
-    assert accounting.accessories.name == "my_accessories"
+    assert accounting.categories.name == "my_category"  # type: ignore[union-attr]
+    assert accounting.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert accounting.consumable.name == "my_consumable"  # type: ignore[union-attr]
+    assert accounting.accessories.name == "my_accessories"  # type: ignore[union-attr]
     assert accounting.account == 123
     assert accounting.code == "000753"
     assert accounting.quantity == 3
