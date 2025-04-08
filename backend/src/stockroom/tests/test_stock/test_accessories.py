@@ -53,8 +53,8 @@ def test_stock_acc_create_history():
     test_history = HistoryAcc.objects.get(stock_model="my_consumable")
 
     assert HistoryAcc.objects.count() == 1
-    assert test_history.categories.name == "my_category"
-    assert test_history.categories.slug == "my_category"
+    assert test_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_history.stock_model == "my_consumable"
     assert test_history.quantity == 1
     assert test_history.dateInstall == datetime.date.today()
@@ -85,16 +85,16 @@ def test_stock_add_accessories(client):
 
     assert StockAcc.objects.count() == 1
     assert HistoryAcc.objects.count() == 1
-    assert test_get_stock.categories.name == "my_category"
-    assert test_get_stock.categories.slug == "my_category"
+    assert test_get_stock.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_stock.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_stock.stock_model.name == "my_consumable"
     assert test_get_stock.stock_model.quantity == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_get_stock.dateAddToStock == datetime.date.today()
     assert test_get_history.stock_model == "my_consumable"
-    assert test_get_history.categories.name == "my_category"
-    assert test_get_history.categories.slug == "my_category"
+    assert test_get_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_history.dateInstall == datetime.date.today()
     assert test_get_history.quantity == 5
     assert test_get_history.user == "admin"
@@ -207,7 +207,7 @@ def test_stock_device_acc_add_accessories(client):
     accessories = create_accessories()
     Device.objects.get_or_create(name="device")
     device = Device.objects.get(name="device")
-    device.accessories.set([accessories.id])
+    device.accessories.set([accessories.id])  # type: ignore[list-item]
     quantity = 5
     number_rack = 3
     number_shelf = 13

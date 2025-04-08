@@ -76,7 +76,7 @@ class BaseStock(object):
     def create_history(
         cls,
         model_id: UUID,
-        device_id: UUID | str,
+        device_id: UUID | str | None,
         quantity: int,
         username: str,
         note: str,

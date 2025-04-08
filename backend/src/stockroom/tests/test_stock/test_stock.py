@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Model
 from django.db.models.query import QuerySet
 
 from consumables.models import AccCat, Accessories, Categories, Consumables
@@ -17,7 +16,7 @@ def create_session(client):
     return client
 
 
-def create_consumable() -> Model:
+def create_consumable() -> Consumables:
     """Service function. Creates a category and a stock_model"""
 
     if Consumables.objects.filter(name="my_consumable").aexists():
@@ -31,7 +30,7 @@ def create_consumable() -> Model:
     return get_consumable
 
 
-def create_accessories() -> Model:
+def create_accessories() -> Accessories:
     """Service function. Creates a category and stock_model"""
 
     if Accessories.objects.filter(name="my_consumable").aexists():
@@ -45,7 +44,7 @@ def create_accessories() -> Model:
     return get_accessories
 
 
-def create_devices() -> Model:
+def create_devices() -> Device:
     """Service function. Creates a category and stock_model"""
 
     if Device.objects.filter(name="my_consumable").aexists():
@@ -60,7 +59,7 @@ def create_devices() -> Model:
 
 
 def add_consumables_in_devices(
-    consumable: Model, accessories: Model
+    consumable: Consumables | None, accessories: Accessories | None
 ) -> QuerySet[Device, Device]:
     """Service function. Creates a category, stock_model and stock_model. Return stock_model"""
 

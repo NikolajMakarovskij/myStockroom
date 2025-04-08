@@ -9,6 +9,7 @@ from stockroom.stock.base_stock import BaseStock
 from workplace.models import Workplace
 from uuid import UUID
 
+
 class ConStock(BaseStock):
     """Class with stockroom consumables methods
 
@@ -78,7 +79,7 @@ class DevStock(BaseStock):
             note = ""
         else:
             note = note
-        history = cls.history_model.objects.create( # type: ignore[misc]
+        history = cls.history_model.objects.create(  # type: ignore[misc]
             stock_model=model.name,
             stock_model_id=model.id,
             quantity=quantity,
@@ -119,7 +120,7 @@ class DevStock(BaseStock):
             model_instance.update(quantity=model_quantity)
             stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            cls.stock_model.objects.create( # type: ignore[misc]
+            cls.stock_model.objects.create(  # type: ignore[misc]
                 stock_model=model,
                 categories=categories,
                 dateAddToStock=datetime.date.today(),
@@ -149,13 +150,13 @@ class DevStock(BaseStock):
 
     @classmethod
     def move_device(
-        cls, model_id: UUID, workplace_id: str, username="", note=""
+        cls, model_id: UUID, workplace_id: UUID, username="", note=""
     ) -> None:
         """Move device
 
         Args:
             model_id (UUID): _stockroom model id_
-            workplace_id (str): _workplace model id_
+            workplace_id (UUID): _workplace model id_
             username (str): _description_
             note (str): _getting from session_
         """
