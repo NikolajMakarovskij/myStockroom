@@ -116,21 +116,6 @@ quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
 
-[tool.isort]
-profile = "black"
-line_length = 88
-multi_line_output = 4
-skip_gitignore = true
-skip_glob = [
-    "**/migrations/*",
-    "**/settings/*",
-    "**/static/*",
-    "**/media/*"
-]
-src_paths = [
-    "./src",
-]
-
 [tool.mypy]
 mypy_path = "./src"
 follow_imports = "normal"
@@ -140,6 +125,7 @@ no_implicit_reexport = true
 show_error_codes = true
 warn_unused_ignores = false
 show_error_context = true
+disable_error_code = "annotation-unchecked"
 exclude = [
     '^pyproject.toml$',
 ]
