@@ -3,8 +3,7 @@ from typing import Any
 from django.conf import settings
 
 from decommission.models import CategoryDec, CategoryDis
-from device.models import Device, DeviceCat
-from django.db.models import Model
+from device.models import Device
 
 from uuid import UUID
 
@@ -86,7 +85,7 @@ class Decom(object):
             if CategoryDis.objects.filter(name=device_category):
                 device_category = CategoryDis.objects.get(name=device_category)
             else:
-                device_category = CategoryDis.objects.create( 
+                device_category = CategoryDis.objects.create(
                     name=Device.objects.get(id=device_id).categories.name,  # type: ignore[union-attr]
                     slug=Device.objects.get(id=device_id).categories.slug,  # type: ignore[union-attr]
                 )
