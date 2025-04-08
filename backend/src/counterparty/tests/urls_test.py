@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from core.tests.test_login import auto_login_user  # noqa F401
+from core.tests.login_test import auto_login_user  # noqa F401
 
 from ..models import Manufacturer
 

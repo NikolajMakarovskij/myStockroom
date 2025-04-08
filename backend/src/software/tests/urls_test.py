@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from core.tests.test_login import auto_login_user  # noqa F401
+from core.tests.login_test import auto_login_user  # noqa F401
 
 from ..models import Os, Software
 
@@ -72,8 +72,8 @@ def test_details_url(auto_login_user):  # noqa F811
         {"model": Os, "link": "software:OS-delete", "template": "Forms/delete.html"},
     ]
     for each in links:
-        model = each.get("model").objects.create(name="some_model") # type: ignore[attr-defined]
-        url = reverse(each.get("link"), kwargs={"pk": model.pk}) # type: ignore[arg-type]
+        model = each.get("model").objects.create(name="some_model")  # type: ignore[attr-defined]
+        url = reverse(each.get("link"), kwargs={"pk": model.pk})  # type: ignore[arg-type]
         response = client.get(url)
         assert response.status_code == 200
-        assertTemplateUsed(response, each.get("template")) # type: ignore[arg-type]
+        assertTemplateUsed(response, each.get("template"))  # type: ignore[arg-type]
