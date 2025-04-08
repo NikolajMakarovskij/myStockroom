@@ -39,7 +39,7 @@ class ManufacturerViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_context_data_in_detail(self):
