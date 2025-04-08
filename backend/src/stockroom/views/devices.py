@@ -20,7 +20,7 @@ from stockroom.stock.stock import DevStock
 
 # Devices
 class StockDevView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_StockDevView_
     List of stockroom devices instances
@@ -89,7 +89,7 @@ class StockDevView(
 
 
 class StockDevCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_StockDevCategoriesView_
     List of stockroom devices instances filtered by categories
@@ -141,7 +141,7 @@ class StockDevCategoriesView(
 
 # History
 class HistoryDevView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryDevView_
     Returns a list of all records of history of stockroom devices from the database
@@ -198,7 +198,7 @@ class HistoryDevView(
 
 
 class HistoryDevCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryDevCategoriesView_
     Returns a list of with filtered records by categories of history of stockroom devices from the database
@@ -473,9 +473,9 @@ class ExportStockDeviceCategory(View):
         cat_dev = cache.get("cat_dev")
         if not cat_dev:
             cat_dev = CategoryDev.objects.all()
-            cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_dev)
+            cache.set("cat_dev", cat_dev, 300) 
+        context = super().get_context_data(**kwargs) # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_dev) # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

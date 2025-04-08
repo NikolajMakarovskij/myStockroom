@@ -20,7 +20,7 @@ from stockroom.stock.stock import AccStock
 
 # accessories
 class StockAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_StockAccView_
     List of stockroom accessories instances
@@ -100,7 +100,7 @@ class StockAccView(
 
 
 class StockAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_StockAccCategoriesView_
     List of stockroom accessories instances filtered by categories
@@ -199,8 +199,8 @@ class ExportStockAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs) # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc) # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -272,8 +272,8 @@ class ExportConsumptionAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs) # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc) # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -307,7 +307,7 @@ class ExportConsumptionAccessoriesCategory(View):
 
 # History
 class HistoryAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryAccView_
     Returns a list of all records of history of stockroom accessories from the database
@@ -365,7 +365,7 @@ class HistoryAccView(
 
 
 class HistoryAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryAccCategoriesView_
     Returns a list of with filtered records by categories of history of stockroom accessories from the database
@@ -419,7 +419,7 @@ class HistoryAccCategoriesView(
 
 
 class HistoryConsumptionAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryConsumptionAccView_
     Returns a list of with all records of consumption of stockroom accessories from the database
@@ -481,7 +481,7 @@ class HistoryConsumptionAccView(
 
 
 class HistoryAccConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView # type: ignore[type-arg]
 ):
     """_HistoryAccConsumptionCategoriesView_
     Returns a list of with filtered records by categories of consumption of stockroom accessories from the database
