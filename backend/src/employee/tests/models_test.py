@@ -31,7 +31,7 @@ def test_post_create():
     post = Post.objects.get(name="my_post_name")
     assert Post.objects.count() == 1
     assert post.name == "my_post_name"
-    assert post.departament.name == "my_departament"
+    assert post.departament.name == "my_departament"  # type: ignore[union-attr]
     assert post.__str__() == "my_post_name"
     assert post.get_absolute_url() == reverse(
         "employee:post-detail", kwargs={"pk": post.pk}
@@ -61,9 +61,9 @@ def test_employee_create():
     assert employee.name == "employee_name"
     assert employee.surname == "employee_surname"
     assert employee.last_name == "employee_last_name"
-    assert employee.workplace.name == "my_workplace"
-    assert employee.post.name == "employee_post"
-    assert employee.post.departament.name == "my_departament"
+    assert employee.workplace.name == "my_workplace"  # type: ignore[union-attr]
+    assert employee.post.name == "employee_post"  # type: ignore[union-attr]
+    assert employee.post.departament.name == "my_departament"  # type: ignore[union-attr]
     assert employee.employeeEmail == "admin@admin.com"
     assert employee.__str__() == "employee_name"
     assert employee.get_absolute_url() == reverse(
