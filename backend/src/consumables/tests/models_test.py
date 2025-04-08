@@ -51,11 +51,11 @@ def test_consumable_create():
     consumable = Consumables.objects.get(name="my_consumable")
     assert Consumables.objects.count() == 1
     assert consumable.name == "my_consumable"
-    assert consumable.categories.name == "my_category"
-    assert consumable.categories.slug == "my_category"
-    assert consumable.manufacturer.name == "name_manufacturer"
-    assert consumable.manufacturer.country == "country"
-    assert consumable.manufacturer.production == "production_country"
+    assert consumable.categories.name == "my_category"  # type: ignore[union-attr]
+    assert consumable.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert consumable.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
+    assert consumable.manufacturer.country == "country"  # type: ignore[union-attr]
+    assert consumable.manufacturer.production == "production_country"  # type: ignore[union-attr]
     assert consumable.serial == "123"
     assert consumable.invent == "321"
     assert consumable.quantity == 2
@@ -111,11 +111,11 @@ def test_accessories_create():
     accessories = Accessories.objects.get(name="my_consumable")
     assert Accessories.objects.count() == 1
     assert accessories.name == "my_consumable"
-    assert accessories.categories.name == "my_category"
-    assert accessories.categories.slug == "my_category"
-    assert accessories.manufacturer.name == "name_manufacturer"
-    assert accessories.manufacturer.country == "country"
-    assert accessories.manufacturer.production == "production_country"
+    assert accessories.categories.name == "my_category"  # type: ignore[union-attr]
+    assert accessories.categories.slug == "my_category"  # type: ignore[union-attr]
+    assert accessories.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
+    assert accessories.manufacturer.country == "country"  # type: ignore[union-attr]
+    assert accessories.manufacturer.production == "production_country"  # type: ignore[union-attr]
     assert accessories.serial == "123"
     assert accessories.invent == "321"
     assert accessories.quantity == 2
