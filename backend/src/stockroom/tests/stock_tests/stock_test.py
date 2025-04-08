@@ -74,11 +74,11 @@ def add_consumables_in_devices(
         pass
     else:
         for device in Device.objects.all():
-            device.consumable.set([consumable.id])  # type: ignore[attr-defined]
+            device.consumable.set([consumable.id])  # type: ignore[list-item]
     if not accessories:
         pass
     else:
         for device in Device.objects.all():
-            device.accessories.set([accessories.id])  # type: ignore[attr-defined]
+            device.accessories.set([accessories.id])  # type: ignore[list-item]
     get_devices = Device.objects.all()
     return get_devices

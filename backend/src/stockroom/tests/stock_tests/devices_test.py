@@ -4,7 +4,7 @@ import pytest
 
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.stock.stock import DevStock
-from stockroom.tests.test_stock.test_stock import create_devices, create_session
+from stockroom.tests.stock_tests.stock_test import create_devices, create_session
 
 
 @pytest.mark.django_db

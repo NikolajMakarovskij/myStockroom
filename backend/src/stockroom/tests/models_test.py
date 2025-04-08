@@ -8,8 +8,9 @@ from consumables.models import Accessories
 from counterparty.models import Manufacturer
 from device.models import Device
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
-from stockroom.models.consumables import Consumables, History, StockCat, Stockroom
+from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
+from consumables.models import Consumables
 
 
 # Consumables
@@ -59,9 +60,9 @@ def test_stockroom_create():
     stockroom = Stockroom.objects.get(stock_model__name="my_consumable")
     assert Stockroom.objects.count() == 1
     assert stockroom.stock_model.name == "my_consumable"
-    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"
+    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert stockroom.stock_model.quantity == 10
-    assert stockroom.categories.name == "my_category"
+    assert stockroom.categories.name == "my_category"  # type: ignore[union-attr]
     assert stockroom.dateAddToStock == datetime.date.today()
     assert stockroom.dateInstall == datetime.date.today()
     assert stockroom.rack == 6
@@ -88,7 +89,7 @@ def test_history_create():
     assert history.stock_model_id == "name_manufacturer"
     assert history.device == "my_device"
     assert history.deviceId == "device_id"
-    assert history.categories.name == "my_category"
+    assert history.categories.name == "my_category"  # type: ignore[union-attr]
     assert history.quantity == 1
     assert history.dateInstall == datetime.date.today()
     assert history.user == "admin"
@@ -141,9 +142,9 @@ def test_stockroom_acc_create():
     stockroom = StockAcc.objects.get(stock_model__name="my_accessories")
     assert StockAcc.objects.count() == 1
     assert stockroom.stock_model.name == "my_accessories"
-    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"
+    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert stockroom.stock_model.quantity == 10
-    assert stockroom.categories.name == "my_category"
+    assert stockroom.categories.name == "my_category"  # type: ignore[union-attr]
     assert stockroom.dateAddToStock == datetime.date.today()
     assert stockroom.dateInstall == datetime.date.today()
     assert stockroom.rack == 6
@@ -170,7 +171,7 @@ def test_history_acc_create():
     assert history.stock_model_id == "name_manufacturer"
     assert history.device == "my_device"
     assert history.deviceId == "device_id"
-    assert history.categories.name == "my_category"
+    assert history.categories.name == "my_category"  # type: ignore[union-attr]
     assert history.quantity == 1
     assert history.dateInstall == datetime.date.today()
     assert history.user == "admin"
@@ -223,9 +224,9 @@ def test_stockroom_dev_create():
     stockroom = StockDev.objects.get(stock_model__name="my_device")
     assert StockDev.objects.count() == 1
     assert stockroom.stock_model.name == "my_device"
-    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"
+    assert stockroom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert stockroom.stock_model.quantity == 10
-    assert stockroom.categories.name == "my_category"
+    assert stockroom.categories.name == "my_category"  # type: ignore[union-attr]
     assert stockroom.dateAddToStock == datetime.date.today()
     assert stockroom.dateInstall == datetime.date.today()
     assert stockroom.rack == 6
@@ -248,7 +249,7 @@ def test_history_dev_create():
     assert HistoryDev.objects.count() == 1
     assert history.stock_model == "my_device"
     assert history.stock_model_id == "name_manufacturer"
-    assert history.categories.name == "my_category"
+    assert history.categories.name == "my_category"  # type: ignore[union-attr]
     assert history.quantity == 1
     assert history.dateInstall == datetime.date.today()
     assert history.user == "admin"
