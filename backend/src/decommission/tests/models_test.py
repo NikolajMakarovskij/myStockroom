@@ -53,9 +53,9 @@ def test_decommission_dev_create():
     decom = Decommission.objects.get(stock_model__name="my_device")
     assert Decommission.objects.count() == 1
     assert decom.stock_model.name == "my_device"
-    assert decom.stock_model.manufacturer.name == "name_manufacturer"
+    assert decom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert decom.stock_model.quantity == 10
-    assert decom.categories.name == "my_category"
+    assert decom.categories.name == "my_category"  # type: ignore[union-attr]
     assert decom.date == datetime.date.today()
 
 
@@ -103,7 +103,7 @@ def test_disposal_dev_create():
     decom = Disposal.objects.get(stock_model__name="my_device")
     assert Disposal.objects.count() == 1
     assert decom.stock_model.name == "my_device"
-    assert decom.stock_model.manufacturer.name == "name_manufacturer"
+    assert decom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert decom.stock_model.quantity == 10
-    assert decom.categories.name == "my_category"
+    assert decom.categories.name == "my_category"  # type: ignore[union-attr]
     assert decom.date == datetime.date.today()
