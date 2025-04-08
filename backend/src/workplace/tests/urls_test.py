@@ -85,8 +85,8 @@ def test_ups_detail_url(auto_login_user):  # noqa F811
         },
     ]
     for each in links:
-        model = each.get("model").objects.create(name="some_model")
-        url = reverse(each.get("link"), kwargs={"pk": model.pk})
+        model = each.get("model").objects.create(name="some_model")  # type: ignore[attr-defined]
+        url = reverse(each.get("link"), kwargs={"pk": model.pk})  # type: ignore[arg-type]
         response = client.get(url)
         assert response.status_code == 200
-        assertTemplateUsed(response, each.get("template"))
+        assertTemplateUsed(response, each.get("template"))  # type: ignore[arg-type]

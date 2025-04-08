@@ -30,7 +30,7 @@ def test_workplace_create():
     wp = Workplace.objects.get(name="my_workplace_name")
     assert Workplace.objects.count() == 1
     assert wp.name == "my_workplace_name"
-    assert wp.room.name == "my_room"
+    assert wp.room.name == "my_room"  # type: ignore[union-attr]
     assert wp.__str__() == "my_workplace_name"
     assert wp.get_absolute_url() == reverse(
         "workplace:workplace-detail", kwargs={"pk": wp.pk}
