@@ -20,7 +20,7 @@ def test_software_create():
     soft = Software.objects.get(name="my_software_name")
     assert Software.objects.count() == 1
     assert soft.name == "my_software_name"
-    assert soft.manufacturer.name == "soft_manufacturer"
+    assert soft.manufacturer.name == "soft_manufacturer" # type: ignore[union-attr]
     assert soft.version == "12.rwg5"
     assert soft.bitDepth == "x64"
     assert soft.licenseKeyText == "Key_354ygar"
@@ -44,7 +44,7 @@ def test_os_create():
     os_vars = Os.objects.get(name="my_OS_name")
     assert Os.objects.count() == 1
     assert os_vars.name == "my_OS_name"
-    assert os_vars.manufacturer.name == "soft_manufacturer"
+    assert os_vars.manufacturer.name == "soft_manufacturer" # type: ignore[union-attr]
     assert os_vars.version == "12.rwg5"
     assert os_vars.bitDepth == "x64"
     assert os_vars.licenseKeyText == "Key_354ygar"
