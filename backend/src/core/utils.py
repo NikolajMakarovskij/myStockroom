@@ -43,8 +43,8 @@ class DataMixin:
             cache.set("side_menu", side_menu, 3000)
         context = kwargs
         context["menu"] = side_menu
-        context["query"] = self.request.GET.get("q")
-        context["obj_list_count"] = self.get_queryset().count()
+        context["query"] = self.request.GET.get("q")  # type: ignore[attr-defined]
+        context["obj_list_count"] = self.get_queryset().count()  # type: ignore[attr-defined]
         return context
 
 
@@ -133,7 +133,7 @@ class ModelMixin:
 
         fields = []
         expose_fields = ["id", "slug"]
-        for f in self._meta.fields:
+        for f in self._meta.fields:  # type: ignore[attr-defined]
             fname = f.name
             # added selectable lists with get_xyz_display()
             get_choice = "get_" + fname + "_display"
@@ -183,7 +183,7 @@ class FormMessageMixin:
         Returns:
             response (bool | str): _Returns server response or error message_
         """
-        response = super().form_valid(form)
+        response = super().form_valid(form)  # type: ignore[misc]
         success_message = self.get_success_message(form.cleaned_data)
         debug_message = self.get_debug_message(form.cleaned_data)
         info_message = self.get_info_message(form.cleaned_data)
@@ -191,16 +191,16 @@ class FormMessageMixin:
         error_message = self.get_error_message(form.cleaned_data)
         if not response:
             if error_message:
-                messages.error(self.request, error_message)
+                messages.error(self.request, error_message)  # type: ignore[attr-defined]
         else:
             if debug_message:
-                messages.debug(self.request, debug_message)
+                messages.debug(self.request, debug_message)  # type: ignore[attr-defined]
             if info_message:
-                messages.info(self.request, info_message)
+                messages.info(self.request, info_message)  # type: ignore[attr-defined]
             if success_message:
-                messages.success(self.request, success_message)
+                messages.success(self.request, success_message)  # type: ignore[attr-defined]
             if warning_message:
-                messages.warning(self.request, warning_message)
+                messages.warning(self.request, warning_message)  # type: ignore[attr-defined]
         return response
 
     def get_success_message(self, cleaned_data):

@@ -3,6 +3,7 @@ from datetime import datetime
 
 from import_export import fields, resources  # type: ignore[import-untyped]
 from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
+from django.db.models import QuerySet
 
 from consumables.models import Accessories, Consumables
 from device.models import Device
@@ -220,7 +221,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
-            devices = 0
+            devices: int | str | QuerySet[Device, Device] = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
@@ -375,7 +376,7 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
-            devices = 0
+            devices: int | str | QuerySet[Device, Device] = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
