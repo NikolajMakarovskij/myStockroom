@@ -2,11 +2,11 @@ import pytest
 from django.db.utils import IntegrityError
 from django.urls import reverse
 
-from consumables.models import Accessories
+from consumables.models import Accessories, Consumables
 from counterparty.models import Manufacturer
 from workplace.models import Workplace
 
-from ..models import Consumables, Device, DeviceCat
+from ..models import Device, DeviceCat
 
 
 @pytest.mark.django_db
@@ -57,8 +57,8 @@ def test_device_create():
     )
 
     device = Device.objects.get(name="device_name")
-    device.consumable.set([Consumables.objects.get(name="cartridge").id])
-    device.accessories.set([Accessories.objects.get(name="accessories").id])
+    device.consumable.set([Consumables.objects.get(name="cartridge").id])  # type: ignore[list-item]
+    device.accessories.set([Accessories.objects.get(name="accessories").id])  # type: ignore[list-item]
 
     assert Device.objects.count() == 1
     assert device.name == "device_name"
@@ -66,12 +66,12 @@ def test_device_create():
     assert device.ip_address == "10.10.10.10"
     assert device.login == "db_user"
     assert device.pwd == "123zxc"
-    assert device.categories.name == "device_category"
-    assert device.manufacturer.name == "epson"
+    assert device.categories.name == "device_category"  # type: ignore[union-attr]
+    assert device.manufacturer.name == "epson"  # type: ignore[union-attr]
     assert device.serial == "some_serial"
     assert device.invent == "some_number_124"
     assert device.description == "some_description"
-    assert device.workplace.name == "device_workplace"
+    assert device.workplace.name == "device_workplace"  # type: ignore[union-attr]
     assert device.consumable.count() == 1
     assert device.accessories.count() == 1
     assert device.quantity == 0
