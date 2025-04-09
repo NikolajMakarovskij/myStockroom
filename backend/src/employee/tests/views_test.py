@@ -3,9 +3,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from employee.models import Departament, Employee, Post
+from core.utils import DataMixin
 
 
-class EmployeeListViewTest(TestCase):
+class EmployeeListViewTest(TestCase, DataMixin):
+    number_of_employees = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -16,8 +19,7 @@ class EmployeeListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_employees = 149
-        for employee_num in range(number_of_employees):
+        for employee_num in range(cls.number_of_employees):
             Employee.objects.create(
                 name="Christian %s" % employee_num,
             )
@@ -62,26 +64,34 @@ class EmployeeListViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["employee:employee_list", "employee:employee_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["employee_list"]) == 20)
+            self.assertTrue(len(resp.context["employee_list"]) == self.paginate)
 
     def test_lists_all_employee(self):
         links = ["employee:employee_list", "employee:employee_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_employees // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["employee_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["employee_list"])
+                == self.number_of_employees
+                - (self.number_of_employees // self.paginate) * self.paginate
+            )
 
 
-class PostViewTest(TestCase):
+class PostViewTest(TestCase, DataMixin):
+    number_of_post = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -92,8 +102,7 @@ class PostViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_post = 149
-        for post_num in range(number_of_post):
+        for post_num in range(cls.number_of_post):
             Post.objects.create(
                 name="Christian %s" % post_num,
             )
@@ -136,26 +145,34 @@ class PostViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["employee:post_list", "employee:post_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["post_list"]) == 20)
+            self.assertTrue(len(resp.context["post_list"]) == self.paginate)
 
     def test_lists_all_signature(self):
         links = ["employee:post_list", "employee:post_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_post // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["post_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["post_list"])
+                == self.number_of_post
+                - (self.number_of_post // self.paginate) * self.paginate
+            )
 
 
-class DepartamentViewTest(TestCase):
+class DepartamentViewTest(TestCase, DataMixin):
+    number_of_departament = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -166,8 +183,7 @@ class DepartamentViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_departament = 149
-        for departament_num in range(number_of_departament):
+        for departament_num in range(cls.number_of_departament):
             Departament.objects.create(
                 name="Christian %s" % departament_num,
             )
@@ -212,20 +228,27 @@ class DepartamentViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["employee:departament_list", "employee:departament_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["departament_list"]) == 20)
+            self.assertTrue(len(resp.context["departament_list"]) == self.paginate)
 
     def test_lists_all_signature(self):
         links = ["employee:departament_list", "employee:departament_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link)
+                + f"?page={self.number_of_departament // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["departament_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["departament_list"])
+                == self.number_of_departament
+                - (self.number_of_departament // self.paginate) * self.paginate
+            )

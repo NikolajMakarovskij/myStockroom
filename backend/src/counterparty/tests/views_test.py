@@ -3,9 +3,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..models import Manufacturer
+from core.utils import DataMixin
 
 
-class ManufacturerViewTest(TestCase):
+class ManufacturerViewTest(TestCase, DataMixin):
+    number_of_manufacturer = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -16,8 +19,7 @@ class ManufacturerViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_manufacturer = 149
-        for manufacturer_num in range(number_of_manufacturer):
+        for manufacturer_num in range(cls.number_of_manufacturer):
             Manufacturer.objects.create(
                 name="Christian %s" % manufacturer_num,
             )
@@ -62,20 +64,27 @@ class ManufacturerViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["counterparty:manufacturer_list", "counterparty:manufacturer_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["manufacturer_list"]) == 20)
+            self.assertTrue(len(resp.context["manufacturer_list"]) == self.paginate)
 
     def test_lists_all_manufacturer(self):
         links = ["counterparty:manufacturer_list", "counterparty:manufacturer_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link)
+                + f"?page={self.number_of_manufacturer // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["manufacturer_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["manufacturer_list"])
+                == self.number_of_manufacturer
+                - (self.number_of_manufacturer // self.paginate) * self.paginate
+            )

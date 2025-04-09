@@ -3,9 +3,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from workplace.models import Room, Workplace
+from core.utils import DataMixin
 
 
-class RoomListViewTest(TestCase):
+class RoomListViewTest(TestCase, DataMixin):
+    number_of_rooms = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -16,8 +19,7 @@ class RoomListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_rooms = 149
-        for room_num in range(number_of_rooms):
+        for room_num in range(cls.number_of_rooms):
             Room.objects.create(
                 name="r %s" % room_num,
             )
@@ -62,26 +64,34 @@ class RoomListViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["workplace:room_list", "workplace:room_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["room_list"]) == 20)
+            self.assertTrue(len(resp.context["room_list"]) == self.paginate)
 
     def test_lists_all_room(self):
         links = ["workplace:room_list", "workplace:room_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_rooms // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["room_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["room_list"])
+                == self.number_of_rooms
+                - (self.number_of_rooms // self.paginate) * self.paginate
+            )
 
 
-class WorkplaceListViewTest(TestCase):
+class WorkplaceListViewTest(TestCase, DataMixin):
+    number_of_workplaces = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -92,8 +102,7 @@ class WorkplaceListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_workplaces = 149
-        for Workplace_num in range(number_of_workplaces):
+        for Workplace_num in range(cls.number_of_workplaces):
             Workplace.objects.create(
                 name="Christian %s" % Workplace_num,
             )
@@ -138,20 +147,27 @@ class WorkplaceListViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["workplace:workplace_list", "workplace:workplace_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["workplace_list"]) == 20)
+            self.assertTrue(len(resp.context["workplace_list"]) == self.paginate)
 
     def test_lists_all_workplaces(self):
         links = ["workplace:workplace_list", "workplace:workplace_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link)
+                + f"?page={self.number_of_workplaces // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["workplace_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["workplace_list"])
+                == self.number_of_workplaces
+                - (self.number_of_workplaces // self.paginate) * self.paginate
+            )

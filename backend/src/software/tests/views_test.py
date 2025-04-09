@@ -3,9 +3,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from software.models import Os, Software
+from core.utils import DataMixin
 
 
-class SoftwareViewTest(TestCase):
+class SoftwareViewTest(TestCase, DataMixin):
+    number_of_software = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -16,8 +19,7 @@ class SoftwareViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_software = 149
-        for software_num in range(number_of_software):
+        for software_num in range(cls.number_of_software):
             Software.objects.create(
                 name="Christian %s" % software_num,
             )
@@ -36,7 +38,7 @@ class SoftwareViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value") # type: ignore[index]
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_context_data_in_detail(self):
@@ -55,29 +57,37 @@ class SoftwareViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value") # type: ignore[index]
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["software:software_list", "software:software_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["software_list"]) == 20)
+            self.assertTrue(len(resp.context["software_list"]) == self.paginate)
 
     def test_lists_all_software(self):
         links = ["software:software_list", "software:software_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_software // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["software_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["software_list"])
+                == self.number_of_software
+                - (self.number_of_software // self.paginate) * self.paginate
+            )
 
 
-class OSViewTest(TestCase):
+class OSViewTest(TestCase, DataMixin):
+    number_of_os = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -88,8 +98,7 @@ class OSViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_os = 149
-        for OS_num in range(number_of_os):
+        for OS_num in range(cls.number_of_os):
             Os.objects.create(
                 name="Christian %s" % OS_num,
             )
@@ -108,7 +117,7 @@ class OSViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value") # type: ignore[index]
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_context_data_in_detail(self):
@@ -125,23 +134,29 @@ class OSViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value") # type: ignore[index]
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["software:OS_list", "software:OS_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["os_list"]) == 20)
+            self.assertTrue(len(resp.context["os_list"]) == self.paginate)
 
     def test_lists_all_OS(self):
         links = ["software:OS_list", "software:OS_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_os // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["os_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["os_list"])
+                == self.number_of_os
+                - (self.number_of_os // self.paginate) * self.paginate
+            )

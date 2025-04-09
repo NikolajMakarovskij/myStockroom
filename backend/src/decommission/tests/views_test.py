@@ -4,10 +4,13 @@ from django.urls import reverse
 
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from device.models import Device
+from core.utils import DataMixin
 
 
 # Decommission
-class DecommissionViewTest(TestCase):
+class DecommissionViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -18,8 +21,7 @@ class DecommissionViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             dev = Device.objects.create(name="Christian %s" % stocks_num)
             Decommission.objects.create(stock_model=dev)
         assert Decommission.objects.count() == 149
@@ -39,26 +41,34 @@ class DecommissionViewTest(TestCase):
                     resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["decommission:decom_list", "decommission:decom_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 20)
+            self.assertTrue(len(resp.context["decommission_list"]) == self.paginate)
 
     def test_lists_all_decommission(self):
         links = ["decommission:decom_list", "decommission:decom_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_in_stock // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["decommission_list"])
+                == self.number_in_stock
+                - (self.number_in_stock // self.paginate) * self.paginate
+            )
 
 
-class DecommissionCategoryViewTest(TestCase):
+class DecommissionCategoryViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -69,9 +79,8 @@ class DecommissionCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
         CategoryDec.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             dev = Device.objects.create(name="Christian %s" % stocks_num)
             Decommission.objects.create(
                 stock_model=dev,
@@ -98,7 +107,7 @@ class DecommissionCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         resp = self.client.get(
             reverse(
                 "decommission:decom_category",
@@ -108,7 +117,7 @@ class DecommissionCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 20)
+        self.assertTrue(len(resp.context["decommission_list"]) == self.paginate)
 
     def test_lists_all_stockroom_consumables(self):
         resp = self.client.get(
@@ -116,16 +125,22 @@ class DecommissionCategoryViewTest(TestCase):
                 "decommission:decom_category",
                 kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
             )
-            + "?page=8"
+            + f"?page={self.number_in_stock // self.paginate + 1}"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 9)
+        self.assertTrue(
+            len(resp.context["decommission_list"])
+            == self.number_in_stock
+            - (self.number_in_stock // self.paginate) * self.paginate
+        )
 
 
 # Disposal
-class DisposalViewTest(TestCase):
+class DisposalViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -136,8 +151,7 @@ class DisposalViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             dev = Device.objects.create(name="Christian %s" % stocks_num)
             Disposal.objects.create(stock_model=dev)
         assert Disposal.objects.count() == 149
@@ -157,26 +171,34 @@ class DisposalViewTest(TestCase):
                     resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["decommission:disp_list", "decommission:disp_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 20)
+            self.assertTrue(len(resp.context["disposal_list"]) == self.paginate)
 
     def test_lists_all_disposal(self):
         links = ["decommission:disp_list", "decommission:disp_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_in_stock // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["disposal_list"])
+                == self.number_in_stock
+                - (self.number_in_stock // self.paginate) * self.paginate
+            )
 
 
-class DisposalCategoryViewTest(TestCase):
+class DisposalCategoryViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -187,9 +209,8 @@ class DisposalCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
         CategoryDis.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             dev = Device.objects.create(name="Christian %s" % stocks_num)
             Disposal.objects.create(
                 stock_model=dev,
@@ -216,7 +237,7 @@ class DisposalCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         resp = self.client.get(
             reverse(
                 "decommission:disp_category",
@@ -226,7 +247,7 @@ class DisposalCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 20)
+        self.assertTrue(len(resp.context["disposal_list"]) == self.paginate)
 
     def test_lists_all_disposal_categories(self):
         resp = self.client.get(
@@ -234,9 +255,13 @@ class DisposalCategoryViewTest(TestCase):
                 "decommission:disp_category",
                 kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
             )
-            + "?page=8"
+            + f"?page={self.number_in_stock // self.paginate + 1}"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 9)
+        self.assertTrue(
+            len(resp.context["disposal_list"])
+            == self.number_in_stock
+            - (self.number_in_stock // self.paginate) * self.paginate
+        )

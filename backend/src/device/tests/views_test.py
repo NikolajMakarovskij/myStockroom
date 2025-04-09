@@ -3,9 +3,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..models import Device, DeviceCat
+from core.utils import DataMixin
 
 
-class DeviceViewTest(TestCase):
+class DeviceViewTest(TestCase, DataMixin):
+    number_of_device = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -16,8 +19,7 @@ class DeviceViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_device = 149
-        for device_num in range(number_of_device):
+        for device_num in range(cls.number_of_device):
             Device.objects.create(
                 name="Christian %s" % device_num,
             )
@@ -60,26 +62,34 @@ class DeviceViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["device:device_list", "device:device_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["device_list"]) == 20)
+            self.assertTrue(len(resp.context["device_list"]) == self.paginate)
 
     def test_lists_all_device(self):
         links = ["device:device_list", "device:device_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_of_device // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["device_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["device_list"])
+                == self.number_of_device
+                - (self.number_of_device // self.paginate) * self.paginate
+            )
 
 
-class DeviceCategoryViewTest(TestCase):
+class DeviceCategoryViewTest(TestCase, DataMixin):
+    number_of_device = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -90,9 +100,8 @@ class DeviceCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_of_device = 149
         DeviceCat.objects.create(name="some_category", slug="some_category")
-        for device_num in range(number_of_device):
+        for device_num in range(cls.number_of_device):
             Device.objects.create(
                 name="Christian %s" % device_num,
                 categories=DeviceCat.objects.get(slug="some_category"),
@@ -119,7 +128,7 @@ class DeviceCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         resp = self.client.get(
             reverse(
                 "device:category",
@@ -129,7 +138,7 @@ class DeviceCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["device_list"]) == 20)
+        self.assertTrue(len(resp.context["device_list"]) == self.paginate)
 
     def test_lists_all_device(self):
         resp = self.client.get(
@@ -137,9 +146,13 @@ class DeviceCategoryViewTest(TestCase):
                 "device:category",
                 kwargs={"category_slug": DeviceCat.objects.get(slug="some_category")},
             )
-            + "?page=8"
+            + f"?page={self.number_of_device // self.paginate + 1}"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["device_list"]) == 9)
+        self.assertTrue(
+            len(resp.context["device_list"])
+            == self.number_of_device
+            - (self.number_of_device // self.paginate) * self.paginate
+        )

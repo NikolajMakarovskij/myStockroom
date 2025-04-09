@@ -4,10 +4,13 @@ from django.urls import reverse
 
 from consumables.models import Consumables
 from stockroom.models.consumables import History, StockCat, Stockroom
+from core.utils import DataMixin
 
 
 # Consumables
-class StockroomViewTest(TestCase):
+class StockroomViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -18,8 +21,7 @@ class StockroomViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             cons = Consumables.objects.create(name="Christian %s" % stocks_num)
             Stockroom.objects.create(stock_model=cons)
         assert Consumables.objects.count() == 149
@@ -39,26 +41,34 @@ class StockroomViewTest(TestCase):
                     resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         links = ["stockroom:stock_list", "stockroom:stock_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockroom_list"]) == 20)
+            self.assertTrue(len(resp.context["stockroom_list"]) == self.paginate)
 
     def test_lists_all_stockroom(self):
         links = ["stockroom:stock_list", "stockroom:stock_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_in_stock // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockroom_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["stockroom_list"])
+                == self.number_in_stock
+                - (self.number_in_stock // self.paginate) * self.paginate
+            )
 
 
-class StockroomCategoryViewTest(TestCase):
+class StockroomCategoryViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -69,9 +79,8 @@ class StockroomCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
         StockCat.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             cons = Consumables.objects.create(name="Christian %s" % stocks_num)
             Stockroom.objects.create(
                 stock_model=cons, categories=StockCat.objects.get(slug="some_category")
@@ -97,7 +106,7 @@ class StockroomCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten(self):
+    def test_pagination_is_paginate(self):
         resp = self.client.get(
             reverse(
                 "stockroom:category",
@@ -107,7 +116,7 @@ class StockroomCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockroom_list"]) == 20)
+        self.assertTrue(len(resp.context["stockroom_list"]) == self.paginate)
 
     def test_lists_all_stockroom_consumables(self):
         resp = self.client.get(
@@ -115,15 +124,21 @@ class StockroomCategoryViewTest(TestCase):
                 "stockroom:category",
                 kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
             )
-            + "?page=8"
+            + f"?page={self.number_in_stock // self.paginate + 1}"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockroom_list"]) == 9)
+        self.assertTrue(
+            len(resp.context["stockroom_list"])
+            == self.number_in_stock
+            - (self.number_in_stock // self.paginate) * self.paginate
+        )
 
 
-class HistoryStockViewTest(TestCase):
+class HistoryStockViewTest(TestCase, DataMixin):
+    number_in_history = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -134,9 +149,8 @@ class HistoryStockViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_history = 149
         Consumables.objects.create(name="check_consumable")
-        for history_num in range(number_in_history):
+        for history_num in range(cls.number_in_history):
             History.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % history_num,
                 stock_model_id=Consumables.objects.filter(name="check_consumable")
@@ -181,14 +195,14 @@ class HistoryStockViewTest(TestCase):
                     resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
-    def test_pagination_is_ten_in_history(self):
+    def test_pagination_is_paginate_in_history(self):
         links = ["stockroom:history_list", "stockroom:history_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["history_list"]) == 20)
+            self.assertTrue(len(resp.context["history_list"]) == self.paginate)
 
     def test_pagination_is_ten_in_consumption(self):
         links = [
@@ -204,14 +218,22 @@ class HistoryStockViewTest(TestCase):
     def test_lists_all_stockroom(self):
         links = ["stockroom:history_list", "stockroom:history_search"]
         for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
+            resp = self.client.get(
+                reverse(link) + f"?page={self.number_in_history // self.paginate + 1}"
+            )
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["history_list"]) == 9)
+            self.assertTrue(
+                len(resp.context["history_list"])
+                == self.number_in_history
+                - (self.number_in_history // self.paginate) * self.paginate
+            )
 
 
-class HistoryCategoryViewTest(TestCase):
+class HistoryCategoryViewTest(TestCase, DataMixin):
+    number_in_stock = 149
+
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -222,10 +244,9 @@ class HistoryCategoryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
         StockCat.objects.create(name="some_category", slug="some_category")
         Consumables.objects.create(name="check_consumable")
-        for stocks_num in range(number_in_stock):
+        for stocks_num in range(cls.number_in_stock):
             History.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % stocks_num,
                 categories=StockCat.objects.get(slug="some_category"),
@@ -275,7 +296,7 @@ class HistoryCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten_in_history(self):
+    def test_pagination_is_paginate_in_history(self):
         resp = self.client.get(
             reverse(
                 "stockroom:history_category",
@@ -285,9 +306,9 @@ class HistoryCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["history_list"]) == 20)
+        self.assertTrue(len(resp.context["history_list"]) == self.paginate)
 
-    def test_pagination_is_ten_in_consumption(self):
+    def test_pagination_in_consumption(self):
         resp = self.client.get(
             reverse(
                 "stockroom:history_consumption_category",
@@ -304,9 +325,13 @@ class HistoryCategoryViewTest(TestCase):
                 "stockroom:history_category",
                 kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
             )
-            + "?page=8"
+            + f"?page={self.number_in_stock // self.paginate + 1}"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["history_list"]) == 9)
+        self.assertTrue(
+            len(resp.context["history_list"])
+            == self.number_in_stock
+            - (self.number_in_stock // self.paginate) * self.paginate
+        )
