@@ -7,7 +7,7 @@ repos:
         additional_dependencies:
           - prettier
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.14.0
+    rev: v9.24.0
     hooks:
       - id: eslint
         types: [file]
