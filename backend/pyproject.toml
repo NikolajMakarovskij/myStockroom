@@ -1,6 +1,6 @@
 [project]
 name = "stockroom"
-version = "0.7.5"
+version = "0.7.6"
 description = "The project is designed to maintain a database with equipment and consumables"
 authors = [
     {name = "Makarovskiy Nikolay", email = "adrameleh666@gmail.com"},
@@ -12,7 +12,7 @@ license = {file = "LICENSE"}
 dependencies = [
     "asgiref >=3.8.1",
     "attrs >=25.3.0",
-    "celery >=5.5.0",
+    "celery >=5.5.1",
     "crispy-bootstrap5 >=2025.4",
     "diff-match-patch >=20241021",
     "Django >=5.1.8",
