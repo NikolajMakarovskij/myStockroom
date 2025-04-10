@@ -11,6 +11,9 @@ from django.views import View, generic
 from django.views.decorators.http import require_POST
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
+
+from core.utils import DataMixin
+from device.models import Device
 from stockroom.forms import AddHistoryDeviceForm, MoveDeviceForm, StockAddForm
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.resources import StockDevResource
@@ -21,7 +24,10 @@ from ..serializers.devices import StockDevCatSerializer, StockDevListSerializer
 
 # Devices
 class StockDevView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockdev"
     template_name = "stock/stock_dev_list.html"
@@ -68,7 +74,10 @@ class StockDevView(
 
 
 class StockDevCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockdev"
     template_name = "stock/stock_dev_list.html"
@@ -96,7 +105,7 @@ class StockDevCategoriesView(
         return object_list
 
 
-class StockDevCatListRestView(DataMixin, viewsets.ModelViewSet):
+class StockDevCatListRestView(DataMixin, viewsets.ModelViewSet[CategoryDev]):
     queryset = CategoryDev.objects.all()
     serializer_class = StockDevCatSerializer
     permission_classes = [permissions.AllowAny]
@@ -107,7 +116,7 @@ class StockDevCatListRestView(DataMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class StockDevListRestView(DataMixin, viewsets.ModelViewSet):
+class StockDevListRestView(DataMixin, viewsets.ModelViewSet[StockDev]):
     queryset = StockDev.objects.all()
     serializer_class = StockDevListSerializer
     permission_classes = [permissions.AllowAny]
@@ -120,7 +129,10 @@ class StockDevListRestView(DataMixin, viewsets.ModelViewSet):
 
 # History
 class HistoryDevView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historydev"
     template_name = "stock/history_dev_list.html"
@@ -156,7 +168,10 @@ class HistoryDevView(
 
 
 class HistoryDevCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historydev"
     template_name = "stock/history_dev_list.html"
@@ -326,8 +341,8 @@ class ExportStockDeviceCategory(View):
         if not cat_dev:
             cat_dev = CategoryDev.objects.all()
             cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_dev)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_dev)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

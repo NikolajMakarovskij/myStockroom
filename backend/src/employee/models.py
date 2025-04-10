@@ -1,7 +1,8 @@
 import uuid
 
-from core.utils import ModelMixin
 from django.db import models
+
+from core.utils import ModelMixin
 from workplace.models import Workplace
 
 
@@ -10,19 +11,17 @@ class Employee(ModelMixin, models.Model):
     Модель сотрудника. Связи один ко многим с моделями workstation, signature
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
-    name: models.CharField = models.CharField(
-        max_length=50, help_text="Введите имя", verbose_name="Имя"
-    )
-    last_name: models.CharField = models.CharField(
+    name = models.CharField(max_length=50, help_text="Введите имя", verbose_name="Имя")
+    last_name = models.CharField(
         max_length=50, blank=True, help_text="Введите отчество", verbose_name="Отчество"
     )
-    surname: models.CharField = models.CharField(
+    surname = models.CharField(
         max_length=50, blank=True, help_text="Введите фамилию", verbose_name="Фамилия"
     )
-    workplace: models.ForeignKey = models.ForeignKey(
+    workplace = models.ForeignKey(
         Workplace,
         on_delete=models.SET_NULL,
         blank=True,
@@ -31,7 +30,7 @@ class Employee(ModelMixin, models.Model):
         help_text="Выберете рабочее место",
         verbose_name="Рабочее место",
     )
-    post: models.ForeignKey = models.ForeignKey(
+    post = models.ForeignKey(
         "Post",
         on_delete=models.SET_NULL,
         blank=True,
@@ -40,7 +39,7 @@ class Employee(ModelMixin, models.Model):
         verbose_name="Должность",
         verbose_name="Должность",
     )
-    employeeEmail: models.EmailField = models.EmailField(
+    employeeEmail = models.EmailField(
         blank=True,
         null=True,
         unique=True,
@@ -66,10 +65,8 @@ class Employee(ModelMixin, models.Model):
 
 
 class Departament(ModelMixin, models.Model):
-    id: models.UUIDField = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, help_text="ID"
-    )
-    name: models.CharField = models.CharField(
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name = models.CharField(
         max_length=50, help_text="Введите название отдела", verbose_name="Отдел"
     )
 
@@ -85,13 +82,11 @@ class Departament(ModelMixin, models.Model):
 
 
 class Post(ModelMixin, models.Model):
-    id: models.UUIDField = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, help_text="ID"
-    )
-    name: models.CharField = models.CharField(
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name = models.CharField(
         max_length=50, help_text="Введите должность", verbose_name="Должность"
     )
-    departament: models.ForeignKey = models.ForeignKey(
+    departament = models.ForeignKey(
         "Departament",
         on_delete=models.SET_NULL,
         blank=True,

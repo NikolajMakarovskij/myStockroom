@@ -1,8 +1,10 @@
 from datetime import datetime
 
 from django import template
+from django.db.models import QuerySet
 
 from consumables.models import Accessories, Consumables
+from device.models import Device
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
 from stockroom.models.devices import HistoryDev
@@ -84,7 +86,7 @@ def consumption(consumable_id):
     history = History.objects.all()
     consumables = Consumables.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
@@ -188,7 +190,7 @@ def consumption_acc(consumable_id):
     history = HistoryAcc.objects.all()
     consumables = Accessories.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass

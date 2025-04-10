@@ -14,7 +14,7 @@ class Decommission(ModelMixin, models.Model):
     however, the number and placement of each device must match
     """
 
-    stock_model: models.OneToOneField = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -22,7 +22,7 @@ class Decommission(ModelMixin, models.Model):
         help_text="Введите название устройства",
         verbose_name="Устройство",
     )
-    categories: models.ForeignKey = models.ForeignKey(
+    categories = models.ForeignKey(
         "CategoryDec",
         on_delete=models.SET_NULL,
         blank=True,
@@ -30,9 +30,7 @@ class Decommission(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="группа",
     )
-    date: models.DateField = models.DateField(
-        null=True, blank=True, verbose_name="Дата списания"
-    )
+    date = models.DateField(null=True, blank=True, verbose_name="Дата списания")
 
     class Meta:
         verbose_name = "Списание устройств"
@@ -50,13 +48,11 @@ class CategoryDec(ModelMixin, models.Model):
     Group model for stock_model
     """
 
-    id: models.UUIDField = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, help_text="ID"
-    )
-    name: models.CharField = models.CharField(
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug: models.SlugField = models.SlugField(
+    slug = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,
@@ -81,7 +77,7 @@ class Disposal(ModelMixin, models.Model):
     however, the number and placement of each device must match
     """
 
-    stock_model: models.OneToOneField = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -89,7 +85,7 @@ class Disposal(ModelMixin, models.Model):
         help_text="Введите название устройства",
         verbose_name="Устройство",
     )
-    categories: models.ForeignKey = models.ForeignKey(
+    categories = models.ForeignKey(
         "CategoryDis",
         on_delete=models.SET_NULL,
         blank=True,
@@ -97,9 +93,7 @@ class Disposal(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="группа",
     )
-    date: models.DateField = models.DateField(
-        null=True, blank=True, verbose_name="Дата утилизации"
-    )
+    date = models.DateField(null=True, blank=True, verbose_name="Дата утилизации")
 
     class Meta:
         verbose_name = "Утилизация устройств"
@@ -117,13 +111,11 @@ class CategoryDis(ModelMixin, models.Model):
     Group model for stock_model
     """
 
-    id: models.UUIDField = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, help_text="ID"
-    )
-    name: models.CharField = models.CharField(
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug: models.SlugField = models.SlugField(
+    slug = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,

@@ -17,7 +17,7 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SoftwareForm(forms.ModelForm):
+class SoftwareForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Software
         fields = [
@@ -48,7 +48,7 @@ class SoftwareForm(forms.ModelForm):
         }
 
 
-class OSForm(forms.ModelForm):
+class OSForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Os
         fields = [

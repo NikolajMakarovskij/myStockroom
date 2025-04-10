@@ -12,7 +12,10 @@ from .models import Signature
 
 
 class SignatureListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "signature.view_signature"
     model = Signature
@@ -60,8 +63,8 @@ class SignatureDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     DataMixin,
-    FormMixin,
-    generic.DetailView,
+    FormMixin,  # type: ignore[type-arg]
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     permission_required = "signature.view_signature"
     model = Signature
@@ -81,7 +84,11 @@ class SignatureDetailView(
 
 
 class SignatureCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     permission_required = "signature.add_signature"
     model = Signature
@@ -101,7 +108,11 @@ class SignatureCreate(
 
 
 class SignatureUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     permission_required = "signature.change_signature"
     model = Signature
@@ -121,7 +132,11 @@ class SignatureUpdate(
 
 
 class SignatureDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     permission_required = "signature.delete_signature"
     model = Signature

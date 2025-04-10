@@ -9,17 +9,16 @@ from .serializers import (
 )
 
 
-class AccountingListRestView(viewsets.ModelViewSet):
+class AccountingListRestView(viewsets.ModelViewSet[Accounting]):
     queryset = Accounting.objects.all()
     serializer_class = AccountingListModelSerializer
 
     def list(self, request):
-        queryset = Accounting.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class AccountingRestView(viewsets.ModelViewSet):
+class AccountingRestView(viewsets.ModelViewSet[Accounting]):
     queryset = Accounting.objects.all()
     serializer_class = AccountingModelSerializer
 
@@ -51,13 +50,12 @@ class AccountingRestView(viewsets.ModelViewSet):
         return Response(status=204)
 
 
-class CategoriesRestView(viewsets.ModelViewSet):
+class CategoriesRestView(viewsets.ModelViewSet[Categories]):
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
 
     def list(self, request):
-        queryset = Categories.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

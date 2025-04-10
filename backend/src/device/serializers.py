@@ -10,21 +10,21 @@ from workplace.serializers import WorkplaceListSerializer
 from .models import Device, DeviceCat
 
 
-class DeviceCatModelSerializer(serializers.ModelSerializer):
+class DeviceCatModelSerializer(serializers.ModelSerializer[DeviceCat]):
     class Meta:
         model = DeviceCat
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class DeviceSerializer(serializers.ModelSerializer):
+class DeviceSerializer(serializers.ModelSerializer[Device]):
     class Meta:
         model = Device
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class DeviceListSerializer(serializers.ModelSerializer):
+class DeviceListSerializer(serializers.ModelSerializer[Device]):
     queryset = Device.objects.all()
     workplace = WorkplaceListSerializer(read_only=True)
     categories = DeviceCatModelSerializer(read_only=True)
@@ -34,7 +34,7 @@ class DeviceListSerializer(serializers.ModelSerializer):
     accounting = serializers.SerializerMethodField("get_accounting")
 
     def get_queryset(self):
-        categories = self.request.categories
+        categories = self.request.categories  # type: ignore[attr-defined]
         return Device.objects.filter(categories=categories)
 
     class Meta:
@@ -44,6 +44,7 @@ class DeviceListSerializer(serializers.ModelSerializer):
 
     def get_accounting(self, obj=Meta.model):
         from decommission.models import Decommission, Disposal
+        from stockroom.models.devices import StockDev
 
         if not StockDev.objects.filter(stock_model=obj.id):
             if not Decommission.objects.filter(stock_model=obj.id):

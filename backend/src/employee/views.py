@@ -12,17 +12,16 @@ from .serializers import (
 
 
 # Сотрудники
-class EmployeeListRestView(viewsets.ModelViewSet):
+class EmployeeListRestView(viewsets.ModelViewSet[Employee]):
     queryset = Employee.objects.all()
     serializer_class = EmployeeListSerializer
 
     def list(self, request):
-        queryset = Employee.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class EmployeeRestView(viewsets.ModelViewSet):
+class EmployeeRestView(viewsets.ModelViewSet[Employee]):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
@@ -55,17 +54,16 @@ class EmployeeRestView(viewsets.ModelViewSet):
 
 
 # Должность
-class PostListRestView(viewsets.ModelViewSet):
+class PostListRestView(viewsets.ModelViewSet[Post]):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
 
     def list(self, request):
-        queryset = Post.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class PostRestView(viewsets.ModelViewSet):
+class PostRestView(viewsets.ModelViewSet[Post]):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -98,13 +96,12 @@ class PostRestView(viewsets.ModelViewSet):
 
 
 # Отдел
-class DepartamentRestView(viewsets.ModelViewSet):
+class DepartamentRestView(viewsets.ModelViewSet[Departament]):
     queryset = Departament.objects.all()
     serializer_class = DepartamentSerializer
 
     def list(self, request):
-        queryset = Departament.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

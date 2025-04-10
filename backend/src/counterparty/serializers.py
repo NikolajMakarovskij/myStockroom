@@ -1,8 +1,9 @@
 from rest_framework import serializers
+
 from .models import Manufacturer
 
 
-class ManufacturerSerializer(serializers.ModelSerializer):
+class ManufacturerSerializer(serializers.ModelSerializer[Manufacturer]):
     queryset = Manufacturer.objects.all()
 
     class Meta:

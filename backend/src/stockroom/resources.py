@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from django.db.models import QuerySet
 from import_export import fields, resources  # type: ignore[import-untyped]
 from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
 

@@ -1,4 +1,5 @@
 import datetime
+from uuid import UUID
 
 from celery import shared_task
 
@@ -13,7 +14,7 @@ from .decom import Decom
 class DecomTasks(Decom):
     # Decommission
     @shared_task()
-    def add_device_decom(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def add_device_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """
         Add a device to a decommission
         """
@@ -39,7 +40,7 @@ class DecomTasks(Decom):
             pass
 
     @shared_task()
-    def remove_decom(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def remove_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """
         Delete from Decommission
         """
@@ -52,7 +53,7 @@ class DecomTasks(Decom):
 
     # Disposal
     @shared_task()
-    def add_device_disp(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def add_device_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """
         Add a device to a disposal
         """
@@ -80,7 +81,7 @@ class DecomTasks(Decom):
             pass
 
     @shared_task()
-    def remove_disp(device_id: str, username: str, status_choice: str) -> None:  # type: ignore[misc]
+    def remove_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
         """
         Delete from Decommission
         """

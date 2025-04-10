@@ -21,7 +21,10 @@ from stockroom.stock.stock import ConStock
 
 
 class StockroomView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
@@ -76,7 +79,10 @@ class StockroomView(
 
 
 class StockroomCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
@@ -107,7 +113,7 @@ class StockroomCategoriesView(
         return object_list
 
 
-class StockRestView(DataMixin, viewsets.ModelViewSet):
+class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
     queryset = Stockroom.objects.all()
     serializer_class = StockModelSerializer
 
@@ -132,8 +138,8 @@ class ExportStockConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -157,7 +163,10 @@ class ExportStockConsumableCategory(View):
 
 # History
 class HistoryView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
@@ -194,7 +203,10 @@ class HistoryView(
 
 
 class HistoryCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
@@ -223,7 +235,10 @@ class HistoryCategoriesView(
 
 
 class HistoryConsumptionView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
@@ -264,7 +279,10 @@ class HistoryConsumptionView(
 
 
 class HistoryConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
@@ -314,8 +332,8 @@ class ExportConsumptionConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

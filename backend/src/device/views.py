@@ -15,18 +15,17 @@ from .serializers import (
 )
 
 
-class DeviceListRestView(viewsets.ReadOnlyModelViewSet):
+class DeviceListRestView(viewsets.ReadOnlyModelViewSet[Device]):
     queryset = Device.objects.all()
     serializer_class = DeviceListSerializer
     permission_classes = [permissions.AllowAny]
 
     def list(self, request):
-        queryset = Device.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class DeviceModelRestView(viewsets.ModelViewSet):
+class DeviceModelRestView(viewsets.ModelViewSet[Device]):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
 
@@ -58,13 +57,12 @@ class DeviceModelRestView(viewsets.ModelViewSet):
         return Response(status=204)
 
 
-class DeviceCatRestView(viewsets.ModelViewSet):
+class DeviceCatRestView(viewsets.ModelViewSet[DeviceCat]):
     queryset = DeviceCat.objects.all()
     serializer_class = DeviceCatModelSerializer
 
     def list(self, request):
-        queryset = DeviceCat.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
@@ -114,8 +112,8 @@ class ExportDeviceCategory(View):
         if not device_cat:
             device_cat = DeviceCat.objects.all()
             cache.set("device_cat", device_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=device_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=device_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 

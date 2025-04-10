@@ -14,7 +14,7 @@ class StockDev(ModelMixin, models.Model):
     however, the number and placement of each device must match
     """
 
-    stock_model: models.OneToOneField = models.OneToOneField(
+    stock_model = models.OneToOneField(
         Device,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -23,7 +23,7 @@ class StockDev(ModelMixin, models.Model):
         help_text="Введите название устройства",
         verbose_name="Устройство",
     )
-    categories: models.ForeignKey = models.ForeignKey(
+    categories = models.ForeignKey(
         "CategoryDev",
         on_delete=models.SET_NULL,
         blank=True,
@@ -31,19 +31,17 @@ class StockDev(ModelMixin, models.Model):
         help_text="Укажите группу",
         verbose_name="группа",
     )
-    dateAddToStock: models.DateField = models.DateField(
+    dateAddToStock = models.DateField(
         null=True, blank=True, verbose_name="Дата поступления на склад"
     )
-    dateInstall: models.DateField = models.DateField(
-        null=True, blank=True, verbose_name="Дата установки"
-    )
-    rack: models.IntegerField = models.IntegerField(
+    dateInstall = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    rack = models.IntegerField(
         blank=True,
         null=True,
         help_text="Введите номер стеллажа",
         verbose_name="Стеллаж",
     )
-    shelf: models.IntegerField = models.IntegerField(
+    shelf = models.IntegerField(
         blank=True, null=True, help_text="Введите номер полки", verbose_name="Полка"
     )
 
@@ -68,13 +66,11 @@ class CategoryDev(ModelMixin, models.Model):
     Group model for stock_model
     """
 
-    id: models.UUIDField = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, help_text="ID"
-    )
-    name: models.CharField = models.CharField(
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
+    name = models.CharField(
         max_length=50, help_text="Введите название", verbose_name="Название"
     )
-    slug: models.SlugField = models.SlugField(
+    slug = models.SlugField(
         max_length=50,
         unique=True,
         db_index=True,
@@ -96,16 +92,16 @@ class HistoryDev(models.Model):
     Model for storing device usage history
     """
 
-    id: models.UUIDField = models.UUIDField(
+    id = models.UUIDField(
         primary_key=True, db_index=True, default=uuid.uuid4, help_text="ID"
     )
-    stock_model: models.CharField = models.CharField(
+    stock_model = models.CharField(
         blank=True, default=0, max_length=150, verbose_name="Устройства"
     )
-    stock_model_id: models.CharField = models.CharField(
+    stock_model_id = models.CharField(
         blank=True, default=0, max_length=50, verbose_name="ID устройства"
     )
-    categories: models.ForeignKey = models.ForeignKey(
+    categories = models.ForeignKey(
         "CategoryDev",
         on_delete=models.SET_NULL,
         blank=True,
@@ -113,25 +109,23 @@ class HistoryDev(models.Model):
         help_text="Укажите группу",
         verbose_name="группа",
     )
-    quantity: models.IntegerField = models.IntegerField(
+    quantity = models.IntegerField(
         blank=True,
         default=0,
         verbose_name="Количество",
     )
-    dateInstall: models.DateField = models.DateField(
-        null=True, blank=True, verbose_name="Дата установки"
-    )
-    user: models.CharField = models.CharField(
+    dateInstall = models.DateField(null=True, blank=True, verbose_name="Дата установки")
+    user = models.CharField(
         blank=True,
         default=0,
         max_length=50,
         help_text="Укажите пользователя",
         verbose_name="Пользователь",
     )
-    status: models.CharField = models.CharField(
+    status = models.CharField(
         blank=True, default=0, max_length=50, verbose_name="Статус"
     )
-    note: models.TextField = models.TextField(
+    note = models.TextField(
         max_length=1000,
         blank=True,
         null=True,

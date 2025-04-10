@@ -20,7 +20,10 @@ from stockroom.stock.stock import AccStock
 
 # accessories
 class StockAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
@@ -78,7 +81,10 @@ class StockAccView(
 
 
 class StockAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
@@ -132,8 +138,8 @@ class ExportStockAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -173,8 +179,8 @@ class ExportConsumptionAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -198,7 +204,10 @@ class ExportConsumptionAccessoriesCategory(View):
 
 # History
 class HistoryAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
@@ -235,7 +244,10 @@ class HistoryAccView(
 
 
 class HistoryAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
@@ -264,7 +276,10 @@ class HistoryAccCategoriesView(
 
 
 class HistoryConsumptionAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_acc_list.html"
@@ -305,7 +320,10 @@ class HistoryConsumptionAccView(
 
 
 class HistoryAccConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_consumption_acc_list.html"

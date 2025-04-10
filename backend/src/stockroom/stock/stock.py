@@ -1,4 +1,5 @@
 import datetime
+from uuid import UUID
 
 from consumables.models import Accessories, Consumables
 from device.models import Device
@@ -33,7 +34,7 @@ class DevStock(BaseStock):
 
     @classmethod
     def create_history_device(
-        cls, model_id: str, quantity: int, username: str, status_choice: str, note: str
+        cls, model_id: UUID, quantity: int, username: str, status_choice: str, note: str
     ) -> HistoryDev:
         """Creating an entry in the history of stock_model"""
         model = cls.base_model.objects.get(id=model_id)
@@ -42,7 +43,7 @@ class DevStock(BaseStock):
             note = ""
         else:
             note = note
-        history = cls.history_model.objects.create(
+        history = cls.history_model.objects.create(  # type: ignore[misc]
             stock_model=model.name,
             stock_model_id=model.id,
             quantity=quantity,
@@ -56,7 +57,7 @@ class DevStock(BaseStock):
 
     @classmethod
     def add_to_stock_device(
-        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=None
+        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=None
     ) -> None:
         """
         Add a stock_model to the stock or update its quantity.
@@ -77,7 +78,7 @@ class DevStock(BaseStock):
             model_instance.update(quantity=model_quantity)
             stock_model_instance.update(dateAddToStock=datetime.date.today())
         else:
-            cls.stock_model.objects.create(
+            cls.stock_model.objects.create(  # type: ignore[misc]
                 stock_model=model,
                 categories=categories,
                 dateAddToStock=datetime.date.today(),
@@ -91,7 +92,7 @@ class DevStock(BaseStock):
 
     @classmethod
     def remove_device_from_stock(
-        cls, model_id: str, quantity=0, username=None, status_choice="Удаление"
+        cls, model_id: UUID, quantity=0, username=None, status_choice="Удаление"
     ) -> None:
         """
         Delete device from the stock
@@ -105,7 +106,7 @@ class DevStock(BaseStock):
 
     @classmethod
     def move_device(
-        cls, model_id: str, workplace_id: str, username=None, note=None
+        cls, model_id: UUID, workplace_id: UUID, username=None, note=None
     ) -> None:
         """
         Move device
