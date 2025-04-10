@@ -1,7 +1,9 @@
 from django import forms
+
 from core.utils import BaseModelSelect2WidgetMixin
 from counterparty.models import Manufacturer
-from .models import Software, Os
+
+from .models import Os, Software
 
 
 class ManufacturerWidget(BaseModelSelect2WidgetMixin):
@@ -15,7 +17,7 @@ class ManufacturerWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SoftwareForm(forms.ModelForm):
+class SoftwareForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Software
         fields = [
@@ -46,7 +48,7 @@ class SoftwareForm(forms.ModelForm):
         }
 
 
-class OSForm(forms.ModelForm):
+class OSForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Os
         fields = [

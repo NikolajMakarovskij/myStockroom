@@ -1,15 +1,16 @@
-from core.utils import DataMixin, FormMessageMixin, menu
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
+from core.utils import DataMixin, FormMessageMixin, menu
+
 from .forms import OSForm, SoftwareForm
 from .models import Os, Software
 
 
-class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateView):  # type: ignore[type-arg]
     permission_required = "software.view_software"
     template_name = "software/soft_index.html"
 
@@ -21,7 +22,10 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.TemplateVie
 
 
 class SoftwareListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "software.view_software"
     paginate_by = DataMixin.paginate
@@ -52,7 +56,10 @@ class SoftwareListView(
 
 
 class SoftwareDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     permission_required = "software.view_software"
     model = Software
@@ -71,7 +78,11 @@ class SoftwareDetailView(
 
 
 class SoftwareCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     permission_required = "software.add_software"
     model = Software
@@ -91,7 +102,11 @@ class SoftwareCreate(
 
 
 class SoftwareUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     permission_required = "software.change_software"
     model = Software
@@ -111,7 +126,11 @@ class SoftwareUpdate(
 
 
 class SoftwareDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     permission_required = "software.delete_software"
     model = Software
@@ -131,7 +150,10 @@ class SoftwareDelete(  # type: ignore[misc]
 
 # ОС
 class OSListView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "software.view_os"
     model = Os
@@ -160,7 +182,10 @@ class OSListView(
 
 
 class OSDetailView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.DetailView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.DetailView,  # type: ignore[type-arg]
 ):
     permission_required = "software.view_os"
     model = Os
@@ -179,7 +204,11 @@ class OSDetailView(
 
 
 class OSCreate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, CreateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    CreateView,  # type: ignore[type-arg]
 ):
     permission_required = "software.add_os"
     model = Os
@@ -199,7 +228,11 @@ class OSCreate(
 
 
 class OSUpdate(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, UpdateView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    UpdateView,  # type: ignore[type-arg]
 ):
     permission_required = "software.change_os"
     model = Os
@@ -219,7 +252,11 @@ class OSUpdate(
 
 
 class OSDelete(  # type: ignore[misc]
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, FormMessageMixin, DeleteView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    FormMessageMixin,
+    DeleteView,  # type: ignore[type-arg]
 ):
     permission_required = "software.delete_os"
     model = Os

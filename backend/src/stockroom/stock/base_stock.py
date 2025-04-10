@@ -1,9 +1,11 @@
 import datetime
 from dataclasses import dataclass
+from uuid import UUID
 
-from device.models import Device
 from django.conf import settings
 from django.db.models import Model
+
+from device.models import Device
 
 
 @dataclass
@@ -33,7 +35,7 @@ class BaseStock(object):
         self.session.modified = True
 
     @classmethod
-    def add_category(cls, model_id: str) -> Model | None:
+    def add_category(cls, model_id: UUID) -> Model | None:
         """Getting a category"""
         model = cls.base_model._default_manager.get(id=model_id)
         if not model.categories:  # type: ignore[attr-defined]
@@ -52,8 +54,8 @@ class BaseStock(object):
     @classmethod
     def create_history(
         cls,
-        model_id: str,
-        device_id: str,
+        model_id: UUID,
+        device_id: UUID | str | None,
         quantity: int,
         username: str,
         note: str,
@@ -87,7 +89,7 @@ class BaseStock(object):
 
     @classmethod
     def add_to_stock(
-        cls, model_id: str, quantity=1, number_rack=1, number_shelf=1, username=""
+        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=""
     ) -> None:
         """
         Add a stock_model to the stock or update its quantity.
@@ -124,7 +126,7 @@ class BaseStock(object):
         )
 
     @classmethod
-    def remove_from_stock(cls, model_id: str, quantity=0, username="") -> None:
+    def remove_from_stock(cls, model_id: UUID, quantity=0, username="") -> None:
         """
         Remove stock_model from the stock
         """
@@ -144,8 +146,8 @@ class BaseStock(object):
     @classmethod
     def add_to_device(
         cls,
-        model_id: str,
-        device: dict,
+        model_id: UUID,
+        device: UUID,
         quantity: int = 1,
         note: str = "",
         username: str = "",
@@ -153,7 +155,7 @@ class BaseStock(object):
         """
         Install stock_model in the device
         """
-        device_id = str(device)
+        device_id = device
         model_add = cls.base_model._default_manager.get(id=model_id)
         model_quantity = int(str(model_add.quantity))  # type: ignore[attr-defined]
         device_obj = Device.objects.get(id=device_id)

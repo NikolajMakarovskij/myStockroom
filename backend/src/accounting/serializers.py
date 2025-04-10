@@ -1,22 +1,23 @@
 from rest_framework import serializers
-from .models import Categories, Accounting
+
+from .models import Accounting, Categories
 
 
-class CategoriesModelSerializer(serializers.ModelSerializer):
+class CategoriesModelSerializer(serializers.ModelSerializer[Categories]):
     class Meta:
         model = Categories
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccountingModelSerializer(serializers.ModelSerializer):
+class AccountingModelSerializer(serializers.ModelSerializer[Accounting]):
     class Meta:
         model = Accounting
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class AccountingListModelSerializer(serializers.ModelSerializer):
+class AccountingListModelSerializer(serializers.ModelSerializer[Accounting]):
     categories = CategoriesModelSerializer(read_only=True)
     costAll = serializers.SerializerMethodField("get_cost_all")
 

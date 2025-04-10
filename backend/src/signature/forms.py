@@ -1,8 +1,10 @@
 from django import forms
-from core.utils import BaseModelSelect2WidgetMixin
+
 from consumables.models import Consumables
+from core.utils import BaseModelSelect2WidgetMixin
 from device.models import Device
 from employee.models import Employee
+
 from .models import Signature
 
 
@@ -59,7 +61,7 @@ class EmployeeWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class SignatureForm(forms.ModelForm):
+class SignatureForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Signature
         fields = [

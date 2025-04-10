@@ -1,7 +1,10 @@
-from django import template
 from datetime import datetime
 
-from consumables.models import Consumables, Accessories
+from django import template
+from django.db.models import QuerySet
+
+from consumables.models import Accessories, Consumables
+from device.models import Device
 from stockroom.models.accessories import HistoryAcc
 from stockroom.models.consumables import History
 from stockroom.models.devices import HistoryDev
@@ -83,7 +86,7 @@ def consumption(consumable_id):
     history = History.objects.all()
     consumables = Consumables.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
@@ -103,8 +106,8 @@ def consumption(consumable_id):
     unit_history_last_year = history.filter(
         stock_model_id=consumable_id,
         status="Расход",
-        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
-        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31",
+        dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
     )
     unit_history_current_year = history.filter(
         stock_model_id=consumable_id,
@@ -187,7 +190,7 @@ def consumption_acc(consumable_id):
     history = HistoryAcc.objects.all()
     consumables = Accessories.objects.all()
     device_count = 0
-    device_name = ""
+    device_name: QuerySet[Device, Device] | str = ""
     quantity = 0
     if not consumables.filter(id=consumable_id):
         pass
@@ -206,8 +209,8 @@ def consumption_acc(consumable_id):
     unit_history_last_year = history.filter(
         stock_model_id=consumable_id,
         status="Расход",
-        dateInstall__gte=f"{int(cur_year.strftime('%Y'))-1}-01-01",
-        dateInstall__lte=f"{int(cur_year.strftime('%Y'))-1}-12-31",
+        dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+        dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
     )
     unit_history_current_year = history.filter(
         stock_model_id=consumable_id,

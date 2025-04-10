@@ -93,7 +93,7 @@ class WorkplaceWidget(BaseModelSelect2WidgetMixin):
     ]
 
 
-class MoveDeviceForm(forms.ModelForm):
+class MoveDeviceForm(forms.ModelForm):  # type: ignore[type-arg]
     class Meta:
         model = Device
         fields = ["workplace", "note"]

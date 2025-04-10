@@ -1,28 +1,28 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import Consumables, Categories, Accessories, AccCat
+
+from .models import AccCat, Accessories, Categories, Consumables
 from .serializers import (
-    ConsumablesModelSerializer,
-    CategoriesModelSerializer,
-    AccessoriesModelSerializer,
     AccCatModelSerializer,
-    ConsumablesListSerializer,
     AccessoriesListModelSerializer,
+    AccessoriesModelSerializer,
+    CategoriesModelSerializer,
+    ConsumablesListSerializer,
+    ConsumablesModelSerializer,
 )
 
 
 # Расходники
-class ConsumablesListRestView(viewsets.ModelViewSet):
+class ConsumablesListRestView(viewsets.ModelViewSet[Consumables]):
     queryset = Consumables.objects.all()
     serializer_class = ConsumablesListSerializer
 
     def list(self, request):
-        queryset = Consumables.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class ConsumablesRestView(viewsets.ModelViewSet):
+class ConsumablesRestView(viewsets.ModelViewSet[Consumables]):
     queryset = Consumables.objects.all()
     serializer_class = ConsumablesModelSerializer
 
@@ -54,13 +54,12 @@ class ConsumablesRestView(viewsets.ModelViewSet):
         return Response(status=204)
 
 
-class CategoriesRestView(viewsets.ModelViewSet):
+class CategoriesRestView(viewsets.ModelViewSet[Categories]):
     queryset = Categories.objects.all()
     serializer_class = CategoriesModelSerializer
 
     def list(self, request):
-        queryset = Categories.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
@@ -92,17 +91,16 @@ class CategoriesRestView(viewsets.ModelViewSet):
 
 
 # Комплектующие
-class AccessoriesListRestView(viewsets.ModelViewSet):
+class AccessoriesListRestView(viewsets.ModelViewSet[Accessories]):
     queryset = Accessories.objects.all()
     serializer_class = AccessoriesListModelSerializer
 
     def list(self, request):
-        queryset = Accessories.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class AccessoriesRestView(viewsets.ModelViewSet):
+class AccessoriesRestView(viewsets.ModelViewSet[Accessories]):
     queryset = Accessories.objects.all()
     serializer_class = AccessoriesModelSerializer
 
@@ -134,13 +132,12 @@ class AccessoriesRestView(viewsets.ModelViewSet):
         return Response(status=204)
 
 
-class AccCatRestView(viewsets.ModelViewSet):
+class AccCatRestView(viewsets.ModelViewSet[AccCat]):
     queryset = AccCat.objects.all()
     serializer_class = AccCatModelSerializer
 
     def list(self, request):
-        queryset = AccCat.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

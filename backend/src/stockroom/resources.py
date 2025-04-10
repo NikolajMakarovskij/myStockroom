@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from consumables.models import Accessories, Consumables
-from device.models import Device
+from django.db.models import QuerySet
 from import_export import fields, resources  # type: ignore[import-untyped]
 from import_export.widgets import ForeignKeyWidget  # type: ignore[import-untyped]
+
+from consumables.models import Accessories, Consumables
+from device.models import Device
 from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.models.devices import CategoryDev, StockDev
@@ -183,7 +185,7 @@ class ConsumableConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
-            devices = 0
+            devices: int | str | QuerySet[Device, Device] = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():
@@ -338,7 +340,7 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         device_list = []
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
-            devices = 0
+            devices: int | str | QuerySet[Device, Device] = 0
         else:
             consumable = consumables.filter(id=id_).get()
             if not consumable.device.all():

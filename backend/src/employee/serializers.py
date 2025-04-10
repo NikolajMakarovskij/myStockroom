@@ -1,9 +1,11 @@
 from rest_framework import serializers
+
 from workplace.serializers import WorkplaceListSerializer
-from .models import Post, Employee, Departament
+
+from .models import Departament, Employee, Post
 
 
-class DepartamentSerializer(serializers.ModelSerializer):
+class DepartamentSerializer(serializers.ModelSerializer[Departament]):
     queryset = Departament.objects.all()
 
     class Meta:
@@ -12,7 +14,7 @@ class DepartamentSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class PostSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer[Post]):
     queryset = Post.objects.all()
 
     class Meta:
@@ -21,7 +23,7 @@ class PostSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class PostListSerializer(serializers.ModelSerializer):
+class PostListSerializer(serializers.ModelSerializer[Post]):
     queryset = Post.objects.all()
     departament = DepartamentSerializer(read_only=True)
 
@@ -31,7 +33,7 @@ class PostListSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
+class EmployeeSerializer(serializers.ModelSerializer[Employee]):
     queryset = Employee.objects.all()
 
     class Meta:
@@ -40,8 +42,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class EmployeeListSerializer(serializers.ModelSerializer):
-    queryset = Post.objects.all()
+class EmployeeListSerializer(serializers.ModelSerializer[Employee]):
+    queryset = Employee.objects.all()
     post = PostListSerializer(read_only=True)
     workplace = WorkplaceListSerializer(read_only=True)
 

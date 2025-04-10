@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from core.utils import DataMixin
-from device.models import Device
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -11,6 +9,9 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View, generic
 
+from core.utils import DataMixin
+from device.models import Device
+
 from .models import CategoryDec, CategoryDis, Decommission, Disposal
 from .resources import DecommissionResource, DisposalResource
 from .tasks import DecomTasks
@@ -18,7 +19,10 @@ from .tasks import DecomTasks
 
 # Decommission
 class DecommissionView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "decommission.view_decommission"
     template_name = "decom/decom_list.html"
@@ -58,7 +62,10 @@ class DecommissionView(
 
 
 class DecomCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "decommission.view_decommission"
     template_name = "decom/decom_list.html"
@@ -140,7 +147,7 @@ class ExportDecomDevice(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Devices_in_decommission_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -153,8 +160,8 @@ class ExportDecomDeviceCategory(View):
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
             cache.set("cat_decom", cat_decom, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_decom)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_decom)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -167,7 +174,7 @@ class ExportDecomDeviceCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_in_decommission_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Devices_in_decommission_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -176,7 +183,10 @@ class ExportDecomDeviceCategory(View):
 
 # Disposal
 class DisposalView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "decommission.view_disposal"
     template_name = "decom/disp_list.html"
@@ -216,7 +226,10 @@ class DisposalView(
 
 
 class DispCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "decommission.view_disposal"
     template_name = "decom/disp_list.html"
@@ -296,7 +309,7 @@ class ExportDispDevice(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Devices_in_disposal_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -309,8 +322,8 @@ class ExportDispDeviceCategory(View):
         if not cat_disp:
             cat_disp = CategoryDis.objects.all()
             cache.set("cat_disp", cat_disp, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_disp)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_disp)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -323,7 +336,7 @@ class ExportDispDeviceCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Devices_in_disposal_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Devices_in_disposal_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )

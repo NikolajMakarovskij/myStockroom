@@ -1,26 +1,26 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
+
 from .models import Room, Workplace
 from .serializers import (
-    WorkplaceListSerializer,
     RoomModelSerializer,
-    WorkplaceSerializer,
     RoomSerializer,
+    WorkplaceListSerializer,
+    WorkplaceSerializer,
 )
 
 
 # Рабочие места
-class WorkplaceListRestView(viewsets.ModelViewSet):
+class WorkplaceListRestView(viewsets.ModelViewSet[Workplace]):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceListSerializer
 
     def list(self, request):
-        queryset = Workplace.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
-class WorkplaceRestView(viewsets.ModelViewSet):
+class WorkplaceRestView(viewsets.ModelViewSet[Workplace]):
     queryset = Workplace.objects.all()
     serializer_class = WorkplaceSerializer
 
@@ -53,13 +53,12 @@ class WorkplaceRestView(viewsets.ModelViewSet):
 
 
 # Кабинеты
-class RoomListRestView(viewsets.ModelViewSet):
+class RoomListRestView(viewsets.ModelViewSet[Room]):
     queryset = Room.objects.all()
     serializer_class = RoomModelSerializer
 
     def list(self, request):
-        queryset = Room.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
 
@@ -68,8 +67,7 @@ class RoomRestView(viewsets.ViewSet):
     serializer_class = RoomSerializer
 
     def list(self, request):
-        queryset = Room.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

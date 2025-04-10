@@ -1,26 +1,29 @@
+from datetime import datetime
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Q
-from django.shortcuts import redirect, get_object_or_404
-from django.views import generic, View
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View, generic
 from django.views.decorators.http import require_POST
 
 from consumables.models import Accessories
 from core.utils import DataMixin
-from stockroom.forms import StockAddForm, ConsumableInstallForm
-from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
+from stockroom.forms import ConsumableInstallForm, StockAddForm
+from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
+from stockroom.resources import AccessoriesConsumptionResource, StockAccResource
 from stockroom.stock.stock import AccStock
-from stockroom.resources import StockAccResource, AccessoriesConsumptionResource
-
-from django.http import HttpResponse
-from datetime import datetime
 
 
 # accessories
 class StockAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
@@ -78,7 +81,10 @@ class StockAccView(
 
 
 class StockAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockacc"
     template_name = "stock/stock_acc_list.html"
@@ -119,7 +125,7 @@ class ExportStockAccessories(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Accessories_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -132,8 +138,8 @@ class ExportStockAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -146,7 +152,7 @@ class ExportStockAccessoriesCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Accessories_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Accessories_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -160,7 +166,7 @@ class ExportConsumptionAccessories(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -173,8 +179,8 @@ class ExportConsumptionAccessoriesCategory(View):
         if not cat_acc:
             cat_acc = CategoryAcc.objects.all()
             cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=cat_acc)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=cat_acc)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -189,7 +195,7 @@ class ExportConsumptionAccessoriesCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -198,7 +204,10 @@ class ExportConsumptionAccessoriesCategory(View):
 
 # History
 class HistoryAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
@@ -235,7 +244,10 @@ class HistoryAccView(
 
 
 class HistoryAccCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_acc_list.html"
@@ -264,7 +276,10 @@ class HistoryAccCategoriesView(
 
 
 class HistoryConsumptionAccView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_acc_list.html"
@@ -305,7 +320,10 @@ class HistoryConsumptionAccView(
 
 
 class HistoryAccConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_historyacc"
     template_name = "stock/history_consumption_acc_list.html"

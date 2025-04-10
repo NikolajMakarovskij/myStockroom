@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from consumables.models import Consumables
-from core.utils import DataMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -12,6 +10,9 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View, generic
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
+
+from consumables.models import Consumables
+from core.utils import DataMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.resources import ConsumableConsumptionResource, StockConResource
@@ -20,7 +21,10 @@ from stockroom.stock.stock import ConStock
 
 
 class StockroomView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
@@ -75,7 +79,10 @@ class StockroomView(
 
 
 class StockroomCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_stockroom"
     template_name = "stock/stock_list.html"
@@ -106,7 +113,7 @@ class StockroomCategoriesView(
         return object_list
 
 
-class StockRestView(DataMixin, viewsets.ModelViewSet):
+class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
     queryset = Stockroom.objects.all()
     serializer_class = StockModelSerializer
 
@@ -118,7 +125,7 @@ class ExportStockConsumable(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -131,8 +138,8 @@ class ExportStockConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -147,7 +154,7 @@ class ExportStockConsumableCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumables_in_stockroom_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumables_in_stockroom_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -156,7 +163,10 @@ class ExportStockConsumableCategory(View):
 
 # History
 class HistoryView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
@@ -193,7 +203,10 @@ class HistoryView(
 
 
 class HistoryCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_list.html"
@@ -222,7 +235,10 @@ class HistoryCategoriesView(
 
 
 class HistoryConsumptionView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
@@ -263,7 +279,10 @@ class HistoryConsumptionView(
 
 
 class HistoryConsumptionCategoriesView(
-    LoginRequiredMixin, PermissionRequiredMixin, DataMixin, generic.ListView
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DataMixin,
+    generic.ListView,  # type: ignore[type-arg]
 ):
     permission_required = "stockroom.view_history"
     template_name = "stock/history_consumption_list.html"
@@ -300,7 +319,7 @@ class ExportConsumptionConsumable(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
@@ -313,8 +332,8 @@ class ExportConsumptionConsumableCategory(View):
         if not stock_cat:
             stock_cat = StockCat.objects.all()
             cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(menu_categories=stock_cat)
+        context = super().get_context_data(**kwargs)  # type: ignore[misc]
+        c_def = self.get_user_context(menu_categories=stock_cat)  # type: ignore[attr-defined]
         context = dict(list(context.items()) + list(c_def.items()))
         return context
 
@@ -325,7 +344,7 @@ class ExportConsumptionConsumableCategory(View):
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
         response["Content-Disposition"] = (
             "attachment; filename={filename}.{ext}".format(
-                filename=f'Consumption_consumables_{datetime.today().strftime("%Y_%m_%d")}',
+                filename=f"Consumption_consumables_{datetime.today().strftime('%Y_%m_%d')}",
                 ext="xlsx",
             )
         )
