@@ -2,14 +2,14 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from core.tests.login_test import auto_login_user  # noqa F401
+from core.tests.login_test import auto_login_user  # noqa: F401
 
 from ..models import Signature
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
+def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = ["/signature/", "/signature/search"]
     for link in links:
@@ -19,7 +19,7 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_ad_template(auto_login_user):  # noqa F811
+def test_list_uses_correct_url_ad_template(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {
@@ -41,7 +41,7 @@ def test_list_uses_correct_url_ad_template(auto_login_user):  # noqa F811
 
 # detail_update_delete
 @pytest.mark.django_db
-def test_details_url(auto_login_user):  # noqa F811
+def test_details_url(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {

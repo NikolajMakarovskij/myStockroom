@@ -1,11 +1,11 @@
 import pytest
 
 from consumables.models import Categories as ConCat
-
-from ..forms import SignatureForm
-from employee.models import Employee
 from consumables.models import Consumables
 from device.models import Device
+from employee.models import Employee
+
+from ..forms import SignatureForm
 
 
 @pytest.mark.django_db

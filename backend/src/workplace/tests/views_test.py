@@ -1,173 +1,176 @@
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
+import pytest
 
-from workplace.models import Room, Workplace
-from core.utils import DataMixin
+from core.tests.login_test import auto_login_user  # noqa: F401
+
+from ..models import Room, Workplace
+
+pytestmark = pytest.mark.django_db
 
 
-class RoomListViewTest(TestCase, DataMixin):
-    number_of_rooms = 149
+class TestRoomEndpoints:
+    endpoint = "/api/workplace/room/"
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_room_list(self, auto_login_user):  # noqa: F811
+        Room.objects.bulk_create(
+            [
+                Room(name="01", floor="01", building="Главное"),
+                Room(name="02"),
+                Room(name="03"),
+            ]
         )
+        client, user = auto_login_user()
+        response = client.get("/api/workplace/room_list/")
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["floor"] == "01"
+        assert data[0]["building"] == "Главное"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
 
-    @classmethod
-    def setUpTestData(cls):
-        for room_num in range(cls.number_of_rooms):
-            Room.objects.create(
-                name="r %s" % room_num,
-            )
-        assert Room.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["workplace:room_list", "workplace:room_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Кабинеты"},
-            {"data_key": "searchlink", "data_value": "workplace:room_search"},
-            {"data_key": "add", "data_value": "workplace:new-room"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Кабинет"},
-            {"data_key": "add", "data_value": "workplace:new-room"},
-            {"data_key": "update", "data_value": "workplace:room-update"},
-            {"data_key": "delete", "data_value": "workplace:room-delete"},
-        ]
-        Room.objects.create(
-            name="room_detail",
+    @pytest.mark.django_db
+    def test_room_list_2(self, auto_login_user):  # noqa: F811
+        Room.objects.bulk_create(
+            [
+                Room(name="01", floor="01", building="Главное"),
+                Room(name="02"),
+                Room(name="03"),
+            ]
         )
-        model = Room.objects.get(
-            name="room_detail",
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["floor"] == "01"
+        assert data[0]["building"] == "Главное"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "04", "floor": "01", "building": "Главное"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get(self.endpoint)
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["floor"] == "01"
+        assert data[0]["building"] == "Главное"
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Room.objects.get_or_create(name="10", floor="01", building="Главное")
+        test_room = Room.objects.get(name="10")
+        url = f"{self.endpoint}{test_room.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+        assert response.data["floor"] == "01"
+        assert response.data["building"] == "Главное"
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Room.objects.get_or_create(name="10", floor="01", building="Главное")
+        test_room = Room.objects.get(name="10")
+        url = f"{self.endpoint}{test_room.id}/"
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Room.objects.all().count() == 0
+
+
+class TestWorkplaceEndpoints:
+    endpoint = "/api/workplace/workplace/"
+    endpoint_list = "/api/workplace/workplace_list/"
+
+    @pytest.mark.django_db
+    def test_workplace_list(self, auto_login_user):  # noqa: F811
+        Room.objects.get_or_create(name="01", floor="01", building="Главное")
+        room = Room.objects.get(name="01")
+        Workplace.objects.bulk_create(
+            [
+                Workplace(name="01", room=room),
+                Workplace(name="02"),
+                Workplace(name="03"),
+            ]
         )
-        resp = self.client.get(
-            reverse("workplace:room-detail", kwargs={"pk": model.pk})
+        client, user = auto_login_user()
+        response = client.get(self.endpoint_list)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["room"]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_workplace_list_2(self, auto_login_user):  # noqa: F811
+        Room.objects.get_or_create(name="01", floor="01", building="Главное")
+        room = Room.objects.get(name="01")
+        Workplace.objects.bulk_create(
+            [
+                Workplace(name="01", room=room),
+                Workplace(name="02"),
+                Workplace(name="03"),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
 
-    def test_pagination_is_paginate(self):
-        links = ["workplace:room_list", "workplace:room_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["room_list"]) == self.paginate)
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Room.objects.get_or_create(name="01", floor="01", building="Главное")
+        room = Room.objects.get(name="01")
+        expected_json = {"name": "04", "room": room.id}
 
-    def test_lists_all_room(self):
-        links = ["workplace:room_list", "workplace:room_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link) + f"?page={self.number_of_rooms // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["room_list"])
-                == self.number_of_rooms
-                - (self.number_of_rooms // self.paginate) * self.paginate
-            )
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get("/api/workplace/workplace_list/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["room"]["name"] == "01"
+        assert data[0]["room"]["floor"] == "01"
+        assert data[0]["room"]["building"] == "Главное"
 
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Workplace.objects.get_or_create(name="10")
+        test_room = Workplace.objects.get(name="10")
+        url = f"{self.endpoint}{test_room.id}/"
 
-class WorkplaceListViewTest(TestCase, DataMixin):
-    number_of_workplaces = 149
+        response = client.get(url)
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
-        )
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
 
-    @classmethod
-    def setUpTestData(cls):
-        for Workplace_num in range(cls.number_of_workplaces):
-            Workplace.objects.create(
-                name="Christian %s" % Workplace_num,
-            )
-        assert Workplace.objects.count() == 149
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Workplace.objects.get_or_create(name="10")
+        test_room = Workplace.objects.get(name="10")
+        url = f"{self.endpoint}{test_room.id}/"
 
-    def test_context_data_in_list(self):
-        links = ["workplace:workplace_list", "workplace:workplace_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Рабочие места"},
-            {"data_key": "searchlink", "data_value": "workplace:workplace_search"},
-            {"data_key": "add", "data_value": "workplace:new-workplace"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
+        response = client.delete(url)
 
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Рабочее место"},
-            {"data_key": "add", "data_value": "workplace:new-workplace"},
-            {"data_key": "update", "data_value": "workplace:workplace-update"},
-            {"data_key": "delete", "data_value": "workplace:workplace-delete"},
-        ]
-        Workplace.objects.create(
-            name="room_detail",
-        )
-        model = Workplace.objects.get(
-            name="room_detail",
-        )
-        resp = self.client.get(
-            reverse("workplace:workplace-detail", kwargs={"pk": model.pk})
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
-    def test_pagination_is_paginate(self):
-        links = ["workplace:workplace_list", "workplace:workplace_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["workplace_list"]) == self.paginate)
-
-    def test_lists_all_workplaces(self):
-        links = ["workplace:workplace_list", "workplace:workplace_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link)
-                + f"?page={self.number_of_workplaces // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["workplace_list"])
-                == self.number_of_workplaces
-                - (self.number_of_workplaces // self.paginate) * self.paginate
-            )
+        assert response.status_code == 204
+        assert Workplace.objects.all().count() == 0

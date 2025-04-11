@@ -21,7 +21,8 @@ class DeviceListRestView(viewsets.ReadOnlyModelViewSet[Device]):
     permission_classes = [permissions.AllowAny]
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Device.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -62,7 +63,8 @@ class DeviceCatRestView(viewsets.ModelViewSet[DeviceCat]):
     serializer_class = DeviceCatModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = DeviceCat.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

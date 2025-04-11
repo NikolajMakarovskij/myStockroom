@@ -2,32 +2,32 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from core.tests.login_test import auto_login_user  # noqa F401
+from core.tests.login_test import auto_login_user  # noqa: F401
 from stockroom.models.consumables import StockCat
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
+def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
-        "/stockroom/",
-        "/stockroom/stockroom/",
-        "/stockroom/stockroom/search",
-        "/stockroom/history/consumption/",
-        "/stockroom/history/consumption/search",
-        "/stockroom/history/",
-        "/stockroom/history/search",
-        "/stockroom/accessories/",
-        "/stockroom/accessories/search",
-        "/stockroom/accessories/history/",
-        "/stockroom/accessories/history/search",
-        "/stockroom/accessories/consumption/",
-        "/stockroom/accessories/consumption/search",
-        "/stockroom/devices/",
-        "/stockroom/devices/search",
-        "/stockroom/devices/history/",
-        "/stockroom/devices/history/search",
+        "/api/stockroom/",
+        "/api/stockroom/stockroom/",
+        "/api/stockroom/stockroom/search",
+        "/api/stockroom/history/consumption/",
+        "/api/stockroom/history/consumption/search",
+        "/api/stockroom/history/",
+        "/api/stockroom/history/search",
+        "/api/stockroom/accessories/",
+        "/api/stockroom/accessories/search",
+        "/api/stockroom/accessories/history/",
+        "/api/stockroom/accessories/history/search",
+        "/api/stockroom/accessories/consumption/",
+        "/api/stockroom/accessories/consumption/search",
+        "/api/stockroom/devices/",
+        "/api/stockroom/devices/search",
+        "/api/stockroom/devices/history/",
+        "/api/stockroom/devices/history/search",
     ]
     for link in links:
         url = link
@@ -36,7 +36,7 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa F811
+def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "stockroom:stock_index", "template": "stock/stock_index.html"},
@@ -90,7 +90,7 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa F811
 
 # category
 @pytest.mark.django_db
-def test_stockroom_category_url(auto_login_user):  # noqa F811
+def test_stockroom_category_url(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "stockroom:category", "template": "stock/stock_list.html"},

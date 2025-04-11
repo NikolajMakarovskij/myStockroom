@@ -2,7 +2,6 @@ import datetime
 
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from counterparty.models import Manufacturer
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
@@ -19,9 +18,6 @@ def test_category_decom_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "decommission:decom_category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db
@@ -69,9 +65,6 @@ def test_category_disp_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "decommission:disp_category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db

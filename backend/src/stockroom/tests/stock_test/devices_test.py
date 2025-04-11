@@ -4,7 +4,7 @@ import pytest
 
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.stock.stock import DevStock
-from stockroom.tests.stock_tests.stock_test import create_devices, create_session
+from stockroom.tests.stock_test.stock_test import create_devices, create_session
 
 
 @pytest.mark.django_db
@@ -24,7 +24,7 @@ def test_stock_dev_no_category():
 def test_stock_dev_add_category():
     """Checks the operation of the add_category_dev method of the Stock class"""
     device = create_devices()
-    device_id = device.id
+    device_id = device.id  # type: ignore[attr-defined]
     DevStock.add_category(device_id)
     test_category = CategoryDev.objects.get(name="my_category")
 
@@ -37,7 +37,7 @@ def test_stock_dev_add_category():
 def test_stock_dev_create_history():
     """Checks the operation of the add_history method of the Stock class"""
     devices = create_devices()
-    devices_id = devices.id
+    devices_id = devices.id  # type: ignore[attr-defined]
     quantity = 1
     username = "admin"
     status_choice = "Приход"
@@ -46,8 +46,8 @@ def test_stock_dev_create_history():
     test_history = HistoryDev.objects.get(stock_model="my_consumable")
 
     assert HistoryDev.objects.count() == 1
-    assert test_history.categories.name == "my_category"
-    assert test_history.categories.slug == "my_category"
+    assert test_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_history.stock_model == "my_consumable"
     assert test_history.quantity == 1
     assert test_history.dateInstall == datetime.date.today()
@@ -66,7 +66,7 @@ def test_stock_add_devices(client):
     number_shelf = 13
     username = "admin"
     DevStock.add_to_stock_device(
-        model_id=devices.id,
+        model_id=devices.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
@@ -77,16 +77,16 @@ def test_stock_add_devices(client):
 
     assert StockDev.objects.count() == 1
     assert HistoryDev.objects.count() == 1
-    assert test_get_stock.categories.name == "my_category"
-    assert test_get_stock.categories.slug == "my_category"
+    assert test_get_stock.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_stock.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_stock.stock_model.name == "my_consumable"
     assert test_get_stock.stock_model.quantity == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_get_stock.dateAddToStock == datetime.date.today()
     assert test_get_history.stock_model == "my_consumable"
-    assert test_get_history.categories.name == "my_category"
-    assert test_get_history.categories.slug == "my_category"
+    assert test_get_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_history.dateInstall == datetime.date.today()
     assert test_get_history.quantity == 5
     assert test_get_history.user == "admin"
@@ -141,14 +141,14 @@ def test_stock_dev_update_device(client):
     number_shelf = 13
     username = "admin"
     DevStock.add_to_stock_device(
-        model_id=devices.id,
+        model_id=devices.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
     DevStock.add_to_stock_device(
-        model_id=devices.id,
+        model_id=devices.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=2,
         number_shelf=2,
@@ -174,14 +174,17 @@ def test_stock_dev_remove_device(client):
     username = "admin"
     status_choice = "Удаление"
     DevStock.add_to_stock_device(
-        model_id=devices.id,
+        model_id=devices.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
     DevStock.remove_device_from_stock(
-        model_id=devices.id, quantity=0, username=username, status_choice=status_choice
+        model_id=devices.id,  # type: ignore[attr-defined]
+        quantity=0,
+        username=username,
+        status_choice=status_choice,
     )
     test_history = HistoryDev.objects.get(status="Удаление")
 
@@ -204,14 +207,16 @@ def test_stock_move_device(client):
     number_shelf = 13
     username = "admin"
     DevStock.add_to_stock_device(
-        model_id=devices.id,
+        model_id=devices.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
     DevStock.move_device(
-        model_id=devices.id, workplace_id=workplace.id, username=username
+        model_id=devices.id,  # type: ignore[attr-defined]
+        workplace_id=workplace.id,
+        username=username,
     )
     test_history = HistoryDev.objects.get(
         status="Перемещение на рабочее место pc-004-r"
@@ -220,5 +225,5 @@ def test_stock_move_device(client):
 
     assert StockDev.objects.count() == 1
     assert HistoryDev.objects.count() == 2
-    assert test_stock.stock_model.workplace.name == "pc-004-r"
+    assert test_stock.stock_model.workplace.name == "pc-004-r"  # type: ignore[union-attr]
     assert test_history.status == "Перемещение на рабочее место pc-004-r"

@@ -59,7 +59,7 @@ def create_devices() -> Model:
 
 
 def add_consumables_in_devices(
-    consumable: Model, accessories: Model
+    consumable: Model | None, accessories: Model | None
 ) -> QuerySet[Device, Device]:
     """Service function. Creates a category, stock_model and stock_model. Return stock_model"""
 

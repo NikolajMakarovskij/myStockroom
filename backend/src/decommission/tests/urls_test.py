@@ -2,13 +2,13 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from core.tests.login_test import auto_login_user  # noqa F401
+from core.tests.login_test import auto_login_user  # noqa: F401
 from decommission.models import CategoryDec
 
 
 # list and create
 @pytest.mark.django_db
-def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
+def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         "/decommission/decom/",
@@ -23,7 +23,7 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa F811
 
 
 @pytest.mark.django_db
-def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa F811
+def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "decommission:decom_list", "template": "decom/decom_list.html"},
@@ -40,7 +40,7 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa F811
 
 # category
 @pytest.mark.django_db
-def test_stockroom_category_url(auto_login_user):  # noqa F811
+def test_stockroom_category_url(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "decommission:decom_category", "template": "decom/decom_list.html"},

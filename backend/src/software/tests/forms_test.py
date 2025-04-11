@@ -3,8 +3,9 @@ from unittest import mock
 import pytest
 from django.core.files import File
 
-from ..forms import OSForm, SoftwareForm
 from counterparty.models import Manufacturer
+
+from ..forms import OSForm, SoftwareForm
 
 
 @pytest.mark.django_db

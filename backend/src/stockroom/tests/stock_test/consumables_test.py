@@ -4,7 +4,7 @@ import pytest
 
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.stock.stock import ConStock
-from stockroom.tests.test_stock.test_stock import (
+from stockroom.tests.stock_test.stock_test import (
     add_consumables_in_devices,
     create_consumable,
     create_session,
@@ -28,7 +28,7 @@ def test_stock_no_category():
 def test_stock_add_category():
     """Checks the operation of the add_category method of the Stock class"""
     consumable = create_consumable()
-    consumable_id = consumable.id
+    consumable_id = consumable.id  # type: ignore[attr-defined]
     ConStock.add_category(consumable_id)
     test_category = StockCat.objects.get(name="my_category")
 
@@ -41,7 +41,7 @@ def test_stock_add_category():
 def test_stock_create_history():
     """Checks the operation of the add_history method of the Stock class"""
     consumable = create_consumable()
-    consumable_id = consumable.id
+    consumable_id = consumable.id  # type: ignore[attr-defined]
     device_id = None
     quantity = 1
     username = "admin"
@@ -53,8 +53,8 @@ def test_stock_create_history():
     test_history = History.objects.get(stock_model="my_consumable")
 
     assert History.objects.count() == 1
-    assert test_history.categories.name == "my_category"
-    assert test_history.categories.slug == "my_category"
+    assert test_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_history.stock_model == "my_consumable"
     assert test_history.quantity == 1
     assert test_history.dateInstall == datetime.date.today()
@@ -74,7 +74,7 @@ def test_stock_add_consumable(client):
     username = "admin"
     add_consumables_in_devices(consumable, accessories=None)
     ConStock.add_to_stock(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
@@ -85,16 +85,16 @@ def test_stock_add_consumable(client):
 
     assert Stockroom.objects.count() == 1
     assert History.objects.count() == 1
-    assert test_get_stock.categories.name == "my_category"
-    assert test_get_stock.categories.slug == "my_category"
+    assert test_get_stock.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_stock.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_stock.stock_model.name == "my_consumable"
     assert test_get_stock.stock_model.quantity == 5
     assert test_get_stock.rack == 3
     assert test_get_stock.shelf == 13
     assert test_get_stock.dateAddToStock == datetime.date.today()
     assert test_get_history.stock_model == "my_consumable"
-    assert test_get_history.categories.name == "my_category"
-    assert test_get_history.categories.slug == "my_category"
+    assert test_get_history.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_history.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_history.dateInstall == datetime.date.today()
     assert test_get_history.quantity == 5
     assert test_get_history.user == "admin"
@@ -151,14 +151,14 @@ def test_stock_update_consumable(client):
     username = "admin"
     add_consumables_in_devices(consumable, accessories=None)
     ConStock.add_to_stock(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
     ConStock.add_to_stock(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=2,
         number_shelf=2,
@@ -184,13 +184,13 @@ def test_stock_remove_consumable(client):
     username = "admin"
     add_consumables_in_devices(consumable, accessories=None)
     ConStock.add_to_stock(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
-    ConStock.remove_from_stock(model_id=consumable.id, quantity=0, username=username)
+    ConStock.remove_from_stock(model_id=consumable.id, quantity=0, username=username)  # type: ignore[attr-defined]
     test_history = History.objects.get(status="Удаление")
 
     assert Stockroom.objects.count() == 0
@@ -207,20 +207,20 @@ def test_stock_device_add_consumable(client):
     consumable = create_consumable()
     Device.objects.create(name="device")
     device = Device.objects.get(name="device")
-    device.consumable.set([consumable.id])
+    device.consumable.set([consumable.id])  # type: ignore[attr-defined]
     quantity = 5
     number_rack = 3
     number_shelf = 13
     username = "admin"
     ConStock.add_to_stock(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         quantity=quantity,
         number_rack=number_rack,
         number_shelf=number_shelf,
         username=username,
     )
     ConStock.add_to_device(
-        model_id=consumable.id,
+        model_id=consumable.id,  # type: ignore[attr-defined]
         device=device.id,
         quantity=1,
         note="note",

@@ -18,7 +18,8 @@ class ConsumablesListRestView(viewsets.ModelViewSet[Consumables]):
     serializer_class = ConsumablesListSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Consumables.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -59,7 +60,8 @@ class CategoriesRestView(viewsets.ModelViewSet[Categories]):
     serializer_class = CategoriesModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Categories.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
@@ -96,7 +98,8 @@ class AccessoriesListRestView(viewsets.ModelViewSet[Accessories]):
     serializer_class = AccessoriesListModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Accessories.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -137,7 +140,8 @@ class AccCatRestView(viewsets.ModelViewSet[AccCat]):
     serializer_class = AccCatModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = AccCat.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):

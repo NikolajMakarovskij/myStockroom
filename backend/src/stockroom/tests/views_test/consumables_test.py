@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from consumables.models import Consumables
-from stockroom.models.consumables import Stockroom, History, StockCat
+from stockroom.models.consumables import History, StockCat, Stockroom
 
 
 # Consumables
@@ -36,7 +36,7 @@ class StockroomViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten(self):
@@ -94,7 +94,7 @@ class StockroomCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten(self):
@@ -137,7 +137,7 @@ class HistoryStockViewTest(TestCase):
         number_in_history = 149
         Consumables.objects.create(name="check_consumable")
         for history_num in range(number_in_history):
-            History.objects.create(
+            History.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % history_num,
                 stock_model_id=Consumables.objects.filter(name="check_consumable")
                 .get()
@@ -157,7 +157,7 @@ class HistoryStockViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_context_data_in_consumption_list(self):
@@ -178,7 +178,7 @@ class HistoryStockViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten_in_history(self):
@@ -226,7 +226,7 @@ class HistoryCategoryViewTest(TestCase):
         StockCat.objects.create(name="some_category", slug="some_category")
         Consumables.objects.create(name="check_consumable")
         for stocks_num in range(number_in_stock):
-            History.objects.create(
+            History.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % stocks_num,
                 categories=StockCat.objects.get(slug="some_category"),
                 stock_model_id=Consumables.objects.filter(name="check_consumable")
@@ -251,7 +251,7 @@ class HistoryCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_context_data_in_consumption_category(self):
@@ -272,7 +272,7 @@ class HistoryCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten_in_history(self):

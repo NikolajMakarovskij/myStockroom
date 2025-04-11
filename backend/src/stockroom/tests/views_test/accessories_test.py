@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from consumables.models import Accessories
-from stockroom.models.accessories import StockAcc, HistoryAcc, CategoryAcc
+from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
 
 
 # Accessories
@@ -36,7 +36,7 @@ class StockAccViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten(self):
@@ -95,7 +95,7 @@ class StockroomAccCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten(self):
@@ -138,7 +138,7 @@ class HistoryAccStockViewTest(TestCase):
         number_in_history = 149
         Accessories.objects.create(name="check_consumable")
         for history_num in range(number_in_history):
-            HistoryAcc.objects.create(
+            HistoryAcc.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % history_num,
                 stock_model_id=Accessories.objects.filter(name="check_consumable")
                 .get()
@@ -158,7 +158,7 @@ class HistoryAccStockViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_context_data_in_consumption_list(self):
@@ -179,7 +179,7 @@ class HistoryAccStockViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten_in_history_list(self):
@@ -227,7 +227,7 @@ class HistoryAccCategoryViewTest(TestCase):
         CategoryAcc.objects.create(name="some_category", slug="some_category")
         Accessories.objects.create(name="check_consumable")
         for stocks_num in range(number_in_stock):
-            HistoryAcc.objects.create(
+            HistoryAcc.objects.create(  # type: ignore[misc]
                 stock_model="Christian %s" % stocks_num,
                 categories=CategoryAcc.objects.get(slug="some_category"),
                 stock_model_id=Accessories.objects.filter(name="check_consumable")
@@ -252,7 +252,7 @@ class HistoryAccCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_context_data_in_consumption_category(self):
@@ -273,7 +273,7 @@ class HistoryAccCategoryViewTest(TestCase):
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten_in_history(self):

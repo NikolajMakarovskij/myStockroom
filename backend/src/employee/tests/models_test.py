@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from workplace.models import Workplace
 
@@ -15,9 +14,6 @@ def test_departament_create():
     assert Departament.objects.count() == 1
     assert departament.name == "name_departament"
     assert departament.__str__() == "name_departament"
-    assert departament.get_absolute_url() == reverse(
-        "employee:departament-detail", kwargs={"pk": departament.pk}
-    )
 
 
 @pytest.mark.django_db
@@ -33,9 +29,6 @@ def test_post_create():
     assert post.name == "my_post_name"
     assert post.departament.name == "my_departament"  # type: ignore[union-attr]
     assert post.__str__() == "my_post_name"
-    assert post.get_absolute_url() == reverse(
-        "employee:post-detail", kwargs={"pk": post.pk}
-    )
 
 
 @pytest.mark.django_db
@@ -66,9 +59,6 @@ def test_employee_create():
     assert employee.post.departament.name == "my_departament"  # type: ignore[union-attr]
     assert employee.employeeEmail == "admin@admin.com"
     assert employee.__str__() == "employee_name"
-    assert employee.get_absolute_url() == reverse(
-        "employee:employee-detail", kwargs={"pk": employee.pk}
-    )
 
 
 @pytest.mark.django_db

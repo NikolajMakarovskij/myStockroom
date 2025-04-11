@@ -1,12 +1,13 @@
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from device.models import Device
-from decommission.models import Decommission, CategoryDec, Disposal, CategoryDis
+from django.test import Client, TestCase
 from django.urls import reverse
 
+from device.models import Device
+from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 
-# Decommission
-class DecommissionViewTest(TestCase):
+
+# Devices
+class StockDevViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -19,15 +20,15 @@ class DecommissionViewTest(TestCase):
     def setUpTestData(cls):
         number_in_stock = 149
         for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Decommission.objects.create(stock_model=dev)
-        assert Decommission.objects.count() == 149
+            cons = Device.objects.create(name="Christian %s" % stocks_num)
+            StockDev.objects.create(stock_model=cons)
+        assert Device.objects.count() == 149
 
     def test_context_data_in_list(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
+        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
         context_data = [
-            {"data_key": "title", "data_value": "Списание устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:decom_search"},
+            {"data_key": "title", "data_value": "Склад устройств"},
+            {"data_key": "searchlink", "data_value": "stockroom:stock_dev_search"},
         ]
         for link in links:
             resp = self.client.get(reverse(link))
@@ -35,29 +36,29 @@ class DecommissionViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
+        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 20)
+            self.assertTrue(len(resp.context["stockdev_list"]) == 20)
 
-    def test_lists_all_decommission(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
+    def test_lists_all_stockroom(self):
+        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
         for link in links:
             resp = self.client.get(reverse(link) + "?page=8")
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 9)
+            self.assertTrue(len(resp.context["stockdev_list"]) == 9)
 
 
-class DecommissionCategoryViewTest(TestCase):
+class StockroomDevCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -69,62 +70,61 @@ class DecommissionCategoryViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_in_stock = 149
-        CategoryDec.objects.create(name="some_category", slug="some_category")
+        CategoryDev.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Decommission.objects.create(
-                stock_model=dev,
-                categories=CategoryDec.objects.get(slug="some_category"),
+            cons = Device.objects.create(name="Christian %s" % stocks_num)
+            StockDev.objects.create(
+                stock_model=cons,
+                categories=CategoryDev.objects.get(slug="some_category"),
             )
-        assert Decommission.objects.count() == 149
-        assert CategoryDec.objects.count() == 1
+        assert StockDev.objects.count() == 149
+        assert CategoryDev.objects.count() == 1
 
     def test_context_data_in_category(self):
         context_data = [
-            {"data_key": "title", "data_value": "Списание устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:decom_search"},
+            {"data_key": "title", "data_value": "Склад устройств"},
+            {"data_key": "searchlink", "data_value": "stockroom:stock_dev_search"},
         ]
         resp = self.client.get(
             reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
+                "stockroom:devices_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
         )
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten(self):
         resp = self.client.get(
             reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
+                "stockroom:devices_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 20)
+        self.assertTrue(len(resp.context["stockdev_list"]) == 20)
 
     def test_lists_all_stockroom_consumables(self):
         resp = self.client.get(
             reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
+                "stockroom:devices_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
             + "?page=8"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 9)
+        self.assertTrue(len(resp.context["stockdev_list"]) == 9)
 
 
-# Disposal
-class DisposalViewTest(TestCase):
+class HistoryDevStockViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -135,17 +135,18 @@ class DisposalViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Disposal.objects.create(stock_model=dev)
-        assert Disposal.objects.count() == 149
+        number_in_history = 149
+        for history_num in range(number_in_history):
+            HistoryDev.objects.create(
+                stock_model="Christian %s" % history_num,
+            )
+        assert HistoryDev.objects.count() == 149
 
     def test_context_data_in_list(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
+        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
         context_data = [
-            {"data_key": "title", "data_value": "Утилизация устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:disp_search"},
+            {"data_key": "title", "data_value": "История устройств"},
+            {"data_key": "searchlink", "data_value": "stockroom:history_dev_search"},
         ]
         for link in links:
             resp = self.client.get(reverse(link))
@@ -153,29 +154,29 @@ class DisposalViewTest(TestCase):
             for each in context_data:
                 self.assertTrue(each.get("data_key") in resp.context)
                 self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")
+                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
     def test_pagination_is_ten(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
+        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
         for link in links:
             resp = self.client.get(reverse(link))
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 20)
+            self.assertTrue(len(resp.context["historydev_list"]) == 20)
 
-    def test_lists_all_disposal(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
+    def test_lists_all_stockroom(self):
+        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
         for link in links:
             resp = self.client.get(reverse(link) + "?page=8")
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 9)
+            self.assertTrue(len(resp.context["historydev_list"]) == 9)
 
 
-class DisposalCategoryViewTest(TestCase):
+class HistoryDevCategoryViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.client.force_login(
@@ -187,55 +188,54 @@ class DisposalCategoryViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         number_in_stock = 149
-        CategoryDis.objects.create(name="some_category", slug="some_category")
+        CategoryDev.objects.create(name="some_category", slug="some_category")
         for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Disposal.objects.create(
-                stock_model=dev,
-                categories=CategoryDis.objects.get(slug="some_category"),
+            HistoryDev.objects.create(
+                stock_model="Christian %s" % stocks_num,
+                categories=CategoryDev.objects.get(slug="some_category"),
             )
-        assert Disposal.objects.count() == 149
-        assert CategoryDis.objects.count() == 1
+        assert HistoryDev.objects.count() == 149
+        assert CategoryDev.objects.count() == 1
 
     def test_context_data_in_category(self):
         context_data = [
-            {"data_key": "title", "data_value": "Утилизация устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:disp_search"},
+            {"data_key": "title", "data_value": "История устройств"},
+            {"data_key": "searchlink", "data_value": "stockroom:history_dev_search"},
         ]
         resp = self.client.get(
             reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
+                "stockroom:history_dev_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
         )
         self.assertEqual(resp.status_code, 200)
         for each in context_data:
             self.assertTrue(each.get("data_key") in resp.context)
             self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")
+                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
     def test_pagination_is_ten(self):
         resp = self.client.get(
             reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
+                "stockroom:history_dev_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 20)
+        self.assertTrue(len(resp.context["historydev_list"]) == 20)
 
-    def test_lists_all_disposal_categories(self):
+    def test_lists_all_stockroom_history_acc_consumables(self):
         resp = self.client.get(
             reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
+                "stockroom:history_dev_category",
+                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
             )
             + "?page=8"
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 9)
+        self.assertTrue(len(resp.context["historydev_list"]) == 9)

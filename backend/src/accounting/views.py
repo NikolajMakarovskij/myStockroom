@@ -14,13 +14,19 @@ class AccountingListRestView(viewsets.ModelViewSet[Accounting]):
     serializer_class = AccountingListModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Accounting.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
 class AccountingRestView(viewsets.ModelViewSet[Accounting]):
     queryset = Accounting.objects.all()
     serializer_class = AccountingModelSerializer
+
+    def list(self, request):
+        queryset = Accounting.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -55,7 +61,8 @@ class CategoriesRestView(viewsets.ModelViewSet[Categories]):
     serializer_class = CategoriesModelSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Categories.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
