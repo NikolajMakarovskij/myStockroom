@@ -17,7 +17,8 @@ class EmployeeListRestView(viewsets.ModelViewSet[Employee]):
     serializer_class = EmployeeListSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Employee.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -59,7 +60,8 @@ class PostListRestView(viewsets.ModelViewSet[Post]):
     serializer_class = PostListSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Post.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -97,11 +99,14 @@ class PostRestView(viewsets.ModelViewSet[Post]):
 
 # Отдел
 class DepartamentRestView(viewsets.ModelViewSet[Departament]):
-    queryset = Departament.objects.all()
+    queryset = (
+        Departament.objects.all()
+    )  # Do not delete it. When inheriting from a class, it returns empty data in tests.
     serializer_class = DepartamentSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        queryset = Departament.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
