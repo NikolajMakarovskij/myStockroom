@@ -50,11 +50,6 @@
               Расход
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_list' %}active{% endif %}" href="{% url 'stockroom:history_list' %}">
-              История
-            </a>
-        </li>
         {% for item in menu_categories %}
           <li class="nav-item ">
             <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"

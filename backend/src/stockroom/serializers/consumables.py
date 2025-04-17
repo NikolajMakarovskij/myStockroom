@@ -1,35 +1,21 @@
 from rest_framework import serializers
 
-from consumables.models import Consumables
-from device.models import Device
+from consumables.serializers import ConsumablesListSerializer
 
 from ..models.consumables import History, StockCat, Stockroom
 
 
-class StockConSerializer(serializers.ModelSerializer[Consumables]):
-    device: serializers.StringRelatedField[Device] = serializers.StringRelatedField(
-        many=True
-    )
-    consumable: serializers.StringRelatedField[Consumables] = (
-        serializers.StringRelatedField(many=True)
-    )
-
-    class Meta:
-        model = Consumables
-        fields = "__all__"
-        extra_kwargs = {"id": {"read_only": True}}
-
-
-class StockCatModelSerializer(serializers.ModelSerializer[StockCat]):
+class StockConCatSerializer(serializers.ModelSerializer[StockCat]):
     class Meta:
         model = StockCat
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class StockModelSerializer(serializers.ModelSerializer[Stockroom]):
-    categories = StockCatModelSerializer()
-    stock_model = StockConSerializer()
+class StockConListSerializer(serializers.ModelSerializer[Stockroom]):
+    queryset = Stockroom.objects.all()
+    categories = StockConCatSerializer(read_only=True)
+    stock_model = ConsumablesListSerializer(read_only=True)
 
     class Meta:
         model = Stockroom
@@ -41,11 +27,32 @@ class StockModelSerializer(serializers.ModelSerializer[Stockroom]):
             "shelf",
             "categories",
         ]
-        extra_kwargs = {"id": {"read_only": True}}
+        extra_kwargs = {
+            "stock_model": {"read_only": True},
+            "dateAddToStock": {"read_only": True},
+            "dateInstall": {"read_only": True},
+            "rack": {"read_only": True},
+            "shelf": {"read_only": True},
+            "categories": {"read_only": True},
+        }
 
 
 class HistoryModelSerializer(serializers.ModelSerializer[History]):
+    categories = StockConCatSerializer(read_only=True)
+
     class Meta:
         model = History
         fields = "__all__"
-        extra_kwargs = {"id": {"read_only": True}}
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "stock_model": {"read_only": True},
+            "stock_model_id": {"read_only": True},
+            "device": {"read_only": True},
+            "deviceId": {"read_only": True},
+            "categories": {"read_only": True},
+            "quantity": {"read_only": True},
+            "dateInstall": {"read_only": True},
+            "user": {"read_only": True},
+            "status": {"read_only": True},
+            "note": {"read_only": True},
+        }

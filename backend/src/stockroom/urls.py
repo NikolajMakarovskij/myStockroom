@@ -1,6 +1,7 @@
 from django.urls import include, path
 
-from stockroom.views.accessories import (
+from .routers import router
+from .views.accessories import (
     ExportConsumptionAccessories,
     ExportConsumptionAccessoriesCategory,
     ExportStockAccessories,
@@ -15,22 +16,18 @@ from stockroom.views.accessories import (
     stock_add_accessories,
     stock_remove_accessories,
 )
-from stockroom.views.consumables import (
+from .views.consumables import (
     ExportConsumptionConsumable,
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
-    HistoryCategoriesView,
     HistoryConsumptionCategoriesView,
     HistoryConsumptionView,
-    HistoryView,
-    StockroomCategoriesView,
-    StockroomView,
     device_add_consumable,
     stock_add_consumable,
     stock_remove_consumable,
 )
-from stockroom.views.devices import (
+from .views.devices import (
     ExportStockDevice,
     ExportStockDeviceCategory,
     HistoryDevCategoriesView,
@@ -42,21 +39,12 @@ from stockroom.views.devices import (
     stock_add_device,
     stock_remove_device,
 )
-from stockroom.views.index import StockroomIndexView
-
-from .routers import router
+from .views.index import StockroomIndexView
 
 urlpatterns = [
     path("", include(router.urls)),
     path("", StockroomIndexView.as_view(), name="stock_index"),
     # Consumables
-    path("stockroom/", StockroomView.as_view(), name="stock_list"),
-    path("stockroom/search", StockroomView.as_view(), name="stock_search"),
-    path(
-        "category/<slug:category_slug>",
-        StockroomCategoriesView.as_view(),
-        name="category",
-    ),
     path(
         "stockroom/export/",
         ExportStockConsumable.as_view(),
@@ -84,13 +72,6 @@ urlpatterns = [
         name="device_add_consumable",
     ),
     # history
-    path("history/", HistoryView.as_view(), name="history_list"),
-    path("history/search", HistoryView.as_view(), name="history_search"),
-    path(
-        "history/category/<slug:category_slug>",
-        HistoryCategoriesView.as_view(),
-        name="history_category",
-    ),
     path(
         "history/consumption/",
         HistoryConsumptionView.as_view(),

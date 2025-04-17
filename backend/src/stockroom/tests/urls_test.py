@@ -12,12 +12,11 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         "/api/stockroom/",
-        "/api/stockroom/stockroom/",
-        "/api/stockroom/stockroom/search",
+        "/api/stockroom/stock_con_list/",
+        "/api/stockroom/stock_con_cat_list/",
+        "/api/stockroom/history_con_list/",
         "/api/stockroom/history/consumption/",
         "/api/stockroom/history/consumption/search",
-        "/api/stockroom/history/",
-        "/api/stockroom/history/search",
         "/api/stockroom/accessories/",
         "/api/stockroom/accessories/search",
         "/api/stockroom/accessories/history/",
@@ -40,10 +39,6 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "stockroom:stock_index", "template": "stock/stock_index.html"},
-        {"link": "stockroom:stock_list", "template": "stock/stock_list.html"},
-        {"link": "stockroom:stock_search", "template": "stock/stock_list.html"},
-        {"link": "stockroom:history_list", "template": "stock/history_list.html"},
-        {"link": "stockroom:history_search", "template": "stock/history_list.html"},
         {
             "link": "stockroom:history_consumption_list",
             "template": "stock/history_consumption_list.html",
@@ -93,8 +88,6 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
 def test_stockroom_category_url(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
-        {"link": "stockroom:category", "template": "stock/stock_list.html"},
-        {"link": "stockroom:history_category", "template": "stock/history_list.html"},
         {
             "link": "stockroom:history_consumption_category",
             "template": "stock/history_consumption_list.html",
