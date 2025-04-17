@@ -24,7 +24,7 @@ const AccountingContent = [
     title: 'Категории',
     url_path: '/accounting/categories/list',
     url_name: ListAccountingCategory,
-    image: 'http://localhost/static/images/categories.svg',
+    image: 'http://localhost/static/images/groups.svg',
   },
 ]
 export { AccountingContent }
