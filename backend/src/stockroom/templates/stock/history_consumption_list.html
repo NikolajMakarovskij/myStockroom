@@ -2,16 +2,16 @@
 
 {% block content %}
   {% load static %}
-    <div class="table-responsive"> 
+    <div class="table-responsive">
       <caption>
         <h1 style="text-align:center" >{{title}}</h1>
-      </caption> 
+      </caption>
 <!--search block-->
       {%include 'search/search.html' %}
 <!--block content-->
   {% if not menu_categories %}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           {% if perms.stockroom.can_export_device %}
             <a class="text-secondary" href="{% url 'stockroom:export_consumption_consumable' %}">
@@ -50,11 +50,6 @@
               Расход
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-secondary {% if request.resolver_match.view_name == 'stockroom:history_list' %}active{% endif %}" href="{% url 'stockroom:history_list' %}">
-              История
-            </a>
-        </li>
         {% for item in menu_categories %}
           <li class="nav-item ">
             <a class="nav-link text-secondary {% if request.get_full_path == item.get_absolute_url %}active{% endif %}"
@@ -67,7 +62,7 @@
   {% endif %}
   {% if not history_list%}
     <table class="table align-middle table-hover" style="text-align:center">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col" style="font-size: 32px;">Истории не обнаружено</th>
         </tr>
@@ -98,6 +93,6 @@
     </table>
   {% endif %}
   </div>
-<!--block pagination-->  
+<!--block pagination-->
   {%include 'pagination/pagination.html' %}
 {% endblock %}

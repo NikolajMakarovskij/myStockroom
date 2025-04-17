@@ -1,24 +1,8 @@
 from rest_framework import serializers
 
-from consumables.models import Consumables
-from device.models import Device
 from device.serializers import DeviceListSerializer
 
 from ..models.devices import CategoryDev, StockDev
-
-
-class StockDevSerializer(serializers.ModelSerializer[Device]):
-    device: serializers.StringRelatedField[Device] = serializers.StringRelatedField(
-        many=True
-    )
-    consumable: serializers.StringRelatedField[Consumables] = (
-        serializers.StringRelatedField(many=True)
-    )
-
-    class Meta:
-        model = Device
-        fields = "__all__"
-        extra_kwargs = {"id": {"read_only": True}}
 
 
 class StockDevCatSerializer(serializers.ModelSerializer[CategoryDev]):
@@ -29,7 +13,7 @@ class StockDevCatSerializer(serializers.ModelSerializer[CategoryDev]):
 
 
 class StockDevListSerializer(serializers.ModelSerializer[StockDev]):
-    queryset = Device.objects.all()
+    queryset = StockDev.objects.all()
     categories = StockDevCatSerializer(read_only=True)
     stock_model = DeviceListSerializer(read_only=True)
 

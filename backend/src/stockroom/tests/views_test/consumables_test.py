@@ -1,126 +1,124 @@
+import pytest
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from consumables.models import Consumables
-from stockroom.models.consumables import History, StockCat, Stockroom
+from accounting.models import Accounting
+from consumables.models import Categories, Consumables
+from core.tests.login_test import auto_login_user  # noqa: F401
+from counterparty.models import Manufacturer
+
+from ...models.consumables import History, StockCat, Stockroom
 
 
 # Consumables
-class StockroomViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestStockConsumablesCategoriesEndpoints:
+    endpoint = "/api/stockroom/stock_con_cat_list/"
+
+    @pytest.mark.django_db
+    def testing_stock_consumables_list(self, auto_login_user):  # noqa: F811
+        StockCat.objects.bulk_create(
+            [
+                StockCat(name="category_01", slug="category_01"),
+                StockCat(name="category_02", slug="category_02"),
+                StockCat(name="category_03", slug="category_03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
-            cons = Consumables.objects.create(name="Christian %s" % stocks_num)
-            Stockroom.objects.create(stock_model=cons)
-        assert Consumables.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["stockroom:stock_list", "stockroom:stock_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Склад расходников"},
-            {"data_key": "searchlink", "data_value": "stockroom:stock_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten(self):
-        links = ["stockroom:stock_list", "stockroom:stock_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockroom_list"]) == 20)
-
-    def test_lists_all_stockroom(self):
-        links = ["stockroom:stock_list", "stockroom:stock_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockroom_list"]) == 9)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
 
 
-class StockroomCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestStockConsumablesEndpoints:
+    endpoint = "/api/stockroom/stock_con_list/"
+
+    @pytest.mark.django_db
+    def testing_stock_consumables_list(self, auto_login_user):  # noqa: F811
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = Categories.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Consumables.objects.bulk_create(
+            [
+                Consumables(name="01", categories=cat, manufacturer=man, quantity=1),
+                Consumables(name="02"),
+                Consumables(name="03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        StockCat.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
-            cons = Consumables.objects.create(name="Christian %s" % stocks_num)
-            Stockroom.objects.create(
-                stock_model=cons, categories=StockCat.objects.get(slug="some_category")
-            )
-        assert Stockroom.objects.count() == 149
-        assert StockCat.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Склад расходников"},
-            {"data_key": "searchlink", "data_value": "stockroom:stock_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "stockroom:category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
+        Accounting.objects.get_or_create(
+            name="category_01",
+            quantity=2,
+            consumable=Consumables.objects.get(name="01"),
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
+        StockCat.objects.get_or_create(name="some_category", slug="some_category")
+        Stockroom.objects.bulk_create(
+            [
+                Stockroom(
+                    stock_model=Consumables.objects.get(name="01"),
+                    categories=StockCat.objects.get(name="some_category"),
+                    dateAddToStock="2022-03-03",
+                    dateInstall="2022-03-04",
+                    rack=1,
+                    shelf=2,
+                ),
+                Stockroom(stock_model=Consumables.objects.get(name="02")),
+                Stockroom(stock_model=Consumables.objects.get(name="03")),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockroom_list"]) == 20)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"]["name"] == "01"
+        assert data[0]["stock_model"]["categories"]["name"] == "category_01"
+        assert data[0]["stock_model"]["categories"]["slug"] == "category_01"
+        assert data[0]["stock_model"]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["stock_model"]["difference"] == -1
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[0]["dateAddToStock"] == "2022-03-03"
+        assert data[0]["dateInstall"] == "2022-03-04"
+        assert data[0]["rack"] == 1
+        assert data[0]["shelf"] == 2
+        assert data[1]["stock_model"]["name"] == "02"
+        assert data[2]["stock_model"]["name"] == "03"
 
-    def test_lists_all_stockroom_consumables(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
-            + "?page=8"
+
+class TestHistoryConsumablesEndpoints:
+    endpoint = "/api/stockroom/history_con_list/"
+
+    @pytest.mark.django_db
+    def testing_stock_consumables_list(self, auto_login_user):  # noqa: F811
+        StockCat.objects.get_or_create(name="some_category", slug="some_category")
+        History.objects.bulk_create(
+            [
+                History(
+                    stock_model="category_01",
+                    categories=StockCat.objects.get(name="some_category"),
+                ),
+                History(stock_model="category_02"),
+                History(stock_model="category_03"),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockroom_list"]) == 9)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"] == "category_01"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[1]["stock_model"] == "category_02"
+        assert data[2]["stock_model"] == "category_03"
 
 
 class HistoryStockViewTest(TestCase):
@@ -145,21 +143,6 @@ class HistoryStockViewTest(TestCase):
             )
         assert History.objects.count() == 149
 
-    def test_context_data_in_history_list(self):
-        links = ["stockroom:history_list", "stockroom:history_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "История расходников"},
-            {"data_key": "searchlink", "data_value": "stockroom:history_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
     def test_context_data_in_consumption_list(self):
         links = [
             "stockroom:history_consumption_list",
@@ -181,15 +164,6 @@ class HistoryStockViewTest(TestCase):
                     resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
                 )
 
-    def test_pagination_is_ten_in_history(self):
-        links = ["stockroom:history_list", "stockroom:history_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["history_list"]) == 20)
-
     def test_pagination_is_ten_in_consumption(self):
         links = [
             "stockroom:history_consumption_list",
@@ -200,15 +174,6 @@ class HistoryStockViewTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTrue("is_paginated" in resp.context)
             self.assertTrue(resp.context["is_paginated"] is True)
-
-    def test_lists_all_stockroom(self):
-        links = ["stockroom:history_list", "stockroom:history_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["history_list"]) == 9)
 
 
 class HistoryCategoryViewTest(TestCase):
@@ -236,24 +201,6 @@ class HistoryCategoryViewTest(TestCase):
         assert History.objects.count() == 149
         assert StockCat.objects.count() == 1
 
-    def test_context_data_in_history_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "История расходников"},
-            {"data_key": "searchlink", "data_value": "stockroom:history_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
     def test_context_data_in_consumption_category(self):
         context_data = [
             {"data_key": "title", "data_value": "Расход расходников по годам"},
@@ -275,18 +222,6 @@ class HistoryCategoryViewTest(TestCase):
                 resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
             )
 
-    def test_pagination_is_ten_in_history(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["history_list"]) == 20)
-
     def test_pagination_is_ten_in_consumption(self):
         resp = self.client.get(
             reverse(
@@ -297,16 +232,3 @@ class HistoryCategoryViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue("is_paginated" in resp.context)
         self.assertTrue(resp.context["is_paginated"] is True)
-
-    def test_lists_all_stockroom_history_consumables(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
-            + "?page=8"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["history_list"]) == 9)

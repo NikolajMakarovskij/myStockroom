@@ -10,112 +10,41 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View, generic
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 from consumables.models import Consumables
 from core.utils import DataMixin
 from stockroom.forms import ConsumableInstallForm, StockAddForm
 from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.resources import ConsumableConsumptionResource, StockConResource
-from stockroom.serializers.consumables import StockModelSerializer
+from stockroom.serializers.consumables import (
+    HistoryModelSerializer,
+    StockConCatSerializer,
+    StockConListSerializer,
+)
 from stockroom.stock.stock import ConStock
 
 
-class StockroomView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockroom"
-    template_name = "stock/stock_list.html"
-    paginate_by = DataMixin.paginate
-    model = Stockroom
+class StockConCatListRestView(DataMixin, viewsets.ModelViewSet[StockCat]):
+    queryset = StockCat.objects.all()
+    serializer_class = StockConCatSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад расходников",
-            searchlink="stockroom:stock_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = (
-            Stockroom.objects.filter(
-                Q(stock_model__name__icontains=query)
-                | Q(stock_model__description__icontains=query)
-                | Q(stock_model__note__icontains=query)
-                | Q(stock_model__device__name__icontains=query)
-                | Q(stock_model__device__workplace__name__icontains=query)
-                | Q(stock_model__device__workplace__room__name__icontains=query)
-                | Q(stock_model__device__workplace__room__building__icontains=query)
-                | Q(stock_model__device__workplace__employee__name__icontains=query)
-                | Q(stock_model__device__workplace__employee__surname__icontains=query)
-                | Q(
-                    stock_model__device__workplace__employee__last_name__icontains=query
-                )
-                | Q(stock_model__manufacturer__name__icontains=query)
-                | Q(stock_model__categories__name__icontains=query)
-                | Q(stock_model__quantity__icontains=query)
-                | Q(stock_model__serial__icontains=query)
-                | Q(stock_model__invent__icontains=query)
-                | Q(dateInstall__icontains=query)
-                | Q(dateAddToStock__icontains=query)
-            )
-            .select_related("stock_model", "stock_model__categories")
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
+    def list(self, request):
+        queryset = StockCat.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
-class StockroomCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockroom"
-    template_name = "stock/stock_list.html"
-    paginate_by = DataMixin.paginate
-    model = Stockroom
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад расходников",
-            searchlink="stockroom:stock_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = (
-            Stockroom.objects.filter(categories__slug=self.kwargs["category_slug"])
-            .select_related("stock_model", "stock_model__categories")
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
-
-
-class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
+class StockConListRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
     queryset = Stockroom.objects.all()
-    serializer_class = StockModelSerializer
+    serializer_class = StockConListSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = Stockroom.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 class ExportStockConsumable(View):
@@ -162,76 +91,15 @@ class ExportStockConsumableCategory(View):
 
 
 # History
-class HistoryView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_history"
-    template_name = "stock/history_list.html"
-    paginate_by = DataMixin.paginate
-    model = History
+class HistoryConListRestView(DataMixin, viewsets.ModelViewSet[History]):
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История расходников",
-            searchlink="stockroom:history_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = History.objects.filter(
-            Q(stock_model__icontains=query)
-            | Q(categories__name__icontains=query)
-            | Q(device__icontains=query)
-            | Q(status__icontains=query)
-            | Q(dateInstall__icontains=query)
-            | Q(user__icontains=query)
-        )
-        return object_list
-
-
-class HistoryCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_history"
-    template_name = "stock/history_list.html"
-    paginate_by = DataMixin.paginate
-    model = History
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История расходников",
-            searchlink="stockroom:history_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = History.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        )
-        return object_list
+    def list(self, request):
+        queryset = History.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 class HistoryConsumptionView(
