@@ -14,7 +14,7 @@ import {
   IconButton,
   createTheme,
   ThemeProvider,
-} from '@mui/material/'
+} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link, useLocation } from 'react-router-dom'
 

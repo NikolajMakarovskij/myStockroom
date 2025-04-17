@@ -3,6 +3,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import ListStockDevices from './Devices/ListStockDevices.jsx'
+import ListStockConsumables from './Consumables/ListStockConsumables.jsx'
+import ListHistoryConsumables from './Consumables/ListHistoryConsumables.jsx'
 
 const darkTheme = createTheme({
   palette: {
@@ -13,12 +15,25 @@ const darkTheme = createTheme({
 const StockContent = [
   {
     key: 'devices_stock',
+    title: 'Расходники',
+    url_path: '/stock/consumables/list',
+    url_name: ListStockConsumables,
+    image: 'http://localhost/static/images/consumables.svg',
+  },
+  {
+    key: 'devices_stock',
+    title: 'История расходников',
+    url_path: '/history/consumables/list',
+    url_name: ListHistoryConsumables,
+    image: 'http://localhost/static/images/consumables.svg',
+  },
+  {
+    key: 'devices_stock',
     title: 'Устройста',
     url_path: '/stock/device/list',
     url_name: ListStockDevices,
     image: 'http://localhost/static/images/device.svg',
   },
-  //{'title': 'Помещение', 'url_path': '/room/list', 'url_name': ListRoom, 'image': 'http://localhost/static/images/room.svg'},
 ]
 export { StockContent }
 
@@ -27,7 +42,7 @@ const IndexStock = () => {
     <Grid container style={{ marginLeft: '50px' }}>
       <ThemeProvider theme={darkTheme}>
         {StockContent.map((item) => (
-          <Grid key={item.key} item xs={12} sm={6} md={4} style={{ marginBottom: '80px' }}>
+          <Grid key={item.key} size={{ xs: 1, sm: 6, md: 4 }} style={{ marginBottom: '80px' }}>
             <Card
               sx={{ minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5, display: 'flex' }}
             >
