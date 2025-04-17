@@ -30,6 +30,8 @@ import CreateDevice from '../appDevice/Device/CreateDevice'
 import UpdateDevice from '../appDevice/Device/UpdateDevice'
 import RemoveDevice from '../appDevice/Device/RemoveDevice'
 import IndexStock from '../appStock/IndexStock'
+import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
+import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
 import IndexCounterparty from '../appCounterparty/IndexCounterparty'
 import ListManufacturer from '../appCounterparty/appManufacturer/ListManufacturer'
@@ -297,6 +299,22 @@ const Routers = createBrowserRouter([
   },
   //Stock
   { path: '/stock', element: [<NavBar key='stock_device' drawerWidth={customWidth} content={<IndexStock />} />] },
+  {
+    path: '/stock/consumables/list',
+    element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListStockConsumables />} />],
+  },
+  {
+    path: '/stock/consumables/list/:slug',
+    element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListStockConsumables />} />],
+  },
+  {
+    path: '/history/consumables/list',
+    element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
+  },
+  {
+    path: '/history/consumables/list/:slug',
+    element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
+  },
   {
     path: '/stock/device/list',
     element: [<NavBar key='stock_dev_list' drawerWidth={customWidth} content={<ListStockDevices />} />],
