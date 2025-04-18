@@ -19,7 +19,6 @@ const DeviceContent = [
     url_name: ListDevice,
     image: 'http://localhost/static/images/device.svg',
   },
-  //{'title': 'Группы', 'url_path': '/post/list', 'url_name': ListPost, 'image': 'http://localhost/static/images/post.svg'},
 ]
 export { DeviceContent }
 

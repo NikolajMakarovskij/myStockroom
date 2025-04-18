@@ -34,7 +34,7 @@ const IndexAccounting = () => {
     <Grid container style={{ marginLeft: '50px' }}>
       <ThemeProvider theme={darkTheme}>
         {AccountingContent.map((item) => (
-          <Grid key={item.key} item xs={12} sm={6} md={4} style={{ marginBottom: '80px' }}>
+          <Grid key={item.key} size={{ xs: 12, sm: 6, md: 4 }} style={{ marginBottom: '80px' }}>
             <Card
               sx={{ minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5, display: 'flex' }}
             >

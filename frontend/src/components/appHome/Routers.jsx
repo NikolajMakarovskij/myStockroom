@@ -323,10 +323,6 @@ const Routers = createBrowserRouter([
     path: '/stock/device/list/:slug',
     element: [<NavBar key='stock_dev_groups' drawerWidth={customWidth} content={<ListStockDevices />} />],
   },
-  //{path: "/stock/device/list/create", element: [<NavBar key='stock_dev_create' drawerWidth={customWidth} content={<CreateRoom/>}/>],},
-  //{path: "/stock/device/list/edit/:id", element: [<NavBar key='stock_dev_edit' drawerWidth={customWidth} content={<UpdateRoom/>}/>],},
-  //{path: "/stock/device/list/remove/:id", element: [<NavBar key='stock_dev_delete'  drawerWidth={customWidth} content={<RemoveRoom/>}/>],},
-
   // Signature
   { path: '/signature', element: [<NavBar key='signature' drawerWidth={customWidth} content={<IndexSignature />} />] },
   // SOFT

@@ -35,7 +35,7 @@ const ListManufacturer = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'name', //access nested data with dot notation
+        accessorKey: 'name',
         header: 'Производитель',
       },
       {
