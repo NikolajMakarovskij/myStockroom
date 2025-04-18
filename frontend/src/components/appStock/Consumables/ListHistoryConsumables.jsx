@@ -68,12 +68,8 @@ const ListHistoryConsumables = () => {
         header: 'Дата последней установки',
       },
       {
-        accessorKey: 'status',
+        accessorFn: (row) => (row.device ? `${row.status} на устройство  ${row.device}` : `${row.status}`),
         header: 'Статус',
-      },
-      {
-        accessorKey: 'device',
-        header: 'Устройство',
       },
       {
         accessorKey: 'note',
@@ -103,7 +99,7 @@ const ListHistoryConsumables = () => {
           data={consumable}
           category={category}
           renderRowActionMenuItems={({
-            row,
+            //row,
             menuActions = [
               //{ name: 'Добавить', path: `create`, icon: <AddIcon />, color: 'success' },
               //{ name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },

@@ -15,7 +15,7 @@ import {
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import LinearIndeterminate from '../../appHome/ProgressBar.jsx'
 import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList.jsx'
-import { TreeItem, TreeView } from '@mui/x-tree-view'
+import { TreeItem, SimpleTreeView } from '@mui/x-tree-view'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import useInterval from '../../Hooks/useInterval'
@@ -144,7 +144,7 @@ const ListDevice = () => {
           ]}
           renderDetailPanel={({ row }) =>
             row.original ? (
-              <TreeView
+              <SimpleTreeView
                 sx={{ width: '100%' }}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
@@ -225,7 +225,7 @@ const ListDevice = () => {
                                         </Table>
                                     </TableContainer>
                                 </TreeItem>*/}
-              </TreeView>
+              </SimpleTreeView>
             ) : null
           }
         />

@@ -10,10 +10,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper, //Typography
+  Paper,
 } from '@mui/material'
 import { NumericFormat } from 'react-number-format'
-import { TreeView, TreeItem } from '@mui/x-tree-view'
+import { SimpleTreeView, TreeItem } from '@mui/x-tree-view'
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -85,14 +85,6 @@ const ListAccessories = () => {
         accessorKey: 'difference',
         header: 'Разность',
       },
-      /*{
-            accessorKey: 'serial',
-            header: 'Серийный №',
-        },
-        {
-            accessorKey: 'invent',
-            header: 'Инвентарный №',
-        },*/
     ],
     [],
   )
@@ -129,7 +121,7 @@ const ListAccessories = () => {
           ]}
           renderDetailPanel={({ row }) =>
             row.original ? (
-              <TreeView
+              <SimpleTreeView
                 sx={{ width: '100%' }}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
@@ -224,7 +216,7 @@ const ListAccessories = () => {
                                     </Table>
                                 </TableContainer>
                             </TreeItem>*/}
-              </TreeView>
+              </SimpleTreeView>
             ) : null
           }
         />

@@ -26,7 +26,7 @@ const ConsumablesContent = [
     title: 'Группы расходников',
     url_path: '/consumables/categories/list',
     url_name: ListConsumablesCategory,
-    image: 'http://localhost/static/images/categories.svg',
+    image: 'http://localhost/static/images/groups.svg',
   },
   {
     key: 'accessories',
@@ -40,7 +40,7 @@ const ConsumablesContent = [
     title: 'Группы комплектующих',
     url_path: '/accessories/categories/list',
     url_name: ListAccessoriesCategory,
-    image: 'http://localhost/static/images/categories.svg',
+    image: 'http://localhost/static/images/groups.svg',
   },
 ]
 export { ConsumablesContent }
@@ -50,7 +50,7 @@ const IndexConsumables = () => {
     <Grid container style={{ marginLeft: '50px' }}>
       <ThemeProvider theme={darkTheme}>
         {ConsumablesContent.map((item) => (
-          <Grid key={item.key} size={{ xs: 12, sm: 6, md: 4 }} style={{ marginBottom: '80px' }}>
+          <Grid key={item.key} size={{ xs: 12, sm: 6, md: 6 }} style={{ marginBottom: '80px' }}>
             <Card
               sx={{ minWidth: 200, maxWidth: 200, minHeight: 200, maxHeight: 200, borderRadius: 5, display: 'flex' }}
             >
