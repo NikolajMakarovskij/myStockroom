@@ -16,6 +16,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "editor.fontWeight": "normal",
+    "github.copilot.editor.enableAutoCompletions": false,
     "cSpell.words": [
         "автоматического",
         "введите",
