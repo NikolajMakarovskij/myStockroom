@@ -1,12 +1,14 @@
 import { React, useMemo, useState } from 'react'
 import AxiosInstanse from '../../Axios'
 import { Link } from 'react-router-dom'
-import { IconButton, MenuItem } from '@mui/material'
+import { IconButton, MenuItem, Box } from '@mui/material'
 //import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import LinearIndeterminate from '../../appHome/ProgressBar'
 import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
+import DialogDeviceDetail from '../Devices/DialogDeviceDetail'
+import DialogConsumableDetail from '../Consumables/DialogConsumableDetail'
 
 const ListHistoryConsumables = () => {
   const [consumable, setConsumables] = useState()
@@ -52,8 +54,21 @@ const ListHistoryConsumables = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'stock_model',
+        accessorFn: ``,
         header: 'Расходник',
+        // eslint-disable-next-line react/prop-types
+        Cell: ({ renderedCellValue, row }) => (
+          <Box>
+            <DialogConsumableDetail
+              // eslint-disable-next-line react/prop-types
+              consumable={row.original.stock_model}
+              // eslint-disable-next-line react/prop-types
+              id={row.original.stock_model_id}
+            />
+
+            <span>{renderedCellValue}</span>
+          </Box>
+        ),
       },
       {
         accessorKey: 'categories.name',
@@ -68,8 +83,30 @@ const ListHistoryConsumables = () => {
         header: 'Дата последней установки',
       },
       {
-        accessorFn: (row) => (row.device ? `${row.status} на устройство  ${row.device}` : `${row.status}`),
+        accessorFn: ``,
         header: 'Статус',
+        // eslint-disable-next-line react/prop-types
+        Cell: ({ renderedCellValue, row }) => (
+          <Box>
+            {
+              // eslint-disable-next-line react/prop-types
+              row.original.device ? (
+                <DialogDeviceDetail
+                  // eslint-disable-next-line react/prop-types
+                  status={row.original.status}
+                  // eslint-disable-next-line react/prop-types
+                  device={row.original.device}
+                  // eslint-disable-next-line react/prop-types
+                  id={row.original.deviceId}
+                />
+              ) : (
+                // eslint-disable-next-line react/prop-types
+                row.original.status
+              )
+            }
+            <span>{renderedCellValue}</span>
+          </Box>
+        ),
       },
       {
         accessorKey: 'note',
