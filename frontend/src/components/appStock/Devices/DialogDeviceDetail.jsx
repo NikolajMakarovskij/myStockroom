@@ -49,7 +49,7 @@ export default function DialogDeviceDetail(props) {
 
   return (
     <Fragment>
-      <Button variant='outlined' onClick={handleClickOpen} style={{ textTransform: 'none' }}>
+      <Button variant='text' onClick={handleClickOpen} style={{ textTransform: 'none' }}>
         {status} на устройство {device}
       </Button>
       <Dialog onClose={handleClose} fullWidth='true' maxWidth='sm' open={open}>

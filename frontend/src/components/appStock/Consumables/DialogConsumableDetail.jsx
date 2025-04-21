@@ -52,7 +52,7 @@ export default function DialogConsumableDetail(props) {
 
   return (
     <Fragment>
-      <Button variant='outlined' onClick={handleClickOpen} style={{ textTransform: 'none' }}>
+      <Button variant='text' onClick={handleClickOpen} style={{ textTransform: 'none' }}>
         {consumable}
       </Button>
       <Dialog onClose={handleClose} fullWidth='true' maxWidth='sm' open={open}>
