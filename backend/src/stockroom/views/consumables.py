@@ -11,18 +11,20 @@ from django.views import View, generic
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from consumables.models import Consumables
 from core.utils import DataMixin
-from stockroom.forms import ConsumableInstallForm, StockAddForm
-from stockroom.models.consumables import History, StockCat, Stockroom
-from stockroom.resources import ConsumableConsumptionResource, StockConResource
 from stockroom.serializers.consumables import (
     HistoryModelSerializer,
     StockConCatSerializer,
     StockConListSerializer,
 )
 from stockroom.stock.stock import ConStock
+
+from ..forms import ConsumableInstallForm, StockAddForm
+from ..models.consumables import History, StockCat, Stockroom
+from ..resources import ConsumableConsumptionResource, StockConResource
 
 
 class StockConCatListRestView(DataMixin, viewsets.ModelViewSet[StockCat]):
@@ -100,6 +102,88 @@ class HistoryConListRestView(DataMixin, viewsets.ModelViewSet[History]):
         queryset = History.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+
+class ConsumptionRestView(APIView):
+    queryset = Consumables.objects.all()
+
+    def get(self, request, format=None):
+        """_API list consumption_
+
+        Args:
+            request (_type_): _description_
+            format (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            _JSON_: _list consumption_
+        """
+        cur_year = datetime.now()
+        history = History.objects.all()
+        consumables = Consumables.objects.all()
+        responses = []
+        for consumable in consumables:
+            device_count = 0
+            device_name = ""
+            quantity = consumable.quantity
+            if consumable.device.exists():
+                device_name = ", ".join(
+                    [
+                        device.name
+                        for device in consumable.device.all()
+                        .order_by("name")
+                        .distinct("name")
+                    ]
+                )
+                device_count = consumable.device.count()
+
+            unit_history_all = history.filter(
+                status="Расход", stock_model_id=consumable.id
+            )
+            unit_history_last_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+                dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
+            )
+            unit_history_current_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+                dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31",
+            )
+            quantity_all = 0
+            quantity_last_year = 0
+            quantity_current_year = 0
+            for unit in unit_history_all:
+                quantity_all += unit.quantity
+            for unit in unit_history_last_year:
+                quantity_last_year += unit.quantity
+            for unit in unit_history_current_year:
+                quantity_current_year += unit.quantity
+            if quantity <= 2 * quantity_last_year:
+                requirement = abs(
+                    2 * quantity_last_year - quantity + quantity_current_year
+                )
+            else:
+                requirement = 0
+            responses.append(
+                {
+                    "name": consumable.name,
+                    "categories": {
+                        "id": consumable.categories.id,  # type: ignore[union-attr]
+                        "name": consumable.categories.name,  # type: ignore[union-attr]
+                        "slug": consumable.categories.slug,  # type: ignore[union-attr]
+                    },
+                    "device_name": device_name,
+                    "device_count": device_count,
+                    "quantity_all": quantity_all,
+                    "quantity_last_year": quantity_last_year,
+                    "quantity_current_year": quantity_current_year,
+                    "quantity": quantity,
+                    "requirement": requirement,
+                }
+            )
+        return Response(responses)
 
 
 class HistoryConsumptionView(

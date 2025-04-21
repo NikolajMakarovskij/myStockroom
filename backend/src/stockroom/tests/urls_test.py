@@ -15,8 +15,7 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
         "/api/stockroom/stock_con_list/",
         "/api/stockroom/stock_con_cat_list/",
         "/api/stockroom/history_con_list/",
-        "/api/stockroom/history/consumption/",
-        "/api/stockroom/history/consumption/search",
+        "/api/stockroom/consumption_con_list/",
         "/api/stockroom/accessories/",
         "/api/stockroom/accessories/search",
         "/api/stockroom/accessories/history/",
@@ -39,14 +38,6 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
         {"link": "stockroom:stock_index", "template": "stock/stock_index.html"},
-        {
-            "link": "stockroom:history_consumption_list",
-            "template": "stock/history_consumption_list.html",
-        },
-        {
-            "link": "stockroom:history_consumption_search",
-            "template": "stock/history_consumption_list.html",
-        },
         {"link": "stockroom:stock_acc_list", "template": "stock/stock_acc_list.html"},
         {"link": "stockroom:stock_acc_search", "template": "stock/stock_acc_list.html"},
         {
@@ -88,10 +79,6 @@ def test_list_uses_correct_url_nad_template(auto_login_user):  # noqa: F811
 def test_stockroom_category_url(auto_login_user):  # noqa: F811
     client, user = auto_login_user()
     links = [
-        {
-            "link": "stockroom:history_consumption_category",
-            "template": "stock/history_consumption_list.html",
-        },
         {
             "link": "stockroom:accessories_category",
             "template": "stock/stock_acc_list.html",
