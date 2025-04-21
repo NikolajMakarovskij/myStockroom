@@ -168,6 +168,7 @@ class ConsumptionRestView(APIView):
                 requirement = 0
             responses.append(
                 {
+                    "stock_model_id": consumable.id,
                     "name": consumable.name,
                     "categories": {
                         "id": consumable.categories.id,  # type: ignore[union-attr]

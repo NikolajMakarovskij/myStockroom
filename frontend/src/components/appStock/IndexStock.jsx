@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ListStockDevices from './Devices/ListStockDevices.jsx'
 import ListStockConsumables from './Consumables/ListStockConsumables.jsx'
 import ListHistoryConsumables from './Consumables/ListHistoryConsumables.jsx'
+import ListConsumptionConsumables from './Consumables/ListConsumptionConsumables.jsx'
 
 const darkTheme = createTheme({
   palette: {
@@ -14,17 +15,24 @@ const darkTheme = createTheme({
 
 const StockContent = [
   {
-    key: 'devices_stock',
+    key: 'consumables_stock',
     title: 'Расходники',
     url_path: '/stock/consumables/list',
     url_name: ListStockConsumables,
     image: 'http://localhost/static/images/consumables.svg',
   },
   {
-    key: 'devices_stock',
+    key: 'history_consumables_stock',
     title: 'История расходников',
     url_path: '/history/consumables/list',
     url_name: ListHistoryConsumables,
+    image: 'http://localhost/static/images/consumables.svg',
+  },
+  {
+    key: 'consumption_consumables_stock',
+    title: 'История расходников',
+    url_path: '/consumption/consumables/list',
+    url_name: ListConsumptionConsumables,
     image: 'http://localhost/static/images/consumables.svg',
   },
   {
