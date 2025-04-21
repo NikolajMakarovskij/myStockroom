@@ -32,6 +32,7 @@ import RemoveDevice from '../appDevice/Device/RemoveDevice'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
 import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'
+import ListConsumptionConsumables from '../appStock/Consumables/ListConsumptionConsumables'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
 import IndexCounterparty from '../appCounterparty/IndexCounterparty'
 import ListManufacturer from '../appCounterparty/appManufacturer/ListManufacturer'
@@ -314,6 +315,14 @@ const Routers = createBrowserRouter([
   {
     path: '/history/consumables/list/:slug',
     element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
+  },
+  {
+    path: '/consumption/consumables/list',
+    element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />],
+  },
+  {
+    path: '/consumption/consumables/list/:slug',
+    element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />],
   },
   {
     path: '/stock/device/list',
