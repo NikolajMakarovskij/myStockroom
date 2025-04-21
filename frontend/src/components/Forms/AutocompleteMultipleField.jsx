@@ -30,12 +30,7 @@ export default function AutocompleteMultipleField(props) {
                 onChange={(event, value) => {
                   onChange(value ? value.map((item) => item.id) : [], console.log('onChange: ', value))
                 }}
-                value={
-                  value
-                    ? (options.filter((option) => ((option = value), console.log('Option: ', option))),
-                      console.log('Value: ', value))
-                    : []
-                }
+                value={options.filter((option) => value.includes(option.id))}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 noOptionsText={noOptionsText}
                 disableCloseOnSelect
