@@ -107,14 +107,15 @@ frontend-testing:
       changes:
         paths:
           - ".gitlab-ci.yml"
-          - "frontend/**/*"
-          - "docker-compose.yaml"
+          - "frontend/src/**/*"
+          - "frontend/.prettierrc"
+          - "frontend/eslint.config.js"
+          - "frontend/index.html"
+          - "frontend/package-lock.json"
           - "frontend/package.json"
-          - "frontend/tests"
           - "frontend/vite.config.js"
           - '.pre-commit-config.yaml'
           - 'docker-compose.yaml'
-          - "frontend/playwright.config.ts"
   needs: ["frontend-linting"]
   script:
     - docker exec -t frontend npx playwright install
