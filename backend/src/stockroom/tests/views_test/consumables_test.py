@@ -1,12 +1,12 @@
+from datetime import datetime
+
 import pytest
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
 
 from accounting.models import Accounting
 from consumables.models import Categories, Consumables
 from core.tests.login_test import auto_login_user  # noqa: F401
 from counterparty.models import Manufacturer
+from device.models import Device
 
 from ...models.consumables import History, StockCat, Stockroom
 
@@ -97,7 +97,7 @@ class TestHistoryConsumablesEndpoints:
     endpoint = "/api/stockroom/history_con_list/"
 
     @pytest.mark.django_db
-    def testing_stock_consumables_list(self, auto_login_user):  # noqa: F811
+    def testing_history_consumables_list(self, auto_login_user):  # noqa: F811
         StockCat.objects.get_or_create(name="some_category", slug="some_category")
         History.objects.bulk_create(
             [
@@ -121,114 +121,68 @@ class TestHistoryConsumablesEndpoints:
         assert data[2]["stock_model"] == "category_03"
 
 
-class HistoryStockViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestConsumptionConsumablesEndpoints:
+    endpoint = "/api/stockroom/consumption_con_list/"
+
+    @pytest.mark.django_db
+    def testing_consumption_consumables_list(self, auto_login_user):  # noqa: F811
+        current_date = datetime.now()
+        Categories.objects.get_or_create(name="some_category", slug="some_category")
+        Consumables.objects.get_or_create(
+            name="some_consumable",
+            categories=Categories.objects.get(name="some_category"),
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_history = 149
-        Consumables.objects.create(name="check_consumable")
-        for history_num in range(number_in_history):
-            History.objects.create(  # type: ignore[misc]
-                stock_model="Christian %s" % history_num,
-                stock_model_id=Consumables.objects.filter(name="check_consumable")
-                .get()
-                .id,
-            )
-        assert History.objects.count() == 149
-
-    def test_context_data_in_consumption_list(self):
-        links = [
-            "stockroom:history_consumption_list",
-            "stockroom:history_consumption_search",
-        ]
-        context_data = [
-            {"data_key": "title", "data_value": "Расход расходников по годам"},
-            {
-                "data_key": "searchlink",
-                "data_value": "stockroom:history_consumption_search",
-            },
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten_in_consumption(self):
-        links = [
-            "stockroom:history_consumption_list",
-            "stockroom:history_consumption_search",
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-
-
-class HistoryCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+        Device.objects.get_or_create(
+            name="some_device",
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        StockCat.objects.create(name="some_category", slug="some_category")
-        Consumables.objects.create(name="check_consumable")
-        for stocks_num in range(number_in_stock):
-            History.objects.create(  # type: ignore[misc]
-                stock_model="Christian %s" % stocks_num,
-                categories=StockCat.objects.get(slug="some_category"),
-                stock_model_id=Consumables.objects.filter(name="check_consumable")
-                .get()
-                .id,
-            )
-        assert History.objects.count() == 149
-        assert StockCat.objects.count() == 1
-
-    def test_context_data_in_consumption_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Расход расходников по годам"},
-            {
-                "data_key": "searchlink",
-                "data_value": "stockroom:history_consumption_search",
-            },
-        ]
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_consumption_category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
+        Device.objects.get(
+            name="some_device",
+        ).consumable.add(Consumables.objects.get(name="some_consumable"))
+        consumable = Consumables.objects.get(name="some_consumable")
+        device = Device.objects.get(name="some_device")
+        History.objects.bulk_create(
+            [
+                History(  # type: ignore[misc]
+                    stock_model=consumable.name,
+                    stock_model_id=consumable.id,
+                    device=device.name,
+                    deviceId=device.id,
+                    quantity=4,
+                    dateInstall=f"{(current_date.strftime('%Y-%m-%d'))}",
+                    status="Расход",
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable.name,
+                    stock_model_id=consumable.id,
+                    device=device.name,
+                    deviceId=device.id,
+                    quantity=4,
+                    dateInstall=f"{int(current_date.strftime('%Y')) - 1}-{current_date.strftime('%m-%d')}",
+                    status="Расход",
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable.name,
+                    stock_model_id=consumable.id,
+                    device=device.name,
+                    deviceId=device.id,
+                    quantity=4,
+                    dateInstall=f"{int(current_date.strftime('%Y')) - 2}-{current_date.strftime('%m-%d')}",
+                    status="Расход",
+                ),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
-    def test_pagination_is_ten_in_consumption(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_consumption_category",
-                kwargs={"category_slug": StockCat.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 1
+        assert data[0]["name"] == "some_consumable"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[0]["device_name"] == "some_device"
+        assert data[0]["device_count"] == 1
+        assert data[0]["quantity_all"] == 12
+        assert data[0]["quantity_last_year"] == 4
+        assert data[0]["quantity_current_year"] == 4
+        assert data[0]["quantity"] == 0
+        assert data[0]["requirement"] == 12

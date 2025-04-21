@@ -17,12 +17,11 @@ from .views.accessories import (
     stock_remove_accessories,
 )
 from .views.consumables import (
+    ConsumptionRestView,
     ExportConsumptionConsumable,
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
-    HistoryConsumptionCategoriesView,
-    HistoryConsumptionView,
     device_add_consumable,
     stock_add_consumable,
     stock_remove_consumable,
@@ -45,6 +44,11 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", StockroomIndexView.as_view(), name="stock_index"),
     # Consumables
+    path(
+        "consumption_con_list/",
+        ConsumptionRestView.as_view(),
+        name="consumption_consumables_list",
+    ),
     path(
         "stockroom/export/",
         ExportStockConsumable.as_view(),
@@ -72,21 +76,6 @@ urlpatterns = [
         name="device_add_consumable",
     ),
     # history
-    path(
-        "history/consumption/",
-        HistoryConsumptionView.as_view(),
-        name="history_consumption_list",
-    ),
-    path(
-        "history/consumption/search",
-        HistoryConsumptionView.as_view(),
-        name="history_consumption_search",
-    ),
-    path(
-        "history/consumption/category/<slug:category_slug>",
-        HistoryConsumptionCategoriesView.as_view(),
-        name="history_consumption_category",
-    ),
     path(
         "stockroom/history/export/",
         ExportConsumptionConsumable.as_view(),
