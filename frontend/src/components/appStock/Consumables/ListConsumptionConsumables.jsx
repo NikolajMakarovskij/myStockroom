@@ -1,11 +1,9 @@
 import { React, useMemo, useState } from 'react'
 import AxiosInstanse from '../../Axios'
-import { Box } from '@mui/material'
 import LinearIndeterminate from '../../appHome/ProgressBar'
 import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
-import DialogConsumableDetail from '../Consumables/DialogConsumableDetail'
 
 const ListConsumptionConsumables = () => {
   const [consumable, setConsumables] = useState()
@@ -51,21 +49,8 @@ const ListConsumptionConsumables = () => {
   const columns = useMemo(
     () => [
       {
-        accessorFn: ``,
+        accessorKey: 'name',
         header: 'Расходник',
-        // eslint-disable-next-line react/prop-types
-        Cell: ({ renderedCellValue, row }) => (
-          <Box>
-            <DialogConsumableDetail
-              // eslint-disable-next-line react/prop-types
-              consumable={row.original.name}
-              // eslint-disable-next-line react/prop-types
-              id={row.original.stock_model_id}
-            />
-
-            <span>{renderedCellValue}</span>
-          </Box>
-        ),
       },
       {
         accessorKey: 'device_name',
