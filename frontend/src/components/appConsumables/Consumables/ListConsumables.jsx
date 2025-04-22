@@ -21,6 +21,7 @@ import LinearIndeterminate from '../../appHome/ProgressBar'
 import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
+import DetailPanel from '../../appStock/DetailPanel'
 
 const ListConsumables = () => {
   const [consumable, setConsumables] = useState(null)
@@ -200,22 +201,11 @@ const ListConsumables = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                {/*<TreeItem itemId="3" label="История использования">
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell >Количество</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell>{row.original.id}</TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </TreeItem>*/}
+                {
+                  <TreeItem itemId='3' label='История использования'>
+                    <DetailPanel row={row.original.id} link='/stockroom/history_con_list/filter/' />
+                  </TreeItem>
+                }
               </SimpleTreeView>
             ) : null
           }
