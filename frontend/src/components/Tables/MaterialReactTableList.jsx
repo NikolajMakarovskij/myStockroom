@@ -17,10 +17,19 @@ export default function MaterialReactTableList({ columns, data, ...props }) {
         localization={MRT_Localization_RU}
         enableColumnResizing={true}
         positionPagination='bottom'
-        enableRowNumbers='true'
-        enableRowVirtualization='true'
-        enableRowActions
-        initialState={{ pagination: { pageSize: data.length, pageIndex: 0 } }}
+        positionGlobalFilter='left'
+        enableRowNumbers={true}
+        enableRowVirtualization={true}
+        enableRowActions={true}
+        initialState={{
+          showColumnFilters: false,
+          showGlobalFilter: true,
+          columnPinning: {
+            left: ['mrt-row-expand', 'mrt-row-actions'],
+            right: [],
+          },
+          pagination: { pageSize: data.length, pageIndex: 0 },
+        }}
         muiPaginationProps={{
           rowsPerPageOptions: [25, 50, 100, { label: 'Все', value: data.length }],
           showFirstButton: true,
