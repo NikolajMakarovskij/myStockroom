@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from .routers import router
 from .views.accessories import (
@@ -22,6 +22,7 @@ from .views.consumables import (
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
+    HistoryConFilterListRestView,
     device_add_consumable,
     stock_add_consumable,
     stock_remove_consumable,
@@ -48,6 +49,11 @@ urlpatterns = [
         "consumption_con_list/",
         ConsumptionRestView.as_view(),
         name="consumption_consumables_list",
+    ),
+    re_path(
+        "history_con_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryConFilterListRestView.as_view(),
+        name="stock_model_filter",
     ),
     path(
         "stockroom/export/",

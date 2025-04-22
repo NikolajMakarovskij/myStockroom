@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.decorators.http import require_POST
-from rest_framework import viewsets
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -100,6 +100,21 @@ class HistoryConListRestView(DataMixin, viewsets.ModelViewSet[History]):
         queryset = History.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+
+class HistoryConFilterListRestView(generics.ListAPIView[History]):
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the history for
+        the consumable as determined by the stock_model_id portion of the URL.
+        """
+
+        stock_model = self.kwargs["stock_model_id"]
+        return History.objects.filter(stock_model_id=stock_model)
 
 
 class ConsumptionRestView(APIView):
