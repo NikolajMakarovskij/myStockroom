@@ -23,8 +23,8 @@ import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
 const ListConsumables = () => {
-  const [consumable, setConsumables] = useState()
-  const [category, setCategory] = useState('')
+  const [consumable, setConsumables] = useState(null)
+  const [category, setCategory] = useState(null)
   const [loadingConsumables, setLoadingConsumables] = useState(true)
   const [loadingCategory, setLoadingCategory] = useState(true)
   const [errorConsumables, setErrorConsumables] = useState(false)
@@ -126,7 +126,7 @@ const ListConsumables = () => {
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
               >
-                {row.original.consumable.length == 0 ? (
+                {row.original.consumable.length === 0 ? (
                   <></>
                 ) : (
                   <TreeItem itemId='1' label='На балансе'>
@@ -174,7 +174,7 @@ const ListConsumables = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                {row.original.device.length == 0 ? (
+                {row.original.device.length === 0 ? (
                   <></>
                 ) : (
                   <TreeItem itemId='2' label='Устройства'>
