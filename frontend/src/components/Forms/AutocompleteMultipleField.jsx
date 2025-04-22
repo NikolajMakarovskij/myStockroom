@@ -28,7 +28,7 @@ export default function AutocompleteMultipleField(props) {
                 options={options}
                 getOptionLabel={optionLabel}
                 onChange={(event, value) => {
-                  onChange(value ? value.map((item) => item.id) : [], console.log('onChange: ', value))
+                  onChange(value ? value.map((item) => item.id) : [])
                 }}
                 value={options.filter((option) => value.includes(option.id))}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
