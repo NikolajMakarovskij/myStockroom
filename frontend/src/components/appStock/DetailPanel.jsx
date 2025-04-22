@@ -26,7 +26,6 @@ export default function DetailPanel({ row, link }) {
     GetData()
   }, [])
 
-  console.log(history)
   if (isLoading)
     return (
       <Box mt={1.25}>
