@@ -120,6 +120,42 @@ class TestHistoryConsumablesEndpoints:
         assert data[1]["stock_model"] == "category_02"
         assert data[2]["stock_model"] == "category_03"
 
+    @pytest.mark.django_db
+    def testing_history_filtered_consumables_list(self, auto_login_user):  # noqa: F811
+        StockCat.objects.get_or_create(name="some_category", slug="some_category")
+        Consumables.objects.bulk_create(
+            [
+                Consumables(name="some_consumable_01"),
+                Consumables(name="some_consumable_02"),
+                Consumables(name="some_consumable_03"),
+            ]
+        )
+        consumable = Consumables.objects.all()
+        History.objects.bulk_create(
+            [
+                History(  # type: ignore[misc]
+                    stock_model=consumable[0].name,
+                    stock_model_id=consumable[0].id,
+                    categories=StockCat.objects.get(name="some_category"),
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable[1].name,
+                    stock_model_id=consumable[1].id,
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable[2].name,
+                    stock_model_id=consumable[2].id,
+                ),
+            ]
+        )
+        client, user = auto_login_user()
+        url = f"{self.endpoint}filter/{consumable[0].id}/"
+        response = client.get(url)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 1
+        assert data[0]["stock_model"] == "some_consumable_01"
+
 
 class TestConsumptionConsumablesEndpoints:
     endpoint = "/api/stockroom/consumption_con_list/"
