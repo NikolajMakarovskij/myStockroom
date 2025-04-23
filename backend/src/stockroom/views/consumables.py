@@ -1,26 +1,25 @@
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
 from django.core.cache import cache
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.views import View
-from django.views.decorators.http import require_POST
-from rest_framework import generics, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from consumables.models import Consumables
 from core.utils import DataMixin
 from stockroom.serializers.consumables import (
+    AddToDeviceSerializer,
+    AddToStockSerializer,
     HistoryModelSerializer,
+    RemoveFromStockSerializer,
     StockConCatSerializer,
     StockConListSerializer,
 )
 from stockroom.stock.stock import ConStock
 
-from ..forms import ConsumableInstallForm, StockAddForm
 from ..models.consumables import History, StockCat, Stockroom
 from ..resources import ConsumableConsumptionResource, StockConResource
 
@@ -200,6 +199,126 @@ class ConsumptionRestView(APIView):
         return Response(responses)
 
 
+# post methods
+class AddToStockConsumableView(APIView, ConStock):
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = AddToStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        quantity = serializer.validated_data["quantity"]
+        number_rack = serializer.validated_data["number_rack"]
+        number_shelf = serializer.validated_data["number_shelf"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.add_to_stock(
+                model_id=model_id,
+                quantity=quantity,
+                number_rack=number_rack,
+                number_shelf=number_shelf,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "quantity": quantity,
+                    "number_rack": number_rack,
+                    "number_shelf": number_shelf,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class AddToDeviceConsumableView(APIView, ConStock):
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.add_consumables_to_device", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = AddToDeviceSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        device = serializer.validated_data["device"]
+        quantity = serializer.validated_data["quantity"]
+        note = serializer.validated_data["note"]
+        username = serializer.validated_data["username"]
+
+        consumable = get_object_or_404(Consumables, id=model_id)
+
+        if consumable.quantity < quantity:
+            return Response(
+                {"error": {"message": "Не достаточно расходников на складе."}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            self.add_to_device(
+                model_id=model_id,
+                device=device,
+                quantity=quantity,
+                note=note,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "device": device,
+                    "quantity": quantity,
+                    "note": note,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class RemoveFromStockConsumableView(APIView, ConStock):
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = RemoveFromStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_from_stock(model_id=model_id, username=username)
+            return Response(
+                {
+                    "model_id": model_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
 class ExportConsumptionConsumable(View):
     def get(self, *args, **kwargs):
         resource = ConsumableConsumptionResource()
@@ -237,97 +356,3 @@ class ExportConsumptionConsumableCategory(View):
             )
         )
         return response
-
-
-# Methods
-@require_POST
-@login_required
-@permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
-def stock_add_consumable(request, consumable_id):
-    username = request.user.username
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    form = StockAddForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.add_to_stock(
-            model_id=consumable.id,
-            quantity=cd["quantity"],
-            number_rack=cd["number_rack"],
-            number_shelf=cd["number_shelf"],
-            username=username,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
-            f" успешно добавлен на склад",
-            extra_tags="Успешно добавлен",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось добавить {consumable.name} на склад",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_list")
-
-
-@login_required
-@permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
-def stock_remove_consumable(request, consumable_id):
-    username = request.user.username
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    stock.remove_from_stock(model_id=consumable.id, username=username)
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message=f"{consumable.name} успешно удален со склада",
-        extra_tags="Успешно удален",
-    )
-    return redirect("stockroom:stock_list")
-
-
-@require_POST
-@login_required
-@permission_required("stockroom.add_consumables_to_device", raise_exception=True)
-def device_add_consumable(request, consumable_id):
-    username = request.user.username
-    get_device_id = request.session["get_device_id"]
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        if consumable.quantity < cd["quantity"]:
-            messages.add_message(
-                request,
-                level=messages.WARNING,
-                message=f"Не достаточно расходников {consumable.name} на складе.",
-                extra_tags="Нет расходника",
-            )
-        else:
-            stock.add_to_device(
-                model_id=consumable.id,
-                device=get_device_id,
-                quantity=cd["quantity"],
-                note=cd["note"],
-                username=username,
-            )
-            messages.add_message(
-                request,
-                level=messages.SUCCESS,
-                message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
-                f" успешно списан со склада",
-                extra_tags="Успешное списание",
-            )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось списать {consumable.name} со склада",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_list")

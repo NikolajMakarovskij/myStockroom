@@ -17,15 +17,15 @@ from .views.accessories import (
     stock_remove_accessories,
 )
 from .views.consumables import (
+    AddToDeviceConsumableView,
+    AddToStockConsumableView,
     ConsumptionRestView,
     ExportConsumptionConsumable,
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
     HistoryConFilterListRestView,
-    device_add_consumable,
-    stock_add_consumable,
-    stock_remove_consumable,
+    RemoveFromStockConsumableView,
 )
 from .views.devices import (
     ExportStockDevice,
@@ -67,19 +67,19 @@ urlpatterns = [
     ),
     # methods
     path(
-        "stockroom/add/<uuid:consumable_id>/",
-        stock_add_consumable,
-        name="stock_add_consumable",
+        "add_to_stock_consumable/",
+        AddToStockConsumableView.as_view(),
+        name="add_to_stock_consumable",
     ),
     path(
-        "stockroom/remove/<uuid:consumable_id>/",
-        stock_remove_consumable,
-        name="stock_remove_consumable",
+        "add_to_device_consumable/",
+        AddToDeviceConsumableView.as_view(),
+        name="add_to_device_consumable",
     ),
     path(
-        "stockroom/consumable/remove/<uuid:consumable_id>/",
-        device_add_consumable,
-        name="device_add_consumable",
+        "remove_from_stock_consumable/",
+        RemoveFromStockConsumableView.as_view(),
+        name="remove_from_stock_consumable",
     ),
     # history
     path(
