@@ -77,7 +77,4 @@ class AddToDeviceSerializer(serializers.Serializer[ConStock]):
 
 class RemoveFromStockSerializer(serializers.Serializer[ConStock]):
     model_id = serializers.UUIDField(required=True)
-    device = serializers.UUIDField(required=True)
-    quantity = serializers.IntegerField(required=True)
-    note = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
