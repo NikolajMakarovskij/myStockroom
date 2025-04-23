@@ -36,7 +36,7 @@ const RemoveConsumables = () => {
 
   useEffect(() => {
     GetData()
-  })
+  }, [])
 
   const navigate = useNavigate()
 

@@ -29,10 +29,12 @@ import ListDevice from '../appDevice/Device/ListDevice'
 import CreateDevice from '../appDevice/Device/CreateDevice'
 import UpdateDevice from '../appDevice/Device/UpdateDevice'
 import RemoveDevice from '../appDevice/Device/RemoveDevice'
+import AddToDeviceConsumable from '../appDevice/Device/AdToDeviceConsumable'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
 import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'
 import ListConsumptionConsumables from '../appStock/Consumables/ListConsumptionConsumables'
+import RemoveFromStockConsumable from '../appStock/Consumables/RemoveFromStockConsumable'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
 import IndexCounterparty from '../appCounterparty/IndexCounterparty'
 import ListManufacturer from '../appCounterparty/appManufacturer/ListManufacturer'
@@ -44,6 +46,7 @@ import ListConsumables from '../appConsumables/Consumables/ListConsumables'
 import CreateConsumable from '../appConsumables/Consumables/CreateConsumable'
 import UpdateConsumable from '../appConsumables/Consumables/UpdateConsumable'
 import RemoveConsumables from '../appConsumables/Consumables/RemoveConsumables'
+import AddToStockConsumable from '../appConsumables/Consumables/AdToStockConsumable'
 import ListConsumablesCategory from '../appConsumables/ConsumablesCategories/ListConsumablesCategory'
 import CreateConsumableCategory from '../appConsumables/ConsumablesCategories/CreateConsumableCategory'
 import UpdateConsumableCategory from '../appConsumables/ConsumablesCategories/UpdateConsumableCategory'
@@ -195,6 +198,10 @@ const Routers = createBrowserRouter([
     element: [<NavBar key='cons_remove' drawerWidth={customWidth} content={<RemoveConsumables />} />],
   },
   {
+    path: '/consumables/list/add_to_stock/:id',
+    element: [<NavBar key='cons_add_to_stock' drawerWidth={customWidth} content={<AddToStockConsumable />} />],
+  },
+  {
     path: '/consumables/categories/list',
     element: [<NavBar key='cons_cat_list' drawerWidth={customWidth} content={<ListConsumablesCategory />} />],
   },
@@ -298,6 +305,10 @@ const Routers = createBrowserRouter([
     path: '/device/list/remove/:id',
     element: [<NavBar key='device_remove' drawerWidth={customWidth} content={<RemoveDevice />} />],
   },
+  {
+    path: '/device/list/add_consumable/:id',
+    element: [<NavBar key='add_consumable' drawerWidth={customWidth} content={<AddToDeviceConsumable />} />],
+  },
   //Stock
   { path: '/stock', element: [<NavBar key='stock_device' drawerWidth={customWidth} content={<IndexStock />} />] },
   {
@@ -307,6 +318,12 @@ const Routers = createBrowserRouter([
   {
     path: '/stock/consumables/list/:slug',
     element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListStockConsumables />} />],
+  },
+  {
+    path: '/stock/consumables/list/remove_from_stock/:stock_model',
+    element: [
+      <NavBar key='remove_consumable_from_stock' drawerWidth={customWidth} content={<RemoveFromStockConsumable />} />,
+    ],
   },
   {
     path: '/history/consumables/list',

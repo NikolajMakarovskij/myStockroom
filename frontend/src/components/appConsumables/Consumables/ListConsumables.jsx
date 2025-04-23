@@ -111,6 +111,7 @@ const ListConsumables = () => {
               { name: 'Добавить', path: `create`, icon: <AddIcon />, color: 'success' },
               { name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },
               { name: 'Удалить', path: `remove/${row.original.id}`, icon: <DeleteIcon />, color: 'error' },
+              { name: 'Добавить на склад', path: `add_to_stock/${row.original.id}`, icon: <AddIcon />, color: 'info' },
             ],
           }) => [
             menuActions.map((item, index) => (

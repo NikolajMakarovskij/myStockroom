@@ -36,7 +36,7 @@ const RemoveDevice = () => {
 
   useEffect(() => {
     GetData()
-  })
+  }, [])
 
   const navigate = useNavigate()
 
