@@ -133,6 +133,12 @@ const ListDevice = () => {
               { name: 'Добавить', path: `create`, icon: <AddIcon />, color: 'success' },
               { name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },
               { name: 'Удалить', path: `remove/${row.original.id}`, icon: <DeleteIcon />, color: 'error' },
+              {
+                name: 'Установить расходник',
+                path: `add_consumable/${row.original.id}`,
+                icon: <AddIcon />,
+                color: 'info',
+              },
             ],
           }) => [
             menuActions.map((item, index) => (

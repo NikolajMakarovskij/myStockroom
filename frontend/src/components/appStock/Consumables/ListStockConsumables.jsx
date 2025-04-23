@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { NumericFormat } from 'react-number-format'
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view'
-//import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import { /*Edit as EditIcon, */ Delete as DeleteIcon } from '@mui/icons-material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import LinearIndeterminate from '../../appHome/ProgressBar'
@@ -117,11 +117,15 @@ const ListStockConsumables = () => {
           data={consumable}
           category={category}
           renderRowActionMenuItems={({
-            //row,
+            row,
             menuActions = [
-              //{ name: 'Добавить', path: `create`, icon: <AddIcon />, color: 'success' },
               //{ name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },
-              //{ name: 'Удалить', path: `remove/${row.original.id}`, icon: <DeleteIcon />, color: 'error' },
+              {
+                name: 'Удалить',
+                path: `remove_from_stock/${row.original.stock_model.id}`,
+                icon: <DeleteIcon />,
+                color: 'error',
+              },
             ],
           }) => [
             menuActions.map((item, index) => (
