@@ -27,10 +27,20 @@ def test_list_url_exists_at_desired_location(auto_login_user):  # noqa: F811
         "/api/stockroom/devices/history/",
         "/api/stockroom/devices/history/search",
     ]
+    post_links = [
+        "/api/stockroom/add_to_stock_consumable/",
+        "/api/stockroom/add_to_device_consumable/",
+        "/api/stockroom/remove_from_stock_consumable/",
+    ]
     for link in links:
         url = link
         response = client.get(url)
         assert response.status_code == 200
+
+    for link in post_links:
+        url = link
+        response = client.get(url)
+        assert response.status_code == 405
 
 
 @pytest.mark.django_db

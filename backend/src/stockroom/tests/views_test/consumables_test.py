@@ -222,3 +222,162 @@ class TestConsumptionConsumablesEndpoints:
         assert data[0]["quantity_current_year"] == 4
         assert data[0]["quantity"] == 0
         assert data[0]["requirement"] == 12
+
+
+class TestAddToStockConsumableEndpoints:
+    endpoint = "/api/stockroom/add_to_stock_consumable/"
+
+    @pytest.mark.django_db
+    def test_add_to_stock_consumable(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="some_consumable")
+        consumable = Consumables.objects.get(name="some_consumable")
+        expected_json = {
+            "model_id": consumable.id,
+            "quantity": 1,
+            "number_rack": 1,
+            "number_shelf": 1,
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        stock = Stockroom.objects.get(stock_model=consumable.id)
+        history = History.objects.get(stock_model="some_consumable")
+
+        assert Stockroom.objects.count() == 1
+        assert History.objects.count() == 1
+        assert stock.stock_model.name == "some_consumable"
+        assert stock.stock_model.quantity == 1
+        assert stock.rack == 1
+        assert stock.shelf == 1
+        assert history.user == "username"
+        assert history.quantity == 1
+        assert history.status == "Приход"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "",
+            "quantity": "",
+            "number_rack": "",
+            "number_shelf": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "quantity": 1,
+            "number_rack": 1,
+            "number_shelf": 1,
+            "username": "data",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Consumables matching query does not exist."
+
+
+class TestAddToDeviceConsumableEndpoints:
+    endpoint = "/api/stockroom/add_to_device_consumable/"
+
+    @pytest.mark.django_db
+    def test_add_to_device_consumable(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="some_consumable", quantity=1)
+        Device.objects.get_or_create(name="some_device")
+        consumable = Consumables.objects.get(name="some_consumable")
+        device = Device.objects.get(name="some_device")
+        expected_json = {
+            "model_id": consumable.id,
+            "device": device.id,
+            "quantity": 1,
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+        history = History.objects.get(stock_model="some_consumable")
+
+        assert History.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 1
+        assert history.status == "Расход"
+        assert history.note == "some_note"
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "",
+            "device": "",
+            "quantity": "",
+            "note": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_no_consumables(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="some_consumable", quantity=1)
+        Device.objects.get_or_create(name="some_device")
+        consumable = Consumables.objects.get(name="some_consumable")
+        device = Device.objects.get(name="some_device")
+        expected_json = {
+            "model_id": consumable.id,
+            "device": device.id,
+            "quantity": 2,
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert (
+            response.data["error"]["message"] == "Не достаточно расходников на складе."
+        )
+
+
+class TestRemoveFromStockConsumableEndpoints:
+    endpoint = "/api/stockroom/remove_from_stock_consumable/"
+
+    @pytest.mark.django_db
+    def test_remove_from_stock_consumable(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="some_consumable")
+        consumable = Consumables.objects.get(name="some_consumable")
+        Stockroom.objects.get_or_create(stock_model=consumable)
+        expected_json = {"model_id": consumable.id, "username": "username"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        history = History.objects.get(stock_model="some_consumable")
+
+        assert Stockroom.objects.count() == 0
+        assert History.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 0
+        assert history.status == "Удаление"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"model_id": "", "username": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
