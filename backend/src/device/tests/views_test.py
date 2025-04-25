@@ -92,6 +92,14 @@ class TestDeviceEndpoints:
         assert data[0]["manufacturer"]["name"] == "manufacturer"
 
     @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "categories": "", "manufacturer": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
     def test_retrieve(self, auto_login_user):  # noqa: F811
         client, user = auto_login_user()
         Device.objects.get_or_create(name="10")
@@ -102,6 +110,38 @@ class TestDeviceEndpoints:
 
         assert response.status_code == 200
         assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="10")
+        test = Device.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data["name"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="10")
+        test = Device.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+        assert response.status_code == 400
 
     @pytest.mark.django_db
     def test_delete(self, auto_login_user):  # noqa: F811
@@ -190,6 +230,17 @@ class TestCategoryEndpoints:
         assert data[0]["slug"] == "04"
 
     @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
     def test_retrieve(self, auto_login_user):  # noqa: F811
         client, user = auto_login_user()
         DeviceCat.objects.get_or_create(name="10", slug="10")
@@ -201,6 +252,42 @@ class TestCategoryEndpoints:
         assert response.status_code == 200
         assert response.data["name"] == "10"
         assert response.data["slug"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        DeviceCat.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = DeviceCat.objects.get(name="category_01")
+        expected_json = {
+            "name": "test",
+            "slug": "test",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+
+        get_response = client.get(f"{self.endpoint}{test_cat.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
+        assert data["slug"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        DeviceCat.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = DeviceCat.objects.get(name="category_01")
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+        assert response.status_code == 400
 
     @pytest.mark.django_db
     def test_delete(self, auto_login_user):  # noqa: F811
