@@ -33,10 +33,6 @@ class DeviceListSerializer(serializers.ModelSerializer[Device]):
     accessories = AccessoriesListModelSerializer(many=True, read_only=True)
     accounting = serializers.SerializerMethodField("get_accounting")
 
-    def get_queryset(self):
-        categories = self.request.categories  # type: ignore[attr-defined]
-        return Device.objects.filter(categories=categories)
-
     class Meta:
         model = Device
         fields = "__all__"

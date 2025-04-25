@@ -64,6 +64,14 @@ class TestRoomEndpoints:
         assert data[0]["building"] == "Главное"
 
     @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "floor": "", "building": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
     def test_retrieve(self, auto_login_user):  # noqa: F811
         client, user = auto_login_user()
         Room.objects.get_or_create(name="10", floor="01", building="Главное")
@@ -76,6 +84,38 @@ class TestRoomEndpoints:
         assert response.data["name"] == "10"
         assert response.data["floor"] == "01"
         assert response.data["building"] == "Главное"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Room.objects.get_or_create(name="10")
+        test = Room.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data["name"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Room.objects.get_or_create(name="10")
+        test = Room.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+        assert response.status_code == 400
 
     @pytest.mark.django_db
     def test_delete(self, auto_login_user):  # noqa: F811
@@ -152,6 +192,14 @@ class TestWorkplaceEndpoints:
         assert data[0]["room"]["building"] == "Главное"
 
     @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "room": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
     def test_retrieve(self, auto_login_user):  # noqa: F811
         client, user = auto_login_user()
         Workplace.objects.get_or_create(name="10")
@@ -162,6 +210,38 @@ class TestWorkplaceEndpoints:
 
         assert response.status_code == 200
         assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Workplace.objects.get_or_create(name="10")
+        test = Workplace.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data["name"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Workplace.objects.get_or_create(name="10")
+        test = Workplace.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+        assert response.status_code == 400
 
     @pytest.mark.django_db
     def test_delete(self, auto_login_user):  # noqa: F811
