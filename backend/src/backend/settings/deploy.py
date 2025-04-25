@@ -206,6 +206,10 @@ REST_FRAMEWORK = {
     "DATE_INPUT_FORMATS": [
         "%d.%m.%Y",  # '25.10.2021'
     ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
 # start import-export
