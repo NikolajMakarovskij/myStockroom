@@ -4,6 +4,7 @@ import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '
 import { Link } from 'react-router-dom'
 
 import ListDevice from './Device/ListDevice'
+import ListDeviceCategory from './DeviceCategories/ListDeviceCategory'
 
 const darkTheme = createTheme({
   palette: {
@@ -18,6 +19,13 @@ const DeviceContent = [
     url_path: '/device/list',
     url_name: ListDevice,
     image: 'http://localhost/static/images/device.svg',
+  },
+  {
+    key: 'device_categories_list',
+    title: 'Группы устройств',
+    url_path: '/device/categories/list',
+    url_name: ListDeviceCategory,
+    image: 'http://localhost/static/images/groups.svg',
   },
 ]
 export { DeviceContent }

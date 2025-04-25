@@ -29,6 +29,10 @@ import ListDevice from '../appDevice/Device/ListDevice'
 import CreateDevice from '../appDevice/Device/CreateDevice'
 import UpdateDevice from '../appDevice/Device/UpdateDevice'
 import RemoveDevice from '../appDevice/Device/RemoveDevice'
+import ListDeviceCategory from '../appDevice/DeviceCategories/ListDeviceCategory'
+import CreateDeviceCategory from '../appDevice/DeviceCategories/CreateDeviceCategory'
+import UpdateDeviceCategory from '../appDevice/DeviceCategories/UpdateDeviceCategory'
+import RemoveDeviceCategory from '../appDevice/DeviceCategories/RemoveDeviceCategory'
 import AddToDeviceConsumable from '../appDevice/Device/AdToDeviceConsumable'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
@@ -308,6 +312,23 @@ const Routers = createBrowserRouter([
   {
     path: '/device/list/add_consumable/:id',
     element: [<NavBar key='add_consumable' drawerWidth={customWidth} content={<AddToDeviceConsumable />} />],
+  },
+  { path: '/device', element: [<NavBar key='device' drawerWidth={customWidth} content={<IndexDevice />} />] },
+  {
+    path: '/device/categories/list',
+    element: [<NavBar key='device_groups' drawerWidth={customWidth} content={<ListDeviceCategory />} />],
+  },
+  {
+    path: '/device/categories/list/create',
+    element: [<NavBar key='device_create' drawerWidth={customWidth} content={<CreateDeviceCategory />} />],
+  },
+  {
+    path: '/device/categories/list/edit/:id',
+    element: [<NavBar key='device_edit' drawerWidth={customWidth} content={<UpdateDeviceCategory />} />],
+  },
+  {
+    path: '/device/categories/list/remove/:id',
+    element: [<NavBar key='device_remove' drawerWidth={customWidth} content={<RemoveDeviceCategory />} />],
   },
   //Stock
   { path: '/stock', element: [<NavBar key='stock_device' drawerWidth={customWidth} content={<IndexStock />} />] },
