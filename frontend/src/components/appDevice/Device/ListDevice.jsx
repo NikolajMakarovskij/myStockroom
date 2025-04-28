@@ -139,6 +139,12 @@ const ListDevice = () => {
                 icon: <AddIcon />,
                 color: 'info',
               },
+              {
+                name: 'Установить комплектующее',
+                path: `add_accessories/${row.original.id}`,
+                icon: <AddIcon />,
+                color: 'info',
+              },
             ],
           }) => [
             menuActions.map((item, index) => (

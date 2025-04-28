@@ -34,11 +34,16 @@ import CreateDeviceCategory from '../appDevice/DeviceCategories/CreateDeviceCate
 import UpdateDeviceCategory from '../appDevice/DeviceCategories/UpdateDeviceCategory'
 import RemoveDeviceCategory from '../appDevice/DeviceCategories/RemoveDeviceCategory'
 import AddToDeviceConsumable from '../appDevice/Device/AdToDeviceConsumable'
+import AddToDeviceAccessories from '../appDevice/Device/AdToDeviceAccessories'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
 import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'
 import ListConsumptionConsumables from '../appStock/Consumables/ListConsumptionConsumables'
 import RemoveFromStockConsumable from '../appStock/Consumables/RemoveFromStockConsumable'
+import ListStockAccessories from '../appStock/Accessories/ListStockAccessories'
+import ListHistoryAccessories from '../appStock/Accessories/ListHistoryAccessories'
+import ListConsumptionAccessories from '../appStock/Accessories/ListConsumptionAccessories'
+import RemoveFromStockAccessories from '../appStock/Accessories/RemoveFromStockAccessories'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
 import IndexCounterparty from '../appCounterparty/IndexCounterparty'
 import ListManufacturer from '../appCounterparty/appManufacturer/ListManufacturer'
@@ -59,6 +64,7 @@ import ListAccessories from '../appConsumables/Accessories/ListAccessories'
 import CreateAccessories from '../appConsumables/Accessories/CreateAccessories'
 import UpdateAccessories from '../appConsumables/Accessories/UpdateAccessories'
 import RemoveAccessories from '../appConsumables/Accessories/RemoveAccessories'
+import AddToStockAccessories from '../appConsumables/Accessories/AdToStockAccessories'
 import ListAccessoriesCategory from '../appConsumables/AccessoriesCategories/ListAccessoriesCategory'
 import CreateAccessoriesCategory from '../appConsumables/AccessoriesCategories/CreateAccessoriesCategory'
 import UpdateAccessoriesCategory from '../appConsumables/AccessoriesCategories/UpdateAccessoriesCategory'
@@ -239,6 +245,10 @@ const Routers = createBrowserRouter([
     element: [<NavBar key='acc_remove' drawerWidth={customWidth} content={<RemoveAccessories />} />],
   },
   {
+    path: '/accessories/list/add_to_stock/:id',
+    element: [<NavBar key='acc_add_to_stock' drawerWidth={customWidth} content={<AddToStockAccessories />} />],
+  },
+  {
     path: '/accessories/categories/list',
     element: [<NavBar key='acc_cat_list' drawerWidth={customWidth} content={<ListAccessoriesCategory />} />],
   },
@@ -313,6 +323,10 @@ const Routers = createBrowserRouter([
     path: '/device/list/add_consumable/:id',
     element: [<NavBar key='add_consumable' drawerWidth={customWidth} content={<AddToDeviceConsumable />} />],
   },
+  {
+    path: '/device/list/add_accessories/:id',
+    element: [<NavBar key='add_accessories' drawerWidth={customWidth} content={<AddToDeviceAccessories />} />],
+  },
   { path: '/device', element: [<NavBar key='device' drawerWidth={customWidth} content={<IndexDevice />} />] },
   {
     path: '/device/categories/list',
@@ -332,6 +346,7 @@ const Routers = createBrowserRouter([
   },
   //Stock
   { path: '/stock', element: [<NavBar key='stock_device' drawerWidth={customWidth} content={<IndexStock />} />] },
+  // Stock Consumables
   {
     path: '/stock/consumables/list',
     element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListStockConsumables />} />],
@@ -348,20 +363,60 @@ const Routers = createBrowserRouter([
   },
   {
     path: '/history/consumables/list',
-    element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
+    element: [<NavBar key='stock_history_con_list' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
   },
   {
     path: '/history/consumables/list/:slug',
-    element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
+    element: [<NavBar key='stock_history_con_groups' drawerWidth={customWidth} content={<ListHistoryConsumables />} />],
   },
   {
     path: '/consumption/consumables/list',
-    element: [<NavBar key='stock_con_list' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />],
+    element: [
+      <NavBar key='stock_consumption_con_list' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />,
+    ],
   },
   {
     path: '/consumption/consumables/list/:slug',
-    element: [<NavBar key='stock_con_groups' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />],
+    element: [
+      <NavBar key='stock_consumption_con_groups' drawerWidth={customWidth} content={<ListConsumptionConsumables />} />,
+    ],
   },
+  // Stock Accessories
+  {
+    path: '/stock/accessories/list',
+    element: [<NavBar key='stock_acc_list' drawerWidth={customWidth} content={<ListStockAccessories />} />],
+  },
+  {
+    path: '/stock/accessories/list/:slug',
+    element: [<NavBar key='stock_acc_groups' drawerWidth={customWidth} content={<ListStockAccessories />} />],
+  },
+  {
+    path: '/stock/accessories/list/remove_from_stock/:stock_model',
+    element: [
+      <NavBar key='remove_accessories_from_stock' drawerWidth={customWidth} content={<RemoveFromStockAccessories />} />,
+    ],
+  },
+  {
+    path: '/history/accessories/list',
+    element: [<NavBar key='stock_history_acc_list' drawerWidth={customWidth} content={<ListHistoryAccessories />} />],
+  },
+  {
+    path: '/history/accessories/list/:slug',
+    element: [<NavBar key='stock_history_acc_groups' drawerWidth={customWidth} content={<ListHistoryAccessories />} />],
+  },
+  {
+    path: '/consumption/accessories/list',
+    element: [
+      <NavBar key='stock_consumption_acc_list' drawerWidth={customWidth} content={<ListConsumptionAccessories />} />,
+    ],
+  },
+  {
+    path: '/consumption/accessories/list/:slug',
+    element: [
+      <NavBar key='stock_consumption_acc_groups' drawerWidth={customWidth} content={<ListConsumptionAccessories />} />,
+    ],
+  },
+  // Stock device
   {
     path: '/stock/device/list',
     element: [<NavBar key='stock_dev_list' drawerWidth={customWidth} content={<ListStockDevices />} />],
