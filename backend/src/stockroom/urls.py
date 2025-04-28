@@ -2,19 +2,15 @@ from django.urls import include, path, re_path
 
 from .routers import router
 from .views.accessories import (
+    AddToDeviceAccessoriesView,
+    AddToStockAccessoriesView,
+    ConsumptionAccRestView,
     ExportConsumptionAccessories,
     ExportConsumptionAccessoriesCategory,
     ExportStockAccessories,
     ExportStockAccessoriesCategory,
-    HistoryAccCategoriesView,
-    HistoryAccConsumptionCategoriesView,
-    HistoryAccView,
-    HistoryConsumptionAccView,
-    StockAccCategoriesView,
-    StockAccView,
-    device_add_accessories,
-    stock_add_accessories,
-    stock_remove_accessories,
+    HistoryAccFilterListRestView,
+    RemoveFromStockAccessoriesView,
 )
 from .views.consumables import (
     AddToDeviceConsumableView,
@@ -93,12 +89,15 @@ urlpatterns = [
         name="export_consumption_consumable_category",
     ),
     # Accessories
-    path("accessories/", StockAccView.as_view(), name="stock_acc_list"),
-    path("accessories/search", StockAccView.as_view(), name="stock_acc_search"),
     path(
-        "accessories/category/<slug:category_slug>",
-        StockAccCategoriesView.as_view(),
-        name="accessories_category",
+        "consumption_acc_list/",
+        ConsumptionAccRestView.as_view(),
+        name="consumption_accessories_list",
+    ),
+    re_path(
+        "history_acc_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryAccFilterListRestView.as_view(),
+        name="stock_acc_model_filter",
     ),
     path(
         "accessories/export/",
@@ -110,46 +109,21 @@ urlpatterns = [
         ExportStockAccessoriesCategory.as_view(),
         name="export_stock_accessories_category",
     ),
+    # methods
     path(
-        "accessories/stockroom/add/<uuid:accessories_id>/",
-        stock_add_accessories,
-        name="stock_add_accessories",
+        "add_to_stock_accessories/",
+        AddToStockAccessoriesView.as_view(),
+        name="add_to_stock_accessories",
     ),
     path(
-        "accessories/stockroom/remove/<uuid:accessories_id>/",
-        stock_remove_accessories,
-        name="stock_remove_accessories",
+        "add_to_device_accessories/",
+        AddToDeviceAccessoriesView.as_view(),
+        name="add_to_device_accessories",
     ),
     path(
-        "accessories/stockroom/accessories/remove/<uuid:accessories_id>/",
-        device_add_accessories,
-        name="device_add_accessories",
-    ),
-    path("accessories/history/", HistoryAccView.as_view(), name="history_acc_list"),
-    path(
-        "accessories/history/search",
-        HistoryAccView.as_view(),
-        name="history_acc_search",
-    ),
-    path(
-        "accessories/history/category/<slug:category_slug>",
-        HistoryAccCategoriesView.as_view(),
-        name="history_acc_category",
-    ),
-    path(
-        "accessories/consumption/",
-        HistoryConsumptionAccView.as_view(),
-        name="history_consumption_acc_list",
-    ),
-    path(
-        "accessories/consumption/search",
-        HistoryConsumptionAccView.as_view(),
-        name="history_consumption_acc_search",
-    ),
-    path(
-        "accessories/consumption/category/<slug:category_slug>",
-        HistoryAccConsumptionCategoriesView.as_view(),
-        name="history_acc_consumption_category",
+        "remove_from_stock_accessories/",
+        RemoveFromStockAccessoriesView.as_view(),
+        name="remove_from_stock_accessories",
     ),
     path(
         "accessories/consumption/export/",

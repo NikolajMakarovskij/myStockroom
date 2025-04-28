@@ -1,123 +1,285 @@
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
-from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views import View, generic
-from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+from django.views import View
+from rest_framework import generics, status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from consumables.models import Accessories
 from core.utils import DataMixin
-from stockroom.forms import ConsumableInstallForm, StockAddForm
-from stockroom.models.accessories import CategoryAcc, HistoryAcc, StockAcc
-from stockroom.resources import AccessoriesConsumptionResource, StockAccResource
 from stockroom.stock.stock import AccStock
+
+from ..models.accessories import CategoryAcc, HistoryAcc, StockAcc
+from ..resources import AccessoriesConsumptionResource, StockAccResource
+from ..serializers.accessories import (
+    HistoryAccModelSerializer,
+    StockAccCatSerializer,
+    StockAccListSerializer,
+)
+from ..serializers.consumables import (
+    AddToDeviceSerializer,
+    AddToStockSerializer,
+    RemoveFromStockSerializer,
+)
 
 
 # accessories
-class StockAccView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockacc"
-    template_name = "stock/stock_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = StockAcc
+class StockAccCatListRestView(DataMixin, viewsets.ModelViewSet[CategoryAcc]):
+    queryset = CategoryAcc.objects.all()
+    serializer_class = StockAccCatSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад комплектующих",
-            searchlink="stockroom:stock_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    def list(self, request):
+        queryset = CategoryAcc.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class StockAccListRestView(DataMixin, viewsets.ModelViewSet[StockAcc]):
+    queryset = StockAcc.objects.all()
+    serializer_class = StockAccListSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = StockAcc.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+# History
+class HistoryAccListRestView(DataMixin, viewsets.ModelViewSet[HistoryAcc]):
+    queryset = HistoryAcc.objects.all()
+    serializer_class = HistoryAccModelSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        queryset = HistoryAcc.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class HistoryAccFilterListRestView(generics.ListAPIView[HistoryAcc]):
+    queryset = HistoryAcc.objects.all()
+    serializer_class = HistoryAccModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = (
-            StockAcc.objects.filter(
-                Q(stock_model__name__icontains=query)
-                | Q(stock_model__description__icontains=query)
-                | Q(stock_model__note__icontains=query)
-                | Q(stock_model__device__name__icontains=query)
-                | Q(stock_model__device__workplace__name__icontains=query)
-                | Q(stock_model__device__workplace__room__name__icontains=query)
-                | Q(stock_model__device__workplace__room__building__icontains=query)
-                | Q(stock_model__device__workplace__employee__name__icontains=query)
-                | Q(stock_model__device__workplace__employee__surname__icontains=query)
-                | Q(
-                    stock_model__device__workplace__employee__last_name__icontains=query
+        """
+        This view should return a list of all the history for
+        the consumable as determined by the stock_model_id portion of the URL.
+        """
+
+        stock_model = self.kwargs["stock_model_id"]
+        return HistoryAcc.objects.filter(stock_model_id=stock_model)
+
+
+class ConsumptionAccRestView(APIView):
+    queryset = Accessories.objects.all()
+
+    def get(self, request, format=None):
+        """_API list consumption_
+
+        Args:
+            request (_type_): _description_
+            format (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            _JSON_: _list consumption_
+        """
+        cur_year = datetime.now()
+        history = HistoryAcc.objects.all()
+        consumables = Accessories.objects.all()
+        responses = []
+        for consumable in consumables:
+            device_count = 0
+            device_name = ""
+            quantity = consumable.quantity
+            if consumable.device.exists():
+                device_name = ", ".join(
+                    [
+                        device.name
+                        for device in consumable.device.all()
+                        .order_by("name")
+                        .distinct("name")
+                    ]
                 )
-                | Q(stock_model__manufacturer__name__icontains=query)
-                | Q(stock_model__categories__name__icontains=query)
-                | Q(stock_model__quantity__icontains=query)
-                | Q(stock_model__serial__icontains=query)
-                | Q(stock_model__invent__icontains=query)
-                | Q(dateInstall__icontains=query)
-                | Q(dateAddToStock__icontains=query)
+                device_count = consumable.device.count()
+
+            unit_history_all = history.filter(
+                status="Расход", stock_model_id=consumable.id
             )
-            .select_related(
-                "stock_model",
-                "stock_model__categories",
+            unit_history_last_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+                dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
             )
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
-
-
-class StockAccCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockacc"
-    template_name = "stock/stock_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = StockAcc
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад комплектующих",
-            searchlink="stockroom:stock_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = (
-            StockAcc.objects.filter(categories__slug=self.kwargs["category_slug"])
-            .select_related(
-                "stock_model",
-                "stock_model__categories",
+            unit_history_current_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+                dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31",
             )
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
+            quantity_all = 0
+            quantity_last_year = 0
+            quantity_current_year = 0
+            for unit in unit_history_all:
+                quantity_all += unit.quantity
+            for unit in unit_history_last_year:
+                quantity_last_year += unit.quantity
+            for unit in unit_history_current_year:
+                quantity_current_year += unit.quantity
+            if quantity <= 2 * quantity_last_year:
+                requirement = abs(
+                    2 * quantity_last_year - quantity + quantity_current_year
+                )
+            else:
+                requirement = 0
+            responses.append(
+                {
+                    "stock_model_id": consumable.id,
+                    "name": consumable.name,
+                    "categories": {
+                        "id": consumable.categories.id,  # type: ignore[union-attr]
+                        "name": consumable.categories.name,  # type: ignore[union-attr]
+                        "slug": consumable.categories.slug,  # type: ignore[union-attr]
+                    },
+                    "device_name": device_name,
+                    "device_count": device_count,
+                    "quantity_all": quantity_all,
+                    "quantity_last_year": quantity_last_year,
+                    "quantity_current_year": quantity_current_year,
+                    "quantity": quantity,
+                    "requirement": requirement,
+                }
+            )
+        return Response(responses)
 
 
+# post methods
+class AddToStockAccessoriesView(APIView, AccStock):
+    queryset = StockAcc.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = AddToStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        quantity = serializer.validated_data["quantity"]
+        number_rack = serializer.validated_data["number_rack"]
+        number_shelf = serializer.validated_data["number_shelf"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.add_to_stock(
+                model_id=model_id,
+                quantity=quantity,
+                number_rack=number_rack,
+                number_shelf=number_shelf,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "quantity": quantity,
+                    "number_rack": number_rack,
+                    "number_shelf": number_shelf,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class AddToDeviceAccessoriesView(APIView, AccStock):
+    queryset = StockAcc.objects.all()
+    # @permission_required("stockroom.add_consumables_to_device", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = AddToDeviceSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        device = serializer.validated_data["device"]
+        quantity = serializer.validated_data["quantity"]
+        note = serializer.validated_data["note"]
+        username = serializer.validated_data["username"]
+
+        consumable = get_object_or_404(Accessories, id=model_id)
+
+        if consumable.quantity < quantity:
+            return Response(
+                {"error": {"message": "Не достаточно комплектующих на складе."}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            self.add_to_device(
+                model_id=model_id,
+                device=device,
+                quantity=quantity,
+                note=note,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "device": device,
+                    "quantity": quantity,
+                    "note": note,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class RemoveFromStockAccessoriesView(APIView, AccStock):
+    queryset = StockAcc.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = RemoveFromStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_from_stock(model_id=model_id, username=username)
+            return Response(
+                {
+                    "model_id": model_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+# exports
 class ExportStockAccessories(View):
     def get(self, *args, **kwargs):
         resource = StockAccResource()
@@ -200,251 +362,3 @@ class ExportConsumptionAccessoriesCategory(View):
             )
         )
         return response
-
-
-# History
-class HistoryAccView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_historyacc"
-    template_name = "stock/history_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryAcc
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История комплектующих",
-            searchlink="stockroom:history_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = HistoryAcc.objects.filter(
-            Q(stock_model__icontains=query)
-            | Q(device__icontains=query)
-            | Q(categories__name__icontains=query)
-            | Q(status__icontains=query)
-            | Q(dateInstall__icontains=query)
-            | Q(user__icontains=query)
-        )
-        return object_list
-
-
-class HistoryAccCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_historyacc"
-    template_name = "stock/history_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryAcc
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История комплектующих",
-            searchlink="stockroom:history_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = HistoryAcc.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        )
-        return object_list
-
-
-class HistoryConsumptionAccView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_history"
-    template_name = "stock/history_consumption_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryAcc
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Расход комплектующих по годам",
-            searchlink="stockroom:history_consumption_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = (
-            HistoryAcc.objects.filter(
-                Q(stock_model__icontains=query)
-                | Q(categories__name__icontains=query)
-                | Q(device__icontains=query)
-                | Q(status__icontains=query)
-                | Q(dateInstall__icontains=query)
-                | Q(user__icontains=query)
-            )
-            .order_by("stock_model")
-            .distinct("stock_model")
-        )
-        return object_list
-
-
-class HistoryAccConsumptionCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_historyacc"
-    template_name = "stock/history_consumption_acc_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryAcc
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_acc = cache.get("cat_acc")
-        if not cat_acc:
-            cat_acc = CategoryAcc.objects.all()
-            cache.set("cat_acc", cat_acc, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Расход комплектующих по годам",
-            searchlink="stockroom:history_consumption_acc_search",
-            menu_categories=cat_acc,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = (
-            HistoryAcc.objects.filter(categories__slug=self.kwargs["category_slug"])
-            .order_by("stock_model")
-            .distinct("stock_model")
-        )
-        return object_list
-
-
-# Methods
-@require_POST
-@login_required
-@permission_required("stockroom.add_accessories_to_stock", raise_exception=True)
-def stock_add_accessories(request, accessories_id):
-    username = request.user.username
-    accessories = get_object_or_404(Accessories, id=accessories_id)
-    stock = AccStock
-    form = StockAddForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.add_to_stock(
-            model_id=accessories.id,
-            quantity=cd["quantity"],
-            number_rack=cd["number_rack"],
-            number_shelf=cd["number_shelf"],
-            username=username,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт."
-            f" успешно добавлен на склад",
-            extra_tags="Успешно добавлен",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось добавить {accessories.name} на склад",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_acc_list")
-
-
-@login_required
-@permission_required("stockroom.remove_accessories_from_stock", raise_exception=True)
-def stock_remove_accessories(request, accessories_id):
-    username = request.user.username
-    accessories = get_object_or_404(Accessories, id=accessories_id)
-    stock = AccStock
-    stock.remove_from_stock(
-        model_id=accessories.id,
-        username=username,
-    )
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message=f"{accessories.name} успешно удален со склада",
-        extra_tags="Успешно удален",
-    )
-    return redirect("stockroom:stock_acc_list")
-
-
-@require_POST
-@login_required
-@permission_required("stockroom.add_accessories_to_device", raise_exception=True)
-def device_add_accessories(request, accessories_id):
-    username = request.user.username
-    get_device_id = request.session["get_device_id"]
-    stock = AccStock
-    accessories = get_object_or_404(Accessories, id=accessories_id)
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        if accessories.quantity == 0:
-            messages.add_message(
-                request,
-                level=messages.WARNING,
-                message=f"Комплектующее {accessories.name} закончилось на складе.",
-                extra_tags="Нет расходника",
-            )
-        else:
-            stock.add_to_device(
-                model_id=accessories.id,
-                device=get_device_id,
-                quantity=cd["quantity"],
-                note=cd["note"],
-                username=username,
-            )
-            messages.add_message(
-                request,
-                level=messages.SUCCESS,
-                message=f"Комплектующее {accessories.name} в количестве {str(cd['quantity'])} шт."
-                f" успешно списан со склада",
-                extra_tags="Успешное списание",
-            )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось списать {accessories.name} со склада",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_acc_list")
