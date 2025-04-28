@@ -10,46 +10,45 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Paper, //Typography
 } from '@mui/material'
 import { NumericFormat } from 'react-number-format'
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view'
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import { /*Edit as EditIcon, */ Delete as DeleteIcon } from '@mui/icons-material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import LinearIndeterminate from '../../appHome/ProgressBar'
 import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
-import DetailPanel from '../../appStock/DetailPanel'
 
-const ListAccessories = () => {
-  const [accessories, setAccessories] = useState()
+const ListStockAccessories = () => {
+  const [consumable, setConsumables] = useState()
   const [category, setCategory] = useState('')
-  const [loadingAccessories, setLoadingAccessories] = useState(true)
+  const [loadingConsumables, setLoadingConsumables] = useState(true)
   const [loadingCategory, setLoadingCategory] = useState(true)
-  const [errorAccessories, setErrorAccessories] = useState(false)
+  const [errorConsumables, setErrorConsumables] = useState(false)
   const [errorCategory, setErrorCategory] = useState(false)
   const [delay, setDelay] = useState(100)
 
   useInterval(() => {
-    async function getAccessories() {
+    async function getConsumables() {
       try {
-        await AxiosInstanse.get(`/consumables/accessories_list/`).then((res) => {
-          setAccessories(res.data)
-          setErrorAccessories(null)
+        await AxiosInstanse.get(`/stockroom/stock_acc_list/`).then((res) => {
+          setConsumables(res.data)
+          setErrorConsumables(null)
           setDelay(5000)
         })
       } catch (error) {
-        setErrorAccessories(error.message)
+        setErrorConsumables(error.message)
         setDelay(null)
       } finally {
-        setLoadingAccessories(false)
+        setLoadingConsumables(false)
       }
     }
     async function getCategory() {
       try {
-        await AxiosInstanse.get(`/consumables/accessories_category/`).then((res) => {
+        await AxiosInstanse.get(`/stockroom/stock_acc_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
           setDelay(5000)
@@ -61,30 +60,42 @@ const ListAccessories = () => {
         setLoadingCategory(false)
       }
     }
-    Promise.all([getCategory(), getAccessories()])
+    Promise.all([getCategory(), getConsumables()])
   }, delay)
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'name',
-        header: 'Комплктующее',
+        accessorKey: 'stock_model.name',
+        header: 'Комплектующее',
       },
       {
-        accessorKey: 'description',
-        header: 'Описание',
+        accessorKey: 'rack',
+        header: 'Стеллаж',
+      },
+      {
+        accessorKey: 'shelf',
+        header: 'Полка',
+      },
+      {
+        accessorKey: 'stock_model.quantity',
+        header: 'Количество',
+      },
+      {
+        accessorKey: 'stock_model.difference',
+        header: 'Разность',
+      },
+      {
+        accessorKey: 'dateAddToStock',
+        header: 'Дата поступления',
+      },
+      {
+        accessorKey: 'dateInstall',
+        header: 'Дата последней установки',
       },
       {
         accessorKey: 'note',
         header: 'Примечание',
-      },
-      {
-        accessorKey: 'quantity',
-        header: 'Количество',
-      },
-      {
-        accessorKey: 'difference',
-        header: 'Разность',
       },
     ],
     [],
@@ -96,22 +107,25 @@ const ListAccessories = () => {
         <LinearIndeterminate />
       ) : errorCategory ? (
         <PrintError error={errorCategory} />
-      ) : loadingAccessories ? (
+      ) : loadingConsumables ? (
         <LinearIndeterminate />
-      ) : errorAccessories ? (
-        <PrintError error={errorAccessories} />
+      ) : errorConsumables ? (
+        <PrintError error={errorConsumables} />
       ) : (
         <MaterialReactTableTabsList
           columns={columns}
-          data={accessories}
+          data={consumable}
           category={category}
           renderRowActionMenuItems={({
             row,
             menuActions = [
-              { name: 'Добавить', path: `create`, icon: <AddIcon />, color: 'success' },
-              { name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },
-              { name: 'Удалить', path: `remove/${row.original.id}`, icon: <DeleteIcon />, color: 'error' },
-              { name: 'Добавить на склад', path: `add_to_stock/${row.original.id}`, icon: <AddIcon />, color: 'info' },
+              //{ name: 'Редактировать', path: `edit/${row.original.id}`, icon: <EditIcon />, color: 'primary' },
+              {
+                name: 'Удалить',
+                path: `remove_from_stock/${row.original.stock_model.id}`,
+                icon: <DeleteIcon />,
+                color: 'error',
+              },
             ],
           }) => [
             menuActions.map((item, index) => (
@@ -122,13 +136,13 @@ const ListAccessories = () => {
             )),
           ]}
           renderDetailPanel={({ row }) =>
-            row.original ? (
+            row.original.stock_model.consumable ? (
               <SimpleTreeView
                 sx={{ width: '100%' }}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
               >
-                {row.original.accessories.length == 0 ? (
+                {row.original.stock_model.consumable.length == 0 ? (
                   <></>
                 ) : (
                   <TreeItem itemId='1' label='На балансе'>
@@ -144,7 +158,7 @@ const ListAccessories = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {row.original.accessories.map((item, index) => (
+                          {row.original.stock_model.consumable.map((item, index) => (
                             <TableRow key={index}>
                               <TableCell>{item.name}</TableCell>
                               <TableCell>{item.code}</TableCell>
@@ -176,7 +190,7 @@ const ListAccessories = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                {row.original.device.length == 0 ? (
+                {row.original.stock_model.device.length == 0 ? (
                   <></>
                 ) : (
                   <TreeItem itemId='2' label='Устройства'>
@@ -190,9 +204,9 @@ const ListAccessories = () => {
                         </TableHead>
                         <TableBody>
                           <TableRow key='devices'>
-                            <TableCell>{row.original.device.length}</TableCell>
+                            <TableCell>{row.original.stock_model.device.length}</TableCell>
                             <TableCell>
-                              {row.original.device.map((item, index) => (
+                              {row.original.stock_model.device.map((item, index) => (
                                 <TableRow key={index}>{item}</TableRow>
                               ))}
                             </TableCell>
@@ -202,9 +216,22 @@ const ListAccessories = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                <TreeItem itemId='3' label='История использования'>
-                  <DetailPanel row={row.original.id} link='/stockroom/history_acc_list/filter/' />
-                </TreeItem>
+                {/*<TreeItem itemId="3" label="История использования">
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell >Количество</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell>{row.original.id}</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </TreeItem>*/}
               </SimpleTreeView>
             ) : null
           }
@@ -214,4 +241,4 @@ const ListAccessories = () => {
   )
 }
 
-export default ListAccessories
+export default ListStockAccessories
