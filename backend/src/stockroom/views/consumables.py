@@ -10,18 +10,20 @@ from rest_framework.views import APIView
 
 from consumables.models import Consumables
 from core.utils import DataMixin
-from stockroom.serializers.consumables import (
-    AddToDeviceSerializer,
-    AddToStockSerializer,
-    HistoryModelSerializer,
-    RemoveFromStockSerializer,
-    StockConCatSerializer,
-    StockConListSerializer,
-)
-from stockroom.stock.stock import ConStock
 
 from ..models.consumables import History, StockCat, Stockroom
 from ..resources import ConsumableConsumptionResource, StockConResource
+from ..serializers.consumables import (
+    HistoryModelSerializer,
+    StockConCatSerializer,
+    StockConListSerializer,
+)
+from ..serializers.stock import (
+    AddToDeviceSerializer,
+    AddToStockSerializer,
+    RemoveFromStockSerializer,
+)
+from ..stock.stock import ConStock
 
 
 class StockConCatListRestView(DataMixin, viewsets.ModelViewSet[StockCat]):
@@ -114,6 +116,21 @@ class HistoryConFilterListRestView(generics.ListAPIView[History]):
 
         stock_model = self.kwargs["stock_model_id"]
         return History.objects.filter(stock_model_id=stock_model)
+
+
+class HistoryConDeviceFilterListRestView(generics.ListAPIView[History]):
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the history for
+        the consumable as determined by the stock_model_id portion of the URL.
+        """
+
+        device = self.kwargs["deviceId"]
+        return History.objects.filter(deviceId=device)
 
 
 class ConsumptionRestView(APIView):

@@ -149,7 +149,51 @@ class TestHistoryConsumablesEndpoints:
             ]
         )
         client, user = auto_login_user()
-        url = f"{self.endpoint}filter/{consumable[0].id}/"
+        consumableID = Consumables.objects.get(name="some_consumable_01").id
+        url = f"{self.endpoint}filter/{consumableID}/"
+        response = client.get(url)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 1
+        assert data[0]["stock_model"] == "some_consumable_01"
+
+    @pytest.mark.django_db
+    def testing_history_device_filtered_consumables_list(self, auto_login_user):  # noqa: F811
+        StockCat.objects.get_or_create(name="some_category", slug="some_category")
+        Consumables.objects.bulk_create(
+            [
+                Consumables(name="some_consumable_01"),
+                Consumables(name="some_consumable_02"),
+                Consumables(name="some_consumable_03"),
+            ]
+        )
+        consumable = Consumables.objects.all()
+        Device.objects.get_or_create(
+            name="some_device_01",
+        )
+        device = Device.objects.get(name="some_device_01")
+        device.consumable.add(Consumables.objects.get(name="some_consumable_01"))
+        History.objects.bulk_create(
+            [
+                History(  # type: ignore[misc]
+                    stock_model=consumable[0].name,
+                    stock_model_id=consumable[0].id,
+                    categories=StockCat.objects.get(name="some_category"),
+                    device=device.name,
+                    deviceId=device.id,
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable[1].name,
+                    stock_model_id=consumable[1].id,
+                ),
+                History(  # type: ignore[misc]
+                    stock_model=consumable[2].name,
+                    stock_model_id=consumable[2].id,
+                ),
+            ]
+        )
+        client, user = auto_login_user()
+        url = f"{self.endpoint}device/filter/{device.id}/"
         response = client.get(url)
         data = response.data
         assert response.status_code == 200

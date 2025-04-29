@@ -9,6 +9,7 @@ from .views.accessories import (
     ExportConsumptionAccessoriesCategory,
     ExportStockAccessories,
     ExportStockAccessoriesCategory,
+    HistoryAccDeviceFilterListRestView,
     HistoryAccFilterListRestView,
     RemoveFromStockAccessoriesView,
 )
@@ -20,20 +21,18 @@ from .views.consumables import (
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
+    HistoryConDeviceFilterListRestView,
     HistoryConFilterListRestView,
     RemoveFromStockConsumableView,
 )
 from .views.devices import (
+    AddHistoryToDeviceView,
+    AddToStockDeviceView,
     ExportStockDevice,
     ExportStockDeviceCategory,
-    HistoryDevCategoriesView,
-    HistoryDevView,
-    StockDevCategoriesView,
-    StockDevView,
-    add_history_to_device,
-    move_device_from_stock,
-    stock_add_device,
-    stock_remove_device,
+    HistoryDevFilterListRestView,
+    MoveDeviceView,
+    RemoveFromStockDeviceView,
 )
 from .views.index import StockroomIndexView
 
@@ -49,6 +48,11 @@ urlpatterns = [
     re_path(
         "history_con_list/filter/(?P<stock_model_id>.+)/$",
         HistoryConFilterListRestView.as_view(),
+        name="stock_model_filter",
+    ),
+    re_path(
+        "history_con_list/device/filter/(?P<deviceId>.+)/$",
+        HistoryConDeviceFilterListRestView.as_view(),
         name="stock_model_filter",
     ),
     path(
@@ -99,6 +103,11 @@ urlpatterns = [
         HistoryAccFilterListRestView.as_view(),
         name="stock_acc_model_filter",
     ),
+    re_path(
+        "history_acc_list/device/filter/(?P<deviceId>.+)/$",
+        HistoryAccDeviceFilterListRestView.as_view(),
+        name="stock_model_filter",
+    ),
     path(
         "accessories/export/",
         ExportStockAccessories.as_view(),
@@ -136,38 +145,29 @@ urlpatterns = [
         name="export_consumption_acc_category",
     ),
     # Devices
-    path("devices/", StockDevView.as_view(), name="stock_dev_list"),
-    path("devices/search", StockDevView.as_view(), name="stock_dev_search"),
-    path(
-        "devices/category/<slug:category_slug>",
-        StockDevCategoriesView.as_view(),
-        name="devices_category",
+    re_path(
+        "history_dev_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryDevFilterListRestView.as_view(),
+        name="stock_dev_model_filter",
     ),
     path(
-        "devices/stockroom/add/<uuid:device_id>/",
-        stock_add_device,
-        name="stock_add_device",
+        "add_to_stock_device/",
+        AddToStockDeviceView.as_view(),
+        name="add_to_stock_device",
     ),
     path(
-        "devices/stockroom/remove/<uuid:devices_id>/",
-        stock_remove_device,
-        name="stock_remove_device",
-    ),
-    path("devices/history/", HistoryDevView.as_view(), name="history_dev_list"),
-    path("devices/history/search", HistoryDevView.as_view(), name="history_dev_search"),
-    path(
-        "devices/history/category/<slug:category_slug>",
-        HistoryDevCategoriesView.as_view(),
-        name="history_dev_category",
+        "remove_from_stock_device/",
+        RemoveFromStockDeviceView.as_view(),
+        name="remove_from_stock_device",
     ),
     path(
-        "devices/stockroom/move/<uuid:device_id>/",
-        move_device_from_stock,
+        "move_device/",
+        MoveDeviceView.as_view(),
         name="move_device",
     ),
     path(
-        "devices/stockroom/add_history/<uuid:device_id>/",
-        add_history_to_device,
+        "add_device_history/",
+        AddHistoryToDeviceView.as_view(),
         name="add_device_history",
     ),
     path("devices/export/", ExportStockDevice.as_view(), name="export_stock_device"),

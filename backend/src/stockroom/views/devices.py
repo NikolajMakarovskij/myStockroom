@@ -1,324 +1,223 @@
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
-from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views import View, generic
-from django.views.decorators.http import require_POST
-from rest_framework import permissions, viewsets
+from django.views import View
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from core.utils import DataMixin
-from device.models import Device
-from stockroom.forms import AddHistoryDeviceForm, MoveDeviceForm, StockAddForm
-from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
-from stockroom.resources import StockDevResource
-from stockroom.stock.stock import DevStock
-
-from ..serializers.devices import StockDevCatSerializer, StockDevListSerializer
-
+from ..models.devices import CategoryDev, HistoryDev, StockDev
+from ..resources import StockDevResource
+from ..serializers.devices import (
+    HistoryDeviceModelSerializer,
+    StockDevCatSerializer,
+    StockDevListSerializer,
+)
+from ..serializers.stock import (
+    AddHistoryDeviceSerializer,
+    AddToStockSerializer,
+    MoveDeviceSerializer,
+    RemoveFromStockSerializer,
+)
+from ..stock.stock import DevStock
 
 # Devices
-class StockDevView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockdev"
-    template_name = "stock/stock_dev_list.html"
-    paginate_by = DataMixin.paginate
-    model = StockDev
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_dev = cache.get("cat_dev")
-        if not cat_dev:
-            cat_dev = CategoryDev.objects.all()
-            cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад устройств",
-            searchlink="stockroom:stock_dev_search",
-            menu_categories=cat_dev,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = StockDev.objects.filter(
-            Q(stock_model__name__icontains=query)
-            | Q(stock_model__description__icontains=query)
-            | Q(stock_model__note__icontains=query)
-            | Q(stock_model__manufacturer__name__icontains=query)
-            | Q(stock_model__categories__name__icontains=query)
-            | Q(stock_model__quantity__icontains=query)
-            | Q(stock_model__hostname__icontains=query)
-            | Q(stock_model__ip_address__icontains=query)
-            | Q(stock_model__serial__icontains=query)
-            | Q(stock_model__invent__icontains=query)
-            | Q(stock_model__workplace__name__icontains=query)
-            | Q(stock_model__workplace__room__name__icontains=query)
-            | Q(dateInstall__icontains=query)
-            | Q(dateAddToStock__icontains=query)
-        ).select_related(
-            "stock_model",
-        )
-        return object_list
 
 
-class StockDevCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_stockdev"
-    template_name = "stock/stock_dev_list.html"
-    paginate_by = DataMixin.paginate
-    model = StockDev
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_dev = cache.get("cat_dev")
-        if not cat_dev:
-            cat_dev = CategoryDev.objects.all()
-            cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад устройств",
-            searchlink="stockroom:stock_dev_search",
-            menu_categories=cat_dev,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        object_list = StockDev.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        ).select_related("stock_model")
-        return object_list
-
-
-class StockDevCatListRestView(DataMixin, viewsets.ModelViewSet[CategoryDev]):
+class StockDevCatListRestView(viewsets.ModelViewSet[CategoryDev]):
     queryset = CategoryDev.objects.all()
     serializer_class = StockDevCatSerializer
-    permission_classes = [permissions.AllowAny]
 
     def list(self, request):
-        queryset = CategoryDev.objects.all()
+        queryset = CategoryDev.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
-class StockDevListRestView(DataMixin, viewsets.ModelViewSet[StockDev]):
+class StockDevListRestView(viewsets.ModelViewSet[StockDev]):
     queryset = StockDev.objects.all()
     serializer_class = StockDevListSerializer
-    permission_classes = [permissions.AllowAny]
 
     def list(self, request):
-        queryset = StockDev.objects.all()
+        queryset = StockDev.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
 # History
-class HistoryDevView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_historydev"
-    template_name = "stock/history_dev_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryDev
+class HistoryDevListRestView(viewsets.ModelViewSet[HistoryDev]):
+    queryset = HistoryDev.objects.all()
+    serializer_class = HistoryDeviceModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_dev = cache.get("cat_dev")
-        if not cat_dev:
-            cat_dev = CategoryDev.objects.all()
-            cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История устройств",
-            searchlink="stockroom:history_dev_search",
-            menu_categories=cat_dev,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    def list(self, request):
+        queryset = HistoryDev.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class HistoryDevFilterListRestView(generics.ListAPIView[HistoryDev]):
+    queryset = HistoryDev.objects.all()
+    serializer_class = HistoryDeviceModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = HistoryDev.objects.filter(
-            Q(stock_model__icontains=query)
-            | Q(categories__name__icontains=query)
-            | Q(status__icontains=query)
-            | Q(dateInstall__icontains=query)
-            | Q(user__icontains=query)
-        )
-        return object_list
+        """
+        This view should return a list of all the history for
+        the devices as determined by the stock_model_id portion of the URL.
+        """
+
+        stock_model = self.kwargs["stock_model_id"]
+        return HistoryDev.objects.filter(stock_model_id=stock_model)
 
 
-class HistoryDevCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    permission_required = "stockroom.view_historydev"
-    template_name = "stock/history_dev_list.html"
-    paginate_by = DataMixin.paginate
-    model = HistoryDev
+# post methods
+class AddToStockDeviceView(APIView, DevStock):
+    queryset = StockDev.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        cat_dev = cache.get("cat_dev")
-        if not cat_dev:
-            cat_dev = CategoryDev.objects.all()
-            cache.set("cat_dev", cat_dev, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История устройств",
-            searchlink="stockroom:history_dev_search",
-            menu_categories=cat_dev,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    def post(self, request, formant=None):
+        serializer = AddToStockSerializer(data=request.data)
 
-    def get_queryset(self):
-        object_list = HistoryDev.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        )
-        return object_list
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        model_id = serializer.validated_data["model_id"]
+        quantity = serializer.validated_data["quantity"]
+        number_rack = serializer.validated_data["number_rack"]
+        number_shelf = serializer.validated_data["number_shelf"]
+        username = serializer.validated_data["username"]
 
-# Methods
-@require_POST
-@login_required
-@permission_required("stockroom.add_device_to_stock", raise_exception=True)
-def stock_add_device(request, device_id):
-    username = request.user.username
-    stock = DevStock
-    device = get_object_or_404(Device, id=device_id)
-    form = StockAddForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.add_to_stock_device(
-            model_id=device.id,
-            quantity=cd["quantity"],
-            number_rack=cd["number_rack"],
-            number_shelf=cd["number_shelf"],
-            username=username,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"Устройство {device.name} в количестве {str(cd['quantity'])} шт."
-            f"успешно добавлено на склад",
-            extra_tags="Успешно добавлен",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось добавить {device.name} на склад",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_dev_list")
+        try:
+            self.add_to_stock_device(
+                model_id=model_id,
+                quantity=quantity,
+                number_rack=number_rack,
+                number_shelf=number_shelf,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "quantity": quantity,
+                    "number_rack": number_rack,
+                    "number_shelf": number_shelf,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-@login_required
-@permission_required("stockroom.remove_device_from_stock", raise_exception=True)
-def stock_remove_device(request, devices_id):
-    username = request.user.username
-    device = get_object_or_404(Device, id=devices_id)
-    stock = DevStock
-    stock.remove_device_from_stock(
-        model_id=device.id,
-        username=username,
-    )
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message="{device.name} успешно удален со склада",
-        extra_tags="Успешно удален",
-    )
-    return redirect("stockroom:stock_dev_list")
+class RemoveFromStockDeviceView(APIView, DevStock):
+    queryset = StockDev.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = RemoveFromStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_device_from_stock(model_id=model_id, username=username)
+            return Response(
+                {
+                    "model_id": model_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-@require_POST
-@login_required
-@permission_required("stockroom.move_device", raise_exception=True)
-def move_device_from_stock(request, device_id):
-    username = request.user.username
-    device = get_object_or_404(Device, id=device_id)
-    stock = DevStock
-    form = MoveDeviceForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        workplace_ = cd["workplace"]
-        note_ = cd["note"]
-        stock.move_device(
-            model_id=device.id,
-            workplace_id=workplace_.id,
-            note=note_,
-            username=username,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message="Устройство перемещено на рабочее место.",
-            extra_tags="Успешное списание",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message="Не удалось переместить устройство.",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_dev_list")
+class MoveDeviceView(APIView, DevStock):
+    queryset = StockDev.objects.all()
+    # @permission_required("stockroom.move_device", raise_exception=True)
+
+    def post(self, request, formant=None):
+        serializer = MoveDeviceSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        workplace_id = serializer.validated_data["workplace_id"]
+        note = serializer.data["note"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.move_device(
+                model_id=model_id,
+                workplace_id=workplace_id,
+                note=note,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "workplace_id": workplace_id,
+                    "note": note,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-@require_POST
-@login_required
-@permission_required("stockroom.add_history_to_device", raise_exception=True)
-def add_history_to_device(request, device_id):
-    username = request.user.username
-    device = get_object_or_404(Device, id=device_id)
-    stock = DevStock
-    form = AddHistoryDeviceForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        note_ = cd["note"]
-        stock.create_history_device(
-            model_id=device.id,
-            quantity=0,
-            username=username,
-            status_choice="Обслуживание",
-            note=note_,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message="Добавлена запись в историю устройства",
-            extra_tags="Успешное списание",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message="Не удалось добавить запись в историю устройства.",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_dev_list")
+class AddHistoryToDeviceView(APIView, DevStock):
+    queryset = StockDev.objects.all()
+
+    def post(self, request, formant=None):
+        serializer = AddHistoryDeviceSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        quantity = 0
+        status_choice = serializer.validated_data["status_choice"]
+        note = serializer.validated_data["note"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.create_history_device(
+                model_id=model_id,
+                quantity=quantity,
+                status_choice=status_choice,
+                note=note,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "status_choice": status_choice,
+                    "note": note,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class ExportStockDevice(View):
