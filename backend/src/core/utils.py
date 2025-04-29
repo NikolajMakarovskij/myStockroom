@@ -7,8 +7,6 @@ from django_select2.forms import (  # type: ignore[import-untyped]
 
 menu = [
     {"title": "Главная страница", "url_name": "core:index"},
-    {"title": "Софт", "url_name": "software:software_index"},
-    {"title": "ЭЦП", "url_name": "signature:signature_list"},
     {"title": "Склад", "url_name": "stockroom:stock_index"},
 ]
 

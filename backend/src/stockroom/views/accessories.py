@@ -10,7 +10,6 @@ from rest_framework.views import APIView
 
 from consumables.models import Accessories
 from core.utils import DataMixin
-from stockroom.stock.stock import AccStock
 
 from ..models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from ..resources import AccessoriesConsumptionResource, StockAccResource
@@ -19,11 +18,12 @@ from ..serializers.accessories import (
     StockAccCatSerializer,
     StockAccListSerializer,
 )
-from ..serializers.consumables import (
+from ..serializers.stock import (
     AddToDeviceSerializer,
     AddToStockSerializer,
     RemoveFromStockSerializer,
 )
+from ..stock.stock import AccStock
 
 
 # accessories
@@ -74,6 +74,21 @@ class HistoryAccFilterListRestView(generics.ListAPIView[HistoryAcc]):
 
         stock_model = self.kwargs["stock_model_id"]
         return HistoryAcc.objects.filter(stock_model_id=stock_model)
+
+
+class HistoryAccDeviceFilterListRestView(generics.ListAPIView[HistoryAcc]):
+    queryset = HistoryAcc.objects.all()
+    serializer_class = HistoryAccModelSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the history for
+        the consumable as determined by the stock_model_id portion of the URL.
+        """
+
+        device = self.kwargs["deviceId"]
+        return HistoryAcc.objects.filter(deviceId=device)
 
 
 class ConsumptionAccRestView(APIView):

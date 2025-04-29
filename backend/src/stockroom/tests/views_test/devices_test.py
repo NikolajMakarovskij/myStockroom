@@ -1,241 +1,345 @@
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
-
-from device.models import Device
-from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
-
-
 # Devices
-class StockDevViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+import pytest
+
+from core.tests.login_test import auto_login_user  # noqa: F401
+from counterparty.models import Manufacturer
+from device.models import Device, DeviceCat
+from workplace.models import Workplace
+
+from ...models.devices import CategoryDev, HistoryDev, StockDev
+
+
+class TestStockDeviceCategoriesEndpoints:
+    endpoint = "/api/stockroom/stock_dev_cat_list/"
+
+    @pytest.mark.django_db
+    def testing_stock_device_cat_list(self, auto_login_user):  # noqa: F811
+        CategoryDev.objects.bulk_create(
+            [
+                CategoryDev(name="category_01", slug="category_01"),
+                CategoryDev(name="category_02", slug="category_02"),
+                CategoryDev(name="category_03", slug="category_03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
-            cons = Device.objects.create(name="Christian %s" % stocks_num)
-            StockDev.objects.create(stock_model=cons)
-        assert Device.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Склад устройств"},
-            {"data_key": "searchlink", "data_value": "stockroom:stock_dev_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten(self):
-        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockdev_list"]) == 20)
-
-    def test_lists_all_stockroom(self):
-        links = ["stockroom:stock_dev_list", "stockroom:stock_dev_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["stockdev_list"]) == 9)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
 
 
-class StockroomDevCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestStockDeviceEndpoints:
+    endpoint = "/api/stockroom/stock_dev_list/"
+
+    @pytest.mark.django_db
+    def testing_stock_device_list(self, auto_login_user):  # noqa: F811
+        DeviceCat.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = DeviceCat.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Device.objects.bulk_create(
+            [
+                Device(name="01", categories=cat, manufacturer=man, quantity=1),
+                Device(name="02"),
+                Device(name="03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        CategoryDev.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
-            cons = Device.objects.create(name="Christian %s" % stocks_num)
-            StockDev.objects.create(
-                stock_model=cons,
-                categories=CategoryDev.objects.get(slug="some_category"),
-            )
-        assert StockDev.objects.count() == 149
-        assert CategoryDev.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Склад устройств"},
-            {"data_key": "searchlink", "data_value": "stockroom:stock_dev_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "stockroom:devices_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
+        CategoryDev.objects.get_or_create(name="some_category", slug="some_category")
+        StockDev.objects.bulk_create(
+            [
+                StockDev(
+                    stock_model=Device.objects.get(name="01"),
+                    categories=CategoryDev.objects.get(name="some_category"),
+                    dateAddToStock="2022-03-03",
+                    dateInstall="2022-03-04",
+                    rack=1,
+                    shelf=2,
+                ),
+                StockDev(stock_model=Device.objects.get(name="02")),
+                StockDev(stock_model=Device.objects.get(name="03")),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"]["name"] == "01"
+        assert data[0]["stock_model"]["categories"]["name"] == "category_01"
+        assert data[0]["stock_model"]["categories"]["slug"] == "category_01"
+        assert data[0]["stock_model"]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[0]["dateAddToStock"] == "2022-03-03"
+        assert data[0]["dateInstall"] == "2022-03-04"
+        assert data[0]["rack"] == 1
+        assert data[0]["shelf"] == 2
+        assert data[1]["stock_model"]["name"] == "02"
+        assert data[2]["stock_model"]["name"] == "03"
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:devices_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
+
+class TestHistoryDeviceEndpoints:
+    endpoint = "/api/stockroom/history_dev_list/"
+
+    @pytest.mark.django_db
+    def testing_history_device_list(self, auto_login_user):  # noqa: F811
+        CategoryDev.objects.get_or_create(name="some_category", slug="some_category")
+        HistoryDev.objects.bulk_create(
+            [
+                HistoryDev(
+                    stock_model="category_01",
+                    categories=CategoryDev.objects.get(name="some_category"),
+                ),
+                HistoryDev(stock_model="category_02"),
+                HistoryDev(stock_model="category_03"),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockdev_list"]) == 20)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"] == "category_01"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[1]["stock_model"] == "category_02"
+        assert data[2]["stock_model"] == "category_03"
 
-    def test_lists_all_stockroom_consumables(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:devices_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
-            + "?page=8"
+    @pytest.mark.django_db
+    def testing_history_filtered_device_list(self, auto_login_user):  # noqa: F811
+        CategoryDev.objects.get_or_create(name="some_category", slug="some_category")
+        Device.objects.bulk_create(
+            [
+                Device(name="some_device_01"),
+                Device(name="some_device_02"),
+                Device(name="some_device_03"),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["stockdev_list"]) == 9)
-
-
-class HistoryDevStockViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+        device = Device.objects.all()
+        HistoryDev.objects.bulk_create(
+            [
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[0].name,
+                    stock_model_id=device[0].id,
+                    categories=CategoryDev.objects.get(name="some_category"),
+                ),
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[1].name,
+                    stock_model_id=device[1].id,
+                ),
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[2].name,
+                    stock_model_id=device[2].id,
+                ),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_history = 149
-        for history_num in range(number_in_history):
-            HistoryDev.objects.create(
-                stock_model="Christian %s" % history_num,
-            )
-        assert HistoryDev.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "История устройств"},
-            {"data_key": "searchlink", "data_value": "stockroom:history_dev_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten(self):
-        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["historydev_list"]) == 20)
-
-    def test_lists_all_stockroom(self):
-        links = ["stockroom:history_dev_list", "stockroom:history_dev_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["historydev_list"]) == 9)
+        client, user = auto_login_user()
+        device1 = Device.objects.get(name="some_device_01")
+        url = f"{self.endpoint}filter/{device1.id}/"
+        response = client.get(url)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 1
+        assert data[0]["stock_model"] == "some_device_01"
 
 
-class HistoryDevCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
-        )
+class TestAddToStockDeviceEndpoints:
+    endpoint = "/api/stockroom/add_to_stock_device/"
 
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        CategoryDev.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
-            HistoryDev.objects.create(
-                stock_model="Christian %s" % stocks_num,
-                categories=CategoryDev.objects.get(slug="some_category"),
-            )
-        assert HistoryDev.objects.count() == 149
-        assert CategoryDev.objects.count() == 1
+    @pytest.mark.django_db
+    def test_add_to_stock_device(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        expected_json = {
+            "model_id": device.id,
+            "quantity": 1,
+            "number_rack": 1,
+            "number_shelf": 1,
+            "username": "username",
+        }
 
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "История устройств"},
-            {"data_key": "searchlink", "data_value": "stockroom:history_dev_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_dev_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_dev_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["historydev_list"]) == 20)
+        stock = StockDev.objects.get(stock_model=device.id)
+        history = HistoryDev.objects.get(stock_model="some_device")
 
-    def test_lists_all_stockroom_history_acc_consumables(self):
-        resp = self.client.get(
-            reverse(
-                "stockroom:history_dev_category",
-                kwargs={"category_slug": CategoryDev.objects.get(slug="some_category")},
-            )
-            + "?page=8"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["historydev_list"]) == 9)
+        assert StockDev.objects.count() == 1
+        assert HistoryDev.objects.count() == 1
+        assert stock.stock_model.name == "some_device"
+        assert stock.stock_model.quantity == 1
+        assert stock.rack == 1
+        assert stock.shelf == 1
+        assert history.user == "username"
+        assert history.quantity == 1
+        assert history.status == "Приход"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "",
+            "quantity": "",
+            "number_rack": "",
+            "number_shelf": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "quantity": 1,
+            "number_rack": 1,
+            "number_shelf": 1,
+            "username": "data",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Device matching query does not exist."
+
+
+class TestMoveDeviceEndpoints:
+    endpoint = "/api/stockroom/move_device/"
+
+    @pytest.mark.django_db
+    def test_move_device(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_consumable")
+        Workplace.objects.get_or_create(name="some_workplace")
+        device = Device.objects.get(name="some_consumable")
+        workplace = Workplace.objects.get(name="some_workplace")
+        StockDev.objects.get_or_create(stock_model=device)
+        expected_json = {
+            "model_id": device.id,
+            "workplace_id": workplace.id,
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        history = HistoryDev.objects.get(stock_model="some_consumable")
+
+        assert StockDev.objects.count() == 1
+        assert HistoryDev.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 1
+        assert history.status == "Перемещение на рабочее место some_workplace"
+        assert history.note == "some_note"
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "",
+            "workplace_id": "",
+            "note": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request_device(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Workplace.objects.get_or_create(name="some_consumable")
+        workplace = Workplace.objects.get(name="some_consumable")
+        expected_json = {
+            "model_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "workplace_id": workplace.id,
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Device matching query does not exist."
+
+    @pytest.mark.django_db
+    def test_bad_request_workplace(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_consumable")
+        device = Device.objects.get(name="some_consumable")
+        expected_json = {
+            "model_id": device.id,
+            "workplace_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Workplace matching query does not exist."
+
+
+class TestAddToDeviceHistoryEndpoints:
+    endpoint = "/api/stockroom/add_device_history/"
+
+    @pytest.mark.django_db
+    def test_add_to_device_history(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        StockDev.objects.get_or_create(stock_model=device)
+        expected_json = {
+            "model_id": device.id,
+            "status_choice": "some_status",
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        print(response.data)
+        assert response.status_code == 201
+
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert StockDev.objects.count() == 1
+        assert HistoryDev.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 0
+        assert history.status == "some_status"
+        assert history.note == "some_note"
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "",
+            "workplace_id": "",
+            "note": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "model_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "status_choice": "some_status",
+            "note": "some_note",
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Device matching query does not exist."

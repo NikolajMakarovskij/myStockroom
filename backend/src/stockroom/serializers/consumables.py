@@ -3,7 +3,6 @@ from rest_framework import serializers
 from consumables.serializers import ConsumablesListSerializer
 
 from ..models.consumables import History, StockCat, Stockroom
-from ..stock.stock import ConStock
 
 
 class StockConCatSerializer(serializers.ModelSerializer[StockCat]):
@@ -57,24 +56,3 @@ class HistoryModelSerializer(serializers.ModelSerializer[History]):
             "status": {"read_only": True},
             "note": {"read_only": True},
         }
-
-
-class AddToStockSerializer(serializers.Serializer[ConStock]):
-    model_id = serializers.UUIDField(required=True)
-    quantity = serializers.IntegerField(required=True)
-    number_rack = serializers.IntegerField(required=True)
-    number_shelf = serializers.IntegerField(required=True)
-    username = serializers.CharField(required=True)
-
-
-class AddToDeviceSerializer(serializers.Serializer[ConStock]):
-    model_id = serializers.UUIDField(required=True)
-    device = serializers.UUIDField(required=True)
-    quantity = serializers.IntegerField(required=True)
-    note = serializers.CharField(required=True)
-    username = serializers.CharField(required=True)
-
-
-class RemoveFromStockSerializer(serializers.Serializer[ConStock]):
-    model_id = serializers.UUIDField(required=True)
-    username = serializers.CharField(required=True)

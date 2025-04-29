@@ -10,7 +10,11 @@ from .views.consumables import (
     StockConCatListRestView,
     StockConListRestView,
 )
-from .views.devices import StockDevCatListRestView, StockDevListRestView
+from .views.devices import (
+    HistoryDevListRestView,
+    StockDevCatListRestView,
+    StockDevListRestView,
+)
 
 router = routers.SimpleRouter()
 router.register(r"stock_con_list", StockConListRestView, basename="consumables_list")
@@ -29,5 +33,8 @@ router.register(
 )
 router.register(r"stock_dev_list", StockDevListRestView, basename="device_list")
 router.register(
-    r"stock_dev_cat", StockDevCatListRestView, basename="device_category_list"
+    r"stock_dev_cat_list", StockDevCatListRestView, basename="device_category_list"
+)
+router.register(
+    r"history_dev_list", HistoryDevListRestView, basename="history_device_list"
 )
