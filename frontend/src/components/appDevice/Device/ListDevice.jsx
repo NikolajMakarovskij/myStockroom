@@ -20,6 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
+import DetailPanel from '../../appStock/DetailPanel'
 
 const ListDevice = () => {
   const [device, setDevices] = useState()
@@ -145,6 +146,24 @@ const ListDevice = () => {
                 icon: <AddIcon />,
                 color: 'info',
               },
+              {
+                name: 'Добавить на склад',
+                path: `add_to_stock/${row.original.id}`,
+                icon: <AddIcon />,
+                color: 'success',
+              },
+              {
+                name: 'Переместить на рабочее место',
+                path: `move_device/${row.original.id}`,
+                icon: <EditIcon />,
+                color: 'success',
+              },
+              {
+                name: 'Добавить запись в историю',
+                path: `add_device_history/${row.original.id}`,
+                icon: <AddIcon />,
+                color: 'warning',
+              },
             ],
           }) => [
             menuActions.map((item, index) => (
@@ -221,22 +240,15 @@ const ListDevice = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                {/*<TreeItem nodeId="3" label="История использования">
-                                    <TableContainer component={Paper}>
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell >Количество</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell>{row.original.id}</TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </TreeItem>*/}
+                <TreeItem itemId='3' label='История использования устройства'>
+                  <DetailPanel row={row.original.id} link='/stockroom/history_dev_list/filter/' />
+                </TreeItem>
+                <TreeItem itemId='4' label='История использования расходников'>
+                  <DetailPanel row={row.original.id} link='/stockroom/history_con_list/device/filter/' />
+                </TreeItem>
+                <TreeItem itemId='5' label='История использования комплектующих'>
+                  <DetailPanel row={row.original.id} link='/stockroom/history_acc_list/device/filter/' />
+                </TreeItem>
               </SimpleTreeView>
             ) : null
           }
