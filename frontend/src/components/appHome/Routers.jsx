@@ -33,8 +33,10 @@ import ListDeviceCategory from '../appDevice/DeviceCategories/ListDeviceCategory
 import CreateDeviceCategory from '../appDevice/DeviceCategories/CreateDeviceCategory'
 import UpdateDeviceCategory from '../appDevice/DeviceCategories/UpdateDeviceCategory'
 import RemoveDeviceCategory from '../appDevice/DeviceCategories/RemoveDeviceCategory'
-import AddToDeviceConsumable from '../appDevice/Device/AdToDeviceConsumable'
-import AddToDeviceAccessories from '../appDevice/Device/AdToDeviceAccessories'
+import AddToDeviceConsumable from '../appDevice/Device/AddToDeviceConsumable'
+import AddToDeviceAccessories from '../appDevice/Device/AddToDeviceAccessories'
+import AddToStockDevice from '../appDevice/Device/AddToStockDevice'
+import MoveDevice from '../appDevice/Device/MoveDevice'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
 import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'
@@ -45,6 +47,9 @@ import ListHistoryAccessories from '../appStock/Accessories/ListHistoryAccessori
 import ListConsumptionAccessories from '../appStock/Accessories/ListConsumptionAccessories'
 import RemoveFromStockAccessories from '../appStock/Accessories/RemoveFromStockAccessories'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
+import ListHistoryDevice from '../appStock/Devices/ListHistoryDevice'
+import RemoveFromStockDevice from '../appStock/Devices/RemoveFromStockDevice'
+import AddHistoryToDevice from '../appDevice/Device/AddHistoryToDevice'
 import IndexCounterparty from '../appCounterparty/IndexCounterparty'
 import ListManufacturer from '../appCounterparty/appManufacturer/ListManufacturer'
 import CreateManufacturer from '../appCounterparty/appManufacturer/CreateManufacturer'
@@ -327,7 +332,18 @@ const Routers = createBrowserRouter([
     path: '/device/list/add_accessories/:id',
     element: [<NavBar key='add_accessories' drawerWidth={customWidth} content={<AddToDeviceAccessories />} />],
   },
-  { path: '/device', element: [<NavBar key='device' drawerWidth={customWidth} content={<IndexDevice />} />] },
+  {
+    path: '/device/list/add_to_stock/:id',
+    element: [<NavBar key='add_accessories' drawerWidth={customWidth} content={<AddToStockDevice />} />],
+  },
+  {
+    path: '/device/list/move_device/:id',
+    element: [<NavBar key='move_device' drawerWidth={customWidth} content={<MoveDevice />} />],
+  },
+  {
+    path: '/device/list/add_device_history/:id',
+    element: [<NavBar key='add_device_history' drawerWidth={customWidth} content={<AddHistoryToDevice />} />],
+  },
   {
     path: '/device/categories/list',
     element: [<NavBar key='device_groups' drawerWidth={customWidth} content={<ListDeviceCategory />} />],
@@ -424,6 +440,18 @@ const Routers = createBrowserRouter([
   {
     path: '/stock/device/list/:slug',
     element: [<NavBar key='stock_dev_groups' drawerWidth={customWidth} content={<ListStockDevices />} />],
+  },
+  {
+    path: '/stock/device/list/remove_from_stock/:stock_model',
+    element: [<NavBar key='remove_device_from_stock' drawerWidth={customWidth} content={<RemoveFromStockDevice />} />],
+  },
+  {
+    path: '/history/device/list',
+    element: [<NavBar key='history_dev_list' drawerWidth={customWidth} content={<ListHistoryDevice />} />],
+  },
+  {
+    path: '/history/device/list/:slug',
+    element: [<NavBar key='history_dev_groups' drawerWidth={customWidth} content={<ListHistoryDevice />} />],
   },
   // Signature
   { path: '/signature', element: [<NavBar key='signature' drawerWidth={customWidth} content={<IndexSignature />} />] },

@@ -10,8 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import PrintError from '../../Errors/Error'
 import useCSRF from '../../Hooks/CSRF'
 import LinearIndeterminate from '../../appHome/ProgressBar'
-import AutocompleteField from '../../Forms/AutocompleteField.jsx'
-import MultilineField from '../../Forms/MultilineField.jsx'
 
 const darkTheme = createTheme({
   palette: {
@@ -19,17 +17,14 @@ const darkTheme = createTheme({
   },
 })
 
-const AddToDeviceConsumable = () => {
+const AddToStockDevice = () => {
   const CSRF = useCSRF()
-  const deviceParam = useParams()
-  const deviceId = deviceParam.id
+  const conParam = useParams()
+  const conId = conParam.id
   const [user, setUser] = useState(null)
-  const [consumable, setConsumable] = useState(null)
   const [errorEdit, setErrorEdit] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [loadingCons, setLoadingCons] = useState(true)
   const [error, setError] = useState(null)
-  const [errorCons, setErrorCons] = useState(null)
   const navigate = useNavigate()
 
   const GetUser = useCallback(async () => {
@@ -44,35 +39,23 @@ const AddToDeviceConsumable = () => {
     }
   })
 
-  const GetDevice = useCallback(async () => {
-    try {
-      await AxiosInstanse.get(`devices/device_list/${deviceId}/`).then((res) => {
-        setConsumable(res.data.consumable)
-      })
-    } catch (error) {
-      setErrorCons(error.message)
-    } finally {
-      setLoadingCons(false)
-    }
-  })
-
   useEffect(() => {
-    Promise.all([GetUser(), GetDevice()])
+    GetUser()
   }, [])
 
   const defaultValues = {
     model_id: '',
-    device: '',
     quantity: '',
-    note: '',
+    number_rack: '',
+    number_shelf: '',
     username: '',
   }
 
   const schema = yup
     .object({
-      model_id: yup.string().required('Обязательное поле'),
       quantity: yup.number('Введите целое число').integer('Введите целое число').required('Обязательное поле'),
-      note: yup.string().max(1000, 'Должно быть короче 1000 символов').required('Обязательное поле'),
+      number_rack: yup.number('Введите целое число').integer('Введите целое число').required('Обязательное поле'),
+      number_shelf: yup.number('Введите целое число').integer('Введите целое число').required('Обязательное поле'),
     })
     .required()
 
@@ -80,12 +63,12 @@ const AddToDeviceConsumable = () => {
 
   const submission = useCallback((data) => {
     AxiosInstanse.post(
-      `stockroom/add_to_device_consumable/`,
+      `stockroom/add_to_stock_device/`,
       {
-        model_id: data.model_id,
-        device: deviceId,
+        model_id: conId,
         quantity: data.quantity,
-        note: data.note,
+        number_rack: data.number_rack,
+        number_shelf: data.number_shelf,
         username: user.username,
       },
       {
@@ -106,26 +89,13 @@ const AddToDeviceConsumable = () => {
       <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '10px' }}>
         <Typography>Добавить на склад</Typography>
       </Box>
-      {loading && loadingCons ? (
+      {loading ? (
         <LinearIndeterminate />
       ) : error ? (
         <PrintError error={error} />
       ) : (
         <Box sx={{ display: 'flex', width: '100%', boxShadow: 3, padding: 4, flexDirection: 'column' }}>
           <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-around', marginBottom: '40px' }}>
-            <AutocompleteField
-              loading={loadingCons}
-              error={errorCons}
-              name='model_id'
-              id='model_id'
-              control={control}
-              width={'30%'}
-              options={consumable}
-              label='Выберите расходник'
-              placeholder='Выберите расходник'
-              noOptionsText='Расходник не обнаружен'
-              optionLabel={(option) => `${option.name}`}
-            />
             <CustomTextField
               label='Количество'
               placeholder='Укажите количество'
@@ -134,14 +104,21 @@ const AddToDeviceConsumable = () => {
               width={'30%'}
               type='number'
             />
-            <MultilineField
-              label='Примечание'
-              placeholder='Введите примечание'
-              name='note'
+            <CustomTextField
+              label='Номер стеллажа'
+              placeholder='Укажите стеллаж'
+              name='number_rack'
               control={control}
               width={'30%'}
-              rows={4}
-              maxlength='1000'
+              type='number'
+            />
+            <CustomTextField
+              label='Номер полки'
+              placeholder='Укажите полку'
+              name='number_shelf'
+              control={control}
+              width={'30%'}
+              type='number'
             />
           </Box>
           {!errorEdit ? (
@@ -169,4 +146,4 @@ const AddToDeviceConsumable = () => {
   )
 }
 
-export default AddToDeviceConsumable
+export default AddToStockDevice
