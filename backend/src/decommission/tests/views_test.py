@@ -1,242 +1,313 @@
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
+import pytest
 
+from core.tests.login_test import auto_login_user  # noqa: F401
+from counterparty.models import Manufacturer
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
-from device.models import Device
+from device.models import Device, DeviceCat
+from stockroom.models.devices import HistoryDev
 
 
 # Decommission
-class DecommissionViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestDecommissionCategoriesEndpoints:
+    endpoint = "/api/decommission/decommission_cat_list/"
+
+    @pytest.mark.django_db
+    def testing_decommission_cat_list(self, auto_login_user):  # noqa: F811
+        CategoryDec.objects.bulk_create(
+            [
+                CategoryDec(name="category_01", slug="category_01"),
+                CategoryDec(name="category_02", slug="category_02"),
+                CategoryDec(name="category_03", slug="category_03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Decommission.objects.create(stock_model=dev)
-        assert Decommission.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Списание устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:decom_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 20)
-
-    def test_lists_all_decommission(self):
-        links = ["decommission:decom_list", "decommission:decom_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["decommission_list"]) == 9)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
 
 
-class DecommissionCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestDecommissionEndpoints:
+    endpoint = "/api/decommission/decommission_list/"
+
+    @pytest.mark.django_db
+    def testing_decommission_list(self, auto_login_user):  # noqa: F811
+        DeviceCat.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = DeviceCat.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Device.objects.bulk_create(
+            [
+                Device(name="01", categories=cat, manufacturer=man, quantity=1),
+                Device(name="02"),
+                Device(name="03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        CategoryDec.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Decommission.objects.create(
-                stock_model=dev,
-                categories=CategoryDec.objects.get(slug="some_category"),
-            )
-        assert Decommission.objects.count() == 149
-        assert CategoryDec.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Списание устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:decom_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
-            )
+        CategoryDec.objects.get_or_create(name="some_category", slug="some_category")
+        Decommission.objects.bulk_create(
+            [
+                Decommission(
+                    stock_model=Device.objects.get(name="01"),
+                    categories=CategoryDec.objects.get(name="some_category"),
+                    date="2022-03-03",
+                ),
+                Decommission(stock_model=Device.objects.get(name="02")),
+                Decommission(stock_model=Device.objects.get(name="03")),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"]["name"] == "01"
+        assert data[0]["stock_model"]["categories"]["name"] == "category_01"
+        assert data[0]["stock_model"]["categories"]["slug"] == "category_01"
+        assert data[0]["stock_model"]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[0]["date"] == "2022-03-03"
+        assert data[1]["stock_model"]["name"] == "02"
+        assert data[2]["stock_model"]["name"] == "03"
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 20)
 
-    def test_lists_all_stockroom_consumables(self):
-        resp = self.client.get(
-            reverse(
-                "decommission:decom_category",
-                kwargs={"category_slug": CategoryDec.objects.get(slug="some_category")},
-            )
-            + "?page=8"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["decommission_list"]) == 9)
+class TestAddToDecommissionEndpoints:
+    endpoint = "/api/decommission/add_to_decommission/"
+
+    @pytest.mark.django_db
+    def test_add_to_decommission(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        device_id = device.id
+        expected_json = {
+            "device_id": device_id,
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        decom = Decommission.objects.get(stock_model=device_id)
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert Decommission.objects.count() == 1
+        assert HistoryDev.objects.count() == 1
+        assert decom.stock_model.name == "some_device"
+        assert history.user == "username"
+        assert history.status == "Списание"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "device_id": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "device_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "username": "data",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Device matching query does not exist."
+
+
+class TestRemoveFromDecommissionEndpoints:
+    endpoint = "/api/decommission/remove_from_decommission/"
+
+    @pytest.mark.django_db
+    def test_remove_from_decommission(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        Decommission.objects.get_or_create(stock_model=device)
+        expected_json = {"device_id": device.id, "username": "username"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert Decommission.objects.count() == 0
+        assert HistoryDev.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 0
+        assert history.status == "Удаление"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"device_id": "", "username": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
 
 
 # Disposal
-class DisposalViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestDisposalCategoriesEndpoints:
+    endpoint = "/api/decommission/disposal_cat_list/"
+
+    @pytest.mark.django_db
+    def testing_disposal_cat_list(self, auto_login_user):  # noqa: F811
+        CategoryDis.objects.bulk_create(
+            [
+                CategoryDis(name="category_01", slug="category_01"),
+                CategoryDis(name="category_02", slug="category_02"),
+                CategoryDis(name="category_03", slug="category_03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Disposal.objects.create(stock_model=dev)
-        assert Disposal.objects.count() == 149
-
-    def test_context_data_in_list(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Утилизация устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:disp_search"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_pagination_is_ten(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 20)
-
-    def test_lists_all_disposal(self):
-        links = ["decommission:disp_list", "decommission:disp_search"]
-        for link in links:
-            resp = self.client.get(reverse(link) + "?page=8")
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["disposal_list"]) == 9)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
 
 
-class DisposalCategoryViewTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+class TestDisposalEndpoints:
+    endpoint = "/api/decommission/disposal_list/"
+
+    @pytest.mark.django_db
+    def testing_decommission_list(self, auto_login_user):  # noqa: F811
+        DeviceCat.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = DeviceCat.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Device.objects.bulk_create(
+            [
+                Device(name="01", categories=cat, manufacturer=man, quantity=1),
+                Device(name="02"),
+                Device(name="03"),
+            ]
         )
-
-    @classmethod
-    def setUpTestData(cls):
-        number_in_stock = 149
-        CategoryDis.objects.create(name="some_category", slug="some_category")
-        for stocks_num in range(number_in_stock):
-            dev = Device.objects.create(name="Christian %s" % stocks_num)
-            Disposal.objects.create(
-                stock_model=dev,
-                categories=CategoryDis.objects.get(slug="some_category"),
-            )
-        assert Disposal.objects.count() == 149
-        assert CategoryDis.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Утилизация устройств"},
-            {"data_key": "searchlink", "data_value": "decommission:disp_search"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
-            )
+        CategoryDis.objects.get_or_create(name="some_category", slug="some_category")
+        Disposal.objects.bulk_create(
+            [
+                Disposal(
+                    stock_model=Device.objects.get(name="01"),
+                    categories=CategoryDis.objects.get(name="some_category"),
+                    date="2022-03-03",
+                ),
+                Disposal(stock_model=Device.objects.get(name="02")),
+                Disposal(stock_model=Device.objects.get(name="03")),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["stock_model"]["name"] == "01"
+        assert data[0]["stock_model"]["categories"]["name"] == "category_01"
+        assert data[0]["stock_model"]["categories"]["slug"] == "category_01"
+        assert data[0]["stock_model"]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["categories"]["name"] == "some_category"
+        assert data[0]["categories"]["slug"] == "some_category"
+        assert data[0]["date"] == "2022-03-03"
+        assert data[1]["stock_model"]["name"] == "02"
+        assert data[2]["stock_model"]["name"] == "03"
 
-    def test_pagination_is_ten(self):
-        resp = self.client.get(
-            reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 20)
 
-    def test_lists_all_disposal_categories(self):
-        resp = self.client.get(
-            reverse(
-                "decommission:disp_category",
-                kwargs={"category_slug": CategoryDis.objects.get(slug="some_category")},
-            )
-            + "?page=8"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["disposal_list"]) == 9)
+class TestAddToDisposalEndpoints:
+    endpoint = "/api/decommission/add_to_disposal/"
+
+    @pytest.mark.django_db
+    def test_add_to_decommission(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        device_id = device.id
+        expected_json = {
+            "device_id": device_id,
+            "username": "username",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        disp = Disposal.objects.get(stock_model=device_id)
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert Disposal.objects.count() == 1
+        assert HistoryDev.objects.count() == 1
+        assert disp.stock_model.name == "some_device"
+        assert history.user == "username"
+        assert history.status == "Утилизация"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "device_id": "",
+            "username": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_bad_request(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "device_id": "2c426393-51b3-4434-a90d-34e6ea1dfb01",
+            "username": "data",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+        assert response.data["error"] == "Device matching query does not exist."
+
+
+class TestRemoveFromDisposalEndpoints:
+    endpoint = "/api/decommission/remove_from_disposal/"
+
+    @pytest.mark.django_db
+    def test_remove_from_decommission(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        Disposal.objects.get_or_create(stock_model=device)
+        expected_json = {"device_id": device.id, "username": "username"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert Disposal.objects.count() == 0
+        assert HistoryDev.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 0
+        assert history.status == "Удаление"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"device_id": "", "username": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400

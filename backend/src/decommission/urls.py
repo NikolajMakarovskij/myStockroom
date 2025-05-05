@@ -1,30 +1,31 @@
-from django.urls import path
+from django.urls import include, path
+
+from .routers import router
 from .views import (
-    DecommissionView,
-    DecomCategoriesView,
-    DisposalView,
-    DispCategoriesView,
-    add_decommission,
-    remove_decommission,
-    add_disposal,
-    remove_disposal,
+    AddToDecommissionDeviceView,
+    AddToDisposalDeviceView,
     ExportDecomDevice,
     ExportDecomDeviceCategory,
     ExportDispDevice,
     ExportDispDeviceCategory,
+    RemoveFromDecommissionDeviceView,
+    RemoveFromDisposalDeviceView,
 )
 
 urlpatterns = [
+    path("", include(router.urls)),
     # Decommission
-    path("decom/", DecommissionView.as_view(), name="decom_list"),
-    path("decom/search", DecommissionView.as_view(), name="decom_search"),
+    # methods
     path(
-        "decom/category/<slug:category_slug>",
-        DecomCategoriesView.as_view(),
-        name="decom_category",
+        "add_to_decommission/",
+        AddToDecommissionDeviceView.as_view(),
+        name="add_to_decommission",
     ),
-    path("decom/add/<uuid:device_id>/", add_decommission, name="add_decom"),
-    path("decom/remove/<uuid:devices_id>/", remove_decommission, name="remove_decom"),
+    path(
+        "remove_from_decommission/",
+        RemoveFromDecommissionDeviceView.as_view(),
+        name="remove_from_decommission/",
+    ),
     path("decom/export/", ExportDecomDevice.as_view(), name="export_decom_device"),
     path(
         "decom/export/category/<slug:category_slug>",
@@ -32,15 +33,16 @@ urlpatterns = [
         name="export_decom_device_category",
     ),
     # Disposal
-    path("disposal/", DisposalView.as_view(), name="disp_list"),
-    path("disposal/search", DisposalView.as_view(), name="disp_search"),
     path(
-        "disposal/category/<slug:category_slug>",
-        DispCategoriesView.as_view(),
-        name="disp_category",
+        "add_to_disposal/",
+        AddToDisposalDeviceView.as_view(),
+        name="add_to_disposal",
     ),
-    path("disposal/add/<uuid:devices_id>/", add_disposal, name="add_disp"),
-    path("disposal/remove/<uuid:devices_id>/", remove_disposal, name="remove_disp"),
+    path(
+        "remove_from_disposal/",
+        RemoveFromDisposalDeviceView.as_view(),
+        name="remove_from_disposal/",
+    ),
     path("disposal/export/", ExportDispDevice.as_view(), name="export_disp_device"),
     path(
         "disposal/export/category/<slug:category_slug>",
