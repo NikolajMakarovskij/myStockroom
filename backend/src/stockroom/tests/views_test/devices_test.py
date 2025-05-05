@@ -343,3 +343,35 @@ class TestAddToDeviceHistoryEndpoints:
         response = client.post(self.endpoint, data=expected_json, format="json")
         assert response.status_code == 400
         assert response.data["error"] == "Device matching query does not exist."
+
+
+class TestRemoveFromStockDeviceEndpoints:
+    endpoint = "/api/stockroom/remove_from_stock_device/"
+
+    @pytest.mark.django_db
+    def test_remove_from_stock_device(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Device.objects.get_or_create(name="some_device")
+        device = Device.objects.get(name="some_device")
+        StockDev.objects.get_or_create(stock_model=device)
+        expected_json = {"model_id": device.id, "username": "username"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 201
+
+        history = HistoryDev.objects.get(stock_model="some_device")
+
+        assert StockDev.objects.count() == 0
+        assert HistoryDev.objects.count() == 1
+        assert history.user == "username"
+        assert history.quantity == 0
+        assert history.status == "Удаление"
+        assert history.note == ""
+
+    @pytest.mark.django_db
+    def test_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"device_id": "", "username": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
