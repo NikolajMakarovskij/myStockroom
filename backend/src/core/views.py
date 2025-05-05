@@ -1,31 +1,12 @@
-from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .utils import menu
-
 import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.http import require_POST
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
-
-# Главная
-class IndexView(LoginRequiredMixin, generic.TemplateView):
-    """
-    Главная
-    """
-
-    template_name = "index.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Главная страница"
-        context["menu"] = menu
-        return context
 
 
 # AUTH

@@ -34,11 +34,9 @@ from .views.devices import (
     MoveDeviceView,
     RemoveFromStockDeviceView,
 )
-from .views.index import StockroomIndexView
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("", StockroomIndexView.as_view(), name="stock_index"),
     # Consumables
     path(
         "consumption_con_list/",
