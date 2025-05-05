@@ -27,10 +27,6 @@ INSTALLED_APPS = [
     "decommission.apps.DecommissionConfig",
     "accounting.apps.AccountingConfig",
     "django.contrib.postgres",
-    "django_bootstrap5",
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django_select2",
     "import_export",
 ]
 
@@ -60,8 +56,6 @@ CELERY_BEAT_SCHEDULE: dict[list[str], str] = {}
 # end celery
 
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "project", "templates")
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -79,10 +73,6 @@ TEMPLATES = [
         },
     },
 ]
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -145,25 +135,16 @@ MAX_UPLOAD_SIZE = "104857600"
 
 CACHES = {
     "default": {
-        # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis:6379/1",
-        "db": "16",
-    },
-    "select2": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/2",
         "db": "16",
     },
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-SELECT2_CACHE_BACKEND = "select2"
 # end caches
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-LOGIN_REDIRECT_URL = "/home/"
 
 ROOT_URLCONF = "backend.urls"
 

@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth.models import User
-from django.urls import reverse
 from rest_framework.authtoken.models import Token
 
 
@@ -15,21 +14,6 @@ def auto_login_user(db, client):
         return client, user
 
     return make_auto_login
-
-
-@pytest.mark.django_db
-def test_view_unauthorized(auto_login_user):
-    client, user = auto_login_user()
-    url = reverse("core:index")
-    response = client.get(url)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_view_as_admin(admin_client):
-    url = reverse("core:index")
-    response = admin_client.get(url)
-    assert response.status_code == 200
 
 
 # DRF

@@ -17,7 +17,7 @@ urlpatterns = [
 
 urlpatterns += [
     path(
-        "decommission/",
+        "api/decommission/",
         include(("decommission.urls", "decommission"), namespace="decommission"),
     ),
     path(
