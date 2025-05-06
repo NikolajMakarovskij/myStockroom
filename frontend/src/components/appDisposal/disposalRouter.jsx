@@ -1,3 +1,4 @@
+import { React } from 'react'
 import ListDisposal from '../appDisposal/ListDisposal'
 import RemoveFromDisposal from '../appDisposal/RemoveFromDisposal'
 import ListHistoryDisposal from '../appDisposal/ListHistoryDisposal'

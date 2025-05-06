@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexStock from '../appStock/IndexStock'
 import ListStockConsumables from '../appStock/Consumables/ListStockConsumables'
 import ListHistoryConsumables from '../appStock/Consumables/ListHistoryConsumables'

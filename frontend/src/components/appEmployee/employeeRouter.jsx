@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexEmployee from '../appEmployee/IndexEmployee'
 import ListDepartament from '../appEmployee/Departament/ListDepartament'
 import CreateDepartament from '../appEmployee/Departament/CreateDepartament'

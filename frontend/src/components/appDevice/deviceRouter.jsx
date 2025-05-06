@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexDevice from '../appDevice/IndexDevice'
 import ListDevice from '../appDevice/Device/ListDevice'
 import CreateDevice from '../appDevice/Device/CreateDevice'

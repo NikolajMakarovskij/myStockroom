@@ -1,3 +1,4 @@
+import { React } from 'react'
 import ListStockAccessories from '../appStock/Accessories/ListStockAccessories'
 import ListHistoryAccessories from '../appStock/Accessories/ListHistoryAccessories'
 import ListConsumptionAccessories from '../appStock/Accessories/ListConsumptionAccessories'

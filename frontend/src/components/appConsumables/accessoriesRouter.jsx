@@ -1,3 +1,4 @@
+import { React } from 'react'
 import ListAccessories from '../appConsumables/Accessories/ListAccessories'
 import CreateAccessories from '../appConsumables/Accessories/CreateAccessories'
 import UpdateAccessories from '../appConsumables/Accessories/UpdateAccessories'
