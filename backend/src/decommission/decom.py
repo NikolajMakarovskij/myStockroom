@@ -1,31 +1,13 @@
 from typing import Any
 from uuid import UUID
 
-from django.conf import settings
-
-from decommission.models import CategoryDec, CategoryDis
 from device.models import Device
+
+from .models import CategoryDec, CategoryDis
 
 
 class Decom(object):
     """Class with decommission and disposal methods"""
-
-    # General methods
-    def __init__(self, request):
-        """
-        Initializes the decom
-        """
-        self.session = request.session
-        decom = self.session.get(settings.DECOM_SESSION_ID)
-        if not decom:
-            # save empty
-            decom = self.session[settings.DECOM_SESSION_ID] = {}
-        self.decom = decom
-
-    def save(self):
-        # Update session
-        self.session[settings.DECOM_SESSION_ID] = self.decom
-        self.session.modified = True
 
     # Decommission
     def add_category_decom(device_id: UUID) -> Any | None:  # type: ignore[misc]

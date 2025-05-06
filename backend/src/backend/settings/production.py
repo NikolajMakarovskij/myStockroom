@@ -68,7 +68,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
-                "stockroom.context_processors.stock",
             ],
         },
     },
@@ -167,9 +166,6 @@ CSRF_TRUSTED_ORIGINS = [
 # PROD ONLY
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
-
-STOCK_SESSION_ID = "stock"
-DECOM_SESSION_ID = "decom"
 
 # cores headers
 

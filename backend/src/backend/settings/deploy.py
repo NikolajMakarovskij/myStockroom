@@ -69,7 +69,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
-                "stockroom.context_processors.stock",
             ],
         },
     },
@@ -154,9 +153,6 @@ ROOT_URLCONF = "backend.urls"
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
 CSRF_TRUSTED_ORIGINS = ["http://0.0.0.0"]
-
-STOCK_SESSION_ID = "stock"
-DECOM_SESSION_ID = "decom"
 
 # cores headers
 

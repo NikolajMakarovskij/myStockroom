@@ -1,19 +1,8 @@
 import pytest
+
 from decommission.decom import Decom
 from decommission.models import CategoryDec, CategoryDis
 from device.models import Device, DeviceCat
-from django.conf import settings
-from django.contrib.auth.models import User
-
-
-def create_session(client):
-    """Creates a user and a session"""
-    User.objects.create_superuser("admin", "foo@foo.com", "admin")
-    client.login(username="admin", password="admin")
-    session = client.session
-    session[settings.DECOM_SESSION_ID] = "6fk7mglhnq7f3avej9rmlshjyrokal3l"
-    session.save()
-    return client
 
 
 def create_devices() -> Device:
