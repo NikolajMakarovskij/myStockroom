@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateAccounting = () => {
+export default function CreateAccounting() {
   const CSRF = useCSRF()
   const [cat, setCat] = useState()
   const [consumable, setConsumable] = useState()
@@ -239,5 +239,3 @@ const CreateAccounting = () => {
     </form>
   )
 }
-
-export default CreateAccounting

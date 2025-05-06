@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateDepartament = () => {
+export default function UpdateDepartament() {
   const CSRF = useCSRF()
   const depParam = useParams()
   const depId = depParam.id
@@ -122,5 +122,3 @@ const UpdateDepartament = () => {
     </div>
   )
 }
-
-export default UpdateDepartament

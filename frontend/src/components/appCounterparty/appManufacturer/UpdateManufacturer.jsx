@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateManufacturer = () => {
+export default function UpdateManufacturer() {
   const CSRF = useCSRF()
   const mnfParam = useParams()
   const mnfId = mnfParam.id
@@ -147,5 +147,3 @@ const UpdateManufacturer = () => {
     </>
   )
 }
-
-export default UpdateManufacturer

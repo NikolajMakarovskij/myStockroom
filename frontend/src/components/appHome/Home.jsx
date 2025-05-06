@@ -67,8 +67,6 @@ const HomeContent = [
   },
 ]
 
-const Home = () => {
+export default function Home() {
   return <GridCards content={HomeContent} />
 }
-
-export default Home

@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdatePost = () => {
+export default function UpdatePost() {
   const CSRF = useCSRF()
   const postParam = useParams()
   const postId = postParam.id
@@ -160,5 +160,3 @@ const UpdatePost = () => {
     </div>
   )
 }
-
-export default UpdatePost

@@ -20,7 +20,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateDevice = () => {
+export default function CreateDevice() {
   const CSRF = useCSRF()
   const [category, setCategory] = useState('')
   const [MF, setMF] = useState()
@@ -337,5 +337,3 @@ const CreateDevice = () => {
     </>
   )
 }
-
-export default CreateDevice

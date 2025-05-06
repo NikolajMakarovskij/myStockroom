@@ -9,7 +9,7 @@ import PrintError from '../../Errors/Error'
 import DialogDeviceDetail from '../Devices/DialogDeviceDetail'
 import DialogAccessoriesDetail from './DialogAccessoriesDetail'
 
-const ListHistoryAccessories = () => {
+export default function ListHistoryAccessories() {
   const [consumable, setConsumables] = useState()
   const [category, setCategory] = useState('')
   const [loadingConsumables, setLoadingConsumables] = useState(true)
@@ -154,5 +154,3 @@ const ListHistoryAccessories = () => {
     </>
   )
 }
-
-export default ListHistoryAccessories

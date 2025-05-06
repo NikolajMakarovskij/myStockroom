@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveWorkplace = () => {
+export default function RemoveWorkplace() {
   const CSRF = useCSRF()
   const workplaceParam = useParams()
   const workplaceId = workplaceParam.id
@@ -90,5 +90,3 @@ const RemoveWorkplace = () => {
     </>
   )
 }
-
-export default RemoveWorkplace

@@ -21,7 +21,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateDevice = () => {
+export default function UpdateDevice() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.id
@@ -368,5 +368,3 @@ const UpdateDevice = () => {
     </>
   )
 }
-
-export default UpdateDevice

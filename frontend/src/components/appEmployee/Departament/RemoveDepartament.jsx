@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveDepartament = () => {
+export default function RemoveDepartament() {
   const CSRF = useCSRF()
   const depParam = useParams()
   const depId = depParam.id
@@ -98,5 +98,3 @@ const RemoveDepartament = () => {
     </div>
   )
 }
-
-export default RemoveDepartament

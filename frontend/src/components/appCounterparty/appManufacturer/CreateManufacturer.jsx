@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateManufacturer = () => {
+export default function CreateManufacturer() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -114,5 +114,3 @@ const CreateManufacturer = () => {
     </>
   )
 }
-
-export default CreateManufacturer

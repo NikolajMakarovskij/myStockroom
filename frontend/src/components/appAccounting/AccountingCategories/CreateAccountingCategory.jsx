@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateAccountingCategory = () => {
+export default function CreateAccountingCategory() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -113,5 +113,3 @@ const CreateAccountingCategory = () => {
     </>
   )
 }
-
-export default CreateAccountingCategory

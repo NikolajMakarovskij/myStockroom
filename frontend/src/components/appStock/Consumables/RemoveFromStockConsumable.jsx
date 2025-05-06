@@ -14,7 +14,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveFromStockConsumable = () => {
+export default function RemoveFromStockConsumable() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.stock_model
@@ -103,5 +103,3 @@ const RemoveFromStockConsumable = () => {
     </form>
   )
 }
-
-export default RemoveFromStockConsumable

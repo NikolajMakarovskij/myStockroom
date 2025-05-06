@@ -12,8 +12,6 @@ const CounterpartyContent = [
 ]
 export { CounterpartyContent }
 
-const IndexCounterparty = () => {
+export default function IndexCounterparty() {
   return <GridCards content={CounterpartyContent} />
 }
-
-export default IndexCounterparty

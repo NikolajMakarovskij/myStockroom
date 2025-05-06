@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateConsumableCategory = () => {
+export default function CreateConsumableCategory() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -113,5 +113,3 @@ const CreateConsumableCategory = () => {
     </>
   )
 }
-
-export default CreateConsumableCategory

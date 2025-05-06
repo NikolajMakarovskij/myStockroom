@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveManufacturer = () => {
+export default function RemoveManufacturer() {
   const CSRF = useCSRF()
   const mnfParam = useParams()
   const mnfId = mnfParam.id
@@ -92,5 +92,3 @@ const RemoveManufacturer = () => {
     </>
   )
 }
-
-export default RemoveManufacturer

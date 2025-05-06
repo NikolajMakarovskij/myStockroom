@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateAccessories = () => {
+export default function CreateAccessories() {
   const CSRF = useCSRF()
   const [cat, setCat] = useState()
   const [MF, setMF] = useState()
@@ -211,5 +211,3 @@ const CreateAccessories = () => {
     </form>
   )
 }
-
-export default CreateAccessories

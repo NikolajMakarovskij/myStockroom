@@ -9,7 +9,7 @@ import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListAccounting = () => {
+export default function ListAccounting() {
   const [accounting, setAccounting] = useState()
   const [category, setCategory] = useState('')
   const [loadingAccounting, setLoadingAccounting] = useState(true)
@@ -143,5 +143,3 @@ const ListAccounting = () => {
     </>
   )
 }
-
-export default ListAccounting

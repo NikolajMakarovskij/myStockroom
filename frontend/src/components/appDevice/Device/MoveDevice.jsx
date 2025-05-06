@@ -18,7 +18,7 @@ const darkTheme = createTheme({
   },
 })
 
-const MoveDevice = () => {
+export default function MoveDevice() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.id
@@ -156,5 +156,3 @@ const MoveDevice = () => {
     </form>
   )
 }
-
-export default MoveDevice

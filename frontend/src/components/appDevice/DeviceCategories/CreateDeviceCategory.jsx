@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateDeviceCategory = () => {
+export default function CreateDeviceCategory() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -113,5 +113,3 @@ const CreateDeviceCategory = () => {
     </>
   )
 }
-
-export default CreateDeviceCategory

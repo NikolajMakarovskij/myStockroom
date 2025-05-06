@@ -8,7 +8,7 @@ import MaterialReactTableList from '../../Tables/MaterialReactTableList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListPost = () => {
+export default function ListPost() {
   const [post, setPosts] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -77,5 +77,3 @@ const ListPost = () => {
     </>
   )
 }
-
-export default ListPost

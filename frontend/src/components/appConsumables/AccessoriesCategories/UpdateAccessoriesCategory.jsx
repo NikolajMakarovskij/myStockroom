@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateAccessoriesCategory = () => {
+export default function UpdateAccessoriesCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -143,5 +143,3 @@ const UpdateAccessoriesCategory = () => {
     </>
   )
 }
-
-export default UpdateAccessoriesCategory

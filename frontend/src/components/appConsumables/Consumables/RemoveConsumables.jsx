@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveConsumables = () => {
+export default function RemoveConsumables() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -93,5 +93,3 @@ const RemoveConsumables = () => {
     </>
   )
 }
-
-export default RemoveConsumables

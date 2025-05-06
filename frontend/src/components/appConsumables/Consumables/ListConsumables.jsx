@@ -23,7 +23,7 @@ import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 import DetailPanel from '../../appStock/DetailPanel'
 
-const ListConsumables = () => {
+export default function ListConsumables() {
   const [consumable, setConsumables] = useState(null)
   const [category, setCategory] = useState(null)
   const [loadingConsumables, setLoadingConsumables] = useState(true)
@@ -215,5 +215,3 @@ const ListConsumables = () => {
     </>
   )
 }
-
-export default ListConsumables

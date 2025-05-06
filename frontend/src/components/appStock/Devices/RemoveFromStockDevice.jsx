@@ -14,7 +14,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveFromStockDevice = () => {
+export default function RemoveFromStockDevice() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.stock_model
@@ -103,5 +103,3 @@ const RemoveFromStockDevice = () => {
     </form>
   )
 }
-
-export default RemoveFromStockDevice

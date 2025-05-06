@@ -75,8 +75,6 @@ const StockContent = [
 ]
 export { StockContent }
 
-const IndexStock = () => {
+export default function IndexStock() {
   return <GridCards content={StockContent} />
 }
-
-export default IndexStock
