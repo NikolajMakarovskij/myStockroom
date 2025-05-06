@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from consumables.models import Accessories
-from core.utils import DataMixin
 
 from ..models.accessories import CategoryAcc, HistoryAcc, StockAcc
 from ..resources import AccessoriesConsumptionResource, StockAccResource
@@ -27,7 +26,7 @@ from ..stock.stock import AccStock
 
 
 # accessories
-class StockAccCatListRestView(DataMixin, viewsets.ModelViewSet[CategoryAcc]):
+class StockAccCatListRestView(viewsets.ModelViewSet[CategoryAcc]):
     queryset = CategoryAcc.objects.all()
     serializer_class = StockAccCatSerializer
     # permission_classes = [permissions.AllowAny]
@@ -38,7 +37,7 @@ class StockAccCatListRestView(DataMixin, viewsets.ModelViewSet[CategoryAcc]):
         return Response(serializer.data)
 
 
-class StockAccListRestView(DataMixin, viewsets.ModelViewSet[StockAcc]):
+class StockAccListRestView(viewsets.ModelViewSet[StockAcc]):
     queryset = StockAcc.objects.all()
     serializer_class = StockAccListSerializer
     # permission_classes = [permissions.AllowAny]
@@ -50,7 +49,7 @@ class StockAccListRestView(DataMixin, viewsets.ModelViewSet[StockAcc]):
 
 
 # History
-class HistoryAccListRestView(DataMixin, viewsets.ModelViewSet[HistoryAcc]):
+class HistoryAccListRestView(viewsets.ModelViewSet[HistoryAcc]):
     queryset = HistoryAcc.objects.all()
     serializer_class = HistoryAccModelSerializer
     # permission_classes = [permissions.AllowAny]

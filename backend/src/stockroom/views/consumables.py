@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from consumables.models import Consumables
-from core.utils import DataMixin
 
 from ..models.consumables import History, StockCat, Stockroom
 from ..resources import ConsumableConsumptionResource, StockConResource
@@ -26,7 +25,7 @@ from ..serializers.stock import (
 from ..stock.stock import ConStock
 
 
-class StockConCatListRestView(DataMixin, viewsets.ModelViewSet[StockCat]):
+class StockConCatListRestView(viewsets.ModelViewSet[StockCat]):
     queryset = StockCat.objects.all()
     serializer_class = StockConCatSerializer
     # permission_classes = [permissions.AllowAny]
@@ -37,7 +36,7 @@ class StockConCatListRestView(DataMixin, viewsets.ModelViewSet[StockCat]):
         return Response(serializer.data)
 
 
-class StockConListRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
+class StockConListRestView(viewsets.ModelViewSet[Stockroom]):
     queryset = Stockroom.objects.all()
     serializer_class = StockConListSerializer
     # permission_classes = [permissions.AllowAny]
@@ -92,7 +91,7 @@ class ExportStockConsumableCategory(View):
 
 
 # History
-class HistoryConListRestView(DataMixin, viewsets.ModelViewSet[History]):
+class HistoryConListRestView(viewsets.ModelViewSet[History]):
     queryset = History.objects.all()
     serializer_class = HistoryModelSerializer
     # permission_classes = [permissions.AllowAny]
