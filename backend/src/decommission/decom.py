@@ -1,12 +1,9 @@
 from typing import Any
 from uuid import UUID
 
-from django.conf import settings
-
-from django.conf import settings
-
-from decommission.models import CategoryDec, CategoryDis
 from device.models import Device
+
+from .models import CategoryDec, CategoryDis
 
 
 class Decom(object):
@@ -16,31 +13,6 @@ class Decom(object):
     Returns:
         Decom (Decom): _description_
     """
-
-    # General methods
-    def __init__(self, request):
-        """_init_
-
-        Returns:
-            self (Decom): _decom class with django session_
-        """
-        self.session = request.session
-        decom = self.session.get(settings.DECOM_SESSION_ID)
-        if not decom:
-            # save empty
-            decom = self.session[settings.DECOM_SESSION_ID] = {}
-        self.decom = decom
-
-    def save(self):
-        """_save_
-        save modified session
-
-        Returns:
-            self (Decom): _decom class with django session_
-        """
-        # Update session
-        self.session[settings.DECOM_SESSION_ID] = self.decom
-        self.session.modified = True
 
     # Decommission
     def add_category_decom(device_id: UUID) -> Any | None:  # type: ignore[misc]

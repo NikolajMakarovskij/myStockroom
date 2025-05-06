@@ -7,7 +7,6 @@ from stockroom.stock.stock import ConStock
 from stockroom.tests.stock_test.stock_test import (
     add_consumables_in_devices,
     create_consumable,
-    create_session,
 )
 
 
@@ -64,9 +63,8 @@ def test_stock_create_history():
 
 
 @pytest.mark.django_db
-def test_stock_add_consumable(client):
+def test_stock_add_consumable():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     consumable = create_consumable()
     quantity = 5
     number_rack = 3
@@ -102,9 +100,8 @@ def test_stock_add_consumable(client):
 
 
 @pytest.mark.django_db
-def test_stock_add_consumable_not_category(client):
+def test_stock_add_consumable_not_category():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     from consumables.models import Consumables
 
     Consumables.objects.create(name="my_consumable")
@@ -141,9 +138,8 @@ def test_stock_add_consumable_not_category(client):
 
 
 @pytest.mark.django_db
-def test_stock_update_consumable(client):
+def test_stock_update_consumable():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     consumable = create_consumable()
     quantity = 5
     number_rack = 3
@@ -174,9 +170,8 @@ def test_stock_update_consumable(client):
 
 
 @pytest.mark.django_db
-def test_stock_remove_consumable(client):
+def test_stock_remove_consumable():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     consumable = create_consumable()
     quantity = 5
     number_rack = 3
@@ -199,11 +194,10 @@ def test_stock_remove_consumable(client):
 
 
 @pytest.mark.django_db
-def test_stock_device_add_consumable(client):
+def test_stock_device_add_consumable():
     """Checks the operation of the add_consumable method of the Stock class"""
     from device.models import Device
 
-    create_session(client)
     consumable = create_consumable()
     Device.objects.create(name="device")
     device = Device.objects.get(name="device")

@@ -2,7 +2,6 @@ import datetime
 from dataclasses import dataclass
 from uuid import UUID
 
-from django.conf import settings
 from django.db.models import Model
 
 from device.models import Device
@@ -16,23 +15,6 @@ class BaseStock(object):
     stock_model: type[Model] = Model
     stock_category: type[Model] = Model
     history_model: type[Model] = Model
-
-    def __init__(
-        self,
-        request,
-    ):
-        """
-        Initializes the stock
-        """
-        self.session = request.session
-        stock = self.session.get(settings.STOCK_SESSION_ID)
-        if not stock:
-            stock = self.session[settings.STOCK_SESSION_ID] = {}
-        self.stock = stock
-
-    def save(self):
-        self.session[settings.STOCK_SESSION_ID] = self.stock
-        self.session.modified = True
 
     @classmethod
     def add_category(cls, model_id: UUID) -> Model | None:

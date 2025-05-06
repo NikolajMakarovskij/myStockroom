@@ -7,7 +7,6 @@ from stockroom.stock.stock import AccStock
 from stockroom.tests.stock_test.stock_test import (
     add_consumables_in_devices,
     create_accessories,
-    create_session,
 )
 
 
@@ -64,9 +63,8 @@ def test_stock_acc_create_history():
 
 
 @pytest.mark.django_db
-def test_stock_add_accessories(client):
+def test_stock_add_accessories():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     accessories = create_accessories()
     quantity = 5
     number_rack = 3
@@ -102,9 +100,8 @@ def test_stock_add_accessories(client):
 
 
 @pytest.mark.django_db
-def test_stock_acc_add_accessories_not_category(client):
+def test_stock_acc_add_accessories_not_category():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     from consumables.models import Accessories
 
     Accessories.objects.create(name="my_consumable")
@@ -141,9 +138,8 @@ def test_stock_acc_add_accessories_not_category(client):
 
 
 @pytest.mark.django_db
-def test_stock_acc_update_accessories(client):
+def test_stock_acc_update_accessories():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     accessories = create_accessories()
     quantity = 5
     number_rack = 3
@@ -174,9 +170,8 @@ def test_stock_acc_update_accessories(client):
 
 
 @pytest.mark.django_db
-def test_stock_acc_remove_accessories(client):
+def test_stock_acc_remove_accessories():
     """Checks the operation of the remove_accessories method of the Stock class"""
-    create_session(client)
     accessories = create_accessories()
     quantity = 5
     number_rack = 3
@@ -199,11 +194,10 @@ def test_stock_acc_remove_accessories(client):
 
 
 @pytest.mark.django_db
-def test_stock_device_acc_add_accessories(client):
+def test_stock_device_acc_add_accessories():
     """Checks the operation of the device_add_accessories method of the Stock class"""
     from device.models import Device
 
-    create_session(client)
     accessories = create_accessories()
     Device.objects.get_or_create(name="device")
     device = Device.objects.get(name="device")

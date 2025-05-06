@@ -1,19 +1,8 @@
-from consumables.models import AccCat, Accessories, Categories, Consumables
-from device.models import Device, DeviceCat
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.db.models import Model
 from django.db.models.query import QuerySet
 
-
-def create_session(client):
-    """Creates a user and a session"""
-    User.objects.create_superuser("admin", "foo@foo.com", "admin")
-    client.login(username="admin", password="admin")
-    session = client.session
-    session[settings.STOCK_SESSION_ID] = "6fk7mglhnq7f3avej9rmlshjyrokal3l"
-    session.save()
-    return client
+from consumables.models import AccCat, Accessories, Categories, Consumables
+from device.models import Device, DeviceCat
 
 
 def create_consumable() -> Model:

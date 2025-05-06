@@ -4,7 +4,7 @@ import pytest
 
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.stock.stock import DevStock
-from stockroom.tests.stock_test.stock_test import create_devices, create_session
+from stockroom.tests.stock_test.stock_test import create_devices
 
 
 @pytest.mark.django_db
@@ -57,9 +57,8 @@ def test_stock_dev_create_history():
 
 
 @pytest.mark.django_db
-def test_stock_add_devices(client):
+def test_stock_add_devices():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     devices = create_devices()
     quantity = 5
     number_rack = 3
@@ -94,9 +93,8 @@ def test_stock_add_devices(client):
 
 
 @pytest.mark.django_db
-def test_stock_dev_add_device_not_category(client):
+def test_stock_dev_add_device_not_category():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     from device.models import Device
 
     Device.objects.create(name="my_consumable")
@@ -132,9 +130,8 @@ def test_stock_dev_add_device_not_category(client):
 
 
 @pytest.mark.django_db
-def test_stock_dev_update_device(client):
+def test_stock_dev_update_device():
     """Checks the operation of the add_consumable method of the Stock class"""
-    create_session(client)
     devices = create_devices()
     quantity = 5
     number_rack = 3
@@ -164,9 +161,8 @@ def test_stock_dev_update_device(client):
 
 
 @pytest.mark.django_db
-def test_stock_dev_remove_device(client):
+def test_stock_dev_remove_device():
     """Checks the operation of the remove_accessories method of the Stock class"""
-    create_session(client)
     devices = create_devices()
     quantity = 5
     number_rack = 3
@@ -194,9 +190,8 @@ def test_stock_dev_remove_device(client):
 
 
 @pytest.mark.django_db
-def test_stock_move_device(client):
+def test_stock_move_device():
     """Checks the operation of the remove_accessories method of the Stock class"""
-    create_session(client)
     from workplace.models import Workplace
 
     Workplace.objects.create(name="pc-004-r")
