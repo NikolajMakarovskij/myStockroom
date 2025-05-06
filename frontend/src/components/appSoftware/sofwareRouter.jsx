@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexSoftware from '../appSoftware/IndexSoftware'
 import ListOS from '../appSoftware/OS/ListOS'
 import ListSofware from '../appSoftware/Software/ListSofware'

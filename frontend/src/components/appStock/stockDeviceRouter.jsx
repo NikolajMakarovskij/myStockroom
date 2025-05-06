@@ -1,3 +1,4 @@
+import { React } from 'react'
 import ListStockDevices from '../appStock/Devices/ListStockDevices'
 import ListHistoryDevice from '../appStock/Devices/ListHistoryDevice'
 import RemoveFromStockDevice from '../appStock/Devices/RemoveFromStockDevice'

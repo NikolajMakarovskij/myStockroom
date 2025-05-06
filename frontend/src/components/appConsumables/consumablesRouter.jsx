@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexConsumables from '../appConsumables/IndexConsumables'
 import ListConsumables from '../appConsumables/Consumables/ListConsumables'
 import CreateConsumable from '../appConsumables/Consumables/CreateConsumable'

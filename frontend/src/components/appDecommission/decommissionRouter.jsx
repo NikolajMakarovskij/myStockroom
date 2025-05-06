@@ -1,3 +1,4 @@
+import { React } from 'react'
 import ListDecommission from './ListDecommission'
 import AddToDisposal from './AddToDisposal'
 import RemoveFromDecommission from './RemoveFromDecommission'

@@ -1,3 +1,4 @@
+import { React } from 'react'
 import IndexCounterparty from './IndexCounterparty'
 import ListManufacturer from './appManufacturer/ListManufacturer'
 import CreateManufacturer from './appManufacturer/CreateManufacturer'
