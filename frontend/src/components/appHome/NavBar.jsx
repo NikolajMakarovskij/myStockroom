@@ -16,8 +16,8 @@ import {
   ThemeProvider,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import HomeIcon from '@mui/icons-material/Home'
 import { Link, useLocation } from 'react-router-dom'
-
 import { WorkplaceContent } from '../appWorkplace/IndexWorkplace'
 import { StockContent } from '../appStock/IndexStock'
 import { EmployeeContent } from '../appEmployee/IndexEmployee'
@@ -94,8 +94,8 @@ export default function NavBar(props) {
                 <Box sx={{ overflow: 'auto' }}>
                   <List>
                     <ListItem key='item_home' disablePadding>
-                      <ListItemButton key='home' component={Link} to='/' selected={'/' === path}>
-                        <ListItemText primary={'Главная'} />
+                      <ListItemButton key='home' component={Link} to='/'>
+                        <ListItemText primary={<HomeIcon />} />
                       </ListItemButton>
                     </ListItem>
                   </List>
