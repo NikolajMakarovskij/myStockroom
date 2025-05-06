@@ -68,8 +68,23 @@ class HistoryDevFilterListRestView(generics.ListAPIView[HistoryDev]):
         the devices as determined by the stock_model_id portion of the URL.
         """
 
-        stock_model = self.kwargs["stock_model_id"]
-        return HistoryDev.objects.filter(stock_model_id=stock_model)
+        stock_model_id = self.kwargs["stock_model_id"]
+        return HistoryDev.objects.filter(stock_model_id=stock_model_id)
+
+
+class HistoryDevStatusFilterListRestView(generics.ListAPIView[HistoryDev]):
+    queryset = HistoryDev.objects.all()
+    serializer_class = HistoryDeviceModelSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the history for
+        the devices as determined by the stock_model_id portion of the URL.
+        """
+
+        status = self.kwargs["status"]
+        return HistoryDev.objects.filter(status=status)
 
 
 # post methods

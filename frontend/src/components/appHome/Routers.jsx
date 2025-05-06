@@ -92,8 +92,9 @@ import AddToDecommission from '../appStock/Devices/AddToDecommission'
 import AddToDisposal from '../appDecommission/AddToDisposal'
 import RemoveFromDecommission from '../appDecommission/RemoveFromDecommission'
 import ListDisposal from '../appDisposal/ListDisposal'
-
 import RemoveFromDisposal from '../appDisposal/RemoveFromDisposal'
+import ListHistoryDisposal from '../appDisposal/ListHistoryDisposal'
+import ListHistoryDecommission from '../appDecommission/ListHistoryDecommission'
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -470,6 +471,10 @@ const Routers = createBrowserRouter([
     element: [<NavBar key='decommission_list' drawerWidth={customWidth} content={<ListDecommission />} />],
   },
   {
+    path: '/history/decommission/list',
+    element: [<NavBar key='history_decom_list' drawerWidth={customWidth} content={<ListHistoryDecommission />} />],
+  },
+  {
     path: '/decommission/list/remove_from_decommission/:stock_model',
     element: [<NavBar key='remove_from_decommission' drawerWidth={customWidth} content={<RemoveFromDecommission />} />],
   },
@@ -485,6 +490,10 @@ const Routers = createBrowserRouter([
   {
     path: '/disposal/list/remove_from_disposal/:stock_model',
     element: [<NavBar key='remove_from_disposal' drawerWidth={customWidth} content={<RemoveFromDisposal />} />],
+  },
+  {
+    path: '/history/disposal/list',
+    element: [<NavBar key='history_disp_list' drawerWidth={customWidth} content={<ListHistoryDisposal />} />],
   },
 
   // Signature

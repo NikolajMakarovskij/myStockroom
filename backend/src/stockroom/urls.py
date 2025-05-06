@@ -31,6 +31,7 @@ from .views.devices import (
     ExportStockDevice,
     ExportStockDeviceCategory,
     HistoryDevFilterListRestView,
+    HistoryDevStatusFilterListRestView,
     MoveDeviceView,
     RemoveFromStockDeviceView,
 )
@@ -148,6 +149,12 @@ urlpatterns = [
         HistoryDevFilterListRestView.as_view(),
         name="stock_dev_model_filter",
     ),
+    re_path(
+        "history_dev_list/status/filter/(?P<status>.+)/$",
+        HistoryDevStatusFilterListRestView.as_view(),
+        name="stock_dev_status_filter",
+    ),
+    # methods
     path(
         "add_to_stock_device/",
         AddToStockDeviceView.as_view(),

@@ -72,6 +72,20 @@ const StockContent = [
     url_name: 'ListHistoryDevice',
     image: 'http://localhost/static/images/device.svg',
   },
+  {
+    key: 'history_decommission',
+    title: 'История списания',
+    url_path: '/history/decommission/list',
+    url_name: 'ListHistoryDecommission',
+    image: 'http://localhost/static/images/decommission.svg',
+  },
+  {
+    key: 'history_disposal',
+    title: 'История утилизации',
+    url_path: '/history/disposal/list',
+    url_name: 'ListHistoryDisposal',
+    image: 'http://localhost/static/images/disposal.svg',
+  },
 ]
 export { StockContent }
 
