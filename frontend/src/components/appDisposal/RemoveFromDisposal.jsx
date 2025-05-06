@@ -2,11 +2,11 @@ import { React, useState, useEffect, useCallback } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import AxiosInstanse from '../../Axios'
+import AxiosInstanse from '../Axios'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import PrintError from '../../Errors/Error'
-import useCSRF from '../../Hooks/CSRF'
-import LinearIndeterminate from '../../appHome/ProgressBar'
+import PrintError from '../Errors/Error'
+import useCSRF from '../Hooks/CSRF'
+import LinearIndeterminate from '../appHome/ProgressBar'
 
 const darkTheme = createTheme({
   palette: {
@@ -14,7 +14,7 @@ const darkTheme = createTheme({
   },
 })
 
-export default function AddToDecommission() {
+export default function RemoveFromDisposal() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.stock_model
@@ -45,11 +45,9 @@ export default function AddToDecommission() {
     username: '',
   }
 
-  const { handleSubmit } = useForm({ defaultValues: defaultValues })
-
   const submission = useCallback(() => {
     AxiosInstanse.post(
-      `decommission/add_to_decommission/`,
+      `decommission/remove_from_disposal/`,
       {
         device_id: deviceId,
         username: user.username,
@@ -61,16 +59,19 @@ export default function AddToDecommission() {
       },
     )
       .then(() => {
-        navigate(`/decommission/list`)
+        navigate(`/disposal/list`)
       })
       .catch((error) => {
         setErrorEdit(error.response.data.detail)
       })
   })
+
+  const { handleSubmit } = useForm({ defaultValues: defaultValues })
+
   return (
     <form onSubmit={handleSubmit(submission)}>
       <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '10px' }}>
-        <Typography>Списать устройство</Typography>
+        <Typography>Удалить из списка на утилизацию?</Typography>
       </Box>
       {loading ? (
         <LinearIndeterminate />
@@ -89,9 +90,9 @@ export default function AddToDecommission() {
             <ThemeProvider theme={darkTheme}>
               <Box display='flex' justifyContent='space-between' alignItems='center'>
                 <Button variant='contained' type='submit'>
-                  Списать
+                  Да
                 </Button>
-                <Button variant='contained' component={Link} to={`/stock/device/list`}>
+                <Button variant='contained' component={Link} to={`/disposal/list`}>
                   Отмена
                 </Button>
               </Box>

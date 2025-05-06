@@ -1,18 +1,18 @@
 import { React, useMemo, useState } from 'react'
-import AxiosInstanse from '../Axios'
+import AxiosInstanse from '../Axios.jsx'
 import { Link } from 'react-router-dom'
 import { IconButton, MenuItem } from '@mui/material'
-import { Add as AddIcon, /*Edit as EditIcon,*/ Delete as DeleteIcon } from '@mui/icons-material'
+import { /*Edit as EditIcon,*/ Delete as DeleteIcon } from '@mui/icons-material'
 import { TreeItem, SimpleTreeView } from '@mui/x-tree-view'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import LinearIndeterminate from '../appHome/ProgressBar.jsx'
-import MaterialReactTableTabsList from '../Tables/MaterialReactTableTabsList'
+import MaterialReactTableTabsList from '../Tables/MaterialReactTableTabsList.jsx'
 import useInterval from '../Hooks/useInterval.jsx'
 import PrintError from '../Errors/Error.jsx'
-import DetailPanel from '../appStock/DetailPanel'
+import DetailPanel from '../appStock/DetailPanel.jsx'
 
-export default function ListDecommission() {
+export default function ListDisposal() {
   const [device, setDevices] = useState()
   const [category, setCategory] = useState('')
   const [loading, setLoading] = useState(true)
@@ -24,7 +24,7 @@ export default function ListDecommission() {
   useInterval(() => {
     async function getDevices() {
       try {
-        await AxiosInstanse.get(`decommission/decommission_list/`, { timeout: 1000 * 30 }).then((res) => {
+        await AxiosInstanse.get(`decommission/disposal_list/`, { timeout: 1000 * 30 }).then((res) => {
           setDevices(res.data)
           setError(null)
           setDelay(5000)
@@ -38,7 +38,7 @@ export default function ListDecommission() {
     }
     async function getCategory() {
       try {
-        await AxiosInstanse.get(`decommission/decommission_cat_list/`).then((res) => {
+        await AxiosInstanse.get(`decommission/disposal_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
           setDelay(5000)
@@ -108,14 +108,8 @@ export default function ListDecommission() {
             row,
             menuActions = [
               {
-                name: 'Утилизировать',
-                path: `add_to_disposal/${row.original.stock_model.id}`,
-                icon: <AddIcon />,
-                color: 'secondary',
-              },
-              {
                 name: 'Удалить',
-                path: `remove_from_decommission/${row.original.stock_model.id}`,
+                path: `remove_from_disposal/${row.original.stock_model.id}`,
                 icon: <DeleteIcon />,
                 color: 'error',
               },
