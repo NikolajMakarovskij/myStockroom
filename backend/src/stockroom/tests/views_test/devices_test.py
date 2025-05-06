@@ -148,6 +148,44 @@ class TestHistoryDeviceEndpoints:
         assert len(data) == 1
         assert data[0]["stock_model"] == "some_device_01"
 
+    @pytest.mark.django_db
+    def testing_history_status_filtered_device_list(self, auto_login_user):  # noqa: F811
+        CategoryDev.objects.get_or_create(name="some_category", slug="some_category")
+        Device.objects.bulk_create(
+            [
+                Device(name="some_device_01"),
+                Device(name="some_device_02"),
+                Device(name="some_device_03"),
+            ]
+        )
+        device = Device.objects.all()
+        HistoryDev.objects.bulk_create(
+            [
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[0].name,
+                    stock_model_id=device[0].id,
+                    categories=CategoryDev.objects.get(name="some_category"),
+                    status="some_status",
+                ),
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[1].name,
+                    stock_model_id=device[1].id,
+                ),
+                HistoryDev(  # type: ignore[misc]
+                    stock_model=device[2].name,
+                    stock_model_id=device[2].id,
+                ),
+            ]
+        )
+        client, user = auto_login_user()
+        url = f"{self.endpoint}status/filter/some_status/"
+        response = client.get(url)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 1
+        assert data[0]["stock_model"] == "some_device_01"
+        assert data[0]["status"] == "some_status"
+
 
 class TestAddToStockDeviceEndpoints:
     endpoint = "/api/stockroom/add_to_stock_device/"
