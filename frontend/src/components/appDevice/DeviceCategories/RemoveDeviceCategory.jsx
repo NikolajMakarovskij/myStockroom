@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveDeviceCategory = () => {
+export default function RemoveDeviceCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -92,5 +92,3 @@ const RemoveDeviceCategory = () => {
     </>
   )
 }
-
-export default RemoveDeviceCategory

@@ -20,7 +20,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateAccounting = () => {
+export default function UpdateAccounting() {
   const CSRF = useCSRF()
   const accontingParam = useParams()
   const accontingId = accontingParam.id
@@ -275,5 +275,3 @@ const UpdateAccounting = () => {
     </>
   )
 }
-
-export default UpdateAccounting

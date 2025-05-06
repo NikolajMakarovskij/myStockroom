@@ -18,7 +18,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateEmployee = () => {
+export default function CreateEmployee() {
   const CSRF = useCSRF()
   const [workplace, setWorkplaces] = useState()
   const [post, setPosts] = useState()
@@ -197,5 +197,3 @@ const CreateEmployee = () => {
     </>
   )
 }
-
-export default CreateEmployee

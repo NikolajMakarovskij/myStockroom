@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateDepartament = () => {
+export default function CreateDepartament() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -92,5 +92,3 @@ const CreateDepartament = () => {
     </div>
   )
 }
-
-export default CreateDepartament

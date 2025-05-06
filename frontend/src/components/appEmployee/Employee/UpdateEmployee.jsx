@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateEmployee = () => {
+export default function UpdateEmployee() {
   const CSRF = useCSRF()
   const emplParam = useParams()
   const emplId = emplParam.id
@@ -235,5 +235,3 @@ const UpdateEmployee = () => {
     </>
   )
 }
-
-export default UpdateEmployee

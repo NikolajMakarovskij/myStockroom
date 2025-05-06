@@ -8,7 +8,7 @@ import MaterialReactTableList from '../../Tables/MaterialReactTableList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListDepartament = () => {
+export default function ListDepartament() {
   const [dep, setDeps] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -73,5 +73,3 @@ const ListDepartament = () => {
     </>
   )
 }
-
-export default ListDepartament

@@ -5,7 +5,7 @@ import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListConsumptionConsumables = () => {
+export default function ListConsumptionConsumables() {
   const [consumable, setConsumables] = useState()
   const [category, setCategory] = useState('')
   const [loadingConsumables, setLoadingConsumables] = useState(true)
@@ -100,5 +100,3 @@ const ListConsumptionConsumables = () => {
     </>
   )
 }
-
-export default ListConsumptionConsumables

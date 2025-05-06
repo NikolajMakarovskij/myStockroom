@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateRoom = () => {
+export default function UpdateRoom() {
   const CSRF = useCSRF()
   const roomParam = useParams()
   const roomId = roomParam.id
@@ -148,5 +148,3 @@ const UpdateRoom = () => {
     </div>
   )
 }
-
-export default UpdateRoom

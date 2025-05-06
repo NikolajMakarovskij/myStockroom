@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveAccountingCategory = () => {
+export default function RemoveAccountingCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -92,5 +92,3 @@ const RemoveAccountingCategory = () => {
     </>
   )
 }
-
-export default RemoveAccountingCategory

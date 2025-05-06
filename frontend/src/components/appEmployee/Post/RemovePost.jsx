@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemovePost = () => {
+export default function RemovePost() {
   const CSRF = useCSRF()
   const postParam = useParams()
   const postId = postParam.id
@@ -92,5 +92,3 @@ const RemovePost = () => {
     </>
   )
 }
-
-export default RemovePost

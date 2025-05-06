@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const AddToDeviceConsumable = () => {
+export default function AddToDeviceConsumable() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.id
@@ -168,5 +168,3 @@ const AddToDeviceConsumable = () => {
     </form>
   )
 }
-
-export default AddToDeviceConsumable

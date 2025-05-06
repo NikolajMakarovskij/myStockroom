@@ -19,8 +19,6 @@ const WorkplaceContent = [
 ]
 export { WorkplaceContent }
 
-const IndexWorkplace = () => {
+export default function IndexWorkplace() {
   return <GridCards content={WorkplaceContent} />
 }
-
-export default IndexWorkplace

@@ -9,7 +9,7 @@ import PrintError from '../../Errors/Error'
 import DialogDeviceDetail from '../Devices/DialogDeviceDetail'
 import DialogConsumableDetail from '../Consumables/DialogConsumableDetail'
 
-const ListHistoryConsumables = () => {
+export default function ListHistoryConsumables() {
   const [consumable, setConsumables] = useState()
   const [category, setCategory] = useState('')
   const [loadingConsumables, setLoadingConsumables] = useState(true)
@@ -154,5 +154,3 @@ const ListHistoryConsumables = () => {
     </>
   )
 }
-
-export default ListHistoryConsumables

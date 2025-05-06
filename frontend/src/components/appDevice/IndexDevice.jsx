@@ -19,8 +19,6 @@ const DeviceContent = [
 ]
 export { DeviceContent }
 
-const IndexDevice = () => {
+export default function IndexDevice() {
   return <GridCards content={DeviceContent} />
 }
-
-export default IndexDevice

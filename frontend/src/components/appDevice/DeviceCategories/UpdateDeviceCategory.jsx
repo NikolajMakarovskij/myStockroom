@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateDeviceCategory = () => {
+export default function UpdateDeviceCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -143,5 +143,3 @@ const UpdateDeviceCategory = () => {
     </>
   )
 }
-
-export default UpdateDeviceCategory

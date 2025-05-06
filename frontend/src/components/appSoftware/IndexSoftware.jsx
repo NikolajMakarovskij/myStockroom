@@ -13,8 +13,6 @@ const SofwareContent = [
 ]
 export { SofwareContent }
 
-const IndexSoftware = () => {
+export default function IndexSoftware() {
   return <GridCards content={SofwareContent} />
 }
-
-export default IndexSoftware

@@ -23,7 +23,7 @@ import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 import DetailPanel from '../../appStock/DetailPanel'
 
-const ListAccessories = () => {
+export default function ListAccessories() {
   const [accessories, setAccessories] = useState()
   const [category, setCategory] = useState('')
   const [loadingAccessories, setLoadingAccessories] = useState(true)
@@ -213,5 +213,3 @@ const ListAccessories = () => {
     </>
   )
 }
-
-export default ListAccessories

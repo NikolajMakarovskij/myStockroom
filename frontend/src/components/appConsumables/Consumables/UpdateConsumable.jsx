@@ -20,7 +20,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateConsumable = () => {
+export default function UpdateConsumable() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -246,5 +246,3 @@ const UpdateConsumable = () => {
     </>
   )
 }
-
-export default UpdateConsumable

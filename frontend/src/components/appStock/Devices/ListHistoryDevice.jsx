@@ -7,7 +7,7 @@ import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListHistoryDevice = () => {
+export default function ListHistoryDevice() {
   const [device, setDevice] = useState()
   const [category, setCategory] = useState('')
   const [loadingDevice, setLoadingDevice] = useState(true)
@@ -116,5 +116,3 @@ const ListHistoryDevice = () => {
     </>
   )
 }
-
-export default ListHistoryDevice

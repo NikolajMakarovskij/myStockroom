@@ -33,8 +33,6 @@ const ConsumablesContent = [
 ]
 export { ConsumablesContent }
 
-const IndexConsumables = () => {
+export default function IndexConsumables() {
   return <GridCards content={ConsumablesContent} />
 }
-
-export default IndexConsumables

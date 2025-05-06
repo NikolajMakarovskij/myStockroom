@@ -18,7 +18,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateWorkplace = () => {
+export default function CreateWorkplace() {
   const CSRF = useCSRF()
   const [room, setRooms] = useState()
   const [loading, setLoading] = useState(true)
@@ -130,5 +130,3 @@ const CreateWorkplace = () => {
     </form>
   )
 }
-
-export default CreateWorkplace

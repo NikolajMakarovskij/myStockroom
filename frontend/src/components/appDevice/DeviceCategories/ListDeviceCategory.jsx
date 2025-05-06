@@ -8,7 +8,7 @@ import MaterialReactTableList from '../../Tables/MaterialReactTableList.jsx'
 import useInterval from '../../Hooks/useInterval.jsx'
 import PrintError from '../../Errors/Error.jsx'
 
-const ListDeviceCategory = () => {
+export default function ListDeviceCategory() {
   const [categories, setCategories] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -77,5 +77,3 @@ const ListDeviceCategory = () => {
     </>
   )
 }
-
-export default ListDeviceCategory

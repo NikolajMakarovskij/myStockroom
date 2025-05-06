@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { Typography, Grid, Alert, AlertTitle } from '@mui/material'
 
-const ListOS = () => {
+export default function ListOS() {
   return (
     <Grid container direction='column' alignItems='center' justifyContent='center' sx={{ minHeight: '100vh' }}>
       <Grid>
@@ -13,5 +13,3 @@ const ListOS = () => {
     </Grid>
   )
 }
-
-export default ListOS

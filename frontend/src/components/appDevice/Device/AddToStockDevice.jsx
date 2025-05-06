@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const AddToStockDevice = () => {
+export default function AddToStockDevice() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -145,5 +145,3 @@ const AddToStockDevice = () => {
     </form>
   )
 }
-
-export default AddToStockDevice

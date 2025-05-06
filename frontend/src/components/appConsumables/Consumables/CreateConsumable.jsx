@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateConsumable = () => {
+export default function CreateConsumable() {
   const CSRF = useCSRF()
   const [cat, setCat] = useState()
   const [MF, setMF] = useState()
@@ -211,5 +211,3 @@ const CreateConsumable = () => {
     </form>
   )
 }
-
-export default CreateConsumable

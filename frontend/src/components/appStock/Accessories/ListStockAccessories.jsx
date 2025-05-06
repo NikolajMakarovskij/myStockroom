@@ -22,7 +22,7 @@ import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListStockAccessories = () => {
+export default function ListStockAccessories() {
   const [consumable, setConsumables] = useState()
   const [category, setCategory] = useState('')
   const [loadingConsumables, setLoadingConsumables] = useState(true)
@@ -216,22 +216,6 @@ const ListStockAccessories = () => {
                     </TableContainer>
                   </TreeItem>
                 )}
-                {/*<TreeItem itemId="3" label="История использования">
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell >Количество</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell>{row.original.id}</TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </TreeItem>*/}
               </SimpleTreeView>
             ) : null
           }
@@ -240,5 +224,3 @@ const ListStockAccessories = () => {
     </>
   )
 }
-
-export default ListStockAccessories

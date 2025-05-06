@@ -8,7 +8,7 @@ import AxiosInstanse from '../Axios'
 import useCSRF from '../Hooks/CSRF'
 import PrintError from '../Errors/Error'
 
-const LoginApp = () => {
+export default function LoginApp() {
   const CSRF = useCSRF()
   const [error, setError] = useState()
 
@@ -112,5 +112,3 @@ const LoginApp = () => {
     </div>
   )
 }
-
-export default LoginApp

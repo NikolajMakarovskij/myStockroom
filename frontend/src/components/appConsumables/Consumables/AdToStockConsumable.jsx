@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const AddToStockConsumable = () => {
+export default function AddToStockConsumable() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -145,5 +145,3 @@ const AddToStockConsumable = () => {
     </form>
   )
 }
-
-export default AddToStockConsumable

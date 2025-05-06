@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { Typography, Grid, Alert, AlertTitle } from '@mui/material'
 
-const ListSofware = () => {
+export default function ListSofware() {
   return (
     <Grid container direction='column' alignItems='center' justifyContent='center' sx={{ minHeight: '100vh' }}>
       <Grid>
@@ -13,5 +13,3 @@ const ListSofware = () => {
     </Grid>
   )
 }
-
-export default ListSofware

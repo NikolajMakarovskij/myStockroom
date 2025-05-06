@@ -22,7 +22,7 @@ import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 import DetailPanel from '../../appStock/DetailPanel'
 
-const ListDevice = () => {
+export default function ListDevice() {
   const [device, setDevices] = useState()
   const [category, setCategory] = useState('')
   const [loading, setLoading] = useState(true)
@@ -257,5 +257,3 @@ const ListDevice = () => {
     </>
   )
 }
-
-export default ListDevice

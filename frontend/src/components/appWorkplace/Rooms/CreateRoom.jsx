@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateRoom = () => {
+export default function CreateRoom() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -114,5 +114,3 @@ const CreateRoom = () => {
     </div>
   )
 }
-
-export default CreateRoom

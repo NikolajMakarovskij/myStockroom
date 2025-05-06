@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveAccessoriesCategory = () => {
+export default function RemoveAccessoriesCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -92,5 +92,3 @@ const RemoveAccessoriesCategory = () => {
     </>
   )
 }
-
-export default RemoveAccessoriesCategory

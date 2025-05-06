@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const AddHistoryToDevice = () => {
+export default function AddHistoryToDevice() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.id
@@ -136,5 +136,3 @@ const AddHistoryToDevice = () => {
     </form>
   )
 }
-
-export default AddHistoryToDevice

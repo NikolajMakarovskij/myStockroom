@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveAccounting = () => {
+export default function RemoveAccounting() {
   const CSRF = useCSRF()
   const accontingParam = useParams()
   const accontingId = accontingParam.id
@@ -92,5 +92,3 @@ const RemoveAccounting = () => {
     </>
   )
 }
-
-export default RemoveAccounting

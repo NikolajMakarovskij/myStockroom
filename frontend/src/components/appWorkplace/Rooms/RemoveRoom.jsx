@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveRoom = () => {
+export default function RemoveRoom() {
   const CSRF = useCSRF()
   const roomParam = useParams()
   const roomId = roomParam.id
@@ -98,5 +98,3 @@ const RemoveRoom = () => {
     </div>
   )
 }
-
-export default RemoveRoom

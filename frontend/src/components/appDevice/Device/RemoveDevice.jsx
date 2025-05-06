@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveDevice = () => {
+export default function RemoveDevice() {
   const CSRF = useCSRF()
   const deviceParam = useParams()
   const deviceId = deviceParam.id
@@ -93,5 +93,3 @@ const RemoveDevice = () => {
     </>
   )
 }
-
-export default RemoveDevice

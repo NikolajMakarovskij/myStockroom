@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveEmployee = () => {
+export default function RemoveEmployee() {
   const CSRF = useCSRF()
   const emplParam = useParams()
   const emplId = emplParam.id
@@ -106,5 +106,3 @@ const RemoveEmployee = () => {
     </>
   )
 }
-
-export default RemoveEmployee

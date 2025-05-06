@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateConsumableCategory = () => {
+export default function UpdateConsumableCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -143,5 +143,3 @@ const UpdateConsumableCategory = () => {
     </>
   )
 }
-
-export default UpdateConsumableCategory

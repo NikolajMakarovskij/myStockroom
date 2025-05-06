@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveAccessories = () => {
+export default function RemoveAccessories() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -93,5 +93,3 @@ const RemoveAccessories = () => {
     </>
   )
 }
-
-export default RemoveAccessories

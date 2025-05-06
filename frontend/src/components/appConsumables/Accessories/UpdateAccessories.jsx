@@ -20,7 +20,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateAccessories = () => {
+export default function UpdateAccessories() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -246,5 +246,3 @@ const UpdateAccessories = () => {
     </>
   )
 }
-
-export default UpdateAccessories

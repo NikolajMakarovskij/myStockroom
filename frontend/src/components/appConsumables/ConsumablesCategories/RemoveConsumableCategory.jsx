@@ -13,7 +13,7 @@ const darkTheme = createTheme({
   },
 })
 
-const RemoveConsumableCategory = () => {
+export default function RemoveConsumableCategory() {
   const CSRF = useCSRF()
   const catParam = useParams()
   const catId = catParam.id
@@ -92,5 +92,3 @@ const RemoveConsumableCategory = () => {
     </>
   )
 }
-
-export default RemoveConsumableCategory

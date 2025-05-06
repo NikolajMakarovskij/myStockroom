@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const UpdateWorkplace = () => {
+export default function UpdateWorkplace() {
   const CSRF = useCSRF()
   const workplaceParam = useParams()
   const workplaceId = workplaceParam.id
@@ -157,5 +157,3 @@ const UpdateWorkplace = () => {
     </>
   )
 }
-
-export default UpdateWorkplace

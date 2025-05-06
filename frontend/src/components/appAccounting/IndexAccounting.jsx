@@ -19,8 +19,6 @@ const AccountingContent = [
 ]
 export { AccountingContent }
 
-const IndexAccounting = () => {
+export default function IndexAccounting() {
   return <GridCards content={AccountingContent} />
 }
-
-export default IndexAccounting

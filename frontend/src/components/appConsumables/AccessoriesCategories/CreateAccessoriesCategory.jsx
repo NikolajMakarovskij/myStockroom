@@ -16,7 +16,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreateAccessoriesCategory = () => {
+export default function CreateAccessoriesCategory() {
   const CSRF = useCSRF()
   const [errorEdit, setErrorEdit] = useState(null)
   const navigate = useNavigate()
@@ -113,5 +113,3 @@ const CreateAccessoriesCategory = () => {
     </>
   )
 }
-
-export default CreateAccessoriesCategory

@@ -8,7 +8,7 @@ import MaterialReactTableList from '../../Tables/MaterialReactTableList'
 import useInterval from '../../Hooks/useInterval'
 import PrintError from '../../Errors/Error'
 
-const ListManufacturer = () => {
+export default function ListManufacturer() {
   const [room, setRooms] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -80,5 +80,3 @@ const ListManufacturer = () => {
     </>
   )
 }
-
-export default ListManufacturer

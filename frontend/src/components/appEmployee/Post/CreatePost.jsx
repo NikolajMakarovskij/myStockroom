@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 })
 
-const CreatePost = () => {
+export default function CreatePost() {
   const CSRF = useCSRF()
   const [dep, setDeps] = useState()
   const [loading, setLoading] = useState(true)
@@ -137,5 +137,3 @@ const CreatePost = () => {
     </div>
   )
 }
-
-export default CreatePost

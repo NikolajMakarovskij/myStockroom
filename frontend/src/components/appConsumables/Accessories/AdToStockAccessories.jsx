@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 })
 
-const AdToStockAccessories = () => {
+export default function AdToStockAccessories() {
   const CSRF = useCSRF()
   const conParam = useParams()
   const conId = conParam.id
@@ -145,5 +145,3 @@ const AdToStockAccessories = () => {
     </form>
   )
 }
-
-export default AdToStockAccessories
