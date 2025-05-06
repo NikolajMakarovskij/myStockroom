@@ -87,6 +87,9 @@ import IndexSignature from '../appSignature/IndexSignature'
 import IndexSoftware from '../appSoftware/IndexSoftware'
 import ListOS from '../appSoftware/OS/ListOS'
 import ListSofware from '../appSoftware/Software/ListSofware'
+import ListDecommission from '../appDecommission/ListDecommission'
+import AddToDecommission from '../appStock/Devices/AddToDecommission'
+import RemoveFromDecommission from '../appDecommission/RemoveFromDecommission'
 
 const customWidth = 200
 const Routers = createBrowserRouter([
@@ -446,6 +449,10 @@ const Routers = createBrowserRouter([
     element: [<NavBar key='remove_device_from_stock' drawerWidth={customWidth} content={<RemoveFromStockDevice />} />],
   },
   {
+    path: '/stock/device/list/add_to_decommission/:stock_model',
+    element: [<NavBar key='add_to_decommission' drawerWidth={customWidth} content={<AddToDecommission />} />],
+  },
+  {
     path: '/history/device/list',
     element: [<NavBar key='history_dev_list' drawerWidth={customWidth} content={<ListHistoryDevice />} />],
   },
@@ -453,6 +460,16 @@ const Routers = createBrowserRouter([
     path: '/history/device/list/:slug',
     element: [<NavBar key='history_dev_groups' drawerWidth={customWidth} content={<ListHistoryDevice />} />],
   },
+  // Decommission
+  {
+    path: '/decommission/list',
+    element: [<NavBar key='decommission_list' drawerWidth={customWidth} content={<ListDecommission />} />],
+  },
+  {
+    path: '/decommission/list/remove_from_decommission/:stock_model',
+    element: [<NavBar key='remove_from_decommission' drawerWidth={customWidth} content={<RemoveFromDecommission />} />],
+  },
+
   // Signature
   { path: '/signature', element: [<NavBar key='signature' drawerWidth={customWidth} content={<IndexSignature />} />] },
   // SOFT

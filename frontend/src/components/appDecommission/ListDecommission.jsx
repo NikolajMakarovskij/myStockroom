@@ -1,18 +1,18 @@
 import { React, useMemo, useState } from 'react'
-import AxiosInstanse from '../../Axios'
+import AxiosInstanse from '../Axios'
 import { Link } from 'react-router-dom'
 import { IconButton, MenuItem } from '@mui/material'
-import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import { Add as AddIcon, /*Edit as EditIcon,*/ Delete as DeleteIcon } from '@mui/icons-material'
 import { TreeItem, SimpleTreeView } from '@mui/x-tree-view'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import LinearIndeterminate from '../../appHome/ProgressBar.jsx'
-import MaterialReactTableTabsList from '../../Tables/MaterialReactTableTabsList'
-import useInterval from '../../Hooks/useInterval.jsx'
-import PrintError from '../../Errors/Error.jsx'
-import DetailPanel from '../../appStock/DetailPanel'
+import LinearIndeterminate from '../appHome/ProgressBar.jsx'
+import MaterialReactTableTabsList from '../Tables/MaterialReactTableTabsList'
+import useInterval from '../Hooks/useInterval.jsx'
+import PrintError from '../Errors/Error.jsx'
+import DetailPanel from '../appStock/DetailPanel'
 
-export default function ListStockDevices() {
+export default function ListDecommission() {
   const [device, setDevices] = useState()
   const [category, setCategory] = useState('')
   const [loading, setLoading] = useState(true)
@@ -24,10 +24,11 @@ export default function ListStockDevices() {
   useInterval(() => {
     async function getDevices() {
       try {
-        await AxiosInstanse.get(`stockroom/stock_dev_list/`, { timeout: 1000 * 30 }).then((res) => {
+        await AxiosInstanse.get(`decommission/decommission_list/`, { timeout: 1000 * 30 }).then((res) => {
           setDevices(res.data)
           setError(null)
           setDelay(5000)
+          console.log(res.data)
         })
       } catch (error) {
         setError(error.message)
@@ -38,7 +39,7 @@ export default function ListStockDevices() {
     }
     async function getCategory() {
       try {
-        await AxiosInstanse.get(`stockroom/stock_dev_cat_list/`).then((res) => {
+        await AxiosInstanse.get(`decommission/decommission_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
           setDelay(5000)
@@ -61,52 +62,29 @@ export default function ListStockDevices() {
         header: 'Устройство',
       },
       {
-        accessorKey: 'stock_model.description',
-        header: 'Описание',
-      },
-      {
-        accessorKey: 'stock_model.note',
-        header: 'Примечание',
+        id: 'categories',
+        accessorKey: 'categories.name',
+        header: 'Группа',
       },
       {
         accessorKey: 'stock_model.quantity',
         header: 'Количество',
       },
       {
-        accessorKey: 'stock_model.serial',
-        header: 'Серийный №',
-      },
-      {
         accessorKey: 'stock_model.invent',
         header: 'Инвентарный №',
       },
       {
-        accessorKey: 'rack',
-        header: 'Стеллаж',
+        accessorKey: 'date',
+        header: 'Дата списания',
       },
       {
-        accessorKey: 'shelf',
-        header: 'Полка',
+        accessorFn: (row) => `${row.stock_model.workplace.room.name} ${row.stock_model.workplace.room.building}`,
+        header: 'Место хранения',
       },
       {
-        accessorKey: 'stock_model.workplace.name',
-        header: 'Рабочее место',
-      },
-      {
-        accessorKey: 'stock_model.workplace.room.building',
-        header: 'Здание',
-      },
-      {
-        accessorKey: 'categories.name',
-        header: 'Группа',
-      },
-      {
-        accessorKey: 'dateAddToStock',
-        header: 'Приход',
-      },
-      {
-        accessorKey: 'dateInstall',
-        header: 'Установка',
+        accessorKey: 'stock_model.note',
+        header: 'Примечание',
       },
     ],
     [],
@@ -131,14 +109,14 @@ export default function ListStockDevices() {
             row,
             menuActions = [
               {
-                name: 'Списать',
-                path: `add_to_decommission/${row.original.stock_model.id}`,
+                name: 'Утилизировать',
+                path: `remove_from_stock/${row.original.stock_model.id}`,
                 icon: <AddIcon />,
                 color: 'secondary',
               },
               {
                 name: 'Удалить',
-                path: `remove_from_stock/${row.original.stock_model.id}`,
+                path: `remove_from_decommission/${row.original.stock_model.id}`,
                 icon: <DeleteIcon />,
                 color: 'error',
               },

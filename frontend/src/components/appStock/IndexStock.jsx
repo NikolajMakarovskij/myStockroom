@@ -52,6 +52,13 @@ const StockContent = [
     image: 'http://localhost/static/images/device.svg',
   },
   {
+    key: 'decommission',
+    title: 'Списание',
+    url_path: '/decommission/list',
+    url_name: 'ListDecommission',
+    image: 'http://localhost/static/images/decommission.svg',
+  },
+  {
     key: 'history_devices_stock',
     title: 'История устройств',
     url_path: '/history/device/list',
