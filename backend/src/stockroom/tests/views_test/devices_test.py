@@ -158,22 +158,24 @@ class TestHistoryDeviceEndpoints:
                 Device(name="some_device_03"),
             ]
         )
-        device = Device.objects.all()
+        device_1 = Device.objects.filter(name="some_device_01")[0]
+        device_2 = Device.objects.filter(name="some_device_02")[0]
+        device_3 = Device.objects.filter(name="some_device_03")[0]
         HistoryDev.objects.bulk_create(
             [
                 HistoryDev(  # type: ignore[misc]
-                    stock_model=device[0].name,
-                    stock_model_id=device[0].id,
+                    stock_model=device_1.name,
+                    stock_model_id=device_1.id,
                     categories=CategoryDev.objects.get(name="some_category"),
                     status="some_status",
                 ),
                 HistoryDev(  # type: ignore[misc]
-                    stock_model=device[1].name,
-                    stock_model_id=device[1].id,
+                    stock_model=device_2.name,
+                    stock_model_id=device_2.id,
                 ),
                 HistoryDev(  # type: ignore[misc]
-                    stock_model=device[2].name,
-                    stock_model_id=device[2].id,
+                    stock_model=device_3.name,
+                    stock_model_id=device_3.id,
                 ),
             ]
         )
