@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS release
+FROM alpine:3.21 AS release
 # install angie
 RUN set -x \
      && apk add --no-cache ca-certificates curl \
