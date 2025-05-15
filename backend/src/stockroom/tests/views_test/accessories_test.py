@@ -129,21 +129,26 @@ class TestHistoryAccessoriesEndpoints:
                 Accessories(name="some_consumable_03"),
             ]
         )
-        accessories = Accessories.objects.all()
         HistoryAcc.objects.bulk_create(
             [
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[0].name,
-                    stock_model_id=accessories[0].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_01").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_01"
+                    ).id,
                     categories=CategoryAcc.objects.get(name="some_category"),
                 ),
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[1].name,
-                    stock_model_id=accessories[1].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_02").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_02"
+                    ).id,
                 ),
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[2].name,
-                    stock_model_id=accessories[2].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_03").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_03"
+                    ).id,
                 ),
             ]
         )
@@ -166,7 +171,6 @@ class TestHistoryAccessoriesEndpoints:
                 Accessories(name="some_consumable_03"),
             ]
         )
-        accessories = Accessories.objects.all()
         Device.objects.get_or_create(
             name="some_device_01",
         )
@@ -175,19 +179,25 @@ class TestHistoryAccessoriesEndpoints:
         HistoryAcc.objects.bulk_create(
             [
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[0].name,
-                    stock_model_id=accessories[0].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_01").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_01"
+                    ).id,
                     categories=CategoryAcc.objects.get(name="some_category"),
                     device=device.name,
                     deviceId=device.id,
                 ),
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[1].name,
-                    stock_model_id=accessories[1].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_02").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_02"
+                    ).id,
                 ),
                 HistoryAcc(  # type: ignore[misc]
-                    stock_model=accessories[2].name,
-                    stock_model_id=accessories[2].id,
+                    stock_model=Accessories.objects.get(name="some_consumable_03").name,
+                    stock_model_id=Accessories.objects.get(
+                        name="some_consumable_03"
+                    ).id,
                 ),
             ]
         )

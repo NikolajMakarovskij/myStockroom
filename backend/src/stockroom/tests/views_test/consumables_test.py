@@ -130,21 +130,26 @@ class TestHistoryConsumablesEndpoints:
                 Consumables(name="some_consumable_03"),
             ]
         )
-        consumable = Consumables.objects.all()
         History.objects.bulk_create(
             [
                 History(  # type: ignore[misc]
-                    stock_model=consumable[0].name,
-                    stock_model_id=consumable[0].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_01").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_01"
+                    ).id,
                     categories=StockCat.objects.get(name="some_category"),
                 ),
                 History(  # type: ignore[misc]
-                    stock_model=consumable[1].name,
-                    stock_model_id=consumable[1].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_02").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_02"
+                    ).id,
                 ),
                 History(  # type: ignore[misc]
-                    stock_model=consumable[2].name,
-                    stock_model_id=consumable[2].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_03").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_03"
+                    ).id,
                 ),
             ]
         )
@@ -167,7 +172,6 @@ class TestHistoryConsumablesEndpoints:
                 Consumables(name="some_consumable_03"),
             ]
         )
-        consumable = Consumables.objects.all()
         Device.objects.get_or_create(
             name="some_device_01",
         )
@@ -176,19 +180,25 @@ class TestHistoryConsumablesEndpoints:
         History.objects.bulk_create(
             [
                 History(  # type: ignore[misc]
-                    stock_model=consumable[0].name,
-                    stock_model_id=consumable[0].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_01").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_01"
+                    ).id,
                     categories=StockCat.objects.get(name="some_category"),
                     device=device.name,
                     deviceId=device.id,
                 ),
                 History(  # type: ignore[misc]
-                    stock_model=consumable[1].name,
-                    stock_model_id=consumable[1].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_02").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_02"
+                    ).id,
                 ),
                 History(  # type: ignore[misc]
-                    stock_model=consumable[2].name,
-                    stock_model_id=consumable[2].id,
+                    stock_model=Consumables.objects.get(name="some_consumable_03").name,
+                    stock_model_id=Consumables.objects.get(
+                        name="some_consumable_03"
+                    ).id,
                 ),
             ]
         )
