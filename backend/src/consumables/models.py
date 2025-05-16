@@ -8,8 +8,11 @@ from counterparty.models import Manufacturer
 
 # Расходники
 class Categories(ModelMixin, models.Model):
-    """
-    Модель группы для расходников.
+    """_Categories_:
+    Consumables categories model
+
+    Returns:
+        Categories (Categories): _description_
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -25,17 +28,28 @@ class Categories(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Categories __str__ _: _returns name of model_
+
+        Returns:
+            Categories__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Categories Meta_: _model settings_"""
+
         verbose_name = "Группа расходников"
         verbose_name_plural = "Группы расходников"
         ordering = ["name"]
 
 
 class Consumables(ModelMixin, models.Model):
-    """
-    Модель расходников
+    """_Consumables_:
+    Consumables model
+
+    Returns:
+        Consumables (Consumables): _description_
     """
 
     id = models.UUIDField(
@@ -113,9 +127,17 @@ class Consumables(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Consumables __str__ _: _returns name of model_
+
+        Returns:
+            Consumables__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Consumables Meta_: _model settings_"""
+
         verbose_name = "Расходник"
         verbose_name_plural = "Расходники"
         ordering = ["name", "categories"]
@@ -127,8 +149,11 @@ class Consumables(ModelMixin, models.Model):
 
 # Комплектующие /// accessories
 class AccCat(ModelMixin, models.Model):
-    """
-    Модель группы для комплектующих.
+    """_AccCat_:
+    Accessories categories model
+
+    Returns:
+        AccCat (AccCat): _description_
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -144,17 +169,28 @@ class AccCat(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_AccCat __str__ _: _returns name of model_
+
+        Returns:
+            AccCat__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_AccCat Meta_: _model settings_"""
+
         verbose_name = "Группа комплектующих"
         verbose_name_plural = "Группы комплектующих"
         ordering = ["name"]
 
 
 class Accessories(ModelMixin, models.Model):
-    """
-    Модель комплектующих
+    """_Accessories_:
+    Accessories model
+
+    Returns:
+        Accessories (Accessories): _description_
     """
 
     id = models.UUIDField(
@@ -232,9 +268,17 @@ class Accessories(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Accessories __str__ _: _returns name of model_
+
+        Returns:
+            Accessories__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Accessories Meta_: _model settings_"""
+
         verbose_name = "Комплектующее"
         verbose_name_plural = "Комплектующие"
         ordering = ["name", "categories"]
