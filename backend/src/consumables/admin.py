@@ -6,6 +6,10 @@ from .models import AccCat, Accessories, Categories, Consumables
 
 @admin.register(Consumables)
 class ConsumablesAdmin(ImportExportModelAdmin):
+    """_ConsumablesAdmin_
+    Add model to admin panel
+    """
+
     list_display = [
         "name",
         "categories",
@@ -31,6 +35,10 @@ class ConsumablesAdmin(ImportExportModelAdmin):
 
 @admin.register(Categories)
 class CategoriesAdmin(ImportExportModelAdmin):
+    """_CategoriesAdmin_
+    Add categories model to admin panel
+    """
+
     list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}
@@ -38,6 +46,10 @@ class CategoriesAdmin(ImportExportModelAdmin):
 
 @admin.register(Accessories)
 class AccessoriesAdmin(ImportExportModelAdmin):
+    """_AccessoriesAdmin_
+    Add accessories model to admin panel
+    """
+
     list_display = [
         "name",
         "categories",
@@ -63,6 +75,10 @@ class AccessoriesAdmin(ImportExportModelAdmin):
 
 @admin.register(AccCat)
 class AccCatAdmin(ImportExportModelAdmin):
+    """_AccCatAdmin_
+    Add accessories categories model to admin panel
+    """
+
     list_display = ["name", "slug"]
     search_fields = ["name"]
     prepopulated_fields = {"slug": ("name",)}

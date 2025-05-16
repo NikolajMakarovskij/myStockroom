@@ -62,7 +62,7 @@ class AccountingListModelSerializer(serializers.ModelSerializer[Accounting]):
         extra_kwargs = {"id": {"read_only": True}}
 
     def get_cost_all(self, obj=Meta.model):
-        """_summary_
+        """_get_cost_all_ Calculate the sum between the cost of accessories or consumables in the Accounting
 
         Args:
             obj (_type_, optional): _description_. Defaults to Meta.model.

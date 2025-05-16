@@ -8,6 +8,9 @@
 ### ConsumablesModelSerializer
 #### :::src.consumables.serializers.ConsumablesModelSerializer
 
+### ConsumablesListSerializer
+#### :::src.consumables.serializers.ConsumablesListSerializer
+
 ## Accessories
 
 ### AccCatModelSerializer
@@ -15,3 +18,6 @@
 
 ### AccessoriesModelSerializer
 #### :::src.consumables.serializers.AccessoriesModelSerializer
+
+### AccessoriesListModelSerializer
+#### :::src.consumables.serializers.AccessoriesListModelSerializer

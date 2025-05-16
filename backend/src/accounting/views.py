@@ -82,7 +82,7 @@ class AccountingRestView(viewsets.ModelViewSet[Accounting]):
 
         Args:
             request (_type_):
-            pk (UUID | None, optional): Defaults to None.
+            pk (UUID | None, optional):
 
         Returns:
             data (JSON):
@@ -97,7 +97,7 @@ class AccountingRestView(viewsets.ModelViewSet[Accounting]):
 
         Args:
             request (_type_):
-            pk (UUID | None, optional): Defaults to None.
+            pk (UUID | None, optional):
 
         Returns:
             data (JSON):
@@ -120,7 +120,7 @@ class AccountingRestView(viewsets.ModelViewSet[Accounting]):
             pk (UUID | None, optional): Defaults to None.
 
         Returns:
-            data (JSON):
+            status (204):
         """
 
         project = self.queryset.get(pk=pk)
@@ -176,7 +176,7 @@ class CategoriesRestView(viewsets.ModelViewSet[Categories]):
 
         Args:
             request (_type_):
-            pk (UUID | None, optional): Defaults to None.
+            pk (UUID | None, optional):
 
         Returns:
             data (JSON):
@@ -191,7 +191,7 @@ class CategoriesRestView(viewsets.ModelViewSet[Categories]):
 
         Args:
             request (_type_):
-            pk (UUID | None, optional): Defaults to None.
+            pk (UUID | None, optional):
 
         Returns:
             data (JSON):
@@ -211,11 +211,10 @@ class CategoriesRestView(viewsets.ModelViewSet[Categories]):
 
         Args:
             request (_type_):
-            pk (UUID | None, optional): Defaults to None.
+            pk (UUID | None, optional):
 
         Returns:
-            data (JSON):
-            error (JSON):
+            status (204):
         """
 
         project = self.queryset.get(pk=pk)
