@@ -143,7 +143,7 @@ class ConsumptionRestView(APIView):
             format (_type_, optional): _description_. Defaults to None.
 
         Returns:
-            _JSON_: _list consumption_
+            Response (_JSON_): _list consumption_
         """
         cur_year = datetime.now()
         history = History.objects.all()

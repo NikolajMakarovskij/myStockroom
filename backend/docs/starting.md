@@ -27,21 +27,21 @@ https://docs.docker.com/get-docker/).
 
 ### Environment variables
 
-|                      Variable | Description                                                                                            |
-|--------------------------------:|-----------------------------------------------------------------------------------------------------|
-|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***       |
-|                      SECRET_KEY | The key for the cryptographic signature                                                                  |
-|            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                          |
-|                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change |
-|       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                            |
-|         SQL_USER, POSTGRES_USER | The name of the database user. Must match                                                               |
-| SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                            |
-|                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                       |
-|                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                          |
-|              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***"/var/lib/postgresql/data/pgdata"***   |
-|       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                 |
-|                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                 |
-|                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                         |
+|                        Variable | Description                                                                                                          |
+|--------------------------------:|----------------------------------------------------------------------------------------------------------------------|
+|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                     |
+|                      SECRET_KEY | The key for the cryptographic signature                                                                              |
+|            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                                         |
+|                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change                  |
+|       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                                 |
+|         SQL_USER, POSTGRES_USER | The name of the database user. Must match                                                                            |
+| SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                                            |
+|                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                   |
+|                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                             |
+|              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***"/var/lib/postgresql/data/pgdata"***|
+|       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                               |
+|                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                                 |
+|                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                                        |
 
 ### Installation
 
