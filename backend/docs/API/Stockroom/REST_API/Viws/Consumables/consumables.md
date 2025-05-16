@@ -1,6 +1,6 @@
 # ***Stockroom***
 
-## 
+##
 
 ## StockConCatListRestView
 ### :::src.stockroom.views.consumables.StockConCatListRestView

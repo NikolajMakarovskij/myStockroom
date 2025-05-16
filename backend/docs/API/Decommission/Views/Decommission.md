@@ -1,6 +1,6 @@
 # ***Decommission***
 
-## 
+##
 
 ### DecommissionListRestView
 #### :::src.decommission.views.DecommissionListRestView

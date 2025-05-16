@@ -1,6 +1,6 @@
 # ***Accessories***
 
-## 
+##
 
 ### AccessoriesListRestView
 #### :::src.consumables.views.AccessoriesListRestView
