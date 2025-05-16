@@ -1,18 +1,18 @@
 # ***Decommission***
 
-##
+## 
 
-### DecommissionView
-#### :::src.decommission.views.DecommissionView
+### DecommissionListRestView
+#### :::src.decommission.views.DecommissionListRestView
 
-### DecomCategoriesView
-#### :::src.decommission.views.DecomCategoriesView
+### DecommissionCatListRestView
+#### :::src.decommission.views.DecommissionCatListRestView
 
-### add_decommission
-#### :::src.decommission.views.add_decommission
+### AddToDecommissionDeviceView
+#### :::src.decommission.views.AddToDecommissionDeviceView
 
-### remove_decommission
-#### :::src.decommission.views.remove_decommission
+### RemoveFromDecommissionDeviceView
+#### :::src.decommission.views.RemoveFromDecommissionDeviceView
 
 ### ExportDecomDevice
 #### :::src.decommission.views.ExportDecomDevice
