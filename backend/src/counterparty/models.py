@@ -6,8 +6,10 @@ from core.utils import ModelMixin
 
 
 class Manufacturer(ModelMixin, models.Model):
-    """
-    The manufacturers' model.
+    """_Manufacturer_: _Manufacturer model_
+
+    Returns:
+         Manufacturer (Manufacturer): _returns object "Manufacturer"_
     """
 
     id = models.UUIDField(

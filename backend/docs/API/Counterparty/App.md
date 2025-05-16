@@ -10,15 +10,6 @@
 
 ## Urls
 
-### Home page
+### RESP API
 
-1. ```/```
-
-### Manufacturer
-
-1. ```manufacturer/```
-2. ```"manufacturer/search```
-3. ```manufacturer/(?P<pk>[-\w]+)$```
-4. ```manufacturer/create/$```
-5. ```manufacturer/(?P<pk>[-\w]+)/update$```
-6. ```manufacturer/(?P<pk>[-\w]+)/delete$```
+1. ```api/manufacturer/```
