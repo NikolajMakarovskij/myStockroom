@@ -1,6 +1,6 @@
 # ***Consumables***
 
-## 
+##
 
 ### ConsumablesListRestView
 #### :::src.consumables.views.ConsumablesListRestView

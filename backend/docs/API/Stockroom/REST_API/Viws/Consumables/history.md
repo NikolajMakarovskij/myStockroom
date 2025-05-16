@@ -1,6 +1,6 @@
 # ***History***
 
-## 
+##
 
 ## HistoryConListRestView
 ### :::src.stockroom.views.consumables.HistoryConListRestView
