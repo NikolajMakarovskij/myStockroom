@@ -75,9 +75,6 @@ def logout_view(request):
 class SessionView(APIView):
     """_SessionView_ View user sessions.
 
-    Args:
-        APIView (APIView:
-
     Other parameters:
         authentication_classes (SessionAuthentication, BasicAuthentication):
         permission_classes (IsAuthenticated):
@@ -104,9 +101,6 @@ class SessionView(APIView):
 
 class WhoAmIView(APIView):
     """_WhoAmIView_ View the authenticated user's username.
-
-    Args:
-        APIView (APIView):
 
     Other parameters:
         authentication_classes (SessionAuthentication, BasicAuthentication):
