@@ -7,29 +7,23 @@
 ### authorization
 
 1. ```accounts/```
-2. ```api/v1/auth/```
-
-### select2
-
-1. ```select2/```
+2. ```api/token/```
+3. ```api/token/refresh/```
+4. ```api/token/verify/```
 
 ### admin panel
 
 1. ```admin/```
 
-### Home page
-
-1. ```home/```
-
 ### Apps namespaces
 
-1. ```decommission/```
-2. ```stockroom/```
-3. ```counterparty/```
+1. ```api/decommission/```
+2. ```api/stockroom/```
+3. ```api/counterparty/```
 4. ```signature/```
-5. ```device/```
-6. ```consumables/```
-7. ```accounting/```
-8. ```software/```
-9. ```employee/```
-10. ```workplace/```
+5. ```api/device/```
+6. ```api/consumables/```
+7. ```api/accounting/```
+8. ```api/software/```
+9. ```api/employee/```
+10. ```api/workplace/```

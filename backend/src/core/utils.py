@@ -1,12 +1,14 @@
 class ModelMixin:
-    """
-    Mixin with methods from models
-    """
+    """_ModelMixin_ Mixin with methods from models"""
 
     def get_all_fields(self):
+        """_get_all_fields_: returns all fields from model
+
+        Returns:
+            fields (dict[str, str]): dict from the list of fields and their values for the model, except those excluded fields
+            expose_fields (list[str]): excluded fields
         """
-        Returned list all fields from model. Used in DetailView
-        """
+
         fields = []
         expose_fields = ["id", "slug"]
         for f in self._meta.fields:  # type: ignore[attr-defined]
