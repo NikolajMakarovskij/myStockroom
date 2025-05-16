@@ -13,8 +13,18 @@ from rest_framework.views import APIView
 from .utils import menu
 
 
+#
 # AUTH
 def get_csrf(request):
+    """_get_csrf_ Returns the CSRF token in a JSON response.
+
+    Args:
+        request (_type_):
+
+    Returns:
+        response (X-CSRFToken & JSON):
+    """
+
     response = JsonResponse({"detail": "CSRF cookie set"})
     response["X-CSRFToken"] = get_token(request)
     return response
@@ -22,6 +32,15 @@ def get_csrf(request):
 
 @require_POST
 def login_view(request):
+    """_login_view_ Authenticates and logs in a user.
+
+    Args:
+        request (_type_):
+
+    Returns:
+        response (JSON):
+    """
+
     data = json.loads(request.body)
     username = data.get("username")
     password = data.get("password")
@@ -41,6 +60,15 @@ def login_view(request):
 
 
 def logout_view(request):
+    """_logout_view_ Logs out a user.
+
+    Args:
+        request (_type_):
+
+    Returns:
+        response (JSON):
+    """
+
     if not request.user.is_authenticated:
         return JsonResponse({"detail": "You're not logged in."}, status=400)
 
@@ -49,20 +77,58 @@ def logout_view(request):
 
 
 class SessionView(APIView):
+    """_SessionView_ View user sessions.
+
+    Args:
+        APIView (APIView:
+
+    Other parameters:
+        authentication_classes (SessionAuthentication, BasicAuthentication):
+        permission_classes (IsAuthenticated):
+    """
+
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get(request, format=None):
+        """_get_ Returns the authenticated user's session.
+
+        Args:
+            request (_type_):
+
+        Returns:
+            response (JSON):
+        """
+
         return JsonResponse(
             {"isAuthenticated": True, "username": request.user.username}
         )
 
 
 class WhoAmIView(APIView):
+    """_WhoAmIView_ View the authenticated user's username.
+
+    Args:
+        APIView (APIView):
+
+    Other parameters:
+        authentication_classes (SessionAuthentication, BasicAuthentication):
+        permission_classes (IsAuthenticated):
+    """
+
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get(request, format=None):
+        """_get_ Returns the authenticated user's username.
+
+        Args:
+            request (_type_):
+
+        Returns:
+            response (JSON):
+        """
+
         return JsonResponse({"username": request.user.username})
