@@ -2,11 +2,29 @@
 
 ##
 
-### ConsumablesListRestView
-#### :::src.consumables.views.ConsumablesListRestView
+### ConsumableIndexView
+#### :::src.consumables.views.ConsumableIndexView
 
-### ConsumablesRestView
-#### :::src.consumables.views.ConsumablesRestView
+### ConsumablesView
+#### :::src.consumables.views.ConsumablesView
 
-### CategoriesRestView
-#### :::src.consumables.views.CategoriesRestView
+### ConsumablesCategoriesView
+#### :::src.consumables.views.ConsumablesCategoriesView
+
+### ConsumablesDetailView
+#### :::src.consumables.views.ConsumablesDetailView
+
+### ConsumablesCreate
+#### :::src.consumables.views.ConsumablesCreate
+
+### ConsumablesUpdate
+#### :::src.consumables.views.ConsumablesUpdate
+
+### ConsumablesDelete
+#### :::src.consumables.views.ConsumablesDelete
+
+### ExportConsumable
+#### :::src.consumables.views.ExportConsumable
+
+### ExportConsumableCategory
+#### :::src.consumables.views.ExportConsumableCategory
