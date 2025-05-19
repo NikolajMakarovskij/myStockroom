@@ -8,10 +8,13 @@ from device.models import Device
 
 # Decommission
 class Decommission(ModelMixin, models.Model):
-    """
+    """_Decommission_
     Extension of the device model for the decommission.
-    The nomenclature of warehouse and decommission and directory device may differ,
-    however, the number and placement of each device must match
+    The nomenclature of warehouse and decommission and directory devices may differ.
+    However, the number and placement of each device must match.
+
+    Returns:
+        Decommission (Decommission): _description_
     """
 
     stock_model = models.OneToOneField(
@@ -33,6 +36,8 @@ class Decommission(ModelMixin, models.Model):
     date = models.DateField(null=True, blank=True, verbose_name="Дата списания")
 
     class Meta:
+        """_Decommission Meta_: _model settings_"""
+
         verbose_name = "Списание устройств"
         verbose_name_plural = "Списание устройств"
         ordering = ["stock_model"]
@@ -44,8 +49,11 @@ class Decommission(ModelMixin, models.Model):
 
 
 class CategoryDec(ModelMixin, models.Model):
-    """
-    Group model for stock_model
+    """_CategoryDec_
+    Decommission categories model
+
+    Returns:
+        CategoryDec (CategoryDec): _description_
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -61,9 +69,17 @@ class CategoryDec(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_CategoryDec __str__ _: _returns name of model_
+
+        Returns:
+            CategoryDec__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_CategoryDec Meta_: _model settings_"""
+
         verbose_name = "Группа списания устройств"
         verbose_name_plural = "Группы списания устройств"
         ordering = ["name"]
@@ -71,10 +87,13 @@ class CategoryDec(ModelMixin, models.Model):
 
 # Disposal
 class Disposal(ModelMixin, models.Model):
-    """
+    """_ Disposal_
     Extension of the device model for the disposal.
-    The nomenclature of warehouse and disposal and directory stock_model may differ,
-    however, the number and placement of each device must match
+    The nomenclature of warehouse and disposal and directory stock_model may differ.
+    However, the number and placement of each device must match.
+
+    Returns:
+        Disposal ( Disposal): _description_
     """
 
     stock_model = models.OneToOneField(
@@ -96,6 +115,8 @@ class Disposal(ModelMixin, models.Model):
     date = models.DateField(null=True, blank=True, verbose_name="Дата утилизации")
 
     class Meta:
+        """_ Disposal Meta_: _model settings_"""
+
         verbose_name = "Утилизация устройств"
         verbose_name_plural = "Утилизация устройств"
         ordering = ["stock_model"]
@@ -107,8 +128,11 @@ class Disposal(ModelMixin, models.Model):
 
 
 class CategoryDis(ModelMixin, models.Model):
-    """
-    Group model for stock_model
+    """_CategoryDis_
+    CategoryDis categories model
+
+    Returns:
+        CategoryDis (CategoryDis): _description_
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
@@ -124,9 +148,17 @@ class CategoryDis(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_CategoryDis __str__ _: _returns name of model_
+
+        Returns:
+            CategoryDis__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_CategoryDis Meta_: _model settings_"""
+
         verbose_name = "Группа утилизации устройств"
         verbose_name_plural = "Группы утилизации устройств"
         ordering = ["name"]

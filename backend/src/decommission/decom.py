@@ -7,11 +7,26 @@ from .models import CategoryDec, CategoryDis
 
 
 class Decom(object):
-    """Class with decommission and disposal methods"""
+    """_Decom_
+    Class with decommission and disposal methods
+
+    Returns:
+        Decom (Decom): _description_
+    """
 
     # Decommission
     def add_category_decom(device_id: UUID) -> Any | None:  # type: ignore[misc]
-        """Get category"""
+        """_add_category_decom_
+        Checks if the Device model has a category; checks if it is in the CategoryDec list.
+        If the category exists, it binds it to the record; if it is missing, it is created and then assigned.
+
+        Args:
+            device_id (UUID): _uuid of device model_
+
+        Returns:
+            Any | None: _Adds a device category to a record in the Decommission model_
+        """
+
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
@@ -27,7 +42,17 @@ class Decom(object):
 
     # Disposal
     def add_category_disp(device_id: UUID) -> Any | None:  # type: ignore[misc]
-        """Get category"""
+        """_add_category_disp_
+        Checks if the Device model has a category; checks if it is in the CategoryDis list.
+        If the category exists, it binds it to the record; if it is missing, it is created and then assigned.
+
+        Args:
+            device_id (UUID): _uuid of the device model_
+
+        Returns:
+            Any | None: _Adds a device category to a record in the Disposal model_
+        """
+
         if not Device.objects.get(id=device_id).categories:
             device_category = None
         else:
