@@ -1,4 +1,0 @@
-# ***Views***
-
-
-#### :::src.device.views

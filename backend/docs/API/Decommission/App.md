@@ -18,18 +18,18 @@
 ### REST API
 #### Decommission
 
-1. ```decommission_list```
-2. ```decommission_cat_list```
-3. ```add_to_decommission/```
-4. ```remove_from_decommission/```
-5. ```decom/export/```
-6. ```decom/export/category/<slug:category_slug>```
+1. ```api/decommission/decommission_list```
+2. ```api/decommission/decommission_cat_list```
+3. ```api/decommission/add_to_decommission/```
+4. ```api/decommission/remove_from_decommission/```
+5. ```api/decommission/decom/export/```
+6. ```api/decommission/decom/export/category/<slug:category_slug>```
 
 ### Disposal
 
-1. ```disposal_list```
-2. ```disposal_cat_list```
-3. ```add_to_disposal/```
-4. ```remove_from_disposal/```
-5. ```disposal/export```
-6. ```disposal/export/category/<slug:category_slug>```
+1. ```api/decommission/disposal_list```
+2. ```api/decommission/disposal_cat_list```
+3. ```api/decommission/add_to_disposal/```
+4. ```api/decommission/remove_from_disposal/```
+5. ```api/decommission/disposal/export```
+6. ```api/decommission/disposal/export/category/<slug:category_slug>```
