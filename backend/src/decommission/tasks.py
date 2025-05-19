@@ -12,12 +12,22 @@ from .decom import Decom
 
 
 class DecomTasks(Decom):
+    """_DecomTasks_
+    This class inherits the methods from the Decommission class and is used to define the tasks that will be used in the Celery tasks.
+    """
+
     # Decommission
     @shared_task()
     def add_device_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
+        """_add_device_decom_
+        Adds a device to a record in the decommission model and deletes it from the stockroom model
+
+        Args:
+            device_id (UUID): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
-        Add a device to a decommission
-        """
+
         quantity = int(0)
         device_add = Device.objects.get(id=device_id)
         if not Decommission.objects.filter(stock_model=device_id):
@@ -41,9 +51,15 @@ class DecomTasks(Decom):
 
     @shared_task()
     def remove_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
+        """_remove_decom_
+        Delete from the Decommission model
+
+        Args:
+            device_id (UUID): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
-        Delete from Decommission
-        """
+
         quantity = int(0)
         if Decommission.objects.filter(stock_model=device_id):
             Decommission.objects.filter(stock_model=device_id).delete()
@@ -54,9 +70,15 @@ class DecomTasks(Decom):
     # Disposal
     @shared_task()
     def add_device_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
+        """_add_device_disp_
+        Adds a decommission to a record in the disposal model and deletes it from the decommission model
+
+        Args:
+            device_id (UUID): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
-        Add a device to a disposal
-        """
+
         username = username
         status_choice = status_choice
         quantity = int(0)
@@ -82,9 +104,15 @@ class DecomTasks(Decom):
 
     @shared_task()
     def remove_disp(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
+        """_remove_disp_
+        Delete from the Disposal model
+
+        Args:
+            device_id (UUID): _uuid of the Device model_
+            username (str): _the username received from the session_
+            status_choice (str): _the status of the completed operation_
         """
-        Delete from Decommission
-        """
+
         quantity = int(0)
         status_choice = status_choice
         if Disposal.objects.filter(stock_model=device_id):
