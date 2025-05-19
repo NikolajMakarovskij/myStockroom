@@ -62,6 +62,7 @@ class DeviceModelRestView(viewsets.ModelViewSet[Device]):
 
         Returns:
             data (JSON):
+            error (JSON):
         """
 
         serializer = self.serializer_class(data=request.data)

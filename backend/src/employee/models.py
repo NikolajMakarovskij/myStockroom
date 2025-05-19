@@ -7,8 +7,11 @@ from workplace.models import Workplace
 
 
 class Employee(ModelMixin, models.Model):
-    """
-    Модель сотрудника. Связи один ко многим с моделями workstation, signature
+    """_Employee_:
+    Employee model
+
+    Returns:
+        Employee (Employee): _description_
     """
 
     id = models.UUIDField(
@@ -47,9 +50,17 @@ class Employee(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Employee __str__ _: _returns name of model_
+
+        Returns:
+            Employee__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Employee Meta_: _model settings_"""
+
         verbose_name = "Сотрудник"
         verbose_name_plural = "Сотрудники"
         ordering = [
@@ -60,15 +71,30 @@ class Employee(ModelMixin, models.Model):
 
 
 class Departament(ModelMixin, models.Model):
+    """_Departament_:
+    Departament model
+
+    Returns:
+        Departament (Departament): _description_
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
     name = models.CharField(
         max_length=50, help_text="Введите название отдела", verbose_name="Отдел"
     )
 
     def __str__(self):
+        """_Departament __str__ _: _returns name of model_
+
+        Returns:
+            Departament__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Departament Meta_: _model settings_"""
+
         verbose_name = "Отдел"
         verbose_name_plural = "Отделы"
         ordering = [
@@ -77,6 +103,13 @@ class Departament(ModelMixin, models.Model):
 
 
 class Post(ModelMixin, models.Model):
+    """_Post_:
+    Post model
+
+    Returns:
+        Post (Post): _description_
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID")
     name = models.CharField(
         max_length=50, help_text="Введите должность", verbose_name="Должность"
@@ -91,9 +124,17 @@ class Post(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Post __str__ _: _returns name of model_
+
+        Returns:
+            Post__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Post Meta_: _model settings_"""
+
         verbose_name = "Должность"
         verbose_name_plural = "Должности"
         ordering = [
