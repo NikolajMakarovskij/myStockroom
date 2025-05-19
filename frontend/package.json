@@ -58,5 +58,6 @@
   },
   "resolutions": {
     "rollup": "npm:@rollup/wasm-node"
-  }
+  },
+  "proxy":"http://0.0.0.0/api"
 }

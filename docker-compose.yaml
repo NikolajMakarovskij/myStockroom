@@ -21,6 +21,8 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      - stockroom_api
 
   react:
     build:
@@ -41,6 +43,8 @@ services:
     command: npm run dev
     depends_on:
       - backend
+    networks:
+      - stockroom_api
 
   db:
     container_name: db
@@ -51,6 +55,8 @@ services:
     volumes:
       - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database:/var/lib/postgresql/data
+    networks:
+      - stockroom_api
 
   angie:
     build: ./angie
@@ -67,11 +73,15 @@ services:
     depends_on:
       - react
       - backend
+    networks:
+      - stockroom_api
 
   redis:
     image: redis:alpine
     container_name: redis
     restart: always
+    networks:
+      - stockroom_api
 
   celery:
     restart: always
@@ -87,6 +97,8 @@ services:
       - ./.env
     depends_on:
       - backend
+    networks:
+      - stockroom_api
 
   celery-beat:
     image: backend
@@ -102,6 +114,8 @@ services:
       - ./.env
     depends_on:
       - celery
+    networks:
+      - stockroom_api
 
   flower:
     image: backend
@@ -119,3 +133,9 @@ services:
       - "5557:5555"
     depends_on:
       - celery
+    networks:
+      - stockroom_api
+
+networks:
+  stockroom_api:
+    name: stockroom_api
