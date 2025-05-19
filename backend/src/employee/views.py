@@ -110,7 +110,7 @@ class EmployeeRestView(viewsets.ModelViewSet[Employee]):
             pk (UUID | None, optional):
 
         Returns:
-            status (204)
+            status (204):
         """
 
         project = self.queryset.get(pk=pk)
@@ -218,7 +218,7 @@ class PostRestView(viewsets.ModelViewSet[Post]):
             pk (UUID | None, optional):
 
         Returns:
-            status (204)
+            status (204):
         """
 
         project = self.queryset.get(pk=pk)
@@ -315,7 +315,7 @@ class DepartamentRestView(viewsets.ModelViewSet[Departament]):
             pk (UUID | None, optional):
 
         Returns:
-            status (204)
+            status (204):
         """
 
         project = self.queryset.get(pk=pk)

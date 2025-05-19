@@ -9,8 +9,11 @@ from employee.models import Employee
 
 
 class Signature(ModelMixin, models.Model):
-    """
-    Модель ЭЦП (электронной цифровой подписи)
+    """_Signature_:
+    Signature model
+
+    Returns:
+        Signature (Signature): _description_
     """
 
     id = models.UUIDField(
@@ -87,9 +90,9 @@ class Signature(ModelMixin, models.Model):
         """
         return self.name
 
-    # конец методов
-
     class Meta:
+        """_Signature Meta_: _model settings_"""
+
         verbose_name = "ЭЦП"
         verbose_name_plural = "ЭЦП"
         ordering = [
