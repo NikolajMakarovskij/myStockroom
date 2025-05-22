@@ -6,6 +6,13 @@ from core.utils import ModelMixin
 
 
 class Room(ModelMixin, models.Model):
+    """_Room_:
+    Room model
+
+    Returns:
+       Room (Room): _description_
+    """
+
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, db_index=True, help_text="ID"
     )
@@ -28,17 +35,28 @@ class Room(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Room __str__ _: _returns name of model_
+
+        Returns:
+            Room__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Room Meta_: _model settings_"""
+
         verbose_name = "Кабинет"
         verbose_name_plural = "Кабинеты"
         ordering = ["name", "building"]
 
 
 class Workplace(ModelMixin, models.Model):
-    """
-    Модель рабочего места. Используется в workstation
+    """_Workplace_:
+    Workplace model
+
+    Returns:
+       Workplace (Workplace): _description_
     """
 
     id = models.UUIDField(
@@ -60,9 +78,17 @@ class Workplace(ModelMixin, models.Model):
     )
 
     def __str__(self):
+        """_Workplace __str__ _: _returns name of model_
+
+        Returns:
+            Workplace__name (str): _returns name_
+        """
+
         return self.name
 
     class Meta:
+        """_Workplace Meta_: _model settings_"""
+
         verbose_name = "Рабочее место"
         verbose_name_plural = "Рабочие места"
         ordering = ["room__building", "name"]

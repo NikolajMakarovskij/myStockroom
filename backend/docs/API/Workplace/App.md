@@ -13,29 +13,9 @@
 
 ## Urls
 
-### Home
-
-1. ```/```
-
-### Workplace
-
- 1. ```workplace/```
- 2. ```workplace/search/```
- 3. ```workplace/(?P<pk>[-\w]+)$```
- 4. ```workplace/create/$```
- 5. ```workplace/(?P<pk>[-\w]+)/update$```
- 6. ```workplace/(?P<pk>[-\w]+)/delete$```
-
-### Room
-
- 1. ```room/```
- 2. ```room/search/```
- 3. ```room/(?P<pk>[-\w]+)$```
- 4. ```room/create/$```
- 5. ```room/(?P<pk>[-\w]+)/update$```
- 6. ```room/(?P<pk>[-\w]+)/delete$```
-
 ### REST API
 
-1. ```api/v1/room/```
-2. ```api/v1/workplace/```
+1. ```api/workplace/room```
+2. ```api/workplace/room_list```
+3. ```api/workplace/workplace```
+4. ```api/workplace/workplace_list```
