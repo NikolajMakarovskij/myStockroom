@@ -168,6 +168,7 @@ class AccessoriesListModelSerializer(serializers.ModelSerializer[Accessories]):
             difference (int): _returns difference of quantity_
         """
 
+        difference = 0
         quantity_all = 0
         for each in obj.accessories.all():
             quantity_all += each.quantity

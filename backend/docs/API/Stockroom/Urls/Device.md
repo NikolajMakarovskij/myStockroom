@@ -1,25 +1,27 @@
 # ***Devices***
 
-## Stockroom
+## REST API
 
-1. ```devices//```
-2. ```devices//search```
-3. ```devices//category/<slug:category_slug>```
+### Stockroom
 
-## Methods
+1. ```api/stockroom/stock_dev_list/```
+2. ```api/stockroom/stock_dev_cat_list/```
 
-1. ```devices/stockroom/add/<uuid:accessories_id>/```
-2. ```devices/stockroom/remove/<uuid:accessories_id>/```
-3. ```devices/stockroom/move/<uuid:device_id>/```
-4. ```devices/stockroom/add_history/<uuid:device_id>/```
+### Methods
 
-## Export
+1. ```api/stockroom/add_to_stock_device/```
+2. ```api/stockroom/remove_from_stock_device/```
+3. ```api/stockroom/move_device/```
+4. ```api/stockroom/add_device_history/```
 
-1. ```devices/export/```
-2. ```devices/export/category/<slug:category_slug>```
+### Export
 
-## History
+1. ```api/stockroom/devices/export/```
+2. ```api/stockroom/devices/export/category/<slug:category_slug>```
 
-1. ```devices/history/```
-2. ```devices/history/search```
-3. ```devices/history/category/<slug:category_slug>```
+### History
+
+1. ```api/stockroom/history_dev_list/```
+2. ```api/stockroom/consumption_con_list/```
+3. ```api/stockroom/history_dev_list/filter/(?P<stock_model_id>.+)/$```
+4. ```api/stockroom/history_dev_list/status/filter/(?P<status>.+)/$```

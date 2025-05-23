@@ -14,7 +14,13 @@ from stockroom.models.devices import CategoryDev, StockDev
 
 @dataclass
 class BaseStockResource(resources.ModelResource):
-    """Class with stock base methods"""
+    """_BaseStockResource_
+    Resource defines how consumables | accessories form the stockroom are mapped to their export representations and handle exporting data.
+
+    Other parameters:
+            stock_model (type | None): _ForeignKey model for category field_
+            stock_category (type | None): _ForeignKey model for manufacturer field_
+    """
 
     stock_model: type | None = None
     stock_category: type | None = None
@@ -151,6 +157,10 @@ class StockAccResource(BaseStockResource):
 
 
 class ConsumableConsumptionResource(resources.ModelResource):
+    """_ConsumableConsumptionResource_
+    Resource defines how consumables are mapped to their export representations and handle exporting data.
+    """
+
     stock_model = fields.Field(
         column_name="Название",
     )
@@ -178,9 +188,13 @@ class ConsumableConsumptionResource(resources.ModelResource):
     )
 
     def get_queryset(self):
+        """_get_queryset_ Reterns queryset of the History model with distinct stock_model"""
+
         return self._meta.model.objects.order_by("stock_model").distinct("stock_model")
 
     class Meta:
+        """_ConsumableConsumptionResource Meta_: _resource settings_"""
+
         model = History
         exclude = [
             "id",
@@ -196,11 +210,28 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_stock_model(history):
+        """_dehydrate_stock_model_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            name (str): _name of stock_model_
+        """
         name = getattr(history, "stock_model")
         return name
 
     @staticmethod
     def dehydrate_quantity(history):
+        """_dehydrate_quantity_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            quantity (int): _quantity for the selected consumable._
+        """
+
         id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
@@ -211,6 +242,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_devices(history):
+        """_dehydrate_devices_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            devices (str): _name of all devices with the selected consumable._
+        """
+
         id_ = getattr(history, "stock_model_id")
         device_list = []
         consumables = Consumables.objects.all()
@@ -229,6 +269,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_devices_count(history):
+        """_dehydrate_devices_count_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            devices_count (int): _quantity of all devices with the selected consumable._
+        """
+
         id_ = getattr(history, "stock_model_id")
         consumables = Consumables.objects.all()
         if not consumables.filter(id=id_):
@@ -243,6 +292,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_all(history):
+        """_dehydrate_quantity_all_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            quantity_all (int): _quantity of all units of the selected consumable_
+        """
+
         quantity_all = 0
         id_ = getattr(history, "stock_model_id")
         history = History.objects.all()
@@ -256,6 +314,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_last_year(history):
+        """_dehydrate_quantity_last_year_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            quantity_last_year (int): _quantity of all units of the selected consumable in the previous year_
+        """
+
         quantity_last_year = 0
         id_ = getattr(history, "stock_model_id")
         cur_year = datetime.now()
@@ -272,6 +339,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_current_year(history):
+        """_dehydrate_quantity_current_year_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            quantity_current_year (int): _quantity of all units of the selected consumable in the current year_
+        """
+
         quantity_current_year = 0
         id_ = getattr(history, "stock_model_id")
         cur_year = datetime.now()
@@ -288,6 +364,15 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_require(history):
+        """_dehydrate_require_
+
+        Args:
+            history (Hystory):
+
+        Returns:
+            require (int): _consumables need to be ordered_
+        """
+
         QCY = int(
             ConsumableConsumptionResource.dehydrate_quantity_current_year(history)
         )
@@ -302,6 +387,10 @@ class ConsumableConsumptionResource(resources.ModelResource):
 
 
 class AccessoriesConsumptionResource(resources.ModelResource):
+    """_AccessoriesConsumptionResource_
+    Resource defines how accessories are mapped to their export representations and handle exporting data.
+    """
+
     stock_model = fields.Field(
         column_name="Название",
     )
@@ -329,6 +418,8 @@ class AccessoriesConsumptionResource(resources.ModelResource):
     )
 
     def get_queryset(self):
+        """_get_queryset_ Reterns queryset of the HistoryAcc model with distinct stock_model names"""
+
         return (
             self._meta.model.objects.filter(status="Расход")
             .order_by("stock_model")
@@ -336,6 +427,8 @@ class AccessoriesConsumptionResource(resources.ModelResource):
         )
 
     class Meta:
+        """_AccessoriesConsumptionResource Meta_: _resource settings_"""
+
         model = HistoryAcc
         exclude = [
             "id",
@@ -351,11 +444,29 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_stock_model(historyacc):
+        """_dehydrate_stock_model_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            name (str): _name of the stock_model_
+        """
+
         name = getattr(historyacc, "stock_model")
         return name
 
     @staticmethod
     def dehydrate_quantity(historyacc):
+        """_dehydrate_quantity_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            quantity (int): _quantity of the stock_model_
+        """
+
         id_ = getattr(historyacc, "stock_model_id")
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
@@ -366,6 +477,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_devices(historyacc):
+        """_dehydrate_devices_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            devices (str): _devices with the selected accessories._
+        """
+
         id_ = getattr(historyacc, "stock_model_id")
         device_list = []
         consumables = Accessories.objects.all()
@@ -384,6 +504,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_devices_count(historyacc):
+        """_dehydrate_devices_count_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            devices_count (int): _number of devices with the selected accessories_
+        """
+
         id_ = getattr(historyacc, "stock_model_id")
         consumables = Accessories.objects.all()
         if not consumables.filter(id=id_):
@@ -398,6 +527,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_all(historyacc):
+        """_dehydrate_quantity_all_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            quantity_all (int): _quantity of all units of the selected accessories in the current year_
+        """
+
         quantity_all = 0
         id_ = getattr(historyacc, "stock_model_id")
         history = HistoryAcc.objects.all()
@@ -411,6 +549,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_last_year(historyacc):
+        """_dehydrate_quantity_last_year_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            quantity_last_year (int): _quantity of all units of the selected accessories in the previous year_
+        """
+
         quantity_last_year = 0
         id_ = getattr(historyacc, "stock_model_id")
         cur_year = datetime.now()
@@ -427,6 +574,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_quantity_current_year(historyacc):
+        """_dehydrate_quantity_current_year_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            quantity_current_year (int): _quantity of all units of the selected accessories in the current year_
+        """
+
         quantity_current_year = 0
         id_ = getattr(historyacc, "stock_model_id")
         cur_year = datetime.now()
@@ -443,6 +599,15 @@ class AccessoriesConsumptionResource(resources.ModelResource):
 
     @staticmethod
     def dehydrate_require(historyacc):
+        """_dehydrate_require_
+
+        Args:
+            historyacc (HistoryAcc):
+
+        Returns:
+            requirement (int): _requirement of the accessories_
+        """
+
         QCY = int(
             AccessoriesConsumptionResource.dehydrate_quantity_current_year(historyacc)
         )
@@ -455,5 +620,4 @@ class AccessoriesConsumptionResource(resources.ModelResource):
             requirement = abs(2 * QLY - QS + QCY)
         else:
             requirement = 0
-        return requirement
         return requirement

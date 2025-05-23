@@ -13,3 +13,9 @@
 
 ### StockDevResource
 #### :::src.stockroom.resources.StockDevResource
+
+### ConsumableConsumptionResource
+#### :::src.stockroom.resources.ConsumableConsumptionResource
+
+### AccessoriesConsumptionResource
+#### :::src.stockroom.resources.AccessoriesConsumptionResource
