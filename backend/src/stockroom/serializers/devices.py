@@ -6,18 +6,42 @@ from ..models.devices import CategoryDev, HistoryDev, StockDev
 
 
 class StockDevCatSerializer(serializers.ModelSerializer[CategoryDev]):
+    """_StockDevCatSerializer_ Serialize Categories Model to JSON"""
+
     class Meta:
+        """_Class returns JSON of Categories model_
+
+        Returns:
+            model (CategoryDev):
+            fields (list[str]): _returns fields of model in form_
+            extra_kwargs (dict[str,list[str]): _returns settings of fields_
+        """
+
         model = CategoryDev
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
 
 
 class StockDevListSerializer(serializers.ModelSerializer[StockDev]):
-    queryset = StockDev.objects.all()
+    """_StockDevListSerializer_ Serialize StockDev Model with extended fields JSON
+
+    Other parameters:
+        categories (CategoryDev): _serialize Categories model_
+        stock_model (Device): _serialize Accessories model_
+    """
+
     categories = StockDevCatSerializer(read_only=True)
     stock_model = DeviceListSerializer(read_only=True)
 
     class Meta:
+        """_Class returns JSON of StockDev model_
+
+        Returns:
+            model (StockDev):
+            fields (list[str]): _returns fields of model in form_
+            extra_kwargs (dict[str,list[str]): _returns settings of fields_
+        """
+
         model = StockDev
         fields = [
             "stock_model",
@@ -38,9 +62,23 @@ class StockDevListSerializer(serializers.ModelSerializer[StockDev]):
 
 
 class HistoryDeviceModelSerializer(serializers.ModelSerializer[HistoryDev]):
+    """_HistoryDevModelSerializer_ Serialize HistoryDev Model with extended fields JSON
+
+    Other parameters:
+        categories (CategoryDev): _serialize Categories model_
+    """
+
     categories = StockDevCatSerializer(read_only=True)
 
     class Meta:
+        """_Class returns JSON of HistoryDev model_
+
+        Returns:
+            model (HistoryDev):
+            fields (list[str]): _returns fields of model in form_
+            extra_kwargs (dict[str,list[str]): _returns settings of fields_
+        """
+
         model = HistoryDev
         fields = "__all__"
         extra_kwargs = {
