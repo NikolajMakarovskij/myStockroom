@@ -2,16 +2,13 @@ services:
   backend:
     build:
       context: ./backend
-      target: dev
+      target: prod
     hostname: backend
     image: backend
     container_name: backend
     command: uv run gunicorn backend.wsgi:application --bind 0.0.0.0:8010 --timeout 120 --workers=3 --threads=3 --worker-connections=1000 # параметры сервера gunicorn
     restart: always
     volumes:
-      - ./backend/src:/backend/src
-      - ./site:/backend/site
-      - ./public:/public
       - ./backend/src/static:/home/backend/web/static
       - ./backend/src/media:/home/backend/web/mediafiles
     ports:

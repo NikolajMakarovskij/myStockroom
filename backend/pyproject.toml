@@ -68,7 +68,7 @@ build-backend = "hatchling.build"
 packages = ["src/"]
 
 [tool.uv]
-default-groups = ["lint", "test", "docs"]
+default-groups = []
 
 [tool.ruff]
 line-length = 88
