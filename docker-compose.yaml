@@ -59,7 +59,9 @@ services:
       - stockroom_api
 
   angie:
-    build: ./angie
+    build:
+      context: ./angie
+      target: building
     restart: always
     hostname: stock
     container_name: angie

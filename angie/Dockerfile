@@ -1,4 +1,5 @@
-FROM alpine:3.21 AS build
+# Building angie image
+FROM alpine:3.21 AS building
 # install angie
 RUN set -x \
      && apk add --no-cache ca-certificates curl \
@@ -15,3 +16,16 @@ COPY angie.conf /etc/angie/
 COPY default.conf /etc/angie/http.d/default.conf
 
 CMD ["angie", "-g", "daemon off;"]
+
+# Build Stage
+FROM node:23-bookworm-slim as build
+WORKDIR /app
+COPY --from=frontend . /app
+RUN npm i --force
+RUN npm run build
+
+# Production Stage
+FROM building AS prod
+RUN mkdir /frontend
+RUN mkdir /frontend/dist
+COPY --from=build /app/dist /frontend/dist
