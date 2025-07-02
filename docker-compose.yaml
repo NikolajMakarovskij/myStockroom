@@ -70,6 +70,8 @@ services:
       - ./frontend:/frontend
       - ./backend/src/static:/home/backend/web/static
       - ./backend/src/media:/home/backend/web/mediafiles
+    env_file:
+      - ./.env
     ports:
       - "80:80"
     depends_on:
