@@ -1,4 +1,4 @@
-name: Django Actions
+name: integration tests
 
 on: 
   push:
