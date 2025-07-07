@@ -40,17 +40,12 @@ class Employee(ModelMixin, models.Model):
         null=True,
         help_text="Выберете должность",
         verbose_name="Должность",
-        verbose_name="Должность",
     )
     employeeEmail = models.EmailField(
         blank=True,
         null=True,
         unique=True,
-        blank=True,
-        null=True,
-        unique=True,
         help_text="Введите e-mail",
-        verbose_name="e-mail",
         verbose_name="e-mail",
     )
 

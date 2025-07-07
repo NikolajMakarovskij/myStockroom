@@ -1,16 +1,12 @@
 import json
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
-from django.views import generic
 from django.views.decorators.http import require_POST
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
-from .utils import menu
 
 
 #

@@ -12,7 +12,6 @@ ENV PATH="/root/.local/bin/:$PATH"
 
 # set work directory
 WORKDIR /backend/src
-WORKDIR /backend/src
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
