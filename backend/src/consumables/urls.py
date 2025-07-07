@@ -1,5 +1,4 @@
-from django.urls import include, re_path
-
+from django.urls import re_path, include
 from .routers import router
 
 urlpatterns = [

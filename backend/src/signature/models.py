@@ -88,6 +88,7 @@ class Signature(ModelMixin, models.Model):
         Returns:
             Signature__name (str): _returns name_
         """
+
         return self.name
 
     class Meta:
@@ -95,6 +96,10 @@ class Signature(ModelMixin, models.Model):
 
         verbose_name = "ЭЦП"
         verbose_name_plural = "ЭЦП"
+        ordering = [
+            "periodOpen",
+            "periodClose",
+        ]
         ordering = [
             "periodOpen",
             "periodClose",

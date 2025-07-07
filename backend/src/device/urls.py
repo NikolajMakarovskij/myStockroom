@@ -1,5 +1,4 @@
-from django.urls import include, path
-
+from django.urls import path, include
 from .routers import router
 
 urlpatterns = [

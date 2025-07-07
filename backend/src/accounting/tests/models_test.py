@@ -64,3 +64,4 @@ def test_accounting_create():
     assert accounting.get_cost_all() == 105.69
     assert accounting.note == "some_name"
     assert accounting.__str__() == "my_accounting"
+    assert accounting.__str__() == "my_accounting"

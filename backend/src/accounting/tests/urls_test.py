@@ -1,5 +1,4 @@
 import pytest
-
 from core.tests.login_test import auto_login_user  # noqa F401
 
 

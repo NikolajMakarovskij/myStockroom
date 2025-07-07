@@ -1,11 +1,10 @@
 import datetime
 
 import pytest
-from django.db.utils import IntegrityError
-
 from counterparty.models import Manufacturer
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from device.models import Device
+from django.db.utils import IntegrityError
 
 
 # Decommission
@@ -99,4 +98,5 @@ def test_disposal_dev_create():
     assert decom.stock_model.manufacturer.name == "name_manufacturer"  # type: ignore[union-attr]
     assert decom.stock_model.quantity == 10
     assert decom.categories.name == "my_category"  # type: ignore[union-attr]
+    assert decom.date == datetime.date.today()
     assert decom.date == datetime.date.today()

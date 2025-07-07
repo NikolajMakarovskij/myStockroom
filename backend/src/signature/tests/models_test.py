@@ -35,3 +35,4 @@ def test_signature_create():
     assert signature.workstation.name == "Acer C27"  # type: ignore[union-attr]
     assert signature.storage.name == "storage"  # type: ignore[union-attr]
     assert signature.__str__() == "signature_name"
+    assert signature.__str__() == "signature_name"
