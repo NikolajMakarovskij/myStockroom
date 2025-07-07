@@ -45,3 +45,4 @@ def test_os_create():
     assert os_vars.bitDepth == "x64"
     assert os_vars.licenseKeyText == "Key_354ygar"
     assert os_vars.__str__() == "my_OS_name"
+    assert os_vars.__str__() == "my_OS_name"

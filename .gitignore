@@ -15,6 +15,7 @@ pgadmin-data/_data/pgadmin4.db
 env/
 **/__pycache__/
 **.ruff_cache/
+
 /venv/
 **.idea/
 .env.dev
