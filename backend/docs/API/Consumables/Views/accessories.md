@@ -2,11 +2,26 @@
 
 ##
 
-### AccessoriesListRestView
-#### :::src.consumables.views.AccessoriesListRestView
+### AccessoriesView
+#### :::src.consumables.views.AccessoriesView
 
-### AccessoriesRestView
-#### :::src.consumables.views.AccessoriesRestView
+### AccessoriesCategoriesView
+#### :::src.consumables.views.AccessoriesCategoriesView
 
-### AccCatRestView
-#### :::src.consumables.views.AccCatRestView
+### AccessoriesDetailView
+#### :::src.consumables.views.AccessoriesDetailView
+
+### AccessoriesCreate
+#### :::src.consumables.views.AccessoriesCreate
+
+### AccessoriesUpdate
+#### :::src.consumables.views.AccessoriesUpdate
+
+### AccessoriesDelete
+#### :::src.consumables.views.AccessoriesDelete
+
+### ExportAccessories
+#### :::src.consumables.views.ExportAccessories
+
+### ExportAccessoriesCategory
+#### :::src.consumables.views.ExportAccessoriesCategory
