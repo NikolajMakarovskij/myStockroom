@@ -1,5 +1,4 @@
 #!/bin/sh
-sleep 5
 if [ "$DATABASE" = "mybase" ]
 then
     # если база еще не запущена

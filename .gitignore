@@ -2,23 +2,24 @@
 node_modules/
 **/migrations/
 **/database/pgdata/
+**/database/Init_db/
 pgadmin-data/_data/azurecredentialcache
 pgadmin-data/_data/sessions
 pgadmin-data/_data/storage
 pgadmin-data/_data/pgadmin4.db
 .vscode/settings.json
 .pytest_cache
-/backend/media/
-/backend/static/
-/static/
-/media/
+/backend/src/static/
+/backend/src/media/
 .coverage
 env/
 **/__pycache__/
+**.ruff_cache/
 
 /venv/
-.idea/
+**.idea/
 .env.dev
+.venv
 
 # celery
 celerybeat*

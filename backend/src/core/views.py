@@ -1,26 +1,124 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import generic
+import json
 
-from .utils import menu
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.views.decorators.http import require_POST
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 
-# Главная
-class IndexView(LoginRequiredMixin, generic.TemplateView):
-    """_IndexView_ Home page
+#
+# AUTH
+def get_csrf(request):
+    """_get_csrf_ Returns the CSRF token in a JSON response.
 
-    Other parameters:
-        template_name (str): _path to template_
+    Args:
+        request (_type_):
+
+    Returns:
+        response (X-CSRFToken & JSON):
     """
 
-    template_name = "index.html"
+    response = JsonResponse({"detail": "CSRF cookie set"})
+    response["X-CSRFToken"] = get_token(request)
+    return response
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+
+@require_POST
+def login_view(request):
+    """_login_view_ Authenticates and logs in a user.
+
+    Args:
+        request (_type_):
+
+    Returns:
+        response (JSON):
+    """
+
+    data = json.loads(request.body)
+    username = data.get("username")
+    password = data.get("password")
+
+    if username is None or password is None:
+        return JsonResponse(
+            {"detail": "Please provide username and password."}, status=400
+        )
+
+    user = authenticate(username=username, password=password)
+
+    if user is None:
+        return JsonResponse({"detail": "Invalid credentials."}, status=400)
+
+    login(request, user)
+    return JsonResponse({"detail": "Successfully logged in."})
+
+
+def logout_view(request):
+    """_logout_view_ Logs out a user.
+
+    Args:
+        request (_type_):
+
+    Returns:
+        response (JSON):
+    """
+
+    if not request.user.is_authenticated:
+        return JsonResponse({"detail": "You're not logged in."}, status=400)
+
+    logout(request)
+    return JsonResponse({"detail": "Successfully logged out."})
+
+
+class SessionView(APIView):
+    """_SessionView_ View user sessions.
+
+    Other parameters:
+        authentication_classes (SessionAuthentication, BasicAuthentication):
+        permission_classes (IsAuthenticated):
+    """
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get(request, format=None):
+        """_get_ Returns the authenticated user's session.
+
+        Args:
+            request (_type_):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to accessories list_
+            response (JSON):
         """
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Главная страница"
-        context["menu"] = menu
-        return context
+
+        return JsonResponse(
+            {"isAuthenticated": True, "username": request.user.username}
+        )
+
+
+class WhoAmIView(APIView):
+    """_WhoAmIView_ View the authenticated user's username.
+
+    Other parameters:
+        authentication_classes (SessionAuthentication, BasicAuthentication):
+        permission_classes (IsAuthenticated):
+    """
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get(request, format=None):
+        """_get_ Returns the authenticated user's username.
+
+        Args:
+            request (_type_):
+
+        Returns:
+            response (JSON):
+        """
+
+        return JsonResponse({"username": request.user.username})

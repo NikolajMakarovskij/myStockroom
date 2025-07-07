@@ -2,17 +2,17 @@
 
 ##
 
-### DisposalView
-#### :::src.decommission.views.DisposalView
+### DisposalListRestView
+#### :::src.decommission.views.DisposalListRestView
 
-### DispCategoriesView
-#### :::src.decommission.views.DispCategoriesView
+### DisposalCatListRestView
+#### :::src.decommission.views.DisposalCatListRestView
 
-### add_disposal
-#### :::src.decommission.views.add_disposal
+### AddToDisposalDeviceView
+#### :::src.decommission.views.AddToDisposalDeviceView
 
-### remove_disposal
-#### :::src.decommission.views.remove_disposal
+### RemoveFromDisposalDeviceView
+#### :::src.decommission.views.RemoveFromDisposalDeviceView
 
 ### ExportDispDevice
 #### :::src.decommission.views.ExportDispDevice

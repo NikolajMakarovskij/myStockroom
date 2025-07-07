@@ -1,12 +1,12 @@
 import datetime
 
 import pytest
-from django.urls import reverse
 
-from ..models import Signature
 from consumables.models import Consumables
 from device.models import Device
 from employee.models import Employee
+
+from ..models import Signature
 
 
 @pytest.mark.django_db
@@ -35,6 +35,4 @@ def test_signature_create():
     assert signature.workstation.name == "Acer C27"  # type: ignore[union-attr]
     assert signature.storage.name == "storage"  # type: ignore[union-attr]
     assert signature.__str__() == "signature_name"
-    assert signature.get_absolute_url() == reverse(
-        "signature:signature-detail", kwargs={"pk": signature.pk}
-    )
+    assert signature.__str__() == "signature_name"

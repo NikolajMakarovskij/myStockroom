@@ -1,4 +1,5 @@
 import datetime
+from uuid import UUID
 
 from celery import shared_task
 
@@ -8,10 +9,13 @@ from stockroom.models.devices import StockDev
 from stockroom.stock.stock import DevStock
 
 from .decom import Decom
-from uuid import UUID
 
 
 class DecomTasks(Decom):
+    """_DecomTasks_
+    This class inherits the methods from the Decommission class and is used to define the tasks that will be used in the Celery tasks.
+    """
+
     # Decommission
     @shared_task()
     def add_device_decom(device_id: UUID, username: str, status_choice: str) -> None:  # type: ignore[misc]
@@ -23,6 +27,7 @@ class DecomTasks(Decom):
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
+
         quantity = int(0)
         device_add = Device.objects.get(id=device_id)
         if not Decommission.objects.filter(stock_model=device_id):
@@ -54,6 +59,7 @@ class DecomTasks(Decom):
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
+
         quantity = int(0)
         if Decommission.objects.filter(stock_model=device_id):
             Decommission.objects.filter(stock_model=device_id).delete()
@@ -72,6 +78,7 @@ class DecomTasks(Decom):
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
+
         username = username
         status_choice = status_choice
         quantity = int(0)
@@ -105,6 +112,7 @@ class DecomTasks(Decom):
             username (str): _the username received from the session_
             status_choice (str): _the status of the completed operation_
         """
+
         quantity = int(0)
         status_choice = status_choice
         if Disposal.objects.filter(stock_model=device_id):

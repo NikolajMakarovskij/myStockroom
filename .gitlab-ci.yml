@@ -6,7 +6,7 @@ stages:
 
 image: docker:24.0.5
 services:
-    - docker:24.0.5-dind
+  - docker:24.0.5-dind
 
 .standard-rules:
   rules:
@@ -56,6 +56,25 @@ backend-linting:
   script:
     - docker exec -t backend uv run ruff check .
 
+frontend-linting:
+  stage: linting
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - ".gitlab-ci.yml"
+          - "frontend/src/**/*"
+          - "frontend/.prettierrc"
+          - "frontend/eslint.config.js"
+          - "frontend/index.html"
+          - "frontend/package-lock.json"
+          - "frontend/package.json"
+          - "frontend/vite.config.js"
+          - '.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+  script:
+    - docker exec -t frontend npm run lint
+
 backend-testing:
   stage: testing
   rules:
@@ -81,10 +100,44 @@ backend-testing:
       junit:
         - backend/src/junit.xml
 
+frontend-testing:
+  stage: testing
+  rules:
+    - if: $CI_COMMIT_MESSAGE
+      changes:
+        paths:
+          - ".gitlab-ci.yml"
+          - "frontend/src/**/*"
+          - "frontend/.prettierrc"
+          - "frontend/eslint.config.js"
+          - "frontend/index.html"
+          - "frontend/package-lock.json"
+          - "frontend/package.json"
+          - "frontend/vite.config.js"
+          - '.pre-commit-config.yaml'
+          - 'docker-compose.yaml'
+  needs: ["frontend-linting"]
+  script:
+    - docker exec -t frontend npx playwright install
+    - docker exec -t frontend npx playwright install-deps
+    - docker exec -t frontend npm run test:pl-junit
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    paths:
+      - frontend/junit-integration.xml
+    reports:
+      junit:
+        - frontend/junit-integration.xml
+
 pages:
   stage: pages
   only:
     - master
+    - "backend/docs/**/*.{md}"
+    - "docs/**/*.{md}"
+    - "mkdocs.yml"
+  needs: ["backend-testing"]
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'

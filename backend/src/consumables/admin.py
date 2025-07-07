@@ -47,7 +47,7 @@ class CategoriesAdmin(ImportExportModelAdmin):
 @admin.register(Accessories)
 class AccessoriesAdmin(ImportExportModelAdmin):
     """_AccessoriesAdmin_
-    Add model to admin panel
+    Add accessories model to admin panel
     """
 
     list_display = [
@@ -76,7 +76,7 @@ class AccessoriesAdmin(ImportExportModelAdmin):
 @admin.register(AccCat)
 class AccCatAdmin(ImportExportModelAdmin):
     """_AccCatAdmin_
-    Add categories model to admin panel
+    Add accessories categories model to admin panel
     """
 
     list_display = ["name", "slug"]

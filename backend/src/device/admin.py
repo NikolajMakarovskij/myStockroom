@@ -1,5 +1,5 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin  # type: ignore [import-untyped]
+from import_export.admin import ImportExportModelAdmin  # type: ignore[import-untyped]
 
 from .models import Device, DeviceCat
 
@@ -37,7 +37,7 @@ class DeviceAdmin(ImportExportModelAdmin):
 @admin.register(DeviceCat)
 class DeviceCatAdmin(ImportExportModelAdmin):
     """_DeviceCatAdmin_
-    Add categories model to admin panel
+    Add model to admin panel
     """
 
     list_display = ["name", "slug"]

@@ -15,4 +15,9 @@ admin.site.site_header = "admin panel header"
 
 ### Home page
 
-1. ```/```
+1. ```api/csrf```
+2. ```api/login/```
+3. ```api/login/```
+4. ```api/logout/```
+5. ```api/session/```
+6. ```api/whoami/```

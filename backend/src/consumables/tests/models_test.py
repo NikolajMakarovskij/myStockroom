@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from counterparty.models import Manufacturer
 
@@ -17,9 +16,7 @@ def test_category_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "consumables:category", kwargs={"category_slug": category.slug}
-    )
+    # assert category.get_absolute_url() == reverse('consumables:category', kwargs={'category_slug': category.slug})
 
 
 @pytest.mark.django_db
@@ -62,9 +59,6 @@ def test_consumable_create():
     assert consumable.description == "my_description"
     assert consumable.note == "my_note"
     assert consumable.__str__() == "my_consumable"
-    assert consumable.get_absolute_url() == reverse(
-        "consumables:consumables-detail", kwargs={"pk": consumable.pk}
-    )
 
 
 # Комплектующие
@@ -77,9 +71,10 @@ def test_acc_cat_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "consumables:category_accessories", kwargs={"category_slug": category.slug}
-    )
+
+
+# assert category.get_absolute_url() == reverse('consumables:category_accessories',
+#                                              kwargs={'category_slug': category.slug})
 
 
 @pytest.mark.django_db
@@ -122,6 +117,3 @@ def test_accessories_create():
     assert accessories.description == "my_description"
     assert accessories.note == "my_note"
     assert accessories.__str__() == "my_consumable"
-    assert accessories.get_absolute_url() == reverse(
-        "consumables:accessories-detail", kwargs={"pk": accessories.pk}
-    )

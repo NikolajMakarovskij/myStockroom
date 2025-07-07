@@ -1,61 +1,58 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 
-from stockroom.views.accessories import (
+from .routers import router
+from .views.accessories import (
+    AddToDeviceAccessoriesView,
+    AddToStockAccessoriesView,
+    ConsumptionAccRestView,
     ExportConsumptionAccessories,
     ExportConsumptionAccessoriesCategory,
     ExportStockAccessories,
     ExportStockAccessoriesCategory,
-    HistoryAccCategoriesView,
-    HistoryAccConsumptionCategoriesView,
-    HistoryAccView,
-    HistoryConsumptionAccView,
-    StockAccCategoriesView,
-    StockAccView,
-    device_add_accessories,
-    stock_add_accessories,
-    stock_remove_accessories,
+    HistoryAccDeviceFilterListRestView,
+    HistoryAccFilterListRestView,
+    RemoveFromStockAccessoriesView,
 )
-from stockroom.views.consumables import (
+from .views.consumables import (
+    AddToDeviceConsumableView,
+    AddToStockConsumableView,
+    ConsumptionRestView,
     ExportConsumptionConsumable,
     ExportConsumptionConsumableCategory,
     ExportStockConsumable,
     ExportStockConsumableCategory,
-    HistoryCategoriesView,
-    HistoryConsumptionCategoriesView,
-    HistoryConsumptionView,
-    HistoryView,
-    StockroomCategoriesView,
-    StockroomView,
-    device_add_consumable,
-    stock_add_consumable,
-    stock_remove_consumable,
+    HistoryConDeviceFilterListRestView,
+    HistoryConFilterListRestView,
+    RemoveFromStockConsumableView,
 )
-from stockroom.views.devices import (
+from .views.devices import (
+    AddHistoryToDeviceView,
+    AddToStockDeviceView,
     ExportStockDevice,
     ExportStockDeviceCategory,
-    HistoryDevCategoriesView,
-    HistoryDevView,
-    StockDevCategoriesView,
-    StockDevView,
-    add_history_to_device,
-    move_device_from_stock,
-    stock_add_device,
-    stock_remove_device,
+    HistoryDevFilterListRestView,
+    HistoryDevStatusFilterListRestView,
+    MoveDeviceView,
+    RemoveFromStockDeviceView,
 )
-from stockroom.views.index import StockroomIndexView
-
-from .routers import router
 
 urlpatterns = [
-    path("api/v1/", include(router.urls)),
-    path("", StockroomIndexView.as_view(), name="stock_index"),
+    path("", include(router.urls)),
     # Consumables
-    path("stockroom/", StockroomView.as_view(), name="stock_list"),
-    path("stockroom/search", StockroomView.as_view(), name="stock_search"),
     path(
-        "category/<slug:category_slug>",
-        StockroomCategoriesView.as_view(),
-        name="category",
+        "consumption_con_list/",
+        ConsumptionRestView.as_view(),
+        name="consumption_consumables_list",
+    ),
+    re_path(
+        "history_con_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryConFilterListRestView.as_view(),
+        name="stock_model_filter",
+    ),
+    re_path(
+        "history_con_list/device/filter/(?P<deviceId>.+)/$",
+        HistoryConDeviceFilterListRestView.as_view(),
+        name="stock_model_filter",
     ),
     path(
         "stockroom/export/",
@@ -69,43 +66,21 @@ urlpatterns = [
     ),
     # methods
     path(
-        "stockroom/add/<uuid:consumable_id>/",
-        stock_add_consumable,
-        name="stock_add_consumable",
+        "add_to_stock_consumable/",
+        AddToStockConsumableView.as_view(),
+        name="add_to_stock_consumable",
     ),
     path(
-        "stockroom/remove/<uuid:consumable_id>/",
-        stock_remove_consumable,
-        name="stock_remove_consumable",
+        "add_to_device_consumable/",
+        AddToDeviceConsumableView.as_view(),
+        name="add_to_device_consumable",
     ),
     path(
-        "stockroom/consumable/remove/<uuid:consumable_id>/",
-        device_add_consumable,
-        name="device_add_consumable",
+        "remove_from_stock_consumable/",
+        RemoveFromStockConsumableView.as_view(),
+        name="remove_from_stock_consumable",
     ),
     # history
-    path("history/", HistoryView.as_view(), name="history_list"),
-    path("history/search", HistoryView.as_view(), name="history_search"),
-    path(
-        "history/category/<slug:category_slug>",
-        HistoryCategoriesView.as_view(),
-        name="history_category",
-    ),
-    path(
-        "history/consumption/",
-        HistoryConsumptionView.as_view(),
-        name="history_consumption_list",
-    ),
-    path(
-        "history/consumption/search",
-        HistoryConsumptionView.as_view(),
-        name="history_consumption_search",
-    ),
-    path(
-        "history/consumption/category/<slug:category_slug>",
-        HistoryConsumptionCategoriesView.as_view(),
-        name="history_consumption_category",
-    ),
     path(
         "stockroom/history/export/",
         ExportConsumptionConsumable.as_view(),
@@ -117,12 +92,20 @@ urlpatterns = [
         name="export_consumption_consumable_category",
     ),
     # Accessories
-    path("accessories/", StockAccView.as_view(), name="stock_acc_list"),
-    path("accessories/search", StockAccView.as_view(), name="stock_acc_search"),
     path(
-        "accessories/category/<slug:category_slug>",
-        StockAccCategoriesView.as_view(),
-        name="accessories_category",
+        "consumption_acc_list/",
+        ConsumptionAccRestView.as_view(),
+        name="consumption_accessories_list",
+    ),
+    re_path(
+        "history_acc_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryAccFilterListRestView.as_view(),
+        name="stock_acc_model_filter",
+    ),
+    re_path(
+        "history_acc_list/device/filter/(?P<deviceId>.+)/$",
+        HistoryAccDeviceFilterListRestView.as_view(),
+        name="stock_model_filter",
     ),
     path(
         "accessories/export/",
@@ -134,46 +117,21 @@ urlpatterns = [
         ExportStockAccessoriesCategory.as_view(),
         name="export_stock_accessories_category",
     ),
+    # methods
     path(
-        "accessories/stockroom/add/<uuid:accessories_id>/",
-        stock_add_accessories,
-        name="stock_add_accessories",
+        "add_to_stock_accessories/",
+        AddToStockAccessoriesView.as_view(),
+        name="add_to_stock_accessories",
     ),
     path(
-        "accessories/stockroom/remove/<uuid:accessories_id>/",
-        stock_remove_accessories,
-        name="stock_remove_accessories",
+        "add_to_device_accessories/",
+        AddToDeviceAccessoriesView.as_view(),
+        name="add_to_device_accessories",
     ),
     path(
-        "accessories/stockroom/accessories/remove/<uuid:accessories_id>/",
-        device_add_accessories,
-        name="device_add_accessories",
-    ),
-    path("accessories/history/", HistoryAccView.as_view(), name="history_acc_list"),
-    path(
-        "accessories/history/search",
-        HistoryAccView.as_view(),
-        name="history_acc_search",
-    ),
-    path(
-        "accessories/history/category/<slug:category_slug>",
-        HistoryAccCategoriesView.as_view(),
-        name="history_acc_category",
-    ),
-    path(
-        "accessories/consumption/",
-        HistoryConsumptionAccView.as_view(),
-        name="history_consumption_acc_list",
-    ),
-    path(
-        "accessories/consumption/search",
-        HistoryConsumptionAccView.as_view(),
-        name="history_consumption_acc_search",
-    ),
-    path(
-        "accessories/consumption/category/<slug:category_slug>",
-        HistoryAccConsumptionCategoriesView.as_view(),
-        name="history_acc_consumption_category",
+        "remove_from_stock_accessories/",
+        RemoveFromStockAccessoriesView.as_view(),
+        name="remove_from_stock_accessories",
     ),
     path(
         "accessories/consumption/export/",
@@ -186,38 +144,35 @@ urlpatterns = [
         name="export_consumption_acc_category",
     ),
     # Devices
-    path("devices/", StockDevView.as_view(), name="stock_dev_list"),
-    path("devices/search", StockDevView.as_view(), name="stock_dev_search"),
+    re_path(
+        "history_dev_list/filter/(?P<stock_model_id>.+)/$",
+        HistoryDevFilterListRestView.as_view(),
+        name="stock_dev_model_filter",
+    ),
+    re_path(
+        "history_dev_list/status/filter/(?P<status>.+)/$",
+        HistoryDevStatusFilterListRestView.as_view(),
+        name="stock_dev_status_filter",
+    ),
+    # methods
     path(
-        "devices/category/<slug:category_slug>",
-        StockDevCategoriesView.as_view(),
-        name="devices_category",
+        "add_to_stock_device/",
+        AddToStockDeviceView.as_view(),
+        name="add_to_stock_device",
     ),
     path(
-        "devices/stockroom/add/<uuid:device_id>/",
-        stock_add_device,
-        name="stock_add_device",
+        "remove_from_stock_device/",
+        RemoveFromStockDeviceView.as_view(),
+        name="remove_from_stock_device",
     ),
     path(
-        "devices/stockroom/remove/<uuid:devices_id>/",
-        stock_remove_device,
-        name="stock_remove_device",
-    ),
-    path("devices/history/", HistoryDevView.as_view(), name="history_dev_list"),
-    path("devices/history/search", HistoryDevView.as_view(), name="history_dev_search"),
-    path(
-        "devices/history/category/<slug:category_slug>",
-        HistoryDevCategoriesView.as_view(),
-        name="history_dev_category",
-    ),
-    path(
-        "devices/stockroom/move/<uuid:device_id>/",
-        move_device_from_stock,
+        "move_device/",
+        MoveDeviceView.as_view(),
         name="move_device",
     ),
     path(
-        "devices/stockroom/add_history/<uuid:device_id>/",
-        add_history_to_device,
+        "add_device_history/",
+        AddHistoryToDeviceView.as_view(),
         name="add_device_history",
     ),
     path("devices/export/", ExportStockDevice.as_view(), name="export_stock_device"),

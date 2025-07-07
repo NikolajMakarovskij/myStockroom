@@ -1,251 +1,99 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import Q
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from rest_framework import viewsets
+from rest_framework.response import Response
 
-from core.utils import DataMixin, FormMessageMixin, menu
-
-from .forms import ManufacturerForm
 from .models import Manufacturer
+from .serializers import ManufacturerSerializer
 
 
-# Контрагенты
-class CounterpartyView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    generic.TemplateView,  # type: ignore[type-arg]
-):
-    """_CounterpartyView_
-    Home page for counterparty app
+class ManufacturerRestView(viewsets.ViewSet):
+    """_ManufacturerRestView_ returns manufacturer data in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
+        queryset (Manufacturer):
+        serializer_class (ManufacturerSerializer):
     """
 
-    template_name = "counterparty/counterparty.html"
-    permission_required = "counterparty.view_manufacturer"
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns manufacturer list in JSON format.
 
-        Returns:
-            context (list[str]): _returns title, side menu_
-        """
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Контрагенты, поставщики"
-        context["menu"] = menu
-        return context
-
-
-# Производитель
-class ManufacturerListView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_ManufacturerListView_
-    List of manufacturer instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Manufacturer): _base model for list_
-    """
-
-    permission_required = "counterparty.view_manufacturer"
-    paginate_by = DataMixin.paginate
-    model = Manufacturer
-    template_name = "counterparty/manufacturer_list.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+        Args:
+            request (_type_):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create manufacturer_
+            data (JSON):
         """
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Список производителей",
-            searchlink="counterparty:manufacturer_search",
-            add="counterparty:new-manufacturer",
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
-    def get_queryset(self):
-        """_queryset_
+        queryset = Manufacturer.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        """_create_ adds a new manufacturer to the database.
+
+        Args:
+            request (_type_):
 
         Returns:
-            object_list (Accounting): _description_
+            data (JSON):
         """
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = Manufacturer.objects.filter(
-            Q(name__icontains=query)
-            | Q(country__icontains=query)
-            | Q(production__icontains=query)
-        )
-        return object_list
 
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
 
-class ManufacturerDetailView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.DetailView,  # type: ignore[type-arg]
-):
-    """_ManufacturerDetailView_
-    Detail of manufacturer instances
+    def retrieve(self, request, pk=None):
+        """_retrieve_ returns a specific manufacturer in JSON format.
 
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Manufacturer): _base model for list_
-    """
-
-    permission_required = "counterparty.view_manufacturer"
-    model = Manufacturer
-    template_name = "counterparty/manufacturer_detail.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+        Args:
+            request (_type_):
+            pk (UUID | None, optional):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, links to create, update and delete manufacturer instance_
+            data (JSON):
         """
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Производитель",
-            add="counterparty:new-manufacturer",
-            update="counterparty:manufacturer-update",
-            delete="counterparty:manufacturer-delete",
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
+        queryset = Manufacturer.objects.all()
+        manufacturer = queryset.get(pk=pk)
+        serializer = self.serializer_class(manufacturer)
+        return Response(serializer.data)
 
-class ManufacturerCreate(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    CreateView,  # type: ignore[type-arg]
-):
-    """_ManufacturerCreate_
-    Create of manufacturer instances
+    def update(self, request, pk=None):
+        """_update_ updates a manufacturer in the database.
 
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Manufacturer): _base model for list_
-        form_class (ManufacturerForm): _form class to view_
-        success_message (str):
-        error_message (str):
-    """
-
-    permission_required = "counterparty.add_manufacturer"
-    model = Manufacturer
-    form_class = ManufacturerForm
-    template_name = "Forms/add.html"
-    success_url = reverse_lazy("counterparty:manufacturer_list")
-    success_message = "Производитель %(name)s успешно создан"
-    error_message = "Производителя %(name)s не удалось создать"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+        Args:
+            request (_type_):
+            pk (UUID | None, optional):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title_
+            data (JSON):
+            errors (JSON):
         """
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Добавить производителя",
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
+        project = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(project, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
 
-class ManufacturerUpdate(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    UpdateView,  # type: ignore[type-arg]
-):
-    """_ManufacturerUpdate_
-    Update of manufacturer instances
+    def destroy(self, request, pk=None):
+        """_destroy_ deletes a manufacturer from the database.
 
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Manufacturer): _base model for list_
-        form_class (ManufacturerForm): _form class to view_
-        success_message (str):
-        error_message (str):
-    """
-
-    permission_required = "counterparty.change_manufacturer"
-    model = Manufacturer
-    template_name = "Forms/add.html"
-    form_class = ManufacturerForm
-    success_url = reverse_lazy("counterparty:manufacturer_list")
-    success_message = "Производитель %(name)s успешно обновлен"
-    error_message = "Производителя %(name)s не удалось обновить"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+        Args:
+            request (_type_):
+            pk (UUID | None, optional):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title_
+            status (204):
         """
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Редактировать производителя",
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
-
-class ManufacturerDelete(  # type: ignore[misc]
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    FormMessageMixin,
-    DeleteView,  # type: ignore[type-arg]
-):
-    """_ManufacturerDelete_
-    Delete of manufacturer instances
-
-    Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        model (Manufacturer): _base model for list_
-        success_url (str): _switches to url in case of successful deletion_
-        success_message (str):
-        error_message (str):
-    """
-
-    permission_required = "counterparty.delete_manufacturer"
-    model = Manufacturer
-    template_name = "Forms/delete.html"
-    success_url = reverse_lazy("counterparty:manufacturer_list")
-    success_message = "Производитель успешно удален"
-    error_message = "Производителя не удалось удалить"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to accounting list_
-        """
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Удалить производителя", selflink="counterparty:manufacturer_list"
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+        project = self.queryset.get(pk=pk)
+        project.delete()
+        return Response(status=204)

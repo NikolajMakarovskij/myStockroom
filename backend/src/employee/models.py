@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from workplace.models import Workplace
@@ -56,18 +55,8 @@ class Employee(ModelMixin, models.Model):
         Returns:
             Employee__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Employee url_
-
-        Returns:
-            Employee__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("employee:employee-detail", args=[str(self.id)])
 
     class Meta:
         """_Employee Meta_: _model settings_"""
@@ -100,18 +89,8 @@ class Departament(ModelMixin, models.Model):
         Returns:
             Departament__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Departament url_
-
-        Returns:
-            Departament__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("employee:departament-detail", args=[str(self.id)])
 
     class Meta:
         """_Departament Meta_: _model settings_"""
@@ -150,18 +129,8 @@ class Post(ModelMixin, models.Model):
         Returns:
             Post__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Post url_
-
-        Returns:
-            Post__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("employee:post-detail", args=[str(self.id)])
 
     class Meta:
         """_Post Meta_: _model settings_"""

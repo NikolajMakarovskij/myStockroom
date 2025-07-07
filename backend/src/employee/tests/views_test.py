@@ -1,254 +1,370 @@
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
+import pytest
 
-from employee.models import Departament, Employee, Post
-from core.utils import DataMixin
+from core.tests.login_test import auto_login_user  # noqa: F401
+from workplace.models import Workplace
+
+from ..models import Departament, Employee, Post
 
 
-class EmployeeListViewTest(TestCase, DataMixin):
-    number_of_employees = 149
+class TestDepartamentEndpoints:
+    endpoint = "/api/employee/departament/"
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_list(self, auto_login_user):  # noqa: F811
+        Departament.objects.bulk_create(
+            [
+                Departament(name="01"),
+                Departament(name="02"),
+                Departament(name="03"),
+            ]
+        )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "04"}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get(self.endpoint)
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Departament.objects.get_or_create(name="10")
+        test_data = Departament.objects.get(name="10")
+        url = f"{self.endpoint}{test_data.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Departament.objects.get_or_create(name="10")
+        test = Departament.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
 
-    @classmethod
-    def setUpTestData(cls):
-        for employee_num in range(cls.number_of_employees):
-            Employee.objects.create(
-                name="Christian %s" % employee_num,
-            )
-        assert Employee.objects.count() == 149
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
 
-    def test_context_data_in_list(self):
-        links = ["employee:employee_list", "employee:employee_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Список сотрудников"},
-            {"data_key": "searchlink", "data_value": "employee:employee_search"},
-            {"data_key": "add", "data_value": "employee:new-employee"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Сотрудник"},
-            {"data_key": "add", "data_value": "employee:new-employee"},
-            {"data_key": "update", "data_value": "employee:employee-update"},
-            {"data_key": "delete", "data_value": "employee:employee-delete"},
-        ]
-        Employee.objects.create(
-            name="Christian_detail",
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Departament.objects.get_or_create(name="10")
+        test = Departament.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        model = Employee.objects.get(
-            name="Christian_detail",
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Departament.objects.get_or_create(name="10")
+        test_data = Departament.objects.get(name="10")
+        url = f"{self.endpoint}{test_data.id}/"
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Departament.objects.all().count() == 0
+
+
+class TestPostEndpoints:
+    endpoint = "/api/employee/post/"
+
+    @pytest.mark.django_db
+    def test_list(self, auto_login_user):  # noqa: F811
+        Departament.objects.get_or_create(name="01")
+        departament = Departament.objects.get(name="01")
+        Post.objects.bulk_create(
+            [
+                Post(name="01", departament=departament),
+                Post(name="02"),
+                Post(name="03"),
+            ]
         )
-        resp = self.client.get(
-            reverse("employee:employee-detail", kwargs={"pk": model.pk})
+        client, user = auto_login_user()
+        response = client.get("/api/employee/post_list/")
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["departament"]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_workplace_list_2(self, auto_login_user):  # noqa: F811
+        Departament.objects.get_or_create(name="01")
+        departament = Departament.objects.get(name="01")
+        Post.objects.bulk_create(
+            [
+                Post(name="01", departament=departament),
+                Post(name="02"),
+                Post(name="03"),
+            ]
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
 
-    def test_pagination_is_paginate(self):
-        links = ["employee:employee_list", "employee:employee_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["employee_list"]) == self.paginate)
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Departament.objects.get_or_create(name="01")
+        departament = Departament.objects.get(name="01")
+        expected_json = {"name": "04", "departament": departament.id}
 
-    def test_lists_all_employee(self):
-        links = ["employee:employee_list", "employee:employee_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link) + f"?page={self.number_of_employees // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["employee_list"])
-                == self.number_of_employees
-                - (self.number_of_employees // self.paginate) * self.paginate
-            )
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get("/api/employee/post_list/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["departament"]["name"] == "01"
 
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "departament": ""}
 
-class PostViewTest(TestCase, DataMixin):
-    number_of_post = 149
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
-        )
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Post.objects.get_or_create(name="10")
+        test_data = Post.objects.get(name="10")
+        url = f"{self.endpoint}{test_data.id}/"
 
-    @classmethod
-    def setUpTestData(cls):
-        for post_num in range(cls.number_of_post):
-            Post.objects.create(
-                name="Christian %s" % post_num,
-            )
-        assert Post.objects.count() == 149
+        response = client.get(url)
 
-    def test_context_data_in_list(self):
-        links = ["employee:post_list", "employee:post_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Список должностей"},
-            {"data_key": "searchlink", "data_value": "employee:post_search"},
-            {"data_key": "add", "data_value": "employee:new-post"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
 
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Должность"},
-            {"data_key": "add", "data_value": "employee:new-post"},
-            {"data_key": "update", "data_value": "employee:post-update"},
-            {"data_key": "delete", "data_value": "employee:post-delete"},
-        ]
-        Post.objects.create(
-            name="Christian_detail",
-        )
-        model = Post.objects.get(
-            name="Christian_detail",
-        )
-        resp = self.client.get(reverse("employee:post-detail", kwargs={"pk": model.pk}))
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
-    def test_pagination_is_paginate(self):
-        links = ["employee:post_list", "employee:post_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["post_list"]) == self.paginate)
-
-    def test_lists_all_signature(self):
-        links = ["employee:post_list", "employee:post_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link) + f"?page={self.number_of_post // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["post_list"])
-                == self.number_of_post
-                - (self.number_of_post // self.paginate) * self.paginate
-            )
-
-
-class DepartamentViewTest(TestCase, DataMixin):
-    number_of_departament = 149
-
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Post.objects.get_or_create(name="10")
+        test = Post.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
 
-    @classmethod
-    def setUpTestData(cls):
-        for departament_num in range(cls.number_of_departament):
-            Departament.objects.create(
-                name="Christian %s" % departament_num,
-            )
-        assert Departament.objects.count() == 149
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
 
-    def test_context_data_in_list(self):
-        links = ["employee:departament_list", "employee:departament_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Список отделов"},
-            {"data_key": "searchlink", "data_value": "employee:departament_search"},
-            {"data_key": "add", "data_value": "employee:new-departament"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Отдел"},
-            {"data_key": "add", "data_value": "employee:new-departament"},
-            {"data_key": "update", "data_value": "employee:departament-update"},
-            {"data_key": "delete", "data_value": "employee:departament-delete"},
-        ]
-        Departament.objects.create(
-            name="Christian_detail",
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Post.objects.get_or_create(name="10")
+        test = Post.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        model = Departament.objects.get(
-            name="Christian_detail",
-        )
-        resp = self.client.get(
-            reverse("employee:departament-detail", kwargs={"pk": model.pk})
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        assert response.status_code == 400
 
-    def test_pagination_is_paginate(self):
-        links = ["employee:departament_list", "employee:departament_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["departament_list"]) == self.paginate)
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Post.objects.get_or_create(name="01")
+        test_data = Post.objects.get(name="01")
+        url = f"{self.endpoint}{test_data.id}/"
 
-    def test_lists_all_signature(self):
-        links = ["employee:departament_list", "employee:departament_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link)
-                + f"?page={self.number_of_departament // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["departament_list"])
-                == self.number_of_departament
-                - (self.number_of_departament // self.paginate) * self.paginate
-            )
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Post.objects.all().count() == 0
+
+
+class TestEmployeeEndpoints:
+    endpoint = "/api/employee/employee/"
+
+    @pytest.mark.django_db
+    def test_list(self, auto_login_user):  # noqa: F811
+        Post.objects.create(name="01")
+        post = Post.objects.get(name="01")
+        Workplace.objects.create(name="01")
+        workplace = Workplace.objects.get(name="01")
+        Employee.objects.bulk_create(
+            [
+                Employee(name="01", surname="01", post=post, workplace=workplace),
+                Employee(name="02", surname="02"),
+                Employee(name="03", surname="03"),
+            ]
+        )
+        client, user = auto_login_user()
+        response = client.get("/api/employee/employee_list/")
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["post"]["name"] == "01"
+        assert data[0]["workplace"]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_list_2(self, auto_login_user):  # noqa: F811
+        Employee.objects.bulk_create(
+            [
+                Employee(name="01", surname="01"),
+                Employee(name="02", surname="02"),
+                Employee(name="03", surname="03"),
+            ]
+        )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Post.objects.create(name="01")
+        post = Post.objects.get(name="01")
+        Workplace.objects.create(name="01")
+        workplace = Workplace.objects.get(name="01")
+        expected_json = {
+            "name": "04",
+            "last_name": "12",
+            "surname": "22",
+            "post": post.id,
+            "workplace": workplace.id,
+            "employeeEmail": "12345@qw.com",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get("/api/employee/employee_list/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["last_name"] == "12"
+        assert data[0]["surname"] == "22"
+        assert data[0]["employeeEmail"] == "12345@qw.com"
+        assert data[0]["post"]["name"] == "01"
+        assert data[0]["workplace"]["name"] == "01"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "",
+            "last_name": "",
+            "surname": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Employee.objects.get_or_create(name="10")
+        test_data = Employee.objects.get(name="10")
+        url = f"{self.endpoint}{test_data.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Employee.objects.get_or_create(name="10")
+        test = Employee.objects.get(name="10")
+        expected_json = {
+            "name": "test",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+
+        get_response = client.get(f"{self.endpoint}{test.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Employee.objects.get_or_create(name="10")
+        test = Employee.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
+        )
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Employee.objects.get_or_create(name="01")
+        test_data = Employee.objects.get(name="01")
+        url = f"{self.endpoint}{test_data.id}/"
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Post.objects.all().count() == 0

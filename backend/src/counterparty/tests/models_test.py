@@ -1,5 +1,4 @@
 import pytest
-from django.urls import reverse
 
 from ..models import Manufacturer
 
@@ -16,6 +15,4 @@ def test_manufacturer_create():
     assert manufacturer.country == "country"
     assert manufacturer.production == "production_country"
     assert manufacturer.__str__() == "name_manufacturer"
-    assert manufacturer.get_absolute_url() == reverse(
-        "counterparty:manufacturer-detail", kwargs={"pk": manufacturer.pk}
-    )
+    assert manufacturer.__str__() == "name_manufacturer"

@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from device.models import Device
@@ -23,6 +22,7 @@ class StockDev(ModelMixin, models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
         db_index=True,
+        related_name="stock",
         help_text="Введите название устройства",
         verbose_name="Устройство",
     )
@@ -92,20 +92,8 @@ class CategoryDev(ModelMixin, models.Model):
         Returns:
             CategoryDev__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_CategoryDev get self url_
-
-        Returns:
-            CategoryDev__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse(
-            "stockroom:devices_category", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         """_StockCat Meta_: _model settings_"""

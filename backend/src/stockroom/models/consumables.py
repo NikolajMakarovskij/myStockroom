@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Consumables
 from core.utils import ModelMixin
@@ -88,18 +87,8 @@ class StockCat(ModelMixin, models.Model):
         Returns:
             StockCat__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_StockCat get self url_
-
-        Returns:
-            StockCat__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse("stockroom:category", kwargs={"category_slug": self.slug})
 
     class Meta:
         """_StockCat Meta_: _model settings_"""

@@ -4,16 +4,15 @@ import pytest
 
 from decommission.models import CategoryDec, CategoryDis, Decommission, Disposal
 from decommission.tasks import DecomTasks
-from decommission.tests.decom_test import create_devices, create_session
+from decommission.tests.decom_test import create_devices
 from stockroom.models.devices import HistoryDev, StockDev
 from stockroom.stock.stock import DevStock
 
 
 # Decommission
 @pytest.mark.django_db
-def test_decom_add_devices(client):
+def test_decom_add_devices():
     """Checks the operation of the add_device method of the Decom class"""
-    create_session(client)
     devices = create_devices()
     quantity = 1
     number_rack = 3
@@ -36,8 +35,8 @@ def test_decom_add_devices(client):
     assert Decommission.objects.count() == 1
     assert CategoryDec.objects.count() == 1
     assert HistoryDev.objects.count() == 2
-    assert test_get_decom.categories.name == "my_category"  # type: ignore[attr-defined, union-attr]
-    assert test_get_decom.categories.slug == "my_category"  # type: ignore[attr-defined, union-attr]
+    assert test_get_decom.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_decom.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_decom.stock_model.name == "my_consumable"
     assert test_get_decom.stock_model.quantity == 1
     assert test_get_decom.date == datetime.date.today()
@@ -45,9 +44,8 @@ def test_decom_add_devices(client):
 
 
 @pytest.mark.django_db
-def test_decom_add_device_not_category(client):
+def test_decom_add_device_not_category():
     """Checks the operation of the add_device_decom method of the Decom class"""
-    create_session(client)
     from device.models import Device
 
     Device.objects.create(name="my_consumable")
@@ -80,9 +78,8 @@ def test_decom_add_device_not_category(client):
 
 
 @pytest.mark.django_db
-def test_stock_dev_remove_device(client):
+def test_stock_dev_remove_device():
     """Checks the operation of the remove_decom method of the Decom class"""
-    create_session(client)
     devices = create_devices()
     quantity = 1
     number_rack = 3
@@ -111,9 +108,8 @@ def test_stock_dev_remove_device(client):
 
 # Disposal
 @pytest.mark.django_db
-def test_disp_add_devices(client):
+def test_disp_add_devices():
     """Checks the operation of the add_device_disp method of the Decom class"""
-    create_session(client)
     devices = create_devices()
     quantity = 1
     number_rack = 3
@@ -140,8 +136,8 @@ def test_disp_add_devices(client):
     assert Disposal.objects.count() == 1
     assert CategoryDis.objects.count() == 1
     assert HistoryDev.objects.count() == 3
-    assert test_get_disp.categories.name == "my_category"  # type: ignore[attr-defined, union-attr]
-    assert test_get_disp.categories.slug == "my_category"  # type: ignore[attr-defined, union-attr]
+    assert test_get_disp.categories.name == "my_category"  # type: ignore[union-attr]
+    assert test_get_disp.categories.slug == "my_category"  # type: ignore[union-attr]
     assert test_get_disp.stock_model.name == "my_consumable"
     assert test_get_disp.stock_model.quantity == 1
     assert test_get_disp.date == datetime.date.today()
@@ -149,9 +145,8 @@ def test_disp_add_devices(client):
 
 
 @pytest.mark.django_db
-def test_disp_add_device_not_category(client):
+def test_disp_add_device_not_category():
     """Checks the operation of the add_device_disp method of the Decom class"""
-    create_session(client)
     from device.models import Device
 
     Device.objects.create(name="my_consumable")
@@ -188,14 +183,8 @@ def test_disp_add_device_not_category(client):
 
 
 @pytest.mark.django_db
-def test_disp_remove_device(client):
-    """_summary_
-        Checks the operation of the remove_disp method of the Decom class
-    Args:
-        client (_type_): _description_
-    """
-
-    create_session(client)
+def test_disp_remove_device():
+    """Checks the operation of the remove_disp method of the Decom class"""
     devices = create_devices()
     quantity = 1
     number_rack = 3

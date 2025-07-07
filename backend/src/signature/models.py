@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Consumables
 from core.utils import ModelMixin
@@ -89,24 +88,18 @@ class Signature(ModelMixin, models.Model):
         Returns:
             Signature__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Signature url_
-
-        Returns:
-            Signature__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("signature:signature-detail", args=[str(self.id)])
 
     class Meta:
         """_Signature Meta_: _model settings_"""
 
         verbose_name = "ЭЦП"
         verbose_name_plural = "ЭЦП"
+        ordering = [
+            "periodOpen",
+            "periodClose",
+        ]
         ordering = [
             "periodOpen",
             "periodClose",

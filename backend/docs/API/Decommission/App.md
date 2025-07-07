@@ -15,22 +15,21 @@
 
 ## Urls
 
-### Decommission
+### REST API
+#### Decommission
 
-1. ```decom/```
-2. ```decom/search```
-3. ```decom/category/<slug:category_slug>```
-4. ```decom/add/<uuid:device_id>/```
-5. ```decom/remove/<uuid:devices_id>/```
-6. ```decom/export/```
-7. ```decom/export/category/<slug:category_slug>```
+1. ```api/decommission/decommission_list```
+2. ```api/decommission/decommission_cat_list```
+3. ```api/decommission/add_to_decommission/```
+4. ```api/decommission/remove_from_decommission/```
+5. ```api/decommission/decom/export/```
+6. ```api/decommission/decom/export/category/<slug:category_slug>```
 
 ### Disposal
 
-1. ```disposal/```
-2. ```disposal/search```
-3. ```disposal/category/<slug:category_slug>```
-4. ```disposal/add/<uuid:devices_id>/```
-5. ```disposal/remove/<uuid:devices_id>/```
-6. ```disposal/export```
-7. ```disposal/export/category/<slug:category_slug>```
+1. ```api/decommission/disposal_list```
+2. ```api/decommission/disposal_cat_list```
+3. ```api/decommission/add_to_disposal/```
+4. ```api/decommission/remove_from_disposal/```
+5. ```api/decommission/disposal/export```
+6. ```api/decommission/disposal/export/category/<slug:category_slug>```

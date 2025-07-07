@@ -4,27 +4,10 @@ from .models import Room, Workplace
 
 
 class WorkplaceSerializer(serializers.ModelSerializer[Workplace]):
-    """_WorkplaceSerializer_ Serialize workplace model to JSON for CRUD views
-
-    Other parameters:
-        queryset (Workplace): _returns workplace queryset_
-    """
-
-    queryset = Workplace.objects.all()
-
-    def display_value(self, instance):
-        """_display_value_
-
-        Args:
-            instance (str): _description_
-
-        Returns:
-            instance__name (str): _description_
-        """
-        return "%s" % instance.name
+    """_WorkplaceSerializer_ Serialize Workplace Model to JSON"""
 
     class Meta:
-        """_Class returns JSON of workplace model_
+        """_Class returns JSON of Workplace model_
 
         Returns:
             model (Workplace):
@@ -38,18 +21,16 @@ class WorkplaceSerializer(serializers.ModelSerializer[Workplace]):
 
 
 class RoomModelSerializer(serializers.ModelSerializer[Room]):
-    """_RoomModelSerializer_ Serialize room model to JSON for list views
+    """_RoomModelSerializer_ Serialize Room Model with extended fields JSON
 
     Other parameters:
-        queryset (Room): _returns room queryset_
-        workplace (WorkplaceSerializer): _many=True, read_only=True, returns room queryset_
+        workplace (Workplace): _serialize Workplace model_
     """
 
-    queryset = Room.objects.all()
     workplace = WorkplaceSerializer(many=True, read_only=True)
 
     class Meta:
-        """_Class returns JSON of room model_
+        """_Class returns JSON of Room model_
 
         Returns:
             model (Room):
@@ -63,16 +44,10 @@ class RoomModelSerializer(serializers.ModelSerializer[Room]):
 
 
 class RoomSerializer(serializers.ModelSerializer[Room]):
-    """_RoomSerializer_ Serialize room model to JSON for CRUD views
-
-    Other parameters:
-        queryset (Room): _returns room queryset_
-    """
-
-    queryset = Room.objects.all()
+    """_RoomSerializer_ Serialize Room Model to JSON"""
 
     class Meta:
-        """_Class returns JSON of room model_
+        """_Class returns JSON of Room model_
 
         Returns:
             model (Room):
@@ -85,19 +60,17 @@ class RoomSerializer(serializers.ModelSerializer[Room]):
         extra_kwargs = {"id": {"read_only": True}}
 
 
-class WorkplaceModelSerializer(serializers.ModelSerializer[Workplace]):
-    """_WorkplaceSerializer_ Serialize workplace model to JSON for list views
+class WorkplaceListSerializer(serializers.ModelSerializer[Workplace]):
+    """_WorkplaceListSerializer_ Serialize Room Model with extended fields JSON
 
     Other parameters:
-        queryset (Workplace): _returns workplace queryset_
-        room (RoomSerializer): _ read_only=True, returns room queryset_
+        room (Room: _serialize Room model_
     """
 
-    queryset = Workplace.objects.all()
     room = RoomSerializer(read_only=True)
 
     class Meta:
-        """_Class returns JSON of workplace model_
+        """_Class returns JSON of Workplace model_
 
         Returns:
             model (Workplace):

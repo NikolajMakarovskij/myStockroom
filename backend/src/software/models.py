@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from counterparty.models import Manufacturer
@@ -73,18 +72,8 @@ class Software(ModelMixin, models.Model):
         Returns:
             Software__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Software url_
-
-        Returns:
-            Software__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("software:software-detail", args=[str(self.id)])
 
     class Meta:
         """_Software Meta_: _model settings_"""
@@ -162,22 +151,13 @@ class Os(ModelMixin, models.Model):
         Returns:
             OS__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_OS url_
-
-        Returns:
-            OS__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("software:OS-detail", args=[str(self.id)])
 
     class Meta:
         """_OS Meta_: _model settings_"""
 
         verbose_name = "Операционная система"
         verbose_name_plural = "Операционные системы"
+        ordering = ["name"]
         ordering = ["name"]

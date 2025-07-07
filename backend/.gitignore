@@ -1,5 +1,4 @@
 .pytest_cache
-
 env/
 **/__pycache__/
 **.ruff_cache/
@@ -8,16 +7,13 @@ celerybeat-schedule
 .venv
 src/static
 src/media
-
 #uv
 
 # pdm
 .pdm-build
-
 #test
 .coverage
 junit.xml
 coverage.xml
-
 # docs
 site/*

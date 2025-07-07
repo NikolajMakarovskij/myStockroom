@@ -1,319 +1,504 @@
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-from django.urls import reverse
+import pytest
+
+from accounting.models import Accounting
+from core.tests.login_test import auto_login_user  # noqa: F401
+from counterparty.models import Manufacturer
 
 from ..models import AccCat, Accessories, Categories, Consumables
-from core.utils import DataMixin
 
 
 # Расходники
-class ConsumablesViewTest(TestCase, DataMixin):
-    number_of_consumables = 149
+class TestConsumablesEndpoints:
+    endpoint = "/api/consumables/consumable/"
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_consumables_list(self, auto_login_user):  # noqa: F811
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = Categories.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Consumables.objects.bulk_create(
+            [
+                Consumables(name="01", categories=cat, manufacturer=man, quantity=1),
+                Consumables(name="02"),
+                Consumables(name="03"),
+            ]
+        )
+        Accounting.objects.get_or_create(
+            name="category_01",
+            quantity=2,
+            consumable=Consumables.objects.get(name="01"),
+        )
+        client, user = auto_login_user()
+        response = client.get("/api/consumables/consumable_list/")
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["categories"]["name"] == "category_01"
+        assert data[0]["categories"]["slug"] == "category_01"
+        assert data[0]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["difference"] == -1
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_consumables_list_2(self, auto_login_user):  # noqa: F811
+        Consumables.objects.bulk_create(
+            [
+                Consumables(name="01"),
+                Consumables(name="02"),
+                Consumables(name="03"),
+            ]
+        )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = Categories.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        expected_json = {"name": "04", "categories": cat.id, "manufacturer": man.id}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get("/api/consumables/consumable_list/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["categories"]["name"] == "category_01"
+        assert data[0]["categories"]["slug"] == "category_01"
+        assert data[0]["manufacturer"]["name"] == "manufacturer"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "categories": "", "manufacturer": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="10")
+        test_cons = Consumables.objects.get(name="10")
+        url = f"{self.endpoint}{test_cons.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="10")
+        test_cons = Consumables.objects.get(name="10")
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = Categories.objects.get(name="category_01")
+        expected_json = {
+            "name": "test",
+            "categories": test_cat.id,
+        }
+        url = f"{self.endpoint}{test_cons.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
 
-    @classmethod
-    def setUpTestData(cls):
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(cls.number_of_consumables):
-            Consumables.objects.create(
-                name="Christian %s" % consumables_num,
-                categories=Categories.objects.get(slug="some_category"),
-            )
-        assert Consumables.objects.count() == 149
+        get_response = client.get(f"{self.endpoint}{test_cons.id}/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data["name"] == "test"
+        assert data["categories"] == test_cat.id
 
-    def test_context_data_in_list(self):
-        links = ["consumables:consumables_list", "consumables:consumables_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Расходники"},
-            {"data_key": "searchlink", "data_value": "consumables:consumables_search"},
-            {"data_key": "add", "data_value": "consumables:new-consumables"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Расходник"},
-            {"data_key": "add", "data_value": "consumables:new-consumables"},
-            {"data_key": "update", "data_value": "consumables:consumables-update"},
-            {"data_key": "delete", "data_value": "consumables:consumables-delete"},
-        ]
-        Consumables.objects.create(
-            name="Christian_detail",
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="10")
+        test_cons = Consumables.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test_cons.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        model = Consumables.objects.get(
-            name="Christian_detail",
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Consumables.objects.get_or_create(name="10")
+        test_cons = Consumables.objects.get(name="10")
+        url = f"{self.endpoint}{test_cons.id}/"
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Consumables.objects.all().count() == 0
+
+
+class TestConsumablesCategoryEndpoints:
+    endpoint = "/api/consumables/consumable_category/"
+
+    @pytest.mark.django_db
+    def test_categories_list(self, auto_login_user):  # noqa: F811
+        (Categories.objects.get_or_create(name="category_01", slug="category_01"),)
+        (Categories.objects.get_or_create(name="category_02", slug="category_02"),)
+        (Categories.objects.get_or_create(name="category_03", slug="category_03"),)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "04",
+            "slug": "04",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get(self.endpoint)
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["slug"] == "04"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name="10", slug="10")
+        test_cat = Categories.objects.get(name="10")
+        url = f"{self.endpoint}{test_cat.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+        assert response.data["slug"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = Categories.objects.get(name="category_01")
+        expected_json = {
+            "name": "test",
+            "slug": "test",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        resp = self.client.get(
-            reverse("consumables:consumables-detail", kwargs={"pk": model.pk})
+
+        get_response = client.get(f"{self.endpoint}{test_cat.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
+        assert data["slug"] == "test"
+
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = Categories.objects.get(name="category_01")
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        assert response.status_code == 400
 
-    def test_pagination_is_paginate(self):
-        links = ["consumables:consumables_list", "consumables:consumables_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["consumables_list"]) == self.paginate)
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Categories.objects.get_or_create(name="10")
+        test_cat = Categories.objects.get(name="10")
+        url = f"{self.endpoint}{test_cat.id}/"
 
-    def test_lists_all_consumables(self):
-        links = ["consumables:consumables_list", "consumables:consumables_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link)
-                + f"?page={self.number_of_consumables // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["consumables_list"])
-                == self.number_of_consumables
-                - (self.number_of_consumables // self.paginate) * self.paginate
-            )
+        response = client.delete(url)
 
-
-class ConsumablesCategoryViewTest(TestCase, DataMixin):
-    number_of_consumables = 149
-
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
-        )
-
-    @classmethod
-    def setUpTestData(cls):
-        Categories.objects.create(name="some_category", slug="some_category")
-        for consumables_num in range(cls.number_of_consumables):
-            Consumables.objects.create(
-                name="Christian %s" % consumables_num,
-                categories=Categories.objects.get(slug="some_category"),
-            )
-        assert Consumables.objects.count() == 149
-        assert Categories.objects.count() == 1
-
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Расходники"},
-            {"data_key": "searchlink", "data_value": "consumables:consumables_search"},
-            {"data_key": "add", "data_value": "consumables:new-consumables"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "consumables:category",
-                kwargs={"category_slug": Categories.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
-
-    def test_pagination_is_paginate(self):
-        resp = self.client.get(
-            reverse(
-                "consumables:category",
-                kwargs={"category_slug": Categories.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["consumables_list"]) == self.paginate)
-
-    def test_lists_all_categories(self):
-        resp = self.client.get(
-            reverse(
-                "consumables:category",
-                kwargs={"category_slug": Categories.objects.get(slug="some_category")},
-            )
-            + f"?page={self.number_of_consumables // self.paginate + 1}"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(
-            len(resp.context["consumables_list"])
-            == self.number_of_consumables
-            - (self.number_of_consumables // self.paginate) * self.paginate
-        )
+        assert response.status_code == 204
+        assert Categories.objects.all().count() == 0
 
 
 # Комплектующие
-class AccessoriesViewTest(TestCase, DataMixin):
-    number_of_accessories = 149
+class TestAccessoriesEndpoints:
+    endpoint = "/api/consumables/accessories/"
 
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_accessories_list(self, auto_login_user):  # noqa: F811
+        AccCat.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = AccCat.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        Accessories.objects.bulk_create(
+            [
+                Accessories(name="01", categories=cat, manufacturer=man, quantity=1),
+                Accessories(name="02"),
+                Accessories(name="03"),
+            ]
+        )
+        Accounting.objects.get_or_create(
+            name="category_01",
+            quantity=2,
+            accessories=Accessories.objects.get(name="01"),
+        )
+        client, user = auto_login_user()
+        response = client.get("/api/consumables/accessories_list/")
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[0]["categories"]["name"] == "category_01"
+        assert data[0]["categories"]["slug"] == "category_01"
+        assert data[0]["manufacturer"]["name"] == "manufacturer"
+        assert data[0]["difference"] == -1
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_accessories_list_2(self, auto_login_user):  # noqa: F811
+        Accessories.objects.bulk_create(
+            [
+                Accessories(name="01"),
+                Accessories(name="02"),
+                Accessories(name="03"),
+            ]
+        )
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "01"
+        assert data[1]["name"] == "02"
+        assert data[2]["name"] == "03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        AccCat.objects.get_or_create(name="category_01", slug="category_01")
+        Manufacturer.objects.get_or_create(name="manufacturer")
+        cat = AccCat.objects.get(name="category_01")
+        man = Manufacturer.objects.get(name="manufacturer")
+        expected_json = {"name": "04", "categories": cat.id, "manufacturer": man.id}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get("/api/consumables/accessories_list/")
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["categories"]["name"] == "category_01"
+        assert data[0]["categories"]["slug"] == "category_01"
+        assert data[0]["manufacturer"]["name"] == "manufacturer"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {"name": "", "categories": "", "manufacturer": ""}
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Accessories.objects.get_or_create(name="10")
+        test_cons = Accessories.objects.get(name="10")
+        url = f"{self.endpoint}{test_cons.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Accessories.objects.get_or_create(name="10")
+        test_cons = Accessories.objects.get(name="10")
+        AccCat.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = AccCat.objects.get(name="category_01")
+        expected_json = {
+            "name": "test",
+            "categories": test_cat.id,
+        }
+        url = f"{self.endpoint}{test_cons.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
 
-    @classmethod
-    def setUpTestData(cls):
-        AccCat.objects.create(name="some_category", slug="some_category")
-        for accessories_num in range(cls.number_of_accessories):
-            Accessories.objects.create(
-                name="Christian %s" % accessories_num,
-                categories=AccCat.objects.get(slug="some_category"),
-            )
-        assert Accessories.objects.count() == 149
+        get_response = client.get(f"{self.endpoint}{test_cons.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
+        assert data["categories"] == test_cat.id
 
-    def test_context_data_in_list(self):
-        links = ["consumables:accessories_list", "consumables:accessories_search"]
-        context_data = [
-            {"data_key": "title", "data_value": "Комплектующие"},
-            {"data_key": "searchlink", "data_value": "consumables:accessories_search"},
-            {"data_key": "add", "data_value": "consumables:new-accessories"},
-        ]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            for each in context_data:
-                self.assertTrue(each.get("data_key") in resp.context)
-                self.assertTrue(
-                    resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-                )
-
-    def test_context_data_in_detail(self):
-        context_data = [
-            {"data_key": "add", "data_value": "consumables:new-accessories"},
-            {"data_key": "update", "data_value": "consumables:accessories-update"},
-            {"data_key": "delete", "data_value": "consumables:accessories-delete"},
-        ]
-        Accessories.objects.create(name="Christian-detail")
-        model = Accessories.objects.get(
-            name="Christian-detail",
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        Accessories.objects.get_or_create(name="10")
+        test_cons = Accessories.objects.get(name="10")
+        expected_json = {
+            "name": "",
+        }
+        url = f"{self.endpoint}{test_cons.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        resp = self.client.get(
-            reverse("consumables:accessories-detail", kwargs={"pk": model.pk})
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        Accessories.objects.get_or_create(name="10")
+        test_cons = Accessories.objects.get(name="10")
+        url = f"{self.endpoint}{test_cons.id}/"
+
+        response = client.delete(url)
+
+        assert response.status_code == 204
+        assert Accessories.objects.all().count() == 0
+
+
+class TestAccessoriesCategoryEndpoints:
+    endpoint = "/api/consumables/accessories_category/"
+
+    @pytest.mark.django_db
+    def test_categories_list(self, auto_login_user):  # noqa: F811
+        (AccCat.objects.get_or_create(name="category_01", slug="category_01"),)
+        (AccCat.objects.get_or_create(name="category_02", slug="category_02"),)
+        (AccCat.objects.get_or_create(name="category_03", slug="category_03"),)
+        client, user = auto_login_user()
+        response = client.get(self.endpoint)
+        data = response.data
+        assert response.status_code == 200
+        assert len(data) == 3
+        assert data[0]["name"] == "category_01"
+        assert data[0]["slug"] == "category_01"
+        assert data[1]["name"] == "category_02"
+        assert data[1]["slug"] == "category_02"
+        assert data[2]["name"] == "category_03"
+        assert data[2]["slug"] == "category_03"
+
+    @pytest.mark.django_db
+    def test_create(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "04",
+            "slug": "04",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        get_response = client.get(self.endpoint)
+        data = get_response.data
+        assert response.status_code == 200
+        assert data[0]["name"] == "04"
+        assert data[0]["slug"] == "04"
+
+    @pytest.mark.django_db
+    def test_create_no_valid(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+
+        response = client.post(self.endpoint, data=expected_json, format="json")
+        assert response.status_code == 400
+
+    @pytest.mark.django_db
+    def test_retrieve(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        AccCat.objects.get_or_create(name="10", slug="10")
+        test_cat = AccCat.objects.get(name="10")
+        url = f"{self.endpoint}{test_cat.id}/"
+
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response.data["name"] == "10"
+        assert response.data["slug"] == "10"
+
+    @pytest.mark.django_db
+    def test_update(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        AccCat.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = AccCat.objects.get(name="category_01")
+        expected_json = {
+            "name": "test",
+            "slug": "test",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
 
-    def test_pagination_is_pagination(self):
-        links = ["consumables:accessories_list", "consumables:accessories_search"]
-        for link in links:
-            resp = self.client.get(reverse(link))
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(len(resp.context["accessories_list"]) == self.paginate)
+        get_response = client.get(f"{self.endpoint}{test_cat.id}/")
+        data = get_response.data
+        print(response)
+        assert response.status_code == 200
+        assert data["name"] == "test"
+        assert data["slug"] == "test"
 
-    def test_lists_all_accessories(self):
-        links = ["consumables:accessories_list", "consumables:accessories_search"]
-        for link in links:
-            resp = self.client.get(
-                reverse(link)
-                + f"?page={self.number_of_accessories // self.paginate + 1}"
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue("is_paginated" in resp.context)
-            self.assertTrue(resp.context["is_paginated"] is True)
-            self.assertTrue(
-                len(resp.context["accessories_list"])
-                == self.number_of_accessories
-                - (self.number_of_accessories // self.paginate) * self.paginate
-            )
-
-
-class AccessoriesCategoryViewTest(TestCase, DataMixin):
-    number_of_accessories = 149
-
-    def setUp(self):
-        self.client = Client()
-        self.client.force_login(
-            User.objects.get_or_create(
-                username="user", is_superuser=True, is_staff=True
-            )[0]
+    @pytest.mark.django_db
+    def test_update_no_valid(self, auto_login_user):  # noqa F811
+        client, user = auto_login_user()
+        AccCat.objects.get_or_create(name="category_01", slug="category_01")
+        test_cat = AccCat.objects.get(name="category_01")
+        expected_json = {
+            "name": "",
+            "slug": "",
+        }
+        url = f"{self.endpoint}{test_cat.id}/"
+        response = client.put(
+            url, data=expected_json, format="json", content_type="application/json"
         )
+        assert response.status_code == 400
 
-    @classmethod
-    def setUpTestData(cls):
-        AccCat.objects.create(name="some_category", slug="some_category")
-        for accessories_num in range(cls.number_of_accessories):
-            Accessories.objects.create(
-                name="Christian %s" % accessories_num,
-                categories=AccCat.objects.get(slug="some_category"),
-            )
-        assert Accessories.objects.count() == 149
-        assert AccCat.objects.count() == 1
+    @pytest.mark.django_db
+    def test_delete(self, auto_login_user):  # noqa: F811
+        client, user = auto_login_user()
+        AccCat.objects.get_or_create(name="10")
+        test_cat = AccCat.objects.get(name="10")
+        url = f"{self.endpoint}{test_cat.id}/"
 
-    def test_context_data_in_category(self):
-        context_data = [
-            {"data_key": "title", "data_value": "Комплектующие"},
-            {"data_key": "searchlink", "data_value": "consumables:accessories_search"},
-            {"data_key": "add", "data_value": "consumables:new-accessories"},
-        ]
-        resp = self.client.get(
-            reverse(
-                "consumables:category_accessories",
-                kwargs={"category_slug": AccCat.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        for each in context_data:
-            self.assertTrue(each.get("data_key") in resp.context)
-            self.assertTrue(
-                resp.context[each.get("data_key")] == each.get("data_value")  # type: ignore[index]
-            )
+        response = client.delete(url)
 
-    def test_pagination_is_pagination(self):
-        resp = self.client.get(
-            reverse(
-                "consumables:category_accessories",
-                kwargs={"category_slug": AccCat.objects.get(slug="some_category")},
-            )
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(len(resp.context["accessories_list"]) == self.paginate)
-
-    def test_lists_all_categories(self):
-        resp = self.client.get(
-            reverse(
-                "consumables:category_accessories",
-                kwargs={"category_slug": AccCat.objects.get(slug="some_category")},
-            )
-            + f"?page={self.number_of_accessories // self.paginate + 1}"
-        )
-        self.assertEqual(resp.status_code, 200)
-        self.assertTrue("is_paginated" in resp.context)
-        self.assertTrue(resp.context["is_paginated"] is True)
-        self.assertTrue(
-            len(resp.context["accessories_list"])
-            == self.number_of_accessories
-            - (self.number_of_accessories // self.paginate) * self.paginate
-        )
+        assert response.status_code == 204
+        assert AccCat.objects.all().count() == 0

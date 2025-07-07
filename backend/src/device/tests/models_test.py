@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from consumables.models import Accessories, Consumables
 from counterparty.models import Manufacturer
@@ -18,9 +17,6 @@ def test_device_category_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_slug"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "device:category", kwargs={"category_slug": category.slug}
-    )
 
 
 @pytest.mark.django_db
@@ -77,6 +73,3 @@ def test_device_create():
     assert device.quantity == 0
     assert device.note == "some_note"
     assert device.__str__() == "device_name"
-    assert device.get_absolute_url() == reverse(
-        "device:device-detail", kwargs={"pk": device.pk}
-    )

@@ -5,6 +5,9 @@
 
 ##### [Documentation](https://nikolajmakarovskij.gitlab.io/stockroom/)
 
+##### Основной репозиторий [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
+##### Зеркало [https://github.com/NikolajMakarovskij/myStockroom](https://github.com/NikolajMakarovskij/myStockroom)
+
 ___
 ## About
 <details>
@@ -16,6 +19,8 @@ is under development`
 
 `The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel, and the system of access rights to sections.`
 
+`Программа написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
+PostgreSQL (v. 14). для запуска и развертывания программы используется Doсker`
 `The program is written using the Django framework (v 5) in Python 3.12. It is used as a database.
 PostgreSQL (v. 14). Docker is used to launch and deploy the program.`
 
@@ -27,6 +32,11 @@ ___
 <details>
 <summary> Additional Software </summary>
 
+1. Для развертывания программы потребуются предварительно установленные: 
+    * [Docker](https://docs.docker.com/engine/) и [Docker compose](https://docs.docker.com/compose/)
+    или
+    * [Docker desktop](https://docs.docker.com/get-docker/)
+   
 1. To deploy the program, you will need pre-installed:
     * Docker и Docker compose
 
@@ -46,6 +56,7 @@ https://docs.docker.com/get-docker/).
 </details>
 
 ___
+## Развертывание
 ## Deployment
 
 <details>
@@ -64,21 +75,21 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
 
 <details><summary>Environment variables</summary>
 
-|                      Variable | Description                                                                                            |
-|--------------------------------:|-----------------------------------------------------------------------------------------------------|
-|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***       |
-|                      SECRET_KEY | The key for the cryptographic signature                                                                  |
-|            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                          |
-|                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change |
-|       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                            |
-|         SQL_USER, POSTGRES_USER | The name of the database user. Must match                                                               |
-| SQL_PASSWORD, POSTGRES_PASSWORD | The password of the database user. Must match                                                            |
-|                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                       |
-|                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                          |
+|                      Variable | Description                                                                                                               |
+|--------------------------------:|-------------------------------------------------------------------------------------------------------------------------|
+|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
+|                      SECRET_KEY | The key for the cryptographic signature                                                                                 |
+|            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                                            |
+|                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change                     |
+|       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                                    |
+|         SQL_USER, POSTGRES_USER | Имя пользователя БД. Должны совпадать                                                                                   |
+| SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                                               |
+|                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                      |
+|                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                                |
 |              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***"/var/lib/postgresql/data/pgdata"***   |
-|       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                 |
-|                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                 |
-|                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                         |
+|       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                                  |
+|                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                                    |
+|                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                                           |
 </details>
 </details>
 <details><summary>Installation</summary>
@@ -117,9 +128,7 @@ ___
 <details>
 <summary> Development </summary>
 
-1. REST API based on Django REST framework ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
-2. frontend based on React ([#14](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/14));
-3. Software app ([#15](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/15));
-4. Signature app ([#16](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/16)).
+1. Software app ([#15](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/15));
+2. Signature app ([#16](https://gitlab.com/NikolajMakarovskij/stockroom/-/issues/16)).
 
 </details>

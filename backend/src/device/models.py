@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Accessories, Consumables
 from core.utils import ModelMixin
@@ -35,18 +34,8 @@ class DeviceCat(ModelMixin, models.Model):
         Returns:
             DeviceCat__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_DeviceCats get self url_
-
-        Returns:
-            DeviceCat__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse("device:category", kwargs={"category_slug": self.slug})
 
     class Meta:
         """_DeviceCat Meta_: _model settings_"""
@@ -178,6 +167,18 @@ class Device(ModelMixin, models.Model):
         help_text="Введите количество на складе",
         verbose_name="Остаток на складе",
     )
+    cost = models.FloatField(
+        blank=True,
+        default=0,
+        help_text="Введите стоимость",
+        verbose_name="стоимость, \u20bd",
+    )
+    resource = models.IntegerField(
+        blank=True,
+        default=0,
+        help_text="Введите выработанный ресурс",
+        verbose_name="Выработанный ресурс",
+    )
     note = models.TextField(
         max_length=1000,
         blank=True,
@@ -192,20 +193,8 @@ class Device(ModelMixin, models.Model):
         Returns:
             Device__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Device url_
-
-        Returns:
-            Device__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("device:device-detail", args=[str(self.id)])
-
-    # TODO valid method to ip_address field
 
     class Meta:
         """_Device Meta_: _model settings_"""

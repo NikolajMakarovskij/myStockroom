@@ -1,10 +1,5 @@
-"""
-Django settings for backend project.
-
-"""
-
 import os
-
+from datetime import timedelta
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,19 +27,15 @@ INSTALLED_APPS = [
     "decommission.apps.DecommissionConfig",
     "accounting.apps.AccountingConfig",
     "django.contrib.postgres",
-    "django_bootstrap5",
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django_select2",
     "import_export",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -65,8 +56,6 @@ CELERY_BEAT_SCHEDULE: dict[list[str], str] = {}
 # end celery
 
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "project", "templates")
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -79,15 +68,10 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
-                "stockroom.context_processors.stock",
             ],
         },
     },
 ]
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -130,7 +114,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATE_FORMAT = ["%d.%m.%Y"]
+DATE_FORMAT = "%d.%m.%Y"
 
 # end region settings
 # start file settings
@@ -150,25 +134,16 @@ MAX_UPLOAD_SIZE = "104857600"
 
 CACHES = {
     "default": {
-        # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis:6379/1",
         "db": "16",
     },
-    "select2": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
-        "db": "15",
-    },
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-SELECT2_CACHE_BACKEND = "select2"
 # end caches
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-LOGIN_REDIRECT_URL = "/home/"
 
 ROOT_URLCONF = "backend.urls"
 
@@ -176,20 +151,30 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
+# auth
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
     "http://pc-050-106-1rv.admlbt.rf",
     "http://0.0.0.0",
+    "http://localhost",
+    "http://localhost:3000",
 ]
 
-STOCK_SESSION_ID = "stock"
-DECOM_SESSION_ID = "decom"
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 # cores headers
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://0.0.0.0:3000",
 ]
-
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+CORS_ALLOW_CREDENTIALS = True
 
 # REST
 
@@ -197,21 +182,60 @@ CORS_ALLOWED_ORIGINS = [
 def render_calasses():
     return [
         "rest_framework.renderers.JSONRenderer",
-        #'rest_framework.renderers.BrowsableAPIRenderer',
+        "rest_framework.renderers.BrowsableAPIRenderer",
     ]
 
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": render_calasses(),
-    "DEFAULT_PERMISSION_CLASSES": [],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication"
+        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.DjangoModelPermissions",
+    ],
     "DATE_INPUT_FORMATS": [
         "%d.%m.%Y",  # '25.10.2021'
         "%d.%m.%y",  # '25.10.21'
     ],
 }
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
 # start import-export
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True

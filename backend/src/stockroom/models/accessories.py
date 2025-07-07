@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from consumables.models import Accessories
 from core.utils import ModelMixin
@@ -49,7 +48,7 @@ class StockAcc(ModelMixin, models.Model):
     )
 
     class Meta:
-        """_Stockroom Meta_: _model settings_"""
+        """_StockAcc Meta_: _model settings_"""
 
         verbose_name = "Склад комплектующих"
         verbose_name_plural = "Склад комплектующих"
@@ -88,20 +87,8 @@ class CategoryAcc(ModelMixin, models.Model):
         Returns:
             CategoryAcc__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_CategoryAcc get self url_
-
-        Returns:
-            CategoryAcc__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse(
-            "stockroom:accessories_category", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         """_CategoryAcc Meta_: _model settings_"""

@@ -7,6 +7,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
 ALLOWED_HOSTS = list(os.environ.get("DJANGO_ALLOWED_HOSTS").split(" "))  # type: ignore[union-attr]
 
 INSTALLED_APPS = [
@@ -30,10 +31,6 @@ INSTALLED_APPS = [
     "decommission.apps.DecommissionConfig",
     "accounting.apps.AccountingConfig",
     "django.contrib.postgres",
-    "django_bootstrap5",
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django_select2",
     "import_export",
 ]
 
@@ -60,8 +57,6 @@ CELERY_BEAT_SCHEDULE: dict[list[str], str] = {}
 
 # end celery
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -74,15 +69,10 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
-                "stockroom.context_processors.stock",
             ],
         },
     },
 ]
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -125,7 +115,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATE_FORMAT = ["%d.%m.%Y"]
+DATE_FORMAT = "%d.%m.%Y"
 
 # end region settings
 # start file settings
@@ -145,36 +135,31 @@ MAX_UPLOAD_SIZE = "104857600"
 
 CACHES = {
     "default": {
-        # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis:6379/1",
-        "db": "16",
-    },
-    "select2": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/2",
         "db": "16",
     },
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-SELECT2_CACHE_BACKEND = "select2"
 # end caches
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/home/"
-
 ROOT_URLCONF = "backend.urls"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
 CSRF_TRUSTED_ORIGINS = ["http://0.0.0.0"]
 
-STOCK_SESSION_ID = "stock"
-DECOM_SESSION_ID = "decom"
+# cores headers
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://stock",
+]
 
 
 # REST
@@ -188,15 +173,20 @@ def render_calasses():
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": render_calasses(),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication"
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         # 'rest_framework.permissions.IsAuthenticated',
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
     "DATE_INPUT_FORMATS": [
         "%d.%m.%Y",  # '25.10.2021'
-        "%d.%m.%y",  # '25.10.21'
     ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
 # start import-export

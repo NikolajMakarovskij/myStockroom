@@ -1,204 +1,182 @@
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
-from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views import View, generic
-
-from core.utils import DataMixin
-from device.models import Device
+from django.views import View
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import CategoryDec, CategoryDis, Decommission, Disposal
 from .resources import DecommissionResource, DisposalResource
+from .serializers import (
+    DecommissionCatSerializer,
+    DecommissionListSerializer,
+    DecommissionTasksSerializer,
+    DisposalCatSerializer,
+    DisposalListSerializer,
+)
 from .tasks import DecomTasks
 
 
 # Decommission
-class DecommissionView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_DecommissionView_
-    List of Decommission instances
+class DecommissionCatListRestView(viewsets.ModelViewSet[CategoryDec]):
+    """_DecommissionCatListRestView_ returns categories data in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Decommission): _base model for list_
+        queryset (CategoryDec):
+        serializer_class (DecommissionCatSerializer):
     """
 
-    permission_required = "decommission.view_decommission"
-    paginate_by = DataMixin.paginate
-    template_name = "decom/decom_list.html"
-    model = Decommission
+    queryset = CategoryDec.objects.all()
+    serializer_class = DecommissionCatSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns categories fields in JSON format.
 
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
-        """
-        cat_decom = cache.get("cat_decom")
-        if not cat_decom:
-            cat_decom = CategoryDec.objects.all()
-            cache.set("cat_decom", cat_decom, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Списание устройств",
-            searchlink="decommission:decom_search",
-            menu_categories=cat_decom,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_queryset_
+        Args:
+            request (_type_):
 
         Returns:
-            object_list (Decommission): _description_
+            data (JSON):
         """
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = Decommission.objects.filter(
-            Q(stock_model__name__icontains=query)
-            | Q(stock_model__manufacturer__name__icontains=query)
-            | Q(stock_model__categories__name__icontains=query)
-            | Q(stock_model__quantity__icontains=query)
-            | Q(stock_model__serial__icontains=query)
-            | Q(stock_model__invent__icontains=query)
-            | Q(date__icontains=query)
-        ).select_related(
-            "stock_model", "stock_model__manufacturer", "stock_model__categories"
-        )
-        return object_list
+
+        queryset = CategoryDec.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
-class DecomCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_DecomCategoriesView_
-    List of Decommission instances filtered by categories
+class DecommissionListRestView(viewsets.ModelViewSet[Decommission]):
+    """_DecommissionListRestView_ returns decommission list with extended fields in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Decommission): _base model for list_
+        queryset (Decommission):
+        serializer_class (DecommissionListSerializer):
     """
 
-    permission_required = "decommission.view_decommission"
-    paginate_by = DataMixin.paginate
-    template_name = "decom/decom_list.html"
-    model = Decommission
+    queryset = Decommission.objects.all()
+    serializer_class = DecommissionListSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns decommission list with extended fields in JSON format.
+
+        Args:
+            request (_type_):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create decommission, categories for filtering queryset_
+            data (JSON):
         """
-        cat_decom = cache.get("cat_decom")
-        if not cat_decom:
-            cat_decom = CategoryDec.objects.all()
-            cache.set("cat_decom", cat_decom, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Списание устройств",
-            searchlink="decommission:decom_search",
-            menu_categories=cat_decom,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
-    def get_queryset(self):
-        """_queryset_
+        queryset = Decommission.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+# post methods
+class AddToDecommissionDeviceView(APIView, DecomTasks):
+    """_AddToDecommissionDeviceView_ adds a device to the decommission list.
+
+    Other parameters:
+        queryset (Decommission):
+    """
+
+    queryset = Decommission.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        """_post_ adds a device to the decommission list.
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
+
+        Other Parameters:
+            serializer (DecommissionTasksSerializer):
+            device_id (UUID):
+            username (str):
 
         Returns:
-            object_list (Decommission): _filtered by categories_
+            data (JSON):
+            errors (JSON): _serializer.errors_
         """
-        object_list = Decommission.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        ).select_related(
-            "stock_model", "stock_model__manufacturer", "stock_model__categories"
-        )
-        return object_list
+
+        serializer = DecommissionTasksSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        device_id = serializer.validated_data["device_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.add_device_decom(
+                device_id=device_id, username=username, status_choice="Списание"
+            )
+            return Response(
+                {
+                    "device_id": device_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-@login_required
-@permission_required("decommission.add_to_decommission", raise_exception=True)
-def add_decommission(request, device_id):
-    """_add_decommission_
-    View for the task "add_device_decom"
+class RemoveFromDecommissionDeviceView(APIView, DecomTasks):
+    """_RemoveFromDecommissionDeviceView_ removes a device from the decommission list.
 
-    Args:
-        request (request): _description_
-        device_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to decommission list_
+    Other parameters:
+        queryset (Decommission):
     """
 
-    from decommission.tasks import DecomTasks
+    queryset = Decommission.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
 
-    username = request.user.username
-    device = get_object_or_404(Device, id=device_id)
+    def post(self, request, formant=None):
+        """_post_ removes a device from the decommission list.
 
-    if not Decommission.objects.filter(stock_model=device):
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"{device.name} успешно списан со склада",
-            extra_tags="Успешно списан",
-        )
-        DecomTasks.add_device_decom(
-            device_id=device.id, username=username, status_choice="Списание"
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.WARNING,
-            message=f"{device.name} находится в списке на списание",
-            extra_tags="Ошибка",
-        )
-    return redirect("decommission:decom_list")
+        Args:
+            request (_type_):
+            formant (_type_, optional):
 
+        Other Parameters:
+            serializer (DecommissionTasksSerializer):
+            device_id (UUID):
+            username (str):
 
-@login_required
-@permission_required("decommission.remove_from_decommission", raise_exception=True)
-def remove_decommission(request, devices_id):
-    """_remove_decommission_
-    View for the task "remove_decommission"
+        Returns:
+            data (JSON):
+            errors (JSON): _serializer.errors_
+        """
 
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
+        serializer = DecommissionTasksSerializer(data=request.data)
 
-    Returns:
-        redirect (url): _url to decommission list_
-    """
-    username = request.user.username
-    device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.remove_decom(
-        device_id=device.id, username=username, status_choice="Удаление"
-    )
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message=f"{device.name} успешно удален из списания",
-        extra_tags="Успешно удален",
-    )
-    return redirect("decommission:decom_list")
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        device_id = serializer.validated_data["device_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_decom(
+                device_id=device_id, username=username, status_choice="Удаление"
+            )
+            return Response(
+                {
+                    "device_id": device_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class ExportDecomDevice(View):
@@ -215,6 +193,7 @@ class ExportDecomDevice(View):
         Other parameters:
             resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
         """
+
         resource = DecommissionResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -238,6 +217,7 @@ class ExportDecomDeviceCategory(View):
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, link to decommission list_
         """
+
         cat_decom = cache.get("cat_decom")
         if not cat_decom:
             cat_decom = CategoryDec.objects.all()
@@ -256,6 +236,7 @@ class ExportDecomDeviceCategory(View):
         Other parameters:
             resource (DecommissionResource): _dict of Decommission for export into an xlsx file_
         """
+
         queryset = Decommission.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )
@@ -272,185 +253,163 @@ class ExportDecomDeviceCategory(View):
 
 
 # Disposal
-class DisposalView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_DisposalView_
-    List of Disposal instances
+class DisposalCatListRestView(viewsets.ModelViewSet[CategoryDis]):
+    """_DisposalCatListRestView_ returns categories data in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Disposal): _base model for list_
+        queryset (CategoryDis):
+        serializer_class (DisposalCatSerializer):
     """
 
-    permission_required = "decommission.view_disposal"
-    paginate_by = DataMixin.paginate
-    template_name = "decom/disp_list.html"
-    model = Disposal
+    queryset = CategoryDis.objects.all()
+    serializer_class = DisposalCatSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns categories fields in JSON format.
 
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
-        """
-        cat_disp = cache.get("cat_disp")
-        if not cat_disp:
-            cat_disp = CategoryDis.objects.all()
-            cache.set("cat_disp", cat_disp, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Утилизация устройств",
-            searchlink="decommission:disp_search",
-            menu_categories=cat_disp,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_queryset_
+        Args:
+            request (_type_):
 
         Returns:
-            object_list (Disposal): _description_
+            data (JSON):
         """
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = Disposal.objects.filter(
-            Q(stock_model__name__icontains=query)
-            | Q(stock_model__manufacturer__name__icontains=query)
-            | Q(stock_model__categories__name__icontains=query)
-            | Q(stock_model__quantity__icontains=query)
-            | Q(stock_model__serial__icontains=query)
-            | Q(stock_model__invent__icontains=query)
-            | Q(date__icontains=query)
-        ).select_related(
-            "stock_model", "stock_model__manufacturer", "stock_model__categories"
-        )
-        return object_list
+
+        queryset = CategoryDis.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
-class DispCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_DispCategoriesView_
-    List of Disposal instances filtered by categories
+class DisposalListRestView(viewsets.ModelViewSet[Disposal]):
+    """_DisposalListRestView_ returns disposal data in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Disposal): _base model for list_
+        queryset (Disposal):
+        serializer_class (DisposalListSerializer):
     """
 
-    permission_required = "decommission.view_disposal"
-    paginate_by = DataMixin.paginate
-    template_name = "decom/disp_list.html"
-    model = Disposal
+    queryset = Disposal.objects.all()
+    serializer_class = DisposalListSerializer
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns disposal fields in JSON format.
+
+        Args:
+            request (_type_):
 
         Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, link to create disposal, categories for filtering queryset_
+            data (JSON):
         """
-        cat_disp = cache.get("cat_disp")
-        if not cat_disp:
-            cat_disp = CategoryDis.objects.all()
-            cache.set("cat_disp", cat_disp, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Утилизация устройств",
-            searchlink="decommission:disp_search",
-            menu_categories=cat_disp,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
 
-    def get_queryset(self):
-        """_queryset_
+        queryset = Disposal.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+# post methods
+class AddToDisposalDeviceView(APIView, DecomTasks):
+    """_AddToDisposalDeviceView_ adds a device to the disposal list.
+
+    Other parameters:
+        queryset (Disposal):
+    """
+
+    queryset = Disposal.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        """_post_ adds a device to the disposal list.
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
+
+        Other Parameters:
+            serializer (DecommissionTasksSerializer):
+            device_id (UUID):
+            username (str):
 
         Returns:
-            object_list (Disposal): _filtered by categories_
+            data (JSON):
+            errors (JSON): _serializer.errors_
         """
-        object_list = Disposal.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        ).select_related(
-            "stock_model", "stock_model__manufacturer", "stock_model__categories"
-        )
-        return object_list
+
+        serializer = DecommissionTasksSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        device_id = serializer.validated_data["device_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.add_device_disp(
+                device_id=device_id, username=username, status_choice="Утилизация"
+            )
+            return Response(
+                {
+                    "device_id": device_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-@login_required
-@permission_required("decommission.add_to_disposal", raise_exception=True)
-def add_disposal(request, devices_id):
-    """_add_disposal_
-    View for the task "add_device_disp"
+class RemoveFromDisposalDeviceView(APIView, DecomTasks):
+    """_RemoveFromDisposalDeviceView_ removes a device from the disposal list.
 
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to disposal list_
-    """
-    username = request.user.username
-    device = get_object_or_404(Device, id=devices_id)
-
-    if not Disposal.objects.filter(stock_model=device):
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"{device.name} отправлен на утилизацию",
-            extra_tags="Успешно утилизирован",
-        )
-        DecomTasks.add_device_disp.delay(
-            device_id=device.id, username=username, status_choice="Утилизация"
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.WARNING,
-            message=f"{device.name} находится в списке на утилизацию",
-            extra_tags="Ошибка",
-        )
-    return redirect("decommission:disp_list")
-
-
-@login_required
-@permission_required("decommission.remove_from_disposal", raise_exception=True)
-def remove_disposal(request, devices_id):
-    """_remove_disposal_
-    View for the task "remove_disp"
-
-    Args:
-        request (request): _description_
-        devices_id (str): _uuid of the Device model_
-
-    Returns:
-        redirect (url): _url to disposal list_
+    Other parameters:
+        queryset (Disposal):
     """
 
-    username = request.user.username
-    device = get_object_or_404(Device, id=devices_id)
-    DecomTasks.remove_disp.delay(
-        device_id=device.id, username=username, status_choice="Удален"
-    )
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message=f"{device.name} успешно удален из утилизации",
-        extra_tags="Успешно удален",
-    )
-    return redirect("decommission:disp_list")
+    queryset = Disposal.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        """_post_ removes a device from the disposal list.
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
+
+        Other Parameters:
+            serializer (DecommissionTasksSerializer):
+            device_id (UUID):
+            username (str):
+
+        Returns:
+            data (JSON):
+            errors (JSON): _serializer.errors_
+        """
+
+        serializer = DecommissionTasksSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        device_id = serializer.validated_data["device_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_disp(
+                device_id=device_id, username=username, status_choice="Удаление"
+            )
+            return Response(
+                {
+                    "device_id": device_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class ExportDispDevice(View):
@@ -467,6 +426,7 @@ class ExportDispDevice(View):
         Other parameters:
             resource (DisposalResource): _dict of Disposal for export into an xlsx file_
         """
+
         resource = DisposalResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -490,6 +450,7 @@ class ExportDispDeviceCategory(View):
         Returns:
             context (object[dict[str, str],list[str]]): _returns title, link to disposal list_
         """
+
         cat_disp = cache.get("cat_disp")
         if not cat_disp:
             cat_disp = CategoryDis.objects.all()
@@ -508,6 +469,7 @@ class ExportDispDeviceCategory(View):
         Other parameters:
             resource (DisposalResource): _dict of Disposal for export into an xlsx file_
         """
+
         queryset = Disposal.objects.filter(
             categories__slug=self.kwargs["category_slug"]
         )

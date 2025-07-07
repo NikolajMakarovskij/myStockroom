@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from counterparty.models import Manufacturer
@@ -34,18 +33,8 @@ class Categories(ModelMixin, models.Model):
         Returns:
             Categories__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Categories get self url_
-
-        Returns:
-            Categories__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse("consumables:category", kwargs={"category_slug": self.slug})
 
     class Meta:
         """_Categories Meta_: _model settings_"""
@@ -143,31 +132,8 @@ class Consumables(ModelMixin, models.Model):
         Returns:
             Consumables__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Consumables url_
-
-        Returns:
-            Consumables__id (str): _returns url by id_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("consumables:consumables-detail", args=[str(self.id)])
-
-    def get_difference(self) -> int:
-        """_Consumables get_difference_:
-        Returns the difference between the quantity on stock and in balance
-
-        Returns:
-            difference (int): _self.quantity - sum(self.consumable.quantity)_
-        """
-        quantity_all = 0
-        for each in self.consumable.all():  # type: ignore[attr-defined]
-            quantity_all += each.quantity
-        difference = self.quantity - quantity_all
-        return difference
 
     class Meta:
         """_Consumables Meta_: _model settings_"""
@@ -208,20 +174,8 @@ class AccCat(ModelMixin, models.Model):
         Returns:
             AccCat__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_AccCat get self url_
-
-        Returns:
-            AccCat__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse(
-            "consumables:category_accessories", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         """_AccCat Meta_: _model settings_"""
@@ -319,31 +273,8 @@ class Accessories(ModelMixin, models.Model):
         Returns:
             Accessories__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_Accessories get self url_
-
-        Returns:
-            Accessories__slug (str): _returns url by slug_
-
-        Other parameters:
-            args (str): self.id
-        """
-        return reverse("consumables:accessories-detail", args=[str(self.id)])
-
-    def get_difference(self) -> int:
-        """_Accessories get_difference_:
-        Returns the difference between the quantity on stock and in balance
-
-        Returns:
-            difference (int): _self.quantity - sum(self.accessories.quantity)_
-        """
-        quantity_all = 0
-        for each in self.accessories.all():  # type: ignore[attr-defined]
-            quantity_all += each.quantity
-        difference = self.quantity - quantity_all
-        return difference
 
     class Meta:
         """_Accessories Meta_: _model settings_"""

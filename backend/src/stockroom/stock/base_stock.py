@@ -1,9 +1,8 @@
 import datetime
 from dataclasses import dataclass
-
-from django.conf import settings
-from django.db.models import Model
 from uuid import UUID
+
+from django.db.models import Model
 
 from device.models import Device
 
@@ -24,30 +23,6 @@ class BaseStock(object):
     stock_category: type[Model] = Model
     history_model: type[Model] = Model
 
-    def __init__(
-        self,
-        request,
-    ):
-        """
-        Initializes the stock
-
-        Args:
-            request (request): _description_
-
-        Other parameters:
-            stock (dict[str, str]): _self.session[settings.STOCK_SESSION_ID]_
-        """
-        self.session = request.session
-        stock = self.session.get(settings.STOCK_SESSION_ID)
-        if not stock:
-            stock = self.session[settings.STOCK_SESSION_ID] = {}
-        self.stock = stock
-
-    def save(self):
-        """_saving session_"""
-        self.session[settings.STOCK_SESSION_ID] = self.stock
-        self.session.modified = True
-
     @classmethod
     def add_category(cls, model_id: UUID) -> Model | None:
         """Getting a category
@@ -58,6 +33,7 @@ class BaseStock(object):
         Returns:
             Category (Model | None): _category model_
         """
+
         model = cls.base_model._default_manager.get(id=model_id)
         if not model.categories:  # type: ignore[attr-defined]
             category = None
@@ -173,6 +149,7 @@ class BaseStock(object):
             quantity (int): _description_
             username (str): _getting from session_
         """
+
         device_id = ""
         stock_model = cls.stock_model._default_manager.filter(stock_model=model_id)
         if stock_model:
@@ -204,9 +181,11 @@ class BaseStock(object):
             note (str, optional): _description_
             username (str, optional): _getting from session_
         """
+
+        device_id = device
         model_add = cls.base_model._default_manager.get(id=model_id)
         model_quantity = int(str(model_add.quantity))  # type: ignore[attr-defined]
-        device_obj = Device.objects.get(id=device)
+        device_obj = Device.objects.get(id=device_id)
         device_note = device_obj.note
         history_note = ""
         model_quantity -= quantity
@@ -220,9 +199,7 @@ class BaseStock(object):
             else:
                 device_note = f"{device_note} {datetime.date.today()} {note}"
             history_note = f"{note}"
-        # TODO change Device to self.base_model.device
-        # TODO fix tests
-        Device.objects.filter(id=device).update(note=device_note)
+        Device.objects.filter(id=device_id).update(note=device_note)
         cls.base_model._default_manager.filter(id=model_id).update(
             quantity=model_quantity,
         )
@@ -231,7 +208,7 @@ class BaseStock(object):
         )
         cls.create_history(
             model_id,
-            device,
+            device_id,
             quantity,
             username,
             history_note,

@@ -1,172 +1,82 @@
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
-from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views import View, generic
-from django.views.decorators.http import require_POST
-from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from django.views import View
+from rest_framework import generics, status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from consumables.models import Consumables
-from core.utils import DataMixin
-from stockroom.forms import ConsumableInstallForm, StockAddForm
-from stockroom.models.consumables import History, StockCat, Stockroom
-from stockroom.resources import ConsumableConsumptionResource, StockConResource
-from stockroom.serializers import StockModelSerializer
-from stockroom.stock.stock import ConStock
+
+from ..models.consumables import History, StockCat, Stockroom
+from ..resources import ConsumableConsumptionResource, StockConResource
+from ..serializers.consumables import (
+    HistoryModelSerializer,
+    StockConCatSerializer,
+    StockConListSerializer,
+)
+from ..serializers.stock import (
+    AddToDeviceSerializer,
+    AddToStockSerializer,
+    RemoveFromStockSerializer,
+)
+from ..stock.stock import ConStock
 
 
-class StockroomView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_StockroomView_
-    List of stockroom consumables instances
+class StockConCatListRestView(viewsets.ModelViewSet[StockCat]):
+    """_StockConCatListRestView_ returns categories in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Stockroom): _base model for list_
+        queryset (StockCat):
+        serializer_class (StockConCatSerializer):
     """
 
-    permission_required = "stockroom.view_stockroom"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/stock_list.html"
-    model = Stockroom
+    queryset = StockCat.objects.all()
+    serializer_class = StockConCatSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
+    def list(self, request):
+        """_list_ returns categories data in JSON format.
 
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
-        """
-
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад расходников",
-            searchlink="stockroom:stock_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_queryset_
+        Args:
+            request (_type_):
 
         Returns:
-            object_list (Stockroom): _description_
+            data (JSON):
         """
 
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = (
-            Stockroom.objects.filter(
-                Q(stock_model__name__icontains=query)
-                | Q(stock_model__description__icontains=query)
-                | Q(stock_model__note__icontains=query)
-                | Q(stock_model__device__name__icontains=query)
-                | Q(stock_model__device__workplace__name__icontains=query)
-                | Q(stock_model__device__workplace__room__name__icontains=query)
-                | Q(stock_model__device__workplace__room__building__icontains=query)
-                | Q(stock_model__device__workplace__employee__name__icontains=query)
-                | Q(stock_model__device__workplace__employee__surname__icontains=query)
-                | Q(
-                    stock_model__device__workplace__employee__last_name__icontains=query
-                )
-                | Q(stock_model__manufacturer__name__icontains=query)
-                | Q(stock_model__categories__name__icontains=query)
-                | Q(stock_model__quantity__icontains=query)
-                | Q(stock_model__serial__icontains=query)
-                | Q(stock_model__invent__icontains=query)
-                | Q(dateInstall__icontains=query)
-                | Q(dateAddToStock__icontains=query)
-            )
-            .select_related("stock_model", "stock_model__categories")
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
+        queryset = StockCat.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
-class StockroomCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_StockroomCategoriesView_
-    List of consumables instances filtered by categories
+class StockConListRestView(viewsets.ModelViewSet[Stockroom]):
+    """_StockConListRestView_ returns consumables listed in the stockroom with extended fields data in JSON format.
 
     Other parameters:
-        template_name (str): _path to template_
-        permission_required (str): _permissions_
-        paginate_by (int, optional): _add pagination_
-        model (Stockroom): _base model for list_
-    """
-
-    permission_required = "stockroom.view_stockroom"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/stock_list.html"
-    model = Stockroom
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, side menu, link for search, categories for filtering queryset_
-        """
-
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Склад расходников",
-            searchlink="stockroom:stock_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_queryset_
-
-        Returns:
-            object_list (Stockroom): _filtered by categories_
-        """
-
-        object_list = (
-            Stockroom.objects.filter(categories__slug=self.kwargs["category_slug"])
-            .select_related("stock_model", "stock_model__categories")
-            .prefetch_related("stock_model__device")
-            .distinct()
-        )
-        return object_list
-
-
-class StockRestView(DataMixin, viewsets.ModelViewSet[Stockroom]):
-    """_StockRestView_ Stockroom consumables API view
-
-    Other parameters:
-        queryset (Stockroom): _description_
-        serializer_class (StockModelSerializer): _description_
+        queryset (Stockroom):
+        serializer_class (StockConListSerializer):
     """
 
     queryset = Stockroom.objects.all()
-    serializer_class = StockModelSerializer
+    serializer_class = StockConListSerializer
+    # permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        """_list_ returns consumables listed in the stockroom list with extended fields in JSON format.
+
+        Args:
+            request (_type_):
+
+        Returns:
+            data (JSON):
+        """
+
+        queryset = Stockroom.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 class ExportStockConsumable(View):
@@ -183,6 +93,7 @@ class ExportStockConsumable(View):
         Other parameters:
             resource (StockConResource): _dict of consumables for export into an xlsx file_
         """
+
         resource = StockConResource()
         dataset = resource.export()
         response = HttpResponse(dataset.xlsx, content_type="xlsx")
@@ -225,6 +136,7 @@ class ExportStockConsumableCategory(View):
         Other parameters:
             resource (StockConResource): _dict of stockroom consumables for export into an xlsx file_
         """
+
         queryset = (
             Stockroom.objects.filter(categories__slug=self.kwargs["category_slug"])
             .order_by("stock_model")
@@ -243,236 +155,155 @@ class ExportStockConsumableCategory(View):
 
 
 # History
-class HistoryView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_HistoryView_
-    Returns a list of all records of history of stockroom consumables from the database
+class HistoryConListRestView(viewsets.ModelViewSet[History]):
+    """_HistoryConListRestView_ returns all history of consumables fields in JSON format.
 
     Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
+        queryset (History):
+        serializer_class (HistoryModelSerializer):
     """
 
-    permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/history_list.html"
-    model = History
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
+    def list(self, request):
+        """_list_ returns all history of consumables fields in JSON format.
 
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to stockroom consumables list, list of categories_
-        """
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История расходников",
-            searchlink="stockroom:history_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_returns queryset_
+        Args:
+            request (_type_):
 
         Returns:
-            object_list (History): _returns queryset_
+            data (JSON):
         """
 
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = History.objects.filter(
-            Q(stock_model__icontains=query)
-            | Q(categories__name__icontains=query)
-            | Q(device__icontains=query)
-            | Q(status__icontains=query)
-            | Q(dateInstall__icontains=query)
-            | Q(user__icontains=query)
-        )
-        return object_list
+        queryset = History.objects.all()  # Do not delete it. When inheriting from a class, it returns empty data in tests.
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
-class HistoryCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_HistoryCategoriesView_
-    Returns a list of with filtered records by categories of history of stockroom consumables from the database
+class HistoryConFilterListRestView(generics.ListAPIView[History]):
+    """_HistoryConFilterListRestView_ returns history of consumables fields filtered by stock_model_id in JSON format.
 
     Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
+        queryset (History):
+        serializer_class (HistoryModelSerializer):
     """
 
-    permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/history_list.html"
-    model = History
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to history of stockroom consumables list_
-        """
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="История расходников",
-            searchlink="stockroom:history_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        """_returns queryset_
+        """_get_queryset_ returns list of all the history for the consumable as determined by the stock_model_id portion of the URL."""
 
-        Returns:
-            object_list (History): _returns queryset_
-        """
-
-        object_list = History.objects.filter(
-            categories__slug=self.kwargs["category_slug"]
-        )
-        return object_list
+        stock_model = self.kwargs["stock_model_id"]
+        return History.objects.filter(stock_model_id=stock_model)
 
 
-class HistoryConsumptionView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_HistoryConsumptionView_
-    Returns a list of with all records of consumption of stockroom consumables from the database
+class HistoryConDeviceFilterListRestView(generics.ListAPIView[History]):
+    """_HistoryConDeviceFilterListRestView_ returns history of consumables with extended fields filtered by deviceId in JSON format.
 
     Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the HistoryAcc_
+        queryset (History):
+        serializer_class (HistoryModelSerializer):
     """
 
-    permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/history_consumption_list.html"
-    model = History
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom consumables list_
-        """
-
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Расход расходников по годам",
-            searchlink="stockroom:history_consumption_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
+    queryset = History.objects.all()
+    serializer_class = HistoryModelSerializer
+    # permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        """_returns queryset_
+        """_get_queryset_ returns list of all the history for the consumable as determined by the deviceId portion of the URL."""
+
+        device = self.kwargs["deviceId"]
+        return History.objects.filter(deviceId=device)
+
+
+class ConsumptionRestView(APIView):
+    """_ConsumptionRestView_ returns the consumption of consumables in JSON format."""
+
+    queryset = Consumables.objects.all()
+
+    def get(self, request, formant=None):
+        """_get_ Returns list consumption in JSON format
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
 
         Returns:
-            object_list (History): _returns queryset_
+            Response (JSON): _list consumption_
         """
 
-        query = self.request.GET.get("q")
-        if not query:
-            query = ""
-        object_list = (
-            History.objects.filter(
-                Q(stock_model__icontains=query)
-                | Q(categories__name__icontains=query)
-                | Q(device__icontains=query)
-                | Q(status__icontains=query)
-                | Q(dateInstall__icontains=query)
-                | Q(user__icontains=query)
+        cur_year = datetime.now()
+        history = History.objects.all()
+        consumables = Consumables.objects.all()
+        responses = []
+        for consumable in consumables:
+            device_count = 0
+            device_name = ""
+            quantity = consumable.quantity
+            if consumable.device.exists():
+                device_name = ", ".join(
+                    [
+                        device.name
+                        for device in consumable.device.all()
+                        .order_by("name")
+                        .distinct("name")
+                    ]
+                )
+                device_count = consumable.device.count()
+
+            unit_history_all = history.filter(
+                status="Расход", stock_model_id=consumable.id
             )
-            .order_by("stock_model")
-            .distinct("stock_model")
-        )
-        return object_list
-
-
-class HistoryConsumptionCategoriesView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DataMixin,
-    generic.ListView,  # type: ignore[type-arg]
-):
-    """_HistoryConsumptionCategoriesView_
-    Returns a list of with filtered records by categories of consumption of stockroom consumables from the database
-
-    Other parameters:
-        paginate_by (int): _number of records per page_
-        template_name (str): _name of the template_
-        model (History): _model of the History_
-    """
-
-    permission_required = "stockroom.view_history"
-    paginate_by = DataMixin.paginate
-    template_name = "stock/history_consumption_list.html"
-    model = History
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """_returns context_ The function is used to return a list of categories
-
-        Returns:
-            context (object[dict[str, str],list[str]]): _returns title, link to consumption of stockroom consumables list_
-        """
-
-        stock_cat = cache.get("stock_cat")
-        if not stock_cat:
-            stock_cat = StockCat.objects.all()
-            cache.set("stock_cat", stock_cat, 300)
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(
-            title="Расход расходников по годам",
-            searchlink="stockroom:history_consumption_search",
-            menu_categories=stock_cat,
-        )
-        context = dict(list(context.items()) + list(c_def.items()))
-        return context
-
-    def get_queryset(self):
-        """_returns queryset_
-
-        Returns:
-            object_list (HistoryAcc): _returns queryset_
-        """
-
-        object_list = (
-            History.objects.filter(categories__slug=self.kwargs["category_slug"])
-            .order_by("stock_model")
-            .distinct("stock_model")
-        )
-        return object_list
+            unit_history_last_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{int(cur_year.strftime('%Y')) - 1}-01-01",
+                dateInstall__lte=f"{int(cur_year.strftime('%Y')) - 1}-12-31",
+            )
+            unit_history_current_year = history.filter(
+                status="Расход",
+                stock_model_id=consumable.id,
+                dateInstall__gte=f"{cur_year.strftime('%Y')}-01-01",
+                dateInstall__lte=f"{cur_year.strftime('%Y')}-12-31",
+            )
+            quantity_all = 0
+            quantity_last_year = 0
+            quantity_current_year = 0
+            for unit in unit_history_all:
+                quantity_all += unit.quantity
+            for unit in unit_history_last_year:
+                quantity_last_year += unit.quantity
+            for unit in unit_history_current_year:
+                quantity_current_year += unit.quantity
+            if quantity <= 2 * quantity_last_year:
+                requirement = abs(
+                    2 * quantity_last_year - quantity + quantity_current_year
+                )
+            else:
+                requirement = 0
+            responses.append(
+                {
+                    "stock_model_id": consumable.id,
+                    "name": consumable.name,
+                    "categories": {
+                        "id": consumable.categories.id,  # type: ignore[union-attr]
+                        "name": consumable.categories.name,  # type: ignore[union-attr]
+                        "slug": consumable.categories.slug,  # type: ignore[union-attr]
+                    },
+                    "device_name": device_name,
+                    "device_count": device_count,
+                    "quantity_all": quantity_all,
+                    "quantity_last_year": quantity_last_year,
+                    "quantity_current_year": quantity_current_year,
+                    "quantity": quantity,
+                    "requirement": requirement,
+                }
+            )
+        return Response(responses)
 
 
 class ExportConsumptionConsumable(View):
@@ -534,6 +365,7 @@ class ExportConsumptionConsumableCategory(View):
         Other parameters:
             resource (ConsumableConsumptionResource): _dict of consumables for export into an xlsx file_
         """
+
         queryset = History.objects.filter(categories__slug=self.kwargs["category_slug"])
         resource = ConsumableConsumptionResource()
         dataset = resource.export(queryset, *args, **kwargs)
@@ -547,145 +379,169 @@ class ExportConsumptionConsumableCategory(View):
         return response
 
 
-# Methods
-@require_POST
-@login_required
-@permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
-def stock_add_consumable(request, consumable_id):
-    """
-    adds consumables to the stockroom
-
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
-
-    Returns:
-        redirect (request): _stockroom:stock_list_
+# post methods
+class AddToStockConsumableView(APIView, ConStock):
+    """_AddToStockConsumableView_ adds the consumables to the stockroom.
 
     Other parameters:
-        username (str): _username of the user model_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (StockAddForm): _form for adding consumables to the stock_
-    """
-    username = request.user.username
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    form = StockAddForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        stock.add_to_stock(
-            model_id=consumable.id,
-            quantity=cd["quantity"],
-            number_rack=cd["number_rack"],
-            number_shelf=cd["number_shelf"],
-            username=username,
-        )
-        messages.add_message(
-            request,
-            level=messages.SUCCESS,
-            message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
-            f" успешно добавлен на склад",
-            extra_tags="Успешно добавлен",
-        )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось добавить {consumable.name} на склад",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_list")
-
-
-@login_required
-@permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
-def stock_remove_consumable(request, consumable_id):
-    """
-    remove consumables from the stockroom
-
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
-
-    Returns:
-        redirect (request): _stockroom:stock_list_
-
-    Other parameters:
-        username (str): _username of the user model_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (remove_from_stock): _form for removing consumables from the stock_
+        queryset (Stockroom):
     """
 
-    username = request.user.username
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    stock.remove_from_stock(model_id=consumable.id, username=username)
-    messages.add_message(
-        request,
-        level=messages.SUCCESS,
-        message=f"{consumable.name} успешно удален со склада",
-        extra_tags="Успешно удален",
-    )
-    return redirect("stockroom:stock_list")
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.add_consumables_to_stock", raise_exception=True)
 
+    def post(self, request, formant=None):
+        """_post_ adds the consumables to the stockroom.
 
-@require_POST
-@login_required
-@permission_required("stockroom.add_consumables_to_device", raise_exception=True)
-def device_add_consumable(request, consumable_id):
-    """
-    adds consumables to the device
+        Args:
+            request (_type_):
+            formant (_type_, optional):
 
-    Args:
-        request (request): _description_
-        consumable_id (UUID): _id of the consumables_
+        Returns:
+            Response (JSON):
+        """
 
-    Returns:
-        redirect (request): _stockroom:stock_list_
+        serializer = AddToStockSerializer(data=request.data)
 
-    Other parameters:
-        username (str): _username of the user model_
-        get_device_id (UUID): _id of the device_
-        consumable (Consumables | 404): _consumable model instance_
-        stock (ConStock): _stock model_
-        form (StockAddForm): _form for adding consumables to the device_
-    """
-    username = request.user.username
-    get_device_id = request.session["get_device_id"]
-    consumable = get_object_or_404(Consumables, id=consumable_id)
-    stock = ConStock
-    form = ConsumableInstallForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        if consumable.quantity < cd["quantity"]:
-            messages.add_message(
-                request,
-                level=messages.WARNING,
-                message=f"Не достаточно расходников {consumable.name} на складе.",
-                extra_tags="Нет расходника",
-            )
-        else:
-            stock.add_to_device(
-                model_id=consumable.id,
-                device=get_device_id,
-                quantity=cd["quantity"],
-                note=cd["note"],
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        quantity = serializer.validated_data["quantity"]
+        number_rack = serializer.validated_data["number_rack"]
+        number_shelf = serializer.validated_data["number_shelf"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.add_to_stock(
+                model_id=model_id,
+                quantity=quantity,
+                number_rack=number_rack,
+                number_shelf=number_shelf,
                 username=username,
             )
-            messages.add_message(
-                request,
-                level=messages.SUCCESS,
-                message=f"Расходник {consumable.name} в количестве {str(cd['quantity'])} шт."
-                f" успешно списан со склада",
-                extra_tags="Успешное списание",
+            return Response(
+                {
+                    "model_id": model_id,
+                    "quantity": quantity,
+                    "number_rack": number_rack,
+                    "number_shelf": number_shelf,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
             )
-    else:
-        messages.add_message(
-            request,
-            level=messages.ERROR,
-            message=f"Не удалось списать {consumable.name} со склада",
-            extra_tags="Ошибка формы",
-        )
-    return redirect("stockroom:stock_list")
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class AddToDeviceConsumableView(APIView, ConStock):
+    """_AddToDeviceConsumableView_ adds the consumables to the device.
+
+    Other parameters:
+        queryset (Stockroom):
+    """
+
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.add_consumables_to_device", raise_exception=True)
+
+    def post(self, request, formant=None):
+        """_post_ adds the consumables to the device.
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
+
+        Returns:
+            Response (JSON):
+        """
+
+        serializer = AddToDeviceSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        device = serializer.validated_data["device"]
+        quantity = serializer.validated_data["quantity"]
+        note = serializer.validated_data["note"]
+        username = serializer.validated_data["username"]
+
+        consumable = get_object_or_404(Consumables, id=model_id)
+
+        if consumable.quantity < quantity:
+            return Response(
+                {"error": {"message": "Не достаточно расходников на складе."}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            self.add_to_device(
+                model_id=model_id,
+                device=device,
+                quantity=quantity,
+                note=note,
+                username=username,
+            )
+            return Response(
+                {
+                    "model_id": model_id,
+                    "device": device,
+                    "quantity": quantity,
+                    "note": note,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class RemoveFromStockConsumableView(APIView, ConStock):
+    """_RemoveFromStockConsumableView_ removes the consumables from the stockroom.
+
+    Other parameters:
+        queryset (Stockroom):
+    """
+
+    queryset = Stockroom.objects.all()
+    # @permission_required("stockroom.remove_consumables_from_stock", raise_exception=True)
+
+    def post(self, request, formant=None):
+        """_post_ removes the consumables from the stockroom.
+
+        Args:
+            request (_type_):
+            formant (_type_, optional):
+
+        Returns:
+            Response (JSON):
+        """
+
+        serializer = RemoveFromStockSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        model_id = serializer.validated_data["model_id"]
+        username = serializer.validated_data["username"]
+
+        try:
+            self.remove_from_stock(model_id=model_id, username=username)
+            return Response(
+                {
+                    "model_id": model_id,
+                    "username": username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

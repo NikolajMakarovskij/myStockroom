@@ -1,6 +1,5 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.urls import reverse
 
 from consumables.models import Accessories, Consumables
 
@@ -19,18 +18,6 @@ def test_category_create():
     assert category.name == "my_category_name"
     assert category.slug == "my_category_name"
     assert category.__str__() == "my_category_name"
-    assert category.get_absolute_url() == reverse(
-        "accounting:categories-detail", kwargs={"pk": category.pk}
-    )
-    assert category.get_slug_url() == reverse(
-        "accounting:category", kwargs={"category_slug": category.slug}
-    )
-    assert category.get_update_url() == reverse(
-        "accounting:categories-update", kwargs={"pk": category.pk}
-    )
-    assert category.get_delete_url() == reverse(
-        "accounting:categories-delete", kwargs={"pk": category.pk}
-    )
 
 
 @pytest.mark.django_db
@@ -77,6 +64,4 @@ def test_accounting_create():
     assert accounting.get_cost_all() == 105.69
     assert accounting.note == "some_name"
     assert accounting.__str__() == "my_accounting"
-    assert accounting.get_absolute_url() == reverse(
-        "accounting:accounting-detail", kwargs={"pk": accounting.pk}
-    )
+    assert accounting.__str__() == "my_accounting"

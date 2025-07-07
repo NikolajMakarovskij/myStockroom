@@ -1,5 +1,5 @@
-from import_export import fields, resources  # type: ignore [import-untyped]
-from import_export.widgets import (  # type: ignore [import-untyped]
+from import_export import fields, resources  # type: ignore[import-untyped]
+from import_export.widgets import (  # type: ignore[import-untyped]
     ForeignKeyWidget,
     ManyToManyWidget,
 )
@@ -85,4 +85,5 @@ class DeviceResource(resources.ModelResource):
         """_DeviceResource Meta_: _resource settings_"""
 
         model = Device
+        exclude = ["id", "login", "pwd"]
         exclude = ["id", "login", "pwd"]

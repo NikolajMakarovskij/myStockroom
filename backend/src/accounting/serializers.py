@@ -35,3 +35,41 @@ class AccountingModelSerializer(serializers.ModelSerializer[Accounting]):
         model = Accounting
         fields = "__all__"
         extra_kwargs = {"id": {"read_only": True}}
+
+
+class AccountingListModelSerializer(serializers.ModelSerializer[Accounting]):
+    """_AccountingListModelSerializer_ Serialize Accounting Model with extended fields JSON
+
+    Other parameters:
+        categories (Categories): _serialize Categories model_
+        costAll (float): _serialize costAll field_
+    """
+
+    categories = CategoriesModelSerializer(read_only=True)
+    costAll = serializers.SerializerMethodField("get_cost_all")
+
+    class Meta:
+        """_Class returns JSON of Accounting model_
+
+        Returns:
+            model (Accounting):
+            fields (list[str]): _returns fields of model in form_
+            extra_kwargs (dict[str,list[str]): _returns settings of fields_
+        """
+
+        model = Accounting
+        fields = "__all__"
+        extra_kwargs = {"id": {"read_only": True}}
+
+    def get_cost_all(self, obj=Meta.model):
+        """_get_cost_all_ Calculate the sum between the cost of accessories or consumables in the Accounting
+
+        Args:
+            obj (_type_, optional): _description_. Defaults to Meta.model.
+
+        Returns:
+            cost_all (float): _returns cost all consumables or accessories for record in database_
+        """
+
+        cost_all = obj.cost * obj.quantity
+        return float("{:.2f}".format(cost_all))

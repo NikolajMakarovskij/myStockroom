@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 
 from core.utils import ModelMixin
 from device.models import Device
@@ -75,20 +74,8 @@ class CategoryDec(ModelMixin, models.Model):
         Returns:
             CategoryDec__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_CategoryDec get self url_
-
-        Returns:
-            CategoryDec__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse(
-            "decommission:decom_category", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         """_CategoryDec Meta_: _model settings_"""
@@ -166,20 +153,8 @@ class CategoryDis(ModelMixin, models.Model):
         Returns:
             CategoryDis__name (str): _returns name_
         """
+
         return self.name
-
-    def get_absolute_url(self):
-        """_CategoryDis get self url_
-
-        Returns:
-            CategoryDis__slug (str): _returns url by slug_
-
-        Other parameters:
-            kwargs (str): self.slug
-        """
-        return reverse(
-            "decommission:disp_category", kwargs={"category_slug": self.slug}
-        )
 
     class Meta:
         """_CategoryDis Meta_: _model settings_"""

@@ -1,4 +1,5 @@
 import datetime
+from uuid import UUID
 
 from consumables.models import Accessories, Consumables
 from device.models import Device
@@ -7,7 +8,6 @@ from stockroom.models.consumables import History, StockCat, Stockroom
 from stockroom.models.devices import CategoryDev, HistoryDev, StockDev
 from stockroom.stock.base_stock import BaseStock
 from workplace.models import Workplace
-from uuid import UUID
 
 
 class ConStock(BaseStock):
@@ -73,6 +73,7 @@ class DevStock(BaseStock):
         Returns:
             History (HistoryDev): _Adding instance in database_
         """
+
         model = cls.base_model.objects.get(id=model_id)
         category = cls.add_category(model_id)
         if not note:
@@ -93,7 +94,7 @@ class DevStock(BaseStock):
 
     @classmethod
     def add_to_stock_device(
-        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=""
+        cls, model_id: UUID, quantity=1, number_rack=1, number_shelf=1, username=None
     ) -> None:
         """Add a stockroom device to the stock or update it quantity.
 
@@ -133,7 +134,9 @@ class DevStock(BaseStock):
         )
 
     @classmethod
-    def remove_device_from_stock(cls, model_id: UUID, quantity=0, username="") -> None:
+    def remove_device_from_stock(
+        cls, model_id: UUID, quantity=0, username=None, status_choice="Удаление"
+    ) -> None:
         """Remove device from the stock
 
         Args:
@@ -141,16 +144,17 @@ class DevStock(BaseStock):
             quantity (int): _description_
             username (str): _getting from session_
         """
+
         model_instance = cls.stock_model.objects.filter(stock_model=model_id)
         if model_instance:
             model_instance.delete()
             cls.create_history_device(
-                model_id, quantity, username, status_choice="Удаление", note=""
+                model_id, quantity, username, status_choice, note=""
             )
 
     @classmethod
     def move_device(
-        cls, model_id: UUID, workplace_id: UUID, username="", note=""
+        cls, model_id: UUID, workplace_id: UUID, username=None, note=None
     ) -> None:
         """Move device
 
@@ -160,6 +164,7 @@ class DevStock(BaseStock):
             username (str): _description_
             note (str): _getting from session_
         """
+
         model_instance = cls.base_model.objects.filter(id=model_id)
         stock_model_instance = cls.stock_model.objects.filter(stock_model=model_id)
         note = note
