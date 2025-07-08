@@ -137,7 +137,6 @@ pages:
     - "backend/docs/**/*.{md}"
     - "docs/**/*.{md}"
     - "mkdocs.yml"
-  needs: ["backend-testing"]
   script:
     - docker exec -t backend bash -c 'cd /backend && uv run mkdocs build'
     - docker exec -t backend bash -c 'cd /backend && cp -a site/. /public'
