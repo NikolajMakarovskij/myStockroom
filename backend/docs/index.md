@@ -10,4 +10,4 @@ is under development
 The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel, and the system of access rights to sections.
 
 The program is written using the Django framework (v 5) in Python 3.13. It is used as a database.
-PostgreSQL (v. 14). Docker is used to launch and deploy the program.
+PostgreSQL (v. 17). Docker is used to launch and deploy the program.

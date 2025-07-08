@@ -5,9 +5,6 @@
 
 ##### [Documentation](https://nikolajmakarovskij.gitlab.io/stockroom/)
 
-##### Основной репозиторий [https://gitlab.com/NikolajMakarovskij/stockroom](https://gitlab.com/NikolajMakarovskij/stockroom)
-##### Зеркало [https://github.com/NikolajMakarovskij/myStockroom](https://github.com/NikolajMakarovskij/myStockroom)
-
 ___
 ## About
 <details>
@@ -18,11 +15,6 @@ and consumables installed in the equipment, and keep a history of component repl
 is under development`
 
 `The program is accessed via a browser on the internal LAN. There is an authorization system, an administrator panel, and the system of access rights to sections.`
-
-`Программа написана с помощью фреймворка Django (v 4) на python 3.8. В качестве базы данных используется
-PostgreSQL (v. 14). для запуска и развертывания программы используется Doсker`
-`The program is written using the Django framework (v 5) in Python 3.12. It is used as a database.
-PostgreSQL (v. 14). Docker is used to launch and deploy the program.`
 
 </details>
 
@@ -56,7 +48,6 @@ https://docs.docker.com/get-docker/).
 </details>
 
 ___
-## Развертывание
 ## Deployment
 
 <details>
@@ -75,18 +66,19 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
 
 <details><summary>Environment variables</summary>
 
-|                      Variable | Description                                                                                                               |
+|                        Variable | Description                                                                                                             |
 |--------------------------------:|-------------------------------------------------------------------------------------------------------------------------|
-|                           DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
+|          DEBUG, REACT_APP_DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
 |                      SECRET_KEY | The key for the cryptographic signature                                                                                 |
 |            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                                            |
+|               REACT_APP_API_URL | API Server address                                                                                                      |
 |                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change                     |
 |       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                                    |
-|         SQL_USER, POSTGRES_USER | Имя пользователя БД. Должны совпадать                                                                                   |
+|         SQL_USER, POSTGRES_USER | The name of the DB user. Must match                                                                                     |
 | SQL_PASSWORD, POSTGRES_PASSWORD | The name of the database user. Must match                                                                               |
 |                        SQL_HOST | The name of the database host. It is recommended to leave ***db***                                                      |
 |                        SQL_PORT | The database port. It is recommended to leave ***5432***                                                                |
-|              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***"/var/lib/postgresql/data/pgdata"***   |
+|              SQL_PGDATA, PGDATA | The location of the database inside the container. It is recommended to leave ***/var/lib/postgresql/data/pgdata***     |
 |       POSTGRES_HOST_AUTH_METHOD | It is recommended to leave ***trust***                                                                                  |
 |                   CELERY_BROKER | Celery broker server settings. It is recommended to leave ***redis://redis:6379/0***                                    |
 |                  CELERY_BACKEND | Celery server settings. It is recommended to leave ***redis://redis:6379/0***                                           |
@@ -109,7 +101,7 @@ https://docs.github.com/ru/repositories/creating-and-managing-repositories/cloni
     docker exec -it container_name python3 manage.py createsuperuser
     ```
     
-6. Go to [0.0.0.0/home/](http://0.0.0.0/home/) or [localhost/home/](http://localhost/home/);
+6. Go to [0.0.0.0/home/](http://0.0.0.0/) or [localhost/home/](http://localhost/);
 7. Log in with the data specified in clause 5.
 
 `If the program was deployed from a test database, the user will be available: login: admin password: admin'.`
