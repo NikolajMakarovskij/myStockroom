@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-function getApiUrl() {
+/*function getApiUrl() {
   const DEBUG = import.meta.env.REACT_APP_DEBUG
   let baseUrl
   if (DEBUG) {
@@ -10,7 +10,7 @@ function getApiUrl() {
   }
   console.log(baseUrl)
   return baseUrl
-}
+}*/
 
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
