@@ -157,7 +157,6 @@ SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
-    "http://pc-050-106-1rv.admlbt.rf",
     "http://0.0.0.0",
     "http://localhost",
     "http://localhost:3000",
