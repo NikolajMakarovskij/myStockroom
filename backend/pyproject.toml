@@ -10,11 +10,11 @@ readme = "README.md"
 license = {file = "LICENSE"}
 
 dependencies = [
-    "asgiref >=3.8.1",
+    "asgiref >=3.9.0",
     "attrs >=25.3.0",
     "celery >=5.5.3",
     "diff-match-patch >=20241021",
-    "Django >=5.2.3",
+    "Django >=5.2.4",
     "django-adaptors >=0.2.5",
     "django-appconf >=1.1.0",
     "django-celery-beat >=2.8.1",
@@ -27,7 +27,7 @@ dependencies = [
     "gunicorn >=23.0.0",
     "hiredis >=3.2.1",
     "markdown >=3.8.2",
-    "Pillow >=11.2.0",
+    "Pillow >=11.3.0",
     "psycopg[binary,pool] >=3.2.9",
     "python-dateutil >=2.9.post0",
     "pytz >=2025.2",
@@ -41,7 +41,7 @@ dependencies = [
 [dependency-groups]
 docs = [
     "mkdocs >=1.6.1",
-    "mkdocs-material >=9.6.14",
+    "mkdocs-material >=9.6.15",
     "mkdocstrings[python] >=0.29.1",
 ]
 lint = [
@@ -50,14 +50,14 @@ lint = [
     "djangorestframework-stubs >=3.16.0",
     "mypy >=1.16.1",
     "pre-commit >=4.2.0",
-    "ruff >=0.11.8",
+    "ruff >=0.12.2",
 ]
 test = [
     "junitxml >=0.7",
     "pytest >=8.4.1",
     "pytest-cov >=6.2.1",
     "pytest-django >=4.11.1",
-    "pytest-xdist >=3.7.0",
+    "pytest-xdist >=3.8.0",
     ]
 
 [build-system]
