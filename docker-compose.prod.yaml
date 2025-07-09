@@ -37,14 +37,15 @@ services:
     build:
       context: ./angie
       target: prod
+      args:
+        - VITE_BASE_URL=${VITE_BASE_URL}
+        - DEV=${DEV}
       additional_contexts:
         frontend: ./frontend
     restart: always
     hostname: stock
     container_name: angie
     image: angie
-    env_file:
-      - ./.env.dev
     volumes:
       - ./backend/src/static:/home/backend/web/static
       - ./backend/src/media:/home/backend/web/mediafiles
