@@ -148,28 +148,18 @@ ROOT_URLCONF = "backend.urls"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
-CSRF_TRUSTED_ORIGINS = ["http://0.0.0.0"]
-
 # auth
 CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
-    "http://0.0.0.0",
+    "http://" + str(os.environ.get("VITE_BASE_URL")),
 ]
 
 # PROD ONLY
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
-
-# cores headers
-
-CORS_ALLOWED_ORIGINS = [
-    "http://0.0.0.0",
-]
-CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-CORS_ALLOW_CREDENTIALS = True
 
 # REST
 
