@@ -38,7 +38,7 @@ export default function ListAccessories() {
         await AxiosInstanse.get(`/consumables/accessories_list/`).then((res) => {
           setAccessories(res.data)
           setErrorAccessories(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorAccessories(error.message)
@@ -52,7 +52,7 @@ export default function ListAccessories() {
         await AxiosInstanse.get(`/consumables/accessories_category/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

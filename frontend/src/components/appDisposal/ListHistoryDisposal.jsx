@@ -22,7 +22,7 @@ export default function ListHistoryDisposal() {
         await AxiosInstanse.get(`/stockroom/history_dev_list/status/filter/Утилизация/`).then((res) => {
           setDevice(res.data)
           setErrorDevice(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorDevice(error.message)
@@ -36,7 +36,7 @@ export default function ListHistoryDisposal() {
         await AxiosInstanse.get(`/stockroom/stock_dev_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

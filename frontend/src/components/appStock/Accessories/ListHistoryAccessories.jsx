@@ -24,7 +24,7 @@ export default function ListHistoryAccessories() {
         await AxiosInstanse.get(`/stockroom/history_acc_list/`).then((res) => {
           setConsumables(res.data)
           setErrorConsumables(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorConsumables(error.message)
@@ -38,7 +38,7 @@ export default function ListHistoryAccessories() {
         await AxiosInstanse.get(`/stockroom/stock_acc_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

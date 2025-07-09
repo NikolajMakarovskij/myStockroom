@@ -29,10 +29,11 @@ https://docs.docker.com/get-docker/).
 
 |                        Variable | Description                                                                                                             |
 |--------------------------------:|-------------------------------------------------------------------------------------------------------------------------|
-|          DEBUG, REACT_APP_DEBUG | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
+|                      DEBUG, DEV | Enables debugging mode. Install ***0*** to disable it. To enable it, set ***1***                                        |
+|                             SSR | Server-Side Rendering. Install ***0*** to disable it. To enable it, set ***1***                                         |
 |                      SECRET_KEY | The key for the cryptographic signature                                                                                 |
 |            DJANGO_ALLOWED_HOSTS | Allowed hosts. Specify the list of hosts separated by commas                                                            |
-|               REACT_APP_API_URL | API Server address                                                                                                      |
+|                   VITE_BASE_URL | Base Server address                                                                                                     |
 |                      SQL_ENGINE | When using PostgreSQL, specify ***django.db.backends.postgresql***. It is recommended not to change                     |
 |       SQL_DATABASE, POSTGRES_DB | The name of the database. Must match                                                                                    |
 |         SQL_USER, POSTGRES_USER | The name of the DB user. Must match                                                                                     |
@@ -60,7 +61,7 @@ https://docs.docker.com/get-docker/).
     ```
     docker exec -it container_name python3 manage.py createsuperuser
     ```
-    
+
 6. Go to [0.0.0.0/](http://0.0.0.0/) or [localhost/home/](http://localhost/);
 7. Log in with the data specified in clause 5.
 

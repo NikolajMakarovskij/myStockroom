@@ -21,7 +21,7 @@ export default function ListDeviceCategory() {
           setCategories(res.data)
           setLoading(false)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setError(error.message)
