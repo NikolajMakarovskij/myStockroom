@@ -24,7 +24,7 @@ export default function ListAccounting() {
         await AxiosInstanse.get(`/accounting/accounting_list/`).then((res) => {
           setAccounting(res.data)
           setErrorAccounting(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorAccounting(error.message)
@@ -38,7 +38,7 @@ export default function ListAccounting() {
         await AxiosInstanse.get(`/accounting/accounting_category/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

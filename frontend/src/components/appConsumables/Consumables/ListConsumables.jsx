@@ -38,7 +38,7 @@ export default function ListConsumables() {
         await AxiosInstanse.get(`/consumables/consumable_list/`).then((res) => {
           setConsumables(res.data)
           setErrorConsumables(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorConsumables(error.message)
@@ -52,7 +52,7 @@ export default function ListConsumables() {
         await AxiosInstanse.get(`/consumables/consumable_category/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

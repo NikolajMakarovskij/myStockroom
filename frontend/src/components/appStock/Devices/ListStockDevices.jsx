@@ -24,10 +24,10 @@ export default function ListStockDevices() {
   useInterval(() => {
     async function getDevices() {
       try {
-        await AxiosInstanse.get(`stockroom/stock_dev_list/`, { timeout: 1000 * 30 }).then((res) => {
+        await AxiosInstanse.get(`stockroom/stock_dev_list/`).then((res) => {
           setDevices(res.data)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setError(error.message)
@@ -41,7 +41,7 @@ export default function ListStockDevices() {
         await AxiosInstanse.get(`stockroom/stock_dev_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

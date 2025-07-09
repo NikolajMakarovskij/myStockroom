@@ -20,7 +20,7 @@ export default function ListConsumptionAccessories() {
         await AxiosInstanse.get(`/stockroom/consumption_acc_list/`).then((res) => {
           setConsumables(res.data)
           setErrorConsumables(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorConsumables(error.message)
@@ -34,7 +34,7 @@ export default function ListConsumptionAccessories() {
         await AxiosInstanse.get(`/consumables/accessories_category/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

@@ -20,7 +20,7 @@ export default function ListManufacturer() {
         await AxiosInstanse.get(`counterparty/manufacturer/`).then((res) => {
           setRooms(res.data)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setError(error.message)

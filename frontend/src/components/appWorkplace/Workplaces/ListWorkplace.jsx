@@ -21,7 +21,7 @@ export default function ListWorkplace() {
           setWorkplaces(res.data)
           setLoading(false)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
           console.log(setWorkplaces)
         })
       } catch (error) {

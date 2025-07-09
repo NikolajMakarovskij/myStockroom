@@ -34,10 +34,10 @@ export default function ListDevice() {
   useInterval(() => {
     async function getDevices() {
       try {
-        await AxiosInstanse.get(`/devices/device_list/`, { timeout: 1000 * 30 }).then((res) => {
+        await AxiosInstanse.get(`/devices/device_list/`).then((res) => {
           setDevices(res.data)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setError(error.message)
@@ -51,7 +51,7 @@ export default function ListDevice() {
         await AxiosInstanse.get(`/devices/device_cat/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

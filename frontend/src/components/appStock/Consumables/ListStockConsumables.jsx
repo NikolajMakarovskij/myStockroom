@@ -37,7 +37,7 @@ export default function ListStockConsumables() {
         await AxiosInstanse.get(`/stockroom/stock_con_list/`).then((res) => {
           setConsumables(res.data)
           setErrorConsumables(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorConsumables(error.message)
@@ -51,7 +51,7 @@ export default function ListStockConsumables() {
         await AxiosInstanse.get(`/stockroom/stock_con_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)

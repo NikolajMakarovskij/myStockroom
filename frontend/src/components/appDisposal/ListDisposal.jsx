@@ -27,7 +27,7 @@ export default function ListDisposal() {
         await AxiosInstanse.get(`decommission/disposal_list/`, { timeout: 1000 * 30 }).then((res) => {
           setDevices(res.data)
           setError(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setError(error.message)
@@ -41,7 +41,7 @@ export default function ListDisposal() {
         await AxiosInstanse.get(`decommission/disposal_cat_list/`).then((res) => {
           setCategory(res.data)
           setErrorCategory(null)
-          setDelay(5000)
+          setDelay(30000)
         })
       } catch (error) {
         setErrorCategory(error.message)
