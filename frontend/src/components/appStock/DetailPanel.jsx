@@ -25,7 +25,10 @@ export default function DetailPanel({ row, link }) {
   })
 
   useEffect(() => {
-    GetData()
+    const timer = setTimeout(() => {
+      GetData()
+    }, 500)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
