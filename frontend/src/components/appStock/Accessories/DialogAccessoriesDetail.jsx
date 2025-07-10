@@ -94,7 +94,7 @@ export default function DialogAccessoriesDetail(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {detail.consumable.map((item, index) => (
+                  {detail.accessories.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item.name}</TableCell>
                       <TableCell>{item.account}</TableCell>
