@@ -18,7 +18,7 @@ COPY default.conf /etc/angie/http.d/default.conf
 CMD ["angie", "-g", "daemon off;"]
 
 # Build Stage
-FROM node:23-bookworm-slim as build
+FROM node:24-bookworm-slim as build
 WORKDIR /app
 ARG VITE_BASE_URL
 ARG DEV
