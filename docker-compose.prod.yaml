@@ -14,7 +14,7 @@ services:
     ports:
       - "8010:8010"
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - db
       - redis
@@ -26,7 +26,7 @@ services:
     image: postgres:17-alpine
     restart: always
     env_file:
-      - ./.env.dev
+      - ./.env
     volumes:
       - ./database/Init_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database:/var/lib/postgresql/data
@@ -46,6 +46,8 @@ services:
     hostname: stock
     container_name: angie
     image: angie
+    env_file:
+      - ./.env
     volumes:
       - ./backend/src/static:/home/backend/web/static
       - ./backend/src/media:/home/backend/web/mediafiles
@@ -71,7 +73,7 @@ services:
     volumes:
       - ./backend/src:/backend/src
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - backend
     networks:
@@ -85,7 +87,7 @@ services:
     volumes:
       - ./backend/src:/backend/src
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - celery
     networks:
@@ -99,7 +101,7 @@ services:
     volumes:
       - ./backend/src:/backend/src
     env_file:
-      - ./.env.dev
+      - ./.env
     ports:
       - "5557:5555"
     depends_on:
