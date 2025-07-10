@@ -17,7 +17,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.withCredentials = true
 
 const AxiosInstanse = axios.create({
-  baseURL: getApiUrl(), // TODO change to getApiUrl()
+  baseURL: getApiUrl(),
   timeout: 30000,
   headers: {
     'Content-type': 'Application/json',

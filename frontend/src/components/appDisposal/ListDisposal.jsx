@@ -24,7 +24,7 @@ export default function ListDisposal() {
   useInterval(() => {
     async function getDevices() {
       try {
-        await AxiosInstanse.get(`decommission/disposal_list/`, { timeout: 1000 * 30 }).then((res) => {
+        await AxiosInstanse.get(`decommission/disposal_list/`).then((res) => {
           setDevices(res.data)
           setError(null)
           setDelay(30000)
@@ -78,7 +78,8 @@ export default function ListDisposal() {
         header: 'Дата списания',
       },
       {
-        accessorFn: (row) => `${row.stock_model.workplace.room.name} ${row.stock_model.workplace.room.building}`,
+        accessorFn: (row) =>
+          `${row.stock_model.workplace ? row.stock_model.workplace.room.name + ' ' + row.stock_model.workplace.room.building : 'не обнаружено'}`,
         header: 'Место хранения',
       },
       {

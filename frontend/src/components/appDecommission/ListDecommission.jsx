@@ -78,7 +78,8 @@ export default function ListDecommission() {
         header: 'Дата списания',
       },
       {
-        accessorFn: (row) => `${row.stock_model.workplace.room.name} ${row.stock_model.workplace.room.building}`,
+        accessorFn: (row) =>
+          `${row.stock_model.workplace ? row.stock_model.workplace.room.name + ' ' + row.stock_model.workplace.room.building : 'не обнаружено'}`,
         header: 'Место хранения',
       },
       {
